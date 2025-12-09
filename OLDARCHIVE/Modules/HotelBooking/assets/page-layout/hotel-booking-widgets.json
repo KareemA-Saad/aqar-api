@@ -1,0 +1,42 @@
+[
+        {
+            "id": 94,
+            "widget_area": null,
+            "widget_order": 1,
+            "widget_location": "hotel_booking_footer",
+            "widget_name": "TenantHotelBookingAboutUsWidget",
+            "widget_content": "a:10:{s:2:\"id\";s:2:\"94\";s:11:\"widget_name\";s:31:\"TenantHotelBookingAboutUsWidget\";s:11:\"widget_type\";s:6:\"update\";s:15:\"widget_location\";s:20:\"hotel_booking_footer\";s:12:\"widget_order\";s:1:\"1\";s:11:\"title_en_US\";s:12:\"BEYOND HOTEL\";s:17:\"description_en_US\";s:207:\"<p>Welcome to BEYOND HOTEL, where luxury meets comfort. Located in the heart of [City or Location], we offer a unique blend of modern amenities and personalized service to make your stay truly memorable.</p>\";s:8:\"title_ar\";s:26:\"ما وراء الفندق\";s:14:\"description_ar\";s:316:\"<p>مرحبًا بكم في فندق، حيث تجتمع الفخامة مع الراحة. يقع في قلب [المدينة أو الموقع]، ونحن نقدم مزيجًا فريدًا من وسائل الراحة الحديثة والخدمة الشخصية لجعل إقامتك لا تُنسى حقًا.\";s:10:\"logo_image\";s:3:\"545\";}",
+            "created_at": "2023-10-22 06:49:37",
+            "updated_at": "2023-10-22 12:34:37"
+        },
+        {
+            "id": 97,
+            "widget_area": null,
+            "widget_order": 4,
+            "widget_location": "hotel_booking_footer",
+            "widget_name": "TenantHotelBookingSocialWidget",
+            "widget_content": "a:6:{s:2:\"id\";s:2:\"97\";s:11:\"widget_name\";s:30:\"TenantHotelBookingSocialWidget\";s:11:\"widget_type\";s:6:\"update\";s:15:\"widget_location\";s:20:\"hotel_booking_footer\";s:12:\"widget_order\";s:1:\"4\";s:38:\"tenant_hotel_booking_social_widget_one\";a:2:{s:14:\"repeater_icon_\";a:4:{i:0;s:17:\"lab la-facebook-f\";i:1;s:14:\"lab la-twitter\";i:2;s:16:\"lab la-instagram\";i:3;s:14:\"lab la-youtube\";}s:19:\"repeater_image_url_\";a:4:{i:0;s:18:\"javascript:void(0)\";i:1;s:18:\"javascript:void(0)\";i:2;s:18:\"javascript:void(0)\";i:3;s:18:\"javascript:void(0)\";}}}",
+            "created_at": "2023-10-22 08:59:13",
+            "updated_at": "2023-10-22 12:16:08"
+        },
+        {
+            "id": 99,
+            "widget_area": null,
+            "widget_order": 5,
+            "widget_location": "hotel_booking_footer",
+            "widget_name": "TenantHotelBookingLinkWidget",
+            "widget_content": "a:6:{s:2:\"id\";s:2:\"99\";s:11:\"widget_name\";s:28:\"TenantHotelBookingLinkWidget\";s:11:\"widget_type\";s:6:\"update\";s:15:\"widget_location\";s:20:\"hotel_booking_footer\";s:12:\"widget_order\";s:1:\"5\";s:36:\"tenant_hotel_booking_link_widget_one\";a:4:{s:20:\"repeater_title_en_US\";a:9:{i:0;s:5:\"About\";i:1;s:4:\"Jobs\";i:2;s:4:\"Blog\";i:3;s:5:\"Blogs\";i:4;s:5:\"Press\";i:5;s:7:\"Careers\";i:6;s:12:\"Terms of use\";i:7;s:18:\"Privacy PolicyBlog\";i:8;s:7:\"Contact\";}s:24:\"repeater_title_url_en_US\";a:9:{i:0;s:18:\"javascript:void(0)\";i:1;s:18:\"javascript:void(0)\";i:2;s:18:\"javascript:void(0)\";i:3;s:18:\"javascript:void(0)\";i:4;s:18:\"javascript:void(0)\";i:5;s:18:\"javascript:void(0)\";i:6;s:18:\"javascript:void(0)\";i:7;s:18:\"javascript:void(0)\";i:8;s:18:\"javascript:void(0)\";}s:17:\"repeater_title_ar\";a:9:{i:0;s:4:\"عن\";i:1;s:10:\"وظائف\";i:2;s:10:\"مدونة\";i:3;s:16:\"المدونات\";i:4;s:8:\"يضعط\";i:5;s:10:\"وظائف\";i:6;s:27:\"شروط الاستخدام\";i:7;s:27:\"سياسة الخصوصية\";i:8;s:10:\"اتصال\";}s:21:\"repeater_title_url_ar\";a:9:{i:0;s:18:\"javascript:void(0)\";i:1;s:18:\"javascript:void(0)\";i:2;s:18:\"javascript:void(0)\";i:3;s:18:\"javascript:void(0)\";i:4;s:18:\"javascript:void(0)\";i:5;s:18:\"javascript:void(0)\";i:6;s:18:\"javascript:void(0)\";i:7;s:18:\"javascript:void(0)\";i:8;s:18:\"javascript:void(0)\";}}}",
+            "created_at": "2023-10-22 10:05:36",
+            "updated_at": "2023-10-22 13:36:27"
+        },
+        {
+            "id": 100,
+            "widget_area": null,
+            "widget_order": 1,
+            "widget_location": "hotel_booking_bottom_footer",
+            "widget_name": "TenantHotelBookingContactWidget",
+            "widget_content": "a:6:{s:2:\"id\";s:3:\"100\";s:11:\"widget_name\";s:31:\"TenantHotelBookingContactWidget\";s:11:\"widget_type\";s:6:\"update\";s:15:\"widget_location\";s:27:\"hotel_booking_bottom_footer\";s:12:\"widget_order\";s:1:\"1\";s:39:\"tenant_hotel_booking_contact_widget_one\";a:6:{s:20:\"repeater_title_en_US\";a:2:{i:0;s:16:\"Have a question?\";i:1;s:16:\"Have a question?\";}s:22:\"repeater_contact_en_US\";a:2:{i:0;s:12:\"310-437-2766\";i:1;s:18:\"unreal@example.com\";}s:19:\"repeater_icon_en_US\";a:2:{i:0;s:12:\"las la-phone\";i:1;s:15:\"las la-envelope\";}s:17:\"repeater_title_ar\";a:2:{i:0;s:17:\"لدي سؤال؟\";i:1;s:17:\"لدي سؤال؟\";}s:19:\"repeater_contact_ar\";a:2:{i:0;s:12:\"310-437-2766\";i:1;s:18:\"unreal@example.com\";}s:16:\"repeater_icon_ar\";a:2:{i:0;N;i:1;s:15:\"las la-envelope\";}}}",
+            "created_at": "2023-10-22 11:07:49",
+            "updated_at": "2023-10-22 13:55:49"
+        }
+]
