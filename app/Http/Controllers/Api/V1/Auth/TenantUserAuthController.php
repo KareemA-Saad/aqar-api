@@ -19,6 +19,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use OpenApi\Attributes as OA;
 
 /**
  * Tenant User Authentication Controller
@@ -79,6 +80,57 @@ final class TenantUserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/tenant/{tenant}/auth/register',
+        summary: 'Tenant User Registration',
+        description: 'Register a new end-user within a tenant. Requires tenant context via route parameter.',
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['name', 'email', 'password', 'password_confirmation'],
+            properties: [
+                new OA\Property(property: 'name', type: 'string', example: 'Jane Smith'),
+                new OA\Property(property: 'email', type: 'string', format: 'email', example: 'jane@acme-corp.com'),
+                new OA\Property(property: 'username', type: 'string', example: 'janesmith', nullable: true),
+                new OA\Property(property: 'mobile', type: 'string', example: '+1234567890', nullable: true),
+                new OA\Property(property: 'password', type: 'string', format: 'password', example: 'SecurePass123!'),
+                new OA\Property(property: 'password_confirmation', type: 'string', format: 'password', example: 'SecurePass123!'),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 201,
+        description: 'Registration successful',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'Registration successful. Please verify your email.'),
+                new OA\Property(
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'user', ref: '#/components/schemas/TenantUserResource'),
+                        new OA\Property(property: 'token', type: 'string'),
+                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
+                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time'),
+                        new OA\Property(property: 'tenant_id', type: 'string', example: 'acme-corp'),
+                        new OA\Property(property: 'email_verification_required', type: 'boolean', example: true),
+                    ],
+                    type: 'object'
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(response: 400, description: 'Tenant context required')]
+    #[OA\Response(response: 422, description: 'Validation error (email already registered)')]
     public function register(TenantRegisterRequest $request): JsonResponse
     {
         $tenantId = $this->getTenantId($request);
@@ -128,6 +180,54 @@ final class TenantUserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/tenant/{tenant}/auth/login',
+        summary: 'Tenant User Login',
+        description: 'Authenticate a tenant end-user and receive bearer token',
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['credential', 'password'],
+            properties: [
+                new OA\Property(property: 'credential', type: 'string', example: 'jane@acme-corp.com', description: 'Email or username'),
+                new OA\Property(property: 'password', type: 'string', format: 'password', example: 'SecurePass123!'),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Login successful',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'Login successful'),
+                new OA\Property(
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'user', ref: '#/components/schemas/TenantUserResource'),
+                        new OA\Property(property: 'token', type: 'string'),
+                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
+                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time'),
+                        new OA\Property(property: 'tenant_id', type: 'string', example: 'acme-corp'),
+                        new OA\Property(property: 'email_verified', type: 'boolean', example: true),
+                    ],
+                    type: 'object'
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(response: 400, description: 'Tenant context required')]
+    #[OA\Response(response: 401, description: 'Invalid credentials')]
+    #[OA\Response(response: 422, description: 'Validation error')]
     public function login(LoginRequest $request): JsonResponse
     {
         $tenantId = $this->getTenantId($request);
@@ -164,6 +264,22 @@ final class TenantUserAuthController extends BaseApiController
      *
      * @return JsonResponse
      */
+    #[OA\Post(
+        path: '/api/v1/tenant/{tenant}/auth/logout',
+        summary: 'Tenant User Logout',
+        description: 'Revoke the current tenant user authentication token',
+        security: [['sanctum_tenant_user' => []]],
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\Response(response: 200, description: 'Logged out successfully')]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function logout(): JsonResponse
     {
         $user = auth('api_tenant_user')->user();
@@ -182,6 +298,32 @@ final class TenantUserAuthController extends BaseApiController
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/api/v1/tenant/{tenant}/auth/me',
+        summary: 'Get Tenant User Profile',
+        description: 'Retrieve the authenticated tenant user profile',
+        security: [['sanctum_tenant_user' => []]],
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'User profile retrieved',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'User profile retrieved'),
+                new OA\Property(property: 'data', ref: '#/components/schemas/TenantUserResource'),
+            ]
+        )
+    )]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function me(): JsonResponse
     {
         $user = auth('api_tenant_user')->user();
@@ -202,6 +344,42 @@ final class TenantUserAuthController extends BaseApiController
      * @param Request $request
      * @return JsonResponse
      */
+    #[OA\Post(
+        path: '/api/v1/tenant/{tenant}/auth/refresh-token',
+        summary: 'Refresh Tenant User Token',
+        description: 'Revoke current token and issue a new one',
+        security: [['sanctum_tenant_user' => []]],
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Token refreshed successfully',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'Token refreshed successfully'),
+                new OA\Property(
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'token', type: 'string'),
+                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
+                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time'),
+                        new OA\Property(property: 'tenant_id', type: 'string', example: 'acme-corp'),
+                    ],
+                    type: 'object'
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(response: 400, description: 'Tenant context required')]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function refreshToken(Request $request): JsonResponse
     {
         $user = auth('api_tenant_user')->user();
@@ -246,6 +424,32 @@ final class TenantUserAuthController extends BaseApiController
      * @param VerifyEmailRequest $request
      * @return JsonResponse
      */
+    #[OA\Post(
+        path: '/api/v1/tenant/{tenant}/auth/verify-email',
+        summary: 'Verify Tenant User Email',
+        description: 'Verify email address with code sent via email',
+        security: [['sanctum_tenant_user' => []]],
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['token'],
+            properties: [
+                new OA\Property(property: 'token', type: 'string', example: '123456', description: 'Verification code from email'),
+            ]
+        )
+    )]
+    #[OA\Response(response: 200, description: 'Email verified successfully or already verified')]
+    #[OA\Response(response: 400, description: 'Invalid verification code')]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function verifyEmail(VerifyEmailRequest $request): JsonResponse
     {
         $user = auth('api_tenant_user')->user();
@@ -276,6 +480,22 @@ final class TenantUserAuthController extends BaseApiController
      *
      * @return JsonResponse
      */
+    #[OA\Post(
+        path: '/api/v1/tenant/{tenant}/auth/resend-verification',
+        summary: 'Resend Tenant User Verification Email',
+        description: 'Resend email verification code',
+        security: [['sanctum_tenant_user' => []]],
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\Response(response: 200, description: 'Verification email sent or already verified')]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function resendVerification(): JsonResponse
     {
         $user = auth('api_tenant_user')->user();
@@ -306,6 +526,31 @@ final class TenantUserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/tenant/{tenant}/auth/forgot-password',
+        summary: 'Tenant User Forgot Password',
+        description: 'Request a password reset link via email. Always returns success to prevent email enumeration.',
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['email'],
+            properties: [
+                new OA\Property(property: 'email', type: 'string', format: 'email', example: 'jane@acme-corp.com'),
+            ]
+        )
+    )]
+    #[OA\Response(response: 200, description: 'Password reset link sent (or not found, same response for security)')]
+    #[OA\Response(response: 400, description: 'Tenant context required')]
+    #[OA\Response(response: 422, description: 'Validation error')]
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
         $tenantId = $this->getTenantId($request);
@@ -354,6 +599,34 @@ final class TenantUserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/tenant/{tenant}/auth/reset-password',
+        summary: 'Tenant User Reset Password',
+        description: 'Reset tenant user password using the token received via email',
+        tags: ['Tenant User Authentication']
+    )]
+    #[OA\Parameter(
+        name: 'tenant',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['email', 'token', 'password', 'password_confirmation'],
+            properties: [
+                new OA\Property(property: 'email', type: 'string', format: 'email', example: 'jane@acme-corp.com'),
+                new OA\Property(property: 'token', type: 'string', example: 'abc123def456...', description: 'Password reset token from email'),
+                new OA\Property(property: 'password', type: 'string', format: 'password', example: 'NewSecurePass123!'),
+                new OA\Property(property: 'password_confirmation', type: 'string', format: 'password', example: 'NewSecurePass123!'),
+            ]
+        )
+    )]
+    #[OA\Response(response: 200, description: 'Password reset successfully')]
+    #[OA\Response(response: 400, description: 'Invalid or expired reset token or tenant context required')]
+    #[OA\Response(response: 422, description: 'Validation error')]
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         $tenantId = $this->getTenantId($request);

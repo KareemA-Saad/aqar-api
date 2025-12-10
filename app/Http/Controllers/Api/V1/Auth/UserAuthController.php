@@ -21,6 +21,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Socialite\Facades\Socialite;
+use OpenApi\Attributes as OA;
 
 /**
  * User Authentication Controller
@@ -46,6 +47,57 @@ final class UserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/auth/register',
+        summary: 'User Registration',
+        description: 'Register a new landlord/tenant owner user. Email verification required.',
+        tags: ['User Authentication']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['name', 'email', 'password', 'password_confirmation'],
+            properties: [
+                new OA\Property(property: 'name', type: 'string', example: 'John Doe', description: 'Full name'),
+                new OA\Property(property: 'email', type: 'string', format: 'email', example: 'user@example.com', description: 'Email address'),
+                new OA\Property(property: 'username', type: 'string', example: 'johndoe', description: 'Username (optional)', nullable: true),
+                new OA\Property(property: 'mobile', type: 'string', example: '+1234567890', description: 'Mobile number (optional)', nullable: true),
+                new OA\Property(property: 'password', type: 'string', format: 'password', example: 'SecurePass123!', description: 'Password (min 8 characters)'),
+                new OA\Property(property: 'password_confirmation', type: 'string', format: 'password', example: 'SecurePass123!', description: 'Password confirmation'),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 201,
+        description: 'Registration successful',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'Registration successful. Please verify your email.'),
+                new OA\Property(
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'user', ref: '#/components/schemas/UserResource'),
+                        new OA\Property(property: 'token', type: 'string', example: '1|abcdef123456...'),
+                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
+                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time', example: '2024-12-31T23:59:59.000000Z'),
+                        new OA\Property(property: 'email_verification_required', type: 'boolean', example: true),
+                    ],
+                    type: 'object'
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 422,
+        description: 'Validation error',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'message', type: 'string', example: 'The email has already been taken.'),
+                new OA\Property(property: 'errors', type: 'object'),
+            ]
+        )
+    )]
     public function register(RegisterRequest $request): JsonResponse
     {
         $result = $this->authService->registerUser($request->validatedData());
@@ -76,6 +128,45 @@ final class UserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/auth/login',
+        summary: 'User Login',
+        description: 'Authenticate a landlord/tenant owner user and receive bearer token',
+        tags: ['User Authentication']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['credential', 'password'],
+            properties: [
+                new OA\Property(property: 'credential', type: 'string', example: 'user@example.com', description: 'Email or username'),
+                new OA\Property(property: 'password', type: 'string', format: 'password', example: 'SecurePass123!'),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Login successful',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'Login successful'),
+                new OA\Property(
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'user', ref: '#/components/schemas/UserResource'),
+                        new OA\Property(property: 'token', type: 'string', example: '2|xyz789456...'),
+                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
+                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time'),
+                        new OA\Property(property: 'email_verified', type: 'boolean', example: true),
+                    ],
+                    type: 'object'
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(response: 401, description: 'Invalid credentials')]
+    #[OA\Response(response: 422, description: 'Validation error')]
     public function login(LoginRequest $request): JsonResponse
     {
         try {
@@ -104,6 +195,15 @@ final class UserAuthController extends BaseApiController
      *
      * @return JsonResponse
      */
+    #[OA\Post(
+        path: '/api/v1/auth/logout',
+        summary: 'User Logout',
+        description: 'Revoke the current user authentication token',
+        security: [['sanctum_user' => []]],
+        tags: ['User Authentication']
+    )]
+    #[OA\Response(response: 200, description: 'Logged out successfully')]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function logout(): JsonResponse
     {
         $user = auth('api_user')->user();
@@ -122,6 +222,25 @@ final class UserAuthController extends BaseApiController
      *
      * @return JsonResponse
      */
+    #[OA\Get(
+        path: '/api/v1/auth/me',
+        summary: 'Get User Profile',
+        description: 'Retrieve the authenticated user profile with tenants and payment info',
+        security: [['sanctum_user' => []]],
+        tags: ['User Authentication']
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'User profile retrieved',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'User profile retrieved'),
+                new OA\Property(property: 'data', ref: '#/components/schemas/UserResource'),
+            ]
+        )
+    )]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function me(): JsonResponse
     {
         $user = auth('api_user')->user();
@@ -141,6 +260,33 @@ final class UserAuthController extends BaseApiController
      *
      * @return JsonResponse
      */
+    #[OA\Post(
+        path: '/api/v1/auth/refresh-token',
+        summary: 'Refresh User Token',
+        description: 'Revoke current token and issue a new one',
+        security: [['sanctum_user' => []]],
+        tags: ['User Authentication']
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Token refreshed successfully',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'Token refreshed successfully'),
+                new OA\Property(
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'token', type: 'string'),
+                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
+                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time'),
+                    ],
+                    type: 'object'
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function refreshToken(): JsonResponse
     {
         $user = auth('api_user')->user();
@@ -168,6 +314,25 @@ final class UserAuthController extends BaseApiController
      * @param VerifyEmailRequest $request
      * @return JsonResponse
      */
+    #[OA\Post(
+        path: '/api/v1/auth/verify-email',
+        summary: 'Verify Email',
+        description: 'Verify user email address with code sent via email',
+        security: [['sanctum_user' => []]],
+        tags: ['User Authentication']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['token'],
+            properties: [
+                new OA\Property(property: 'token', type: 'string', example: '123456', description: 'Verification code from email'),
+            ]
+        )
+    )]
+    #[OA\Response(response: 200, description: 'Email verified successfully or already verified')]
+    #[OA\Response(response: 400, description: 'Invalid verification code')]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function verifyEmail(VerifyEmailRequest $request): JsonResponse
     {
         $user = auth('api_user')->user();
@@ -198,6 +363,15 @@ final class UserAuthController extends BaseApiController
      *
      * @return JsonResponse
      */
+    #[OA\Post(
+        path: '/api/v1/auth/resend-verification',
+        summary: 'Resend Verification Email',
+        description: 'Resend email verification code',
+        security: [['sanctum_user' => []]],
+        tags: ['User Authentication']
+    )]
+    #[OA\Response(response: 200, description: 'Verification email sent or already verified')]
+    #[OA\Response(response: 401, description: 'Unauthenticated')]
     public function resendVerification(): JsonResponse
     {
         $user = auth('api_user')->user();
@@ -228,6 +402,23 @@ final class UserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/auth/forgot-password',
+        summary: 'User Forgot Password',
+        description: 'Request a password reset link via email. Always returns success to prevent email enumeration.',
+        tags: ['User Authentication']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['email'],
+            properties: [
+                new OA\Property(property: 'email', type: 'string', format: 'email', example: 'user@example.com'),
+            ]
+        )
+    )]
+    #[OA\Response(response: 200, description: 'Password reset link sent (or not found, same response for security)')]
+    #[OA\Response(response: 422, description: 'Validation error')]
     public function forgotPassword(ForgotPasswordRequest $request): JsonResponse
     {
         $email = $request->getEmail();
@@ -270,6 +461,27 @@ final class UserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/auth/reset-password',
+        summary: 'User Reset Password',
+        description: 'Reset user password using the token received via email',
+        tags: ['User Authentication']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['email', 'token', 'password', 'password_confirmation'],
+            properties: [
+                new OA\Property(property: 'email', type: 'string', format: 'email', example: 'user@example.com'),
+                new OA\Property(property: 'token', type: 'string', example: 'abc123def456...', description: 'Password reset token from email'),
+                new OA\Property(property: 'password', type: 'string', format: 'password', example: 'NewSecurePass123!', description: 'New password'),
+                new OA\Property(property: 'password_confirmation', type: 'string', format: 'password', example: 'NewSecurePass123!'),
+            ]
+        )
+    )]
+    #[OA\Response(response: 200, description: 'Password reset successfully')]
+    #[OA\Response(response: 400, description: 'Invalid or expired reset token')]
+    #[OA\Response(response: 422, description: 'Validation error')]
     public function resetPassword(ResetPasswordRequest $request): JsonResponse
     {
         $isValid = $this->authService->verifyPasswordResetToken(
@@ -304,6 +516,46 @@ final class UserAuthController extends BaseApiController
      *
      * @unauthenticated
      */
+    #[OA\Post(
+        path: '/api/v1/auth/social-login',
+        summary: 'Social Login',
+        description: 'Login or register using social providers (Google/Facebook). Requires OAuth2 access token from provider.',
+        tags: ['User Authentication']
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ['provider', 'access_token'],
+            properties: [
+                new OA\Property(property: 'provider', type: 'string', enum: ['google', 'facebook'], example: 'google', description: 'Social provider name'),
+                new OA\Property(property: 'access_token', type: 'string', example: 'ya29.a0AfH6SM...', description: 'OAuth2 access token from provider'),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Login/registration successful',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'Login successful'),
+                new OA\Property(
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'user', ref: '#/components/schemas/UserResource'),
+                        new OA\Property(property: 'token', type: 'string'),
+                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
+                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time'),
+                        new OA\Property(property: 'is_new_user', type: 'boolean', example: false, description: 'Whether this is a new registration'),
+                    ],
+                    type: 'object'
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(response: 400, description: 'Unable to retrieve email from provider')]
+    #[OA\Response(response: 401, description: 'Social authentication failed')]
+    #[OA\Response(response: 422, description: 'Validation error')]
     public function socialLogin(SocialLoginRequest $request): JsonResponse
     {
         $provider = $request->getProvider();

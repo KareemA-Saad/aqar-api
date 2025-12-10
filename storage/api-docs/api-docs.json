@@ -554,6 +554,2184 @@
                 }
             }
         },
+        "/api/v1/tenant/{tenant}/auth/register": {
+            "post": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Tenant User Registration",
+                "description": "Register a new end-user within a tenant. Requires tenant context via route parameter.",
+                "operationId": "7d423671165f227baef58dcc5dc7a505",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Jane Smith"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jane@acme-corp.com"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "janesmith",
+                                        "nullable": true
+                                    },
+                                    "mobile": {
+                                        "type": "string",
+                                        "example": "+1234567890",
+                                        "nullable": true
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "SecurePass123!"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "SecurePass123!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registration successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Registration successful. Please verify your email."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/TenantUserResource"
+                                                },
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "tenant_id": {
+                                                    "type": "string",
+                                                    "example": "acme-corp"
+                                                },
+                                                "email_verification_required": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Tenant context required"
+                    },
+                    "422": {
+                        "description": "Validation error (email already registered)"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/auth/login": {
+            "post": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Tenant User Login",
+                "description": "Authenticate a tenant end-user and receive bearer token",
+                "operationId": "51fb12ad7269e24fac87a02e3ea81603",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "credential",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "credential": {
+                                        "description": "Email or username",
+                                        "type": "string",
+                                        "example": "jane@acme-corp.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "SecurePass123!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login successful"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/TenantUserResource"
+                                                },
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "tenant_id": {
+                                                    "type": "string",
+                                                    "example": "acme-corp"
+                                                },
+                                                "email_verified": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Tenant context required"
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/auth/logout": {
+            "post": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Tenant User Logout",
+                "description": "Revoke the current tenant user authentication token",
+                "operationId": "001cf54728255a3901d02cb58b61de69",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Logged out successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenant/{tenant}/auth/me": {
+            "get": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Get Tenant User Profile",
+                "description": "Retrieve the authenticated tenant user profile",
+                "operationId": "be02a43109c188f72634420034a21eed",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User profile retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User profile retrieved"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/TenantUserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenant/{tenant}/auth/refresh-token": {
+            "post": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Refresh Tenant User Token",
+                "description": "Revoke current token and issue a new one",
+                "operationId": "c31a4603618274e7cb82e5d342ed7c4a",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Token refreshed successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "tenant_id": {
+                                                    "type": "string",
+                                                    "example": "acme-corp"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Tenant context required"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenant/{tenant}/auth/verify-email": {
+            "post": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Verify Tenant User Email",
+                "description": "Verify email address with code sent via email",
+                "operationId": "42a961b447f6d1c8264d5a8bb7eababe",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "description": "Verification code from email",
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email verified successfully or already verified"
+                    },
+                    "400": {
+                        "description": "Invalid verification code"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenant/{tenant}/auth/resend-verification": {
+            "post": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Resend Tenant User Verification Email",
+                "description": "Resend email verification code",
+                "operationId": "f147e94dc5a0ccc0b3d34ee42cd98fec",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Verification email sent or already verified"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenant/{tenant}/auth/forgot-password": {
+            "post": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Tenant User Forgot Password",
+                "description": "Request a password reset link via email. Always returns success to prevent email enumeration.",
+                "operationId": "9e3a5ff0339dd6ce402a254d8dd3761e",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jane@acme-corp.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset link sent (or not found, same response for security)"
+                    },
+                    "400": {
+                        "description": "Tenant context required"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "Tenant User Authentication"
+                ],
+                "summary": "Tenant User Reset Password",
+                "description": "Reset tenant user password using the token received via email",
+                "operationId": "ab57a968539b8561c8ebf211a122d634",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "token",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "jane@acme-corp.com"
+                                    },
+                                    "token": {
+                                        "description": "Password reset token from email",
+                                        "type": "string",
+                                        "example": "abc123def456..."
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "NewSecurePass123!"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "NewSecurePass123!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset successfully"
+                    },
+                    "400": {
+                        "description": "Invalid or expired reset token or tenant context required"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/register": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "User Registration",
+                "description": "Register a new landlord/tenant owner user. Email verification required.",
+                "operationId": "7dd72288adf43e5797f877f2de3f7441",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "description": "Full name",
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "description": "Email address",
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "username": {
+                                        "description": "Username (optional)",
+                                        "type": "string",
+                                        "example": "johndoe",
+                                        "nullable": true
+                                    },
+                                    "mobile": {
+                                        "description": "Mobile number (optional)",
+                                        "type": "string",
+                                        "example": "+1234567890",
+                                        "nullable": true
+                                    },
+                                    "password": {
+                                        "description": "Password (min 8 characters)",
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "SecurePass123!"
+                                    },
+                                    "password_confirmation": {
+                                        "description": "Password confirmation",
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "SecurePass123!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Registration successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Registration successful. Please verify your email."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "1|abcdef123456..."
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-12-31T23:59:59.000000Z"
+                                                },
+                                                "email_verification_required": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The email has already been taken."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/login": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "User Login",
+                "description": "Authenticate a landlord/tenant owner user and receive bearer token",
+                "operationId": "917427e56be91b32cb64adc3eb2a9856",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "credential",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "credential": {
+                                        "description": "Email or username",
+                                        "type": "string",
+                                        "example": "user@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "SecurePass123!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login successful"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "2|xyz789456..."
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "email_verified": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/logout": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "User Logout",
+                "description": "Revoke the current user authentication token",
+                "operationId": "b40929cc9f342736c978e404089c0358",
+                "responses": {
+                    "200": {
+                        "description": "Logged out successfully"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/me": {
+            "get": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "Get User Profile",
+                "description": "Retrieve the authenticated user profile with tenants and payment info",
+                "operationId": "7c6b2b96ef6d6982b454020e2242b3c0",
+                "responses": {
+                    "200": {
+                        "description": "User profile retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User profile retrieved"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/refresh-token": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "Refresh User Token",
+                "description": "Revoke current token and issue a new one",
+                "operationId": "ac367bbffa33bbbe472aa7b5ae9485c1",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Token refreshed successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/verify-email": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "Verify Email",
+                "description": "Verify user email address with code sent via email",
+                "operationId": "1a10bd6caca876f5282a8f426659add9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "description": "Verification code from email",
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email verified successfully or already verified"
+                    },
+                    "400": {
+                        "description": "Invalid verification code"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/resend-verification": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "Resend Verification Email",
+                "description": "Resend email verification code",
+                "operationId": "dd2e889356c7fd54d6de24dae05f388d",
+                "responses": {
+                    "200": {
+                        "description": "Verification email sent or already verified"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/forgot-password": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "User Forgot Password",
+                "description": "Request a password reset link via email. Always returns success to prevent email enumeration.",
+                "operationId": "272d0305a6b0b97c52e2d4f198590681",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset link sent (or not found, same response for security)"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/reset-password": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "User Reset Password",
+                "description": "Reset user password using the token received via email",
+                "operationId": "3a19087ff12530d483466e295fa50831",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "token",
+                                    "password",
+                                    "password_confirmation"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "token": {
+                                        "description": "Password reset token from email",
+                                        "type": "string",
+                                        "example": "abc123def456..."
+                                    },
+                                    "password": {
+                                        "description": "New password",
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "NewSecurePass123!"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "NewSecurePass123!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset successfully"
+                    },
+                    "400": {
+                        "description": "Invalid or expired reset token"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/social-login": {
+            "post": {
+                "tags": [
+                    "User Authentication"
+                ],
+                "summary": "Social Login",
+                "description": "Login or register using social providers (Google/Facebook). Requires OAuth2 access token from provider.",
+                "operationId": "de94d08acc6d15dff5a6badd0848d1fc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "provider",
+                                    "access_token"
+                                ],
+                                "properties": {
+                                    "provider": {
+                                        "description": "Social provider name",
+                                        "type": "string",
+                                        "enum": [
+                                            "google",
+                                            "facebook"
+                                        ],
+                                        "example": "google"
+                                    },
+                                    "access_token": {
+                                        "description": "OAuth2 access token from provider",
+                                        "type": "string",
+                                        "example": "ya29.a0AfH6SM..."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login/registration successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login successful"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                "token": {
+                                                    "type": "string"
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "is_new_user": {
+                                                    "description": "Whether this is a new registration",
+                                                    "type": "boolean",
+                                                    "example": false
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Unable to retrieve email from provider"
+                    },
+                    "401": {
+                        "description": "Social authentication failed"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenants": {
+            "get": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "List user's tenants",
+                "description": "Get all tenants/properties owned by the authenticated user",
+                "operationId": "d642f7d054a5891a7b843922faac0cf9",
+                "responses": {
+                    "200": {
+                        "description": "Tenants retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenants retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TenantResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "Create new tenant",
+                "description": "Create a new tenant/property. Database setup is asynchronous and may take a few moments.",
+                "operationId": "1cfd386a65800b01a0bec325e4f76dc3",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "subdomain",
+                                    "plan_id"
+                                ],
+                                "properties": {
+                                    "subdomain": {
+                                        "description": "Unique subdomain identifier (lowercase, alphanumeric with hyphens)",
+                                        "type": "string",
+                                        "example": "acme-corp"
+                                    },
+                                    "plan_id": {
+                                        "description": "Price plan ID",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "theme": {
+                                        "description": "Theme name (optional)",
+                                        "type": "string",
+                                        "example": "default",
+                                        "nullable": true
+                                    },
+                                    "theme_code": {
+                                        "description": "Theme color code (optional)",
+                                        "type": "string",
+                                        "example": "#FF5733",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tenant created successfully (database setup in progress)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant created successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant": {
+                                                    "$ref": "#/components/schemas/TenantResource"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Tenant created. Database setup is in progress."
+                                                },
+                                                "database_status": {
+                                                    "type": "string",
+                                                    "example": "pending"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error (subdomain taken, invalid plan, etc.)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "subdomain": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "This subdomain is already taken."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to create tenant: Database error"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenants/{id}": {
+            "get": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "Get tenant details",
+                "description": "Retrieve details of a specific tenant owned by the authenticated user, including database status",
+                "operationId": "1f051d9e1766fec52799588d9cf35e93",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tenant retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant": {
+                                                    "$ref": "#/components/schemas/TenantResource"
+                                                },
+                                                "database_status": {
+                                                    "description": "Tenant database status",
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "ready",
+                                                        "pending"
+                                                    ],
+                                                    "example": "ready"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found or access denied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant not found or access denied"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "Update tenant settings",
+                "description": "Update settings of a specific tenant owned by the authenticated user",
+                "operationId": "746bda896b583da202df3f77412b5211",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "instruction_status": {
+                                        "description": "Tenant status",
+                                        "type": "string",
+                                        "example": "active"
+                                    },
+                                    "theme": {
+                                        "description": "Theme name",
+                                        "type": "string",
+                                        "example": "modern",
+                                        "nullable": true
+                                    },
+                                    "theme_code": {
+                                        "description": "Theme color code",
+                                        "type": "string",
+                                        "example": "#3498DB",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Tenant updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/TenantResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found or access denied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant not found or access denied"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "field": [
+                                                    "Error message"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "Delete tenant",
+                "description": "Permanently delete a tenant and its database. This action cannot be undone.",
+                "operationId": "83b24cc14f7272cbb622323b93b86d85",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tenant deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant deleted successfully"
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found or access denied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant not found or access denied"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error (failed to delete)",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to delete tenant: Error details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenants/{id}/switch": {
+            "post": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "Switch tenant context (new token)",
+                "description": "Switch to a specific tenant context and receive a new token scoped to that tenant. Use this token to access tenant-specific resources.",
+                "operationId": "67fc6f3bf015dc77f37443d0efb509e0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tenant context switched successfully - use the new token for tenant-specific requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant context switched successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant": {
+                                                    "$ref": "#/components/schemas/TenantResource"
+                                                },
+                                                "token": {
+                                                    "description": "New tenant-scoped token",
+                                                    "type": "string",
+                                                    "example": "3|abcdef123456..."
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-12-31T23:59:59.000000Z"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found or access denied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant not found or access denied"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "425": {
+                        "description": "Too Early - Tenant database is not ready yet",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant database is not ready yet. Please wait."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to switch tenant: Error details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenants/{id}/database-status": {
+            "get": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "Check DB status",
+                "description": "Check if the tenant database has been created and is ready for use",
+                "operationId": "fc2ca3c89bb058729e422472e02cf2dd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Database status retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Database status retrieved"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant_id": {
+                                                    "type": "string",
+                                                    "example": "acme-corp"
+                                                },
+                                                "database_status": {
+                                                    "description": "Database creation status",
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "ready",
+                                                        "pending"
+                                                    ],
+                                                    "example": "ready"
+                                                },
+                                                "is_ready": {
+                                                    "description": "Boolean flag for ready status",
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found or access denied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant not found or access denied"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenants/{id}/setup-database": {
+            "post": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "Manual DB setup",
+                "description": "Manually trigger tenant database setup. Use this if automatic setup failed or to retry database creation.",
+                "operationId": "e05c559bfd26797882bb0a045c444abb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Database setup completed or already exists",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Database setup completed successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant_id": {
+                                                    "type": "string",
+                                                    "example": "acme-corp"
+                                                },
+                                                "database_status": {
+                                                    "type": "string",
+                                                    "example": "ready"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found or access denied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant not found or access denied"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Database setup failed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Database setup failed: Error details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
         "/api/health": {
             "get": {
                 "tags": [
@@ -658,6 +2836,392 @@
                     }
                 },
                 "type": "object"
+            },
+            "DomainResource": {
+                "title": "Domain Resource",
+                "description": "Tenant domain resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "domain": {
+                        "description": "Full domain name",
+                        "type": "string",
+                        "example": "acme-corp.localhost"
+                    },
+                    "tenant_id": {
+                        "description": "Associated tenant ID",
+                        "type": "string",
+                        "example": "acme-corp"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "PaymentLogResource": {
+                "title": "Payment Log Resource",
+                "description": "Payment transaction log resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "user@example.com"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "package_name": {
+                        "type": "string",
+                        "example": "Premium Plan"
+                    },
+                    "package_price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 99.99
+                    },
+                    "package_gateway": {
+                        "type": "string",
+                        "example": "stripe",
+                        "nullable": true
+                    },
+                    "transaction_id": {
+                        "type": "string",
+                        "example": "txn_123456789",
+                        "nullable": true
+                    },
+                    "track": {
+                        "type": "string",
+                        "example": "track_abc123",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "completed"
+                    },
+                    "payment_status": {
+                        "type": "string",
+                        "example": "paid"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "expire_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-12-31T23:59:59.000000Z",
+                        "nullable": true
+                    },
+                    "trial_expire_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-02-01T00:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "is_renew": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "renew_status": {
+                        "type": "string",
+                        "example": "inactive",
+                        "nullable": true
+                    },
+                    "theme": {
+                        "type": "string",
+                        "example": "default",
+                        "nullable": true
+                    },
+                    "coupon_discount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 10,
+                        "nullable": true
+                    },
+                    "is_active": {
+                        "description": "Whether payment is currently active",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_expired": {
+                        "description": "Whether payment has expired",
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "user": {
+                        "description": "User details (when loaded)",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "tenant": {
+                        "description": "Tenant details (when loaded)",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "package": {
+                        "description": "Package details (when loaded)",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "TenantResource": {
+                "title": "Tenant Resource",
+                "description": "Tenant (property/organization) resource representation",
+                "properties": {
+                    "id": {
+                        "description": "Tenant unique identifier (subdomain)",
+                        "type": "string",
+                        "example": "acme-corp"
+                    },
+                    "user_id": {
+                        "description": "Owner user ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "instruction_status": {
+                        "description": "Current tenant status",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "theme": {
+                        "description": "Theme name",
+                        "type": "string",
+                        "example": "default",
+                        "nullable": true
+                    },
+                    "theme_code": {
+                        "description": "Theme color code",
+                        "type": "string",
+                        "example": "#FF5733",
+                        "nullable": true
+                    },
+                    "user": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/UserResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Owner user details (when loaded)"
+                    },
+                    "domains": {
+                        "description": "Tenant domains (when loaded)",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DomainResource"
+                        },
+                        "nullable": true
+                    },
+                    "latest_payment": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/PaymentLogResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Latest payment record (when loaded)"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "TenantUserResource": {
+                "title": "Tenant User Resource",
+                "description": "Tenant user (end-user within a tenant) resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Jane Smith"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "jane@acme-corp.com"
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "janesmith",
+                        "nullable": true
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "456 Oak St",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "San Francisco",
+                        "nullable": true
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "CA",
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "USA",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://example.com/avatar.jpg",
+                        "nullable": true
+                    },
+                    "email_verified": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "UserResource": {
+                "title": "User Resource",
+                "description": "User (landlord/tenant owner) resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "user@example.com"
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "johndoe",
+                        "nullable": true
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Acme Corp",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "123 Main St",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "New York",
+                        "nullable": true
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "NY",
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "USA",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://example.com/avatar.jpg",
+                        "nullable": true
+                    },
+                    "has_subdomain": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "email_verified": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "tenants": {
+                        "description": "User tenants (when loaded)",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        },
+                        "nullable": true
+                    },
+                    "latest_payment": {
+                        "description": "Latest payment (when loaded)",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
@@ -687,8 +3251,20 @@
             "description": "Authentication endpoints for platform administrators (Guard: api_admin)"
         },
         {
+            "name": "User Authentication",
+            "description": "Authentication endpoints for users/landlords/tenant owners (Guard: api_user)"
+        },
+        {
+            "name": "Tenant User Authentication",
+            "description": "Authentication endpoints for tenant users (Guard: api_tenant_user)"
+        },
+        {
             "name": "Health Check",
             "description": "API health and status endpoints"
+        },
+        {
+            "name": "Tenant Management",
+            "description": "Tenant management endpoints for landlord users (Guard: api_user). Manage tenants/properties owned by the authenticated user."
         }
     ]
 }

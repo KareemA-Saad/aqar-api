@@ -68,5 +68,16 @@ class Kernel extends HttpKernel
         // Custom Auth Middleware
         'token.valid' => \App\Http\Middleware\EnsureTokenIsValid::class,
         'resolve.tenant' => \App\Http\Middleware\ResolveTenantFromToken::class,
+
+        // Guard-Specific Authentication Middleware
+        'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
+        'auth.user' => \App\Http\Middleware\AuthenticateUser::class,
+        'auth.tenant_user' => \App\Http\Middleware\AuthenticateTenantUser::class,
+
+        // Tenancy Middleware
+        'tenancy.token' => \App\Http\Middleware\InitializeTenancyByToken::class,
+        'tenant.context' => \App\Http\Middleware\EnsureTenantContext::class,
+        'package.active' => \App\Http\Middleware\CheckPackageExpiry::class,
+        'feature' => \App\Http\Middleware\CheckFeaturePermission::class,
     ];
 }
