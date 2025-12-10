@@ -18,43 +18,59 @@ return [
     'id_generator' => Stancl\Tenancy\UUIDGenerator::class,
 
     /**
-     * Domain model (kept for compatibility, but we use token-based identification).
+     * Domain model (kept for compatibility, optional for API-first approach).
      */
     'domain_model' => Domain::class,
 
     /**
      * Central domains configuration.
-     * Used when domain identification middleware is active.
-     * For token-based auth, this is primarily for fallback/admin access.
+     * These domains are NEVER treated as tenant domains.
      */
     'central_domains' => [
         env('CENTRAL_DOMAIN', 'localhost'),
         env('APP_DOMAIN', 'api.aqar.local'),
     ],
 
-    /**
-     * Tenant identification configuration.
-     * We use header-based (token) identification instead of domain-based.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Token-Based Tenant Identification (API-First)
+    |--------------------------------------------------------------------------
+    |
+    | For API authentication, tenants are identified via:
+    | 1. Sanctum token abilities: tenant:{tenant_id}
+    | 2. X-Tenant-ID header
+    | 3. Route parameter: /tenant/{tenant}/...
+    | 4. Query parameter: ?tenant={tenant_id}
+    |
+    | Domain-based identification is disabled by default for API.
+    |
+    */
     'identification' => [
         /**
          * Header name for tenant identification.
-         * Clients must send: X-Tenant-ID: {tenant_uuid}
+         * Clients should send: X-Tenant-ID: {tenant_uuid}
          */
         'header' => env('TENANT_HEADER', 'X-Tenant-ID'),
 
         /**
-         * Fallback identification methods (in order of priority).
+         * Identification methods in order of priority.
          */
-        'fallback' => [
-            'header',    // Primary: X-Tenant-ID header
-            'query',     // Secondary: ?tenant={uuid} query parameter
+        'resolvers' => [
+            'token',     // Primary: Extract from Sanctum token abilities
+            'header',    // Secondary: X-Tenant-ID header
+            'route',     // Tertiary: Route parameter
+            'query',     // Fallback: Query parameter
         ],
 
         /**
          * Query parameter name for tenant identification.
          */
         'query_parameter' => 'tenant',
+
+        /**
+         * Route parameter name for tenant identification.
+         */
+        'route_parameter' => 'tenant',
     ],
 
     /**
@@ -66,23 +82,25 @@ return [
         Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper::class,
-        // Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class, // Requires phpredis extension
+        // Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class, // Requires phpredis
     ],
 
-    /**
-     * Database tenancy configuration.
-     * Used by DatabaseTenancyBootstrapper.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Database Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configuration for tenant database creation and management.
+    |
+    */
     'database' => [
         /**
          * The connection name for the central (landlord) database.
-         * This stores tenants, plans, subscriptions, etc.
          */
         'central_connection' => env('DB_CONNECTION', 'central'),
 
         /**
          * Template connection for tenant databases.
-         * If null, uses the central connection as template.
          */
         'template_tenant_connection' => null,
 
@@ -91,132 +109,142 @@ return [
          * Final name: prefix + tenant_id + suffix
          * Example: tenant_abc123def456
          */
-        'prefix' => 'tenant_',
+        'prefix' => env('TENANT_DB_PREFIX', 'tenant_'),
         'suffix' => '',
 
         /**
-         * Database managers handle creation & deletion of tenant databases.
-         * Choose based on your database driver.
+         * Database managers for different drivers.
          */
         'managers' => [
             'sqlite' => Stancl\Tenancy\TenantDatabaseManagers\SQLiteDatabaseManager::class,
             'mysql' => Stancl\Tenancy\TenantDatabaseManagers\MySQLDatabaseManager::class,
             'pgsql' => Stancl\Tenancy\TenantDatabaseManagers\PostgreSQLDatabaseManager::class,
-
-            /**
-             * MySQL with per-tenant DB user (enhanced security).
-             * Uncomment to enable permission-controlled access.
-             */
-            // 'mysql' => Stancl\Tenancy\TenantDatabaseManagers\PermissionControlledMySQLDatabaseManager::class,
-
-            /**
-             * PostgreSQL schema-based separation.
-             * Uses schemas instead of separate databases.
-             */
-            // 'pgsql' => Stancl\Tenancy\TenantDatabaseManagers\PostgreSQLSchemaManager::class,
         ],
+
+        /**
+         * Automatically create database when tenant is created.
+         * Set to false to use queued job instead.
+         */
+        'auto_create' => env('TENANT_AUTO_CREATE_DB', false),
+
+        /**
+         * Automatically delete database when tenant is deleted.
+         */
+        'auto_delete' => env('TENANT_AUTO_DELETE_DB', true),
+
+        /**
+         * Run migrations automatically after database creation.
+         */
+        'auto_migrate' => env('TENANT_AUTO_MIGRATE', false),
+
+        /**
+         * Run seeders automatically after migrations.
+         */
+        'auto_seed' => env('TENANT_AUTO_SEED', false),
     ],
 
     /**
      * Cache tenancy configuration.
-     * Used by CacheTenancyBootstrapper.
-     *
-     * Each cache key is tagged with tenant identifier for isolation.
      */
     'cache' => [
-        'tag_base' => 'tenant', // Results in tags like: tenant_abc123
+        'tag_base' => 'tenant',
     ],
 
     /**
      * Filesystem tenancy configuration.
-     * Used by FilesystemTenancyBootstrapper.
      */
     'filesystem' => [
-        /**
-         * Suffix base for tenant-specific disk paths.
-         */
         'suffix_base' => 'tenant',
-
-        /**
-         * Disks that should be tenant-aware.
-         */
         'disks' => [
             'local',
             'public',
-            // 's3', // Uncomment for S3 multi-tenancy
         ],
-
-        /**
-         * Root path overrides for local disks.
-         * %storage_path% is replaced with the tenant's storage path.
-         */
         'root_override' => [
             'local' => '%storage_path%/app/',
             'public' => '%storage_path%/app/public/',
         ],
-
-        /**
-         * Whether to suffix storage_path() with tenant identifier.
-         * Required for local disk tenancy. Disable only for external storage (S3).
-         */
         'suffix_storage_path' => true,
-
-        /**
-         * Make asset() helper tenant-aware.
-         * Use global_asset() for non-tenant assets when enabled.
-         */
         'asset_helper_tenancy' => true,
     ],
 
     /**
      * Redis tenancy configuration.
-     * Used by RedisTenancyBootstrapper.
-     *
-     * Note: Requires phpredis extension.
-     * Not needed if Redis is only used for cache (CacheTenancyBootstrapper handles that).
      */
     'redis' => [
         'prefix_base' => 'tenant_',
-        'prefixed_connections' => [
-            // 'default',
-        ],
+        'prefixed_connections' => [],
     ],
 
     /**
-     * Additional features for tenancy.
-     * Enable based on your requirements.
+     * Features for tenancy.
      */
     'features' => [
-        // Stancl\Tenancy\Features\UserImpersonation::class,
-        // Stancl\Tenancy\Features\TelescopeTags::class,
-        // Stancl\Tenancy\Features\UniversalRoutes::class,
         Stancl\Tenancy\Features\TenantConfig::class,
         Stancl\Tenancy\Features\CrossDomainRedirect::class,
     ],
 
     /**
-     * Whether to register tenancy routes (tenant asset routes).
-     * Disable if using external storage or custom asset controller.
+     * Register tenancy routes (tenant asset routes).
      */
-    'routes' => true,
+    'routes' => false, // Disabled for API-only
 
-    /**
-     * Parameters for tenants:migrate command.
-     */
+    /*
+    |--------------------------------------------------------------------------
+    | Migration & Seeding Configuration
+    |--------------------------------------------------------------------------
+    */
     'migration_parameters' => [
-        '--force' => true, // Required for production migrations
+        '--force' => true,
         '--path' => [
             database_path('migrations/tenant'),
         ],
         '--realpath' => true,
     ],
 
-    /**
-     * Parameters for tenants:seed command.
-     */
     'seeder_parameters' => [
         '--class' => 'Database\\Seeders\\TenantDatabaseSeeder',
-        // '--force' => true,
+        '--force' => true,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Events Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Events dispatched during tenant lifecycle.
+    |
+    */
+    'events' => [
+        // Stancl\Tenancy\Events\TenantCreated::class => [],
+        // Stancl\Tenancy\Events\TenantDeleted::class => [],
+        // Stancl\Tenancy\Events\DatabaseCreated::class => [],
+        // Stancl\Tenancy\Events\DatabaseDeleted::class => [],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Queue Configuration for Tenant Operations
+    |--------------------------------------------------------------------------
+    */
+    'queue' => [
+        /**
+         * Queue name for tenant database operations.
+         */
+        'connection' => env('TENANT_QUEUE_CONNECTION', 'sync'),
+
+        /**
+         * Queue name for tenant jobs.
+         */
+        'queue' => env('TENANT_QUEUE_NAME', 'tenant-operations'),
+
+        /**
+         * Number of retry attempts for failed jobs.
+         */
+        'tries' => 3,
+
+        /**
+         * Timeout in seconds for tenant jobs.
+         */
+        'timeout' => 300,
     ],
 ];
-

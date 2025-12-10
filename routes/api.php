@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\V1\Auth\AdminAuthController;
 use App\Http\Controllers\Api\V1\Auth\TenantUserAuthController;
 use App\Http\Controllers\Api\V1\Auth\UserAuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\V1\Landlord\TenantController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -99,32 +99,117 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
     /*
     |--------------------------------------------------------------------------
-    | Protected API Routes
+    | Tenant Management Routes (Landlord Users)
     |--------------------------------------------------------------------------
-    | Add your protected API endpoints below.
-    | Use appropriate guards based on user type:
-    | - auth:api_admin - for admin-only routes
-    | - auth:api_user - for user routes
-    | - auth:api_tenant_user - for tenant user routes
+    | Routes for users to manage their tenants.
+    | Guard: api_user
     */
+    Route::middleware('auth:api_user')->prefix('tenants')->name('tenants.')->group(function () {
+        Route::get('/', [TenantController::class, 'index'])->name('index');
+        Route::post('/', [TenantController::class, 'store'])->name('store');
+        Route::get('{tenant}', [TenantController::class, 'show'])->name('show');
+        Route::put('{tenant}', [TenantController::class, 'update'])->name('update');
+        Route::delete('{tenant}', [TenantController::class, 'destroy'])->name('destroy');
 
-    // Example: Admin protected routes
+        // Tenant switching - get new token with tenant context
+        Route::post('{tenant}/switch', [TenantController::class, 'switchTenant'])->name('switch');
+
+        // Database status and management
+        Route::get('{tenant}/database-status', [TenantController::class, 'databaseStatus'])->name('database-status');
+        Route::post('{tenant}/setup-database', [TenantController::class, 'setupDatabase'])->name('setup-database');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Admin Protected Routes
+    |--------------------------------------------------------------------------
+    | Routes for platform administrators.
+    | Guard: api_admin
+    */
     Route::middleware('auth:api_admin')->prefix('admin')->name('admin.')->group(function () {
         // Add admin-only endpoints here
         // Example: Route::apiResource('users', AdminUserController::class);
+        // Example: Route::apiResource('all-tenants', AdminTenantController::class);
     });
 
-    // Example: User protected routes
-    Route::middleware('auth:api_user')->group(function () {
-        // Add user endpoints here
-        // Example: Route::apiResource('tenants', TenantController::class);
-    });
+    /*
+    |--------------------------------------------------------------------------
+    | Tenant Context Routes (With Database Switching)
+    |--------------------------------------------------------------------------
+    | Routes that operate within a tenant's database context.
+    |
+    | Middleware stack:
+    | - auth:sanctum - Requires authentication (any guard)
+    | - tenancy.token - Resolves and initializes tenant context
+    | - tenant.context - Ensures valid tenant context exists
+    | - package.active - Checks subscription is not expired
+    |
+    | For feature-specific routes, add:
+    | - feature:featureName - Checks if feature is allowed by plan
+    |
+    | Example usage:
+    | Route::middleware('feature:blog')->group(fn() => ...);
+    | Route::middleware('feature:eCommerce,inventory')->group(fn() => ...);
+    */
+    Route::middleware(['auth:sanctum', 'tenancy.token', 'tenant.context', 'package.active'])
+        ->prefix('tenant/{tenant}')
+        ->name('tenant.')
+        ->group(function () {
+            // Tenant info endpoint - always available
+            Route::get('info', function () {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Tenant context active',
+                    'data' => [
+                        'tenant_id' => tenant_id(),
+                        'settings' => tenant_settings(),
+                        'package' => tenant_package_info(),
+                        'remaining_days' => tenant_remaining_days(),
+                        'features' => tenant_features(),
+                    ],
+                ]);
+            })->name('info');
 
-    // Example: Tenant user protected routes
-    Route::middleware(['auth:api_tenant_user', 'resolve.tenant'])->prefix('tenant/{tenant}')->name('tenant.')->group(function () {
-        // Add tenant-specific endpoints here
-        // Example: Route::apiResource('products', ProductController::class);
-    });
+            // Add tenant-specific endpoints here
+            // These routes have access to the tenant's database
+            //
+            // Example: Blog routes (requires 'blog' feature)
+            // Route::middleware('feature:blog')->group(function () {
+            //     Route::apiResource('blogs', BlogController::class);
+            // });
+            //
+            // Example: Product routes (requires 'eCommerce' feature)
+            // Route::middleware('feature:eCommerce')->group(function () {
+            //     Route::apiResource('products', ProductController::class);
+            //     Route::apiResource('categories', CategoryController::class);
+            // });
+            //
+            // Example: Inventory routes (requires 'inventory' feature)
+            // Route::middleware('feature:Inventory')->group(function () {
+            //     Route::apiResource('inventory', InventoryController::class);
+            // });
+        });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tenant User Routes (End Users within Tenant)
+    |--------------------------------------------------------------------------
+    | Routes for authenticated tenant end-users.
+    | These users belong to a specific tenant and can only access that tenant's data.
+    |
+    | Guard: api_tenant_user
+    */
+    Route::middleware(['auth:api_tenant_user', 'tenancy.token', 'tenant.context', 'package.active'])
+        ->prefix('tenant/{tenant}/user')
+        ->name('tenant.user.')
+        ->group(function () {
+            // Add tenant user specific endpoints here
+            // Example: User profile, orders, etc.
+            //
+            // Route::get('profile', [TenantUserController::class, 'profile'])->name('profile');
+            // Route::put('profile', [TenantUserController::class, 'updateProfile'])->name('profile.update');
+            // Route::apiResource('orders', TenantUserOrderController::class)->only(['index', 'show']);
+        });
 });
 
 /*
