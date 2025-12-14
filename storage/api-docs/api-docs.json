@@ -2522,6 +2522,720 @@
                 ]
             }
         },
+        "/api/v1/admin/price-plans": {
+            "get": {
+                "tags": [
+                    "Price Plan Management (Admin)"
+                ],
+                "summary": "List all price plans",
+                "description": "Get paginated list of all price plans with features (admin view)",
+                "operationId": "c97308b8ccb14912274a947d34654378",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by title or subtitle",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "premium"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter by status (true/false)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Filter by type (0=Monthly, 1=Yearly, 2=Lifetime)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1,
+                                2
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (max 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Price plans retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plans retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/PricePlanResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Price Plan Management (Admin)"
+                ],
+                "summary": "Create price plan",
+                "description": "Create a new price plan with features",
+                "operationId": "3c37d33acf7666f0d58954bbb1219d18",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StorePricePlanRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Price plan created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/PricePlanResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/price-plans/{id}": {
+            "get": {
+                "tags": [
+                    "Price Plan Management (Admin)"
+                ],
+                "summary": "Get price plan details",
+                "description": "Retrieve details of a specific price plan with all features",
+                "operationId": "b8d3fc5af4a7ae2a45dc9a04044b927f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Price Plan ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Price plan retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/PricePlanResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Price plan not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Price Plan Management (Admin)"
+                ],
+                "summary": "Update price plan",
+                "description": "Update an existing price plan",
+                "operationId": "a57e82a3da491fc668aebee1707b93e9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Price Plan ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePricePlanRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Price plan updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/PricePlanResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Price plan not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Price Plan Management (Admin)"
+                ],
+                "summary": "Delete price plan",
+                "description": "Delete a price plan and all its features",
+                "operationId": "8dd00dfe50932a17adfe909f222474b8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Price Plan ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Price plan deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan deleted successfully"
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Price plan not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/price-plans/{id}/toggle-status": {
+            "patch": {
+                "tags": [
+                    "Price Plan Management (Admin)"
+                ],
+                "summary": "Toggle plan status",
+                "description": "Toggle the active/inactive status of a price plan",
+                "operationId": "86ba35d99c6ad4c0dca8edf14596072a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Price Plan ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Price plan status toggled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan status updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/PricePlanResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Price plan not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/price-plans/{id}/reorder-features": {
+            "patch": {
+                "tags": [
+                    "Price Plan Management (Admin)"
+                ],
+                "summary": "Reorder plan features",
+                "description": "Reorder the features of a price plan",
+                "operationId": "4131f4c0b67317310a2ae59925922f14",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Price Plan ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ReorderFeaturesRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Features reordered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Features reordered successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/PricePlanResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Price plan not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Price plan not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
         "/api/v1/admin/roles": {
             "get": {
                 "tags": [
@@ -3090,6 +3804,1134 @@
                 "security": [
                     {
                         "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/plans": {
+            "get": {
+                "tags": [
+                    "Price Plans (Public)"
+                ],
+                "summary": "List active plans",
+                "description": "Get all active price plans with features for public display",
+                "operationId": "79bb7bf642c5e8a8a208c0766671acc3",
+                "responses": {
+                    "200": {
+                        "description": "Active plans retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Plans retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "data": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/PricePlanResource"
+                                                    }
+                                                },
+                                                "summary": {
+                                                    "properties": {
+                                                        "total_plans": {
+                                                            "type": "integer",
+                                                            "example": 5
+                                                        },
+                                                        "active_plans": {
+                                                            "type": "integer",
+                                                            "example": 4
+                                                        },
+                                                        "has_trial_plans": {
+                                                            "type": "integer",
+                                                            "example": 2
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/plans/{slug}": {
+            "get": {
+                "tags": [
+                    "Price Plans (Public)"
+                ],
+                "summary": "Get plan details",
+                "description": "Get details of a specific plan by slug for purchase page",
+                "operationId": "0e68caffa88b3e55a56d225aaab2cc5e",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "description": "Plan slug (URL-friendly title)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "premium-plan"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Plan retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Plan retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/PricePlanResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Plan not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Plan not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/plans/compare": {
+            "get": {
+                "tags": [
+                    "Price Plans (Public)"
+                ],
+                "summary": "Compare all plans",
+                "description": "Get a comparison matrix of all active plans with feature availability",
+                "operationId": "9ac0f3ad6d631eb7c4b6db4764238e2e",
+                "responses": {
+                    "200": {
+                        "description": "Plan comparison retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Plan comparison retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "plans": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "title": {
+                                                                "type": "string",
+                                                                "example": "Premium Plan"
+                                                            },
+                                                            "subtitle": {
+                                                                "type": "string",
+                                                                "example": "Best for businesses"
+                                                            },
+                                                            "price": {
+                                                                "type": "number",
+                                                                "format": "float",
+                                                                "example": 99.99
+                                                            },
+                                                            "type": {
+                                                                "type": "integer",
+                                                                "example": 0
+                                                            },
+                                                            "type_label": {
+                                                                "type": "string",
+                                                                "example": "Monthly"
+                                                            },
+                                                            "has_trial": {
+                                                                "type": "boolean",
+                                                                "example": true
+                                                            },
+                                                            "trial_days": {
+                                                                "type": "integer",
+                                                                "example": 14
+                                                            },
+                                                            "permissions": {
+                                                                "type": "object"
+                                                            },
+                                                            "features": {
+                                                                "type": "array",
+                                                                "items": {
+                                                                    "properties": {
+                                                                        "name": {
+                                                                            "type": "string",
+                                                                            "example": "eCommerce"
+                                                                        },
+                                                                        "included": {
+                                                                            "type": "boolean",
+                                                                            "example": true
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                }
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "feature_names": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "eCommerce",
+                                                        "Blog",
+                                                        "Analytics"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/plans/check-coupon": {
+            "post": {
+                "tags": [
+                    "Price Plans (Public)"
+                ],
+                "summary": "Validate coupon",
+                "description": "Check if a coupon code is valid for a plan",
+                "operationId": "6a8a41cce6483cca0eaf2c496f124fbe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code",
+                                    "plan_id"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "description": "Coupon code",
+                                        "type": "string",
+                                        "example": "SAVE20"
+                                    },
+                                    "plan_id": {
+                                        "description": "Plan ID",
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Coupon validation result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Coupon is valid"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "valid": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "discount": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 20
+                                                },
+                                                "discount_type": {
+                                                    "type": "string",
+                                                    "example": "percentage"
+                                                },
+                                                "original_price": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 99.99
+                                                },
+                                                "final_price": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 79.99
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/subscriptions/current": {
+            "get": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Get current subscription",
+                "description": "Get the authenticated user's currently active subscription",
+                "operationId": "81fb4c9aafa8ad77544dcf6a377185a3",
+                "responses": {
+                    "200": {
+                        "description": "Current subscription retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Current subscription retrieved"
+                                        },
+                                        "data": {
+                                            "oneOf": [
+                                                {
+                                                    "$ref": "#/components/schemas/SubscriptionResource"
+                                                }
+                                            ],
+                                            "nullable": true
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/subscriptions/history": {
+            "get": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Get subscription history",
+                "description": "Get paginated subscription history for the authenticated user",
+                "operationId": "d42c2e78cc45d1c41fff205b4fc25590",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (max 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Subscription history retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subscription history retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SubscriptionResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/subscriptions/initiate": {
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Initiate subscription",
+                "description": "Start the subscription flow. Returns payment options and a pending payment log.",
+                "operationId": "15c3cf1e771866b485cfc9038877bd90",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/InitiateSubscriptionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Subscription initiated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subscription initiated"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "payment_log": {
+                                                    "$ref": "#/components/schemas/PaymentLogResource"
+                                                },
+                                                "pricing": {
+                                                    "properties": {
+                                                        "original_price": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": 99.99
+                                                        },
+                                                        "discount": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": 10
+                                                        },
+                                                        "final_price": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": 89.99
+                                                        },
+                                                        "coupon_applied": {
+                                                            "type": "boolean",
+                                                            "example": true
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "payment_gateways": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "properties": {
+                                                            "id": {
+                                                                "type": "integer",
+                                                                "example": 1
+                                                            },
+                                                            "name": {
+                                                                "type": "string",
+                                                                "example": "Stripe"
+                                                            },
+                                                            "slug": {
+                                                                "type": "string",
+                                                                "example": "stripe"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "requires_payment": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/subscriptions/complete": {
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Complete subscription",
+                "description": "Complete the subscription after successful payment",
+                "operationId": "b352cf2f4c4e41171c925196d5a11bbe",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompleteSubscriptionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Subscription completed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subscription completed successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "subscription": {
+                                                    "$ref": "#/components/schemas/SubscriptionResource"
+                                                },
+                                                "tenant_url": {
+                                                    "type": "string",
+                                                    "example": "https://mystore.example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Payment log not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Payment log not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/subscriptions/{subscriptionId}/cancel": {
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Cancel subscription",
+                "description": "Cancel an active subscription",
+                "operationId": "0d6bafe9318903a91102b799dbb5088d",
+                "parameters": [
+                    {
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "description": "Subscription (Payment Log) ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CancelSubscriptionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Subscription cancelled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subscription cancelled successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SubscriptionResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Subscription not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subscription not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/subscriptions/{subscriptionId}/renew": {
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Renew subscription",
+                "description": "Create a renewal payment for an existing subscription",
+                "operationId": "2abc58d285dea782dc0d5c21b233f9b0",
+                "parameters": [
+                    {
+                        "name": "subscriptionId",
+                        "in": "path",
+                        "description": "Subscription (Payment Log) ID to renew",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Renewal initiated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Renewal initiated"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "payment_log": {
+                                                    "$ref": "#/components/schemas/PaymentLogResource"
+                                                },
+                                                "amount": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 99.99
+                                                },
+                                                "payment_gateways": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Subscription not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Subscription not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/subscriptions/upgrade": {
+            "post": {
+                "tags": [
+                    "Subscriptions"
+                ],
+                "summary": "Upgrade subscription",
+                "description": "Upgrade current subscription to a new plan (prorated pricing)",
+                "operationId": "eb01483617fc6f28240a7b12948793cf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "plan_id"
+                                ],
+                                "properties": {
+                                    "plan_id": {
+                                        "description": "New plan ID",
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "coupon_code": {
+                                        "type": "string",
+                                        "example": "UPGRADE20",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Upgrade initiated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Upgrade initiated"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "payment_log": {
+                                                    "$ref": "#/components/schemas/PaymentLogResource"
+                                                },
+                                                "prorated_amount": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 50
+                                                },
+                                                "credit_remaining": {
+                                                    "type": "number",
+                                                    "format": "float",
+                                                    "example": 30
+                                                },
+                                                "requires_payment": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "payment_gateways": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No active subscription or plan not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No active subscription found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
                     }
                 ]
             }
@@ -5365,6 +7207,185 @@
                 ]
             }
         },
+        "/api/v1/tenant/{tenant}/info": {
+            "get": {
+                "tags": [
+                    "Tenant Context"
+                ],
+                "summary": "Get tenant context info",
+                "description": "Retrieve information about the current tenant context including settings, package info, features, and expiration. This endpoint requires active tenant context.",
+                "operationId": "f18583bb136a12e4c2c7595a9008a92c",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tenant context information retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant context active"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant_id": {
+                                                    "description": "Current tenant identifier",
+                                                    "type": "string",
+                                                    "example": "acme-corp"
+                                                },
+                                                "settings": {
+                                                    "description": "Tenant settings and configuration",
+                                                    "type": "object",
+                                                    "example": {
+                                                        "theme": "default",
+                                                        "locale": "en",
+                                                        "timezone": "UTC"
+                                                    }
+                                                },
+                                                "package": {
+                                                    "description": "Active package/subscription information",
+                                                    "properties": {
+                                                        "name": {
+                                                            "type": "string",
+                                                            "example": "Premium Plan"
+                                                        },
+                                                        "price": {
+                                                            "type": "number",
+                                                            "format": "float",
+                                                            "example": 99.99
+                                                        },
+                                                        "status": {
+                                                            "type": "string",
+                                                            "example": "active"
+                                                        },
+                                                        "start_date": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2024-01-01T00:00:00.000000Z"
+                                                        },
+                                                        "expire_date": {
+                                                            "type": "string",
+                                                            "format": "date-time",
+                                                            "example": "2024-12-31T23:59:59.000000Z"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "remaining_days": {
+                                                    "description": "Days remaining until package expires",
+                                                    "type": "integer",
+                                                    "example": 45
+                                                },
+                                                "features": {
+                                                    "description": "Available features for this tenant based on active package",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "blog"
+                                                    },
+                                                    "example": [
+                                                        "blog",
+                                                        "eCommerce",
+                                                        "inventory",
+                                                        "support"
+                                                    ]
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Tenant context not initialized or package expired",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant package has expired"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    },
+                    {
+                        "sanctum_tenant_user": []
+                    }
+                ]
+            }
+        },
         "/api/health": {
             "get": {
                 "tags": [
@@ -5592,6 +7613,373 @@
                             "type": "string",
                             "example": "page-list"
                         },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "ReorderFeaturesRequest": {
+                "title": "Reorder Features Request",
+                "required": [
+                    "feature_ids"
+                ],
+                "properties": {
+                    "feature_ids": {
+                        "description": "Array of feature IDs in desired order",
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            3,
+                            1,
+                            2,
+                            5,
+                            4
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "StorePricePlanRequest": {
+                "title": "Store Price Plan Request",
+                "required": [
+                    "title",
+                    "price",
+                    "type",
+                    "status"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Store Price Plan Request DTO\n\nValidates data for creating a new price plan.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "Premium Plan"
+                    },
+                    "subtitle": {
+                        "type": "string",
+                        "example": "Best for growing businesses",
+                        "nullable": true
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "minimum": 0,
+                        "example": 99.99
+                    },
+                    "type": {
+                        "description": "0 = Monthly, 1 = Yearly, 2 = Lifetime",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1,
+                            2
+                        ],
+                        "example": 0
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "zero_price": {
+                        "type": "boolean",
+                        "example": false,
+                        "nullable": true
+                    },
+                    "has_trial": {
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
+                    },
+                    "trial_days": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "example": 14,
+                        "nullable": true
+                    },
+                    "page_permission_feature": {
+                        "description": "Max pages allowed",
+                        "type": "integer",
+                        "example": 10,
+                        "nullable": true
+                    },
+                    "blog_permission_feature": {
+                        "description": "Max blogs allowed",
+                        "type": "integer",
+                        "example": 50,
+                        "nullable": true
+                    },
+                    "product_permission_feature": {
+                        "description": "Max products allowed",
+                        "type": "integer",
+                        "example": 100,
+                        "nullable": true
+                    },
+                    "portfolio_permission_feature": {
+                        "description": "Max portfolio items",
+                        "type": "integer",
+                        "example": 20,
+                        "nullable": true
+                    },
+                    "storage_permission_feature": {
+                        "description": "Storage limit in MB",
+                        "type": "integer",
+                        "example": 1024,
+                        "nullable": true
+                    },
+                    "appointment_permission_feature": {
+                        "description": "Max appointments",
+                        "type": "integer",
+                        "example": 100,
+                        "nullable": true
+                    },
+                    "features": {
+                        "description": "Array of plan features",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "feature_name": {
+                                    "type": "string",
+                                    "example": "eCommerce"
+                                },
+                                "status": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "nullable": true
+                    },
+                    "faq": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "question": {
+                                    "type": "string"
+                                },
+                                "answer": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePricePlanRequest": {
+                "title": "Update Price Plan Request",
+                "properties": {
+                    "title": {
+                        "description": "Update Price Plan Request DTO\n\nValidates data for updating an existing price plan.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "Premium Plan"
+                    },
+                    "subtitle": {
+                        "type": "string",
+                        "example": "Best for growing businesses",
+                        "nullable": true
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "minimum": 0,
+                        "example": 99.99
+                    },
+                    "type": {
+                        "description": "0 = Monthly, 1 = Yearly, 2 = Lifetime",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1,
+                            2
+                        ],
+                        "example": 0
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "zero_price": {
+                        "type": "boolean",
+                        "example": false,
+                        "nullable": true
+                    },
+                    "has_trial": {
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
+                    },
+                    "trial_days": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "example": 14,
+                        "nullable": true
+                    },
+                    "page_permission_feature": {
+                        "type": "integer",
+                        "example": 10,
+                        "nullable": true
+                    },
+                    "blog_permission_feature": {
+                        "type": "integer",
+                        "example": 50,
+                        "nullable": true
+                    },
+                    "product_permission_feature": {
+                        "type": "integer",
+                        "example": 100,
+                        "nullable": true
+                    },
+                    "portfolio_permission_feature": {
+                        "type": "integer",
+                        "example": 20,
+                        "nullable": true
+                    },
+                    "storage_permission_feature": {
+                        "type": "integer",
+                        "example": 1024,
+                        "nullable": true
+                    },
+                    "appointment_permission_feature": {
+                        "type": "integer",
+                        "example": 100,
+                        "nullable": true
+                    },
+                    "features": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "id": {
+                                    "description": "Feature ID for update, null for new",
+                                    "type": "integer",
+                                    "nullable": true
+                                },
+                                "feature_name": {
+                                    "type": "string",
+                                    "example": "eCommerce"
+                                },
+                                "status": {
+                                    "type": "boolean",
+                                    "example": true
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "nullable": true
+                    },
+                    "faq": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "question": {
+                                    "type": "string"
+                                },
+                                "answer": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CancelSubscriptionRequest": {
+                "title": "Cancel Subscription Request",
+                "required": [
+                    "reason"
+                ],
+                "properties": {
+                    "reason": {
+                        "description": "Reason for cancellation",
+                        "type": "string",
+                        "maxLength": 1000,
+                        "example": "No longer need the service"
+                    },
+                    "feedback": {
+                        "description": "Additional feedback",
+                        "type": "string",
+                        "maxLength": 2000,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "CompleteSubscriptionRequest": {
+                "title": "Complete Subscription Request",
+                "required": [
+                    "payment_log_id",
+                    "transaction_id"
+                ],
+                "properties": {
+                    "payment_log_id": {
+                        "description": "ID of the payment log",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "transaction_id": {
+                        "description": "Transaction ID from payment gateway",
+                        "type": "string",
+                        "example": "txn_abc123"
+                    },
+                    "payment_gateway": {
+                        "type": "string",
+                        "example": "stripe",
+                        "nullable": true
+                    },
+                    "payment_data": {
+                        "description": "Additional payment data from gateway",
+                        "type": "object",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "InitiateSubscriptionRequest": {
+                "title": "Initiate Subscription Request",
+                "required": [
+                    "plan_id",
+                    "subdomain"
+                ],
+                "properties": {
+                    "plan_id": {
+                        "description": "ID of the price plan",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "subdomain": {
+                        "description": "Subdomain for tenant",
+                        "type": "string",
+                        "maxLength": 63,
+                        "example": "mystore"
+                    },
+                    "theme": {
+                        "description": "Theme slug",
+                        "type": "string",
+                        "example": "default",
+                        "nullable": true
+                    },
+                    "coupon_code": {
+                        "description": "Coupon code for discount",
+                        "type": "string",
+                        "example": "SAVE20",
+                        "nullable": true
+                    },
+                    "payment_gateway": {
+                        "description": "Payment gateway identifier",
+                        "type": "string",
+                        "example": "stripe",
+                        "nullable": true
+                    },
+                    "is_trial": {
+                        "description": "Start as trial subscription",
+                        "type": "boolean",
+                        "example": false,
                         "nullable": true
                     }
                 },
@@ -5858,6 +8246,64 @@
                 },
                 "type": "object"
             },
+            "CouponResource": {
+                "title": "Coupon Resource",
+                "description": "Coupon resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Summer Sale"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "SUMMER20"
+                    },
+                    "discount_amount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 20
+                    },
+                    "discount_type": {
+                        "type": "string",
+                        "enum": [
+                            "percentage",
+                            "amount"
+                        ],
+                        "example": "percentage"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "max_use_qty": {
+                        "type": "integer",
+                        "example": 100,
+                        "nullable": true
+                    },
+                    "expire_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "is_valid": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "DomainResource": {
                 "title": "Domain Resource",
                 "description": "Tenant domain resource representation",
@@ -6039,6 +8485,212 @@
                 },
                 "type": "object"
             },
+            "PlanFeatureResource": {
+                "title": "Plan Feature Resource",
+                "description": "Plan feature resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "plan_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "feature_name": {
+                        "type": "string",
+                        "example": "eCommerce"
+                    },
+                    "feature_slug": {
+                        "type": "string",
+                        "example": "ecommerce"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "order": {
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "PricePlanCollection": {
+                "title": "Price Plan Collection",
+                "description": "Collection of price plans with summary",
+                "properties": {
+                    "data": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PricePlanResource"
+                        }
+                    },
+                    "summary": {
+                        "properties": {
+                            "total_plans": {
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "active_plans": {
+                                "type": "integer",
+                                "example": 4
+                            },
+                            "has_trial_plans": {
+                                "type": "integer",
+                                "example": 2
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "PricePlanResource": {
+                "title": "Price Plan Resource",
+                "description": "Price plan resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Premium Plan"
+                    },
+                    "subtitle": {
+                        "type": "string",
+                        "example": "Best for growing businesses",
+                        "nullable": true
+                    },
+                    "features_text": {
+                        "type": "string",
+                        "example": "All premium features included",
+                        "nullable": true
+                    },
+                    "type": {
+                        "description": "0 = Monthly, 1 = Yearly, 2 = Lifetime",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1,
+                            2
+                        ],
+                        "example": 0
+                    },
+                    "type_label": {
+                        "type": "string",
+                        "example": "Monthly"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "price": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 99.99
+                    },
+                    "formatted_price": {
+                        "type": "string",
+                        "example": "$99.99"
+                    },
+                    "has_trial": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "trial_days": {
+                        "type": "integer",
+                        "example": 14
+                    },
+                    "zero_price": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "permissions": {
+                        "description": "Permission limits (-1 for unlimited, null for not included)",
+                        "properties": {
+                            "page": {
+                                "type": "integer",
+                                "example": 10,
+                                "nullable": true
+                            },
+                            "blog": {
+                                "type": "integer",
+                                "example": 50,
+                                "nullable": true
+                            },
+                            "product": {
+                                "type": "integer",
+                                "example": 100,
+                                "nullable": true
+                            },
+                            "portfolio": {
+                                "type": "integer",
+                                "example": 20,
+                                "nullable": true
+                            },
+                            "storage": {
+                                "description": "Storage in MB",
+                                "type": "integer",
+                                "example": 1024,
+                                "nullable": true
+                            },
+                            "appointment": {
+                                "type": "integer",
+                                "example": 100,
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "plan_features": {
+                        "description": "List of plan features",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PlanFeatureResource"
+                        }
+                    },
+                    "faq": {
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "question": {
+                                    "type": "string"
+                                },
+                                "answer": {
+                                    "type": "string"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "nullable": true
+                    },
+                    "subscribers_count": {
+                        "description": "Number of active subscribers",
+                        "type": "integer",
+                        "example": 150
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
             "RoleResource": {
                 "title": "Role Resource",
                 "description": "Role resource representation",
@@ -6076,6 +8728,176 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "SubscriptionResource": {
+                "title": "Subscription Resource",
+                "description": "User subscription resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "user@example.com"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "plan": {
+                        "properties": {
+                            "id": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "name": {
+                                "type": "string",
+                                "example": "Premium Plan"
+                            },
+                            "price": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 99.99
+                            },
+                            "type": {
+                                "type": "integer",
+                                "example": 0
+                            },
+                            "type_label": {
+                                "type": "string",
+                                "example": "Monthly"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "tenant": {
+                        "properties": {
+                            "id": {
+                                "type": "string",
+                                "example": "mystore"
+                            },
+                            "domain": {
+                                "type": "string",
+                                "example": "mystore.example.com"
+                            },
+                            "theme": {
+                                "type": "string",
+                                "example": "default"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "price_paid": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 89.99
+                    },
+                    "payment_gateway": {
+                        "type": "string",
+                        "example": "stripe",
+                        "nullable": true
+                    },
+                    "transaction_id": {
+                        "type": "string",
+                        "example": "txn_123456789",
+                        "nullable": true
+                    },
+                    "track": {
+                        "type": "string",
+                        "example": "track_abc123",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "pending",
+                            "trial",
+                            "complete",
+                            "cancelled"
+                        ],
+                        "example": "complete"
+                    },
+                    "payment_status": {
+                        "description": "0 = Pending, 1 = Paid",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "payment_status_label": {
+                        "type": "string",
+                        "example": "Paid"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "expire_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-12-31T23:59:59.000000Z",
+                        "nullable": true
+                    },
+                    "trial_expire_date": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "days_remaining": {
+                        "type": "integer",
+                        "example": 30,
+                        "nullable": true
+                    },
+                    "is_active": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "is_expired": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "is_trial": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "is_renew": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "can_renew": {
+                        "description": "Whether subscription can be renewed",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "can_upgrade": {
+                        "description": "Whether subscription can be upgraded",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "coupon_discount": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 10,
+                        "nullable": true
+                    },
+                    "theme": {
+                        "type": "string",
+                        "example": "default",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -6540,8 +9362,20 @@
             "description": "Admin user management endpoints (Guard: api_admin). Manage platform administrators."
         },
         {
+            "name": "Price Plan Management (Admin)",
+            "description": "Admin endpoints to manage price plans and features (Guard: api_admin)"
+        },
+        {
             "name": "Role Management",
             "description": "Role and permission management endpoints (Guard: api_admin). Manage roles and their permissions."
+        },
+        {
+            "name": "Price Plans (Public)",
+            "description": "Public endpoints for viewing pricing plans and comparing features"
+        },
+        {
+            "name": "Subscriptions",
+            "description": "User subscription management endpoints (Guard: api_user)"
         },
         {
             "name": "Tenant Management",
@@ -6554,6 +9388,10 @@
         {
             "name": "User Dashboard",
             "description": "User self-service endpoints (Guard: api_user). Manage own profile, tenants, and view dashboard."
+        },
+        {
+            "name": "Tenant Context",
+            "description": "Tenant context information endpoints. Access tenant-specific data and settings within the active tenant database."
         }
     ]
 }

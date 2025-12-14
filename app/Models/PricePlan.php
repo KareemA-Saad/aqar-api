@@ -16,6 +16,13 @@ class PricePlan extends Model
     use HasTranslations;
 
     /**
+     * Plan type constants.
+     */
+    public const TYPE_MONTHLY = 0;
+    public const TYPE_YEARLY = 1;
+    public const TYPE_LIFETIME = 2;
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -28,6 +35,8 @@ class PricePlan extends Model
         'status',
         'price',
         'free_trial',
+        'has_trial',
+        'trial_days',
         'page_permission_feature',
         'blog_permission_feature',
         'product_permission_feature',
@@ -59,6 +68,8 @@ class PricePlan extends Model
         'status' => 'boolean',
         'price' => 'decimal:2',
         'free_trial' => 'integer',
+        'has_trial' => 'boolean',
+        'trial_days' => 'integer',
         'zero_price' => 'boolean',
         'page_permission_feature' => 'integer',
         'blog_permission_feature' => 'integer',
@@ -69,6 +80,35 @@ class PricePlan extends Model
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * Check if the plan has a trial period.
+     */
+    public function hasTrial(): bool
+    {
+        return (bool) ($this->has_trial ?? ($this->free_trial > 0));
+    }
+
+    /**
+     * Get the trial duration in days.
+     */
+    public function getTrialDays(): int
+    {
+        return (int) ($this->trial_days ?? $this->free_trial ?? 0);
+    }
+
+    /**
+     * Get type label.
+     */
+    public function getTypeLabel(): string
+    {
+        return match ($this->type) {
+            self::TYPE_MONTHLY => 'Monthly',
+            self::TYPE_YEARLY => 'Yearly',
+            self::TYPE_LIFETIME => 'Lifetime',
+            default => 'Unknown',
+        };
+    }
 
     /**
      * Get all features for this plan.
