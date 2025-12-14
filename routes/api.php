@@ -9,7 +9,10 @@ use App\Http\Controllers\Api\V1\Landlord\Admin\AdminController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\PricePlanController as AdminPricePlanController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\RoleController;
 use App\Http\Controllers\Api\V1\Landlord\PlanController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\SupportDepartmentController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\SupportTicketController as AdminSupportTicketController;
 use App\Http\Controllers\Api\V1\Landlord\SubscriptionController;
+use App\Http\Controllers\Api\V1\Landlord\SupportTicketController;
 use App\Http\Controllers\Api\V1\Landlord\TenantController;
 use App\Http\Controllers\Api\V1\Landlord\UserController;
 use App\Http\Controllers\Api\V1\Landlord\UserDashboardController;
@@ -209,6 +212,33 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
         Route::post('users/{user}/impersonate', [UserController::class, 'impersonate'])->name('users.impersonate');
         Route::get('users/{user}/payments', [UserController::class, 'paymentHistory'])->name('users.payments');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Support Ticket Management Routes (Admin)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('support-tickets')->name('support-tickets.')->group(function () {
+            Route::get('stats', [AdminSupportTicketController::class, 'stats'])->name('stats');
+            Route::get('/', [AdminSupportTicketController::class, 'index'])->name('index');
+            Route::get('{id}', [AdminSupportTicketController::class, 'show'])->name('show');
+            Route::put('{id}', [AdminSupportTicketController::class, 'update'])->name('update');
+            Route::post('{id}/reply', [AdminSupportTicketController::class, 'reply'])->name('reply');
+            Route::post('{id}/close', [AdminSupportTicketController::class, 'close'])->name('close');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Support Department Management Routes (Admin)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('support-departments')->name('support-departments.')->group(function () {
+            Route::get('/', [SupportDepartmentController::class, 'index'])->name('index');
+            Route::post('/', [SupportDepartmentController::class, 'store'])->name('store');
+            Route::get('{department}', [SupportDepartmentController::class, 'show'])->name('show');
+            Route::put('{department}', [SupportDepartmentController::class, 'update'])->name('update');
+            Route::delete('{department}', [SupportDepartmentController::class, 'destroy'])->name('destroy');
+        });
     });
 
     /*
@@ -231,8 +261,24 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::get('my-tenants', [UserDashboardController::class, 'tenants'])->name('my-tenants.index');
         Route::post('my-tenants', [UserDashboardController::class, 'createTenant'])->name('my-tenants.store');
 
-        // Support tickets
+        // Support tickets (legacy endpoint via UserDashboardController)
         Route::get('my-tickets', [UserDashboardController::class, 'supportTickets'])->name('my-tickets.index');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Support Ticket Routes (User)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('support-tickets')->name('support-tickets.')->group(function () {
+            Route::get('/', [SupportTicketController::class, 'index'])->name('index');
+            Route::post('/', [SupportTicketController::class, 'store'])->name('store');
+            Route::get('{id}', [SupportTicketController::class, 'show'])->name('show');
+            Route::post('{id}/reply', [SupportTicketController::class, 'reply'])->name('reply');
+            Route::post('{id}/close', [SupportTicketController::class, 'close'])->name('close');
+        });
+
+        // Support departments (for ticket creation dropdown)
+        Route::get('support-departments', [SupportTicketController::class, 'departments'])->name('support-departments.index');
 
         // Payment history
         Route::get('my-payments', [UserDashboardController::class, 'paymentHistory'])->name('my-payments.index');
