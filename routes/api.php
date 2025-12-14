@@ -5,7 +5,11 @@ declare(strict_types=1);
 use App\Http\Controllers\Api\V1\Auth\AdminAuthController;
 use App\Http\Controllers\Api\V1\Auth\TenantUserAuthController;
 use App\Http\Controllers\Api\V1\Auth\UserAuthController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\AdminController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\RoleController;
 use App\Http\Controllers\Api\V1\Landlord\TenantController;
+use App\Http\Controllers\Api\V1\Landlord\UserController;
+use App\Http\Controllers\Api\V1\Landlord\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -127,9 +131,74 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     | Guard: api_admin
     */
     Route::middleware('auth:api_admin')->prefix('admin')->name('admin.')->group(function () {
-        // Add admin-only endpoints here
-        // Example: Route::apiResource('users', AdminUserController::class);
-        // Example: Route::apiResource('all-tenants', AdminTenantController::class);
+        /*
+        |--------------------------------------------------------------------------
+        | Admin Management Routes
+        |--------------------------------------------------------------------------
+        */
+        // Admin profile (own)
+        Route::put('profile', [AdminController::class, 'updateProfile'])->name('profile.update');
+
+        // Admin CRUD
+        Route::get('admins', [AdminController::class, 'index'])->name('admins.index');
+        Route::post('admins', [AdminController::class, 'store'])->name('admins.store');
+        Route::get('admins/{admin}', [AdminController::class, 'show'])->name('admins.show');
+        Route::put('admins/{admin}', [AdminController::class, 'update'])->name('admins.update');
+        Route::delete('admins/{admin}', [AdminController::class, 'destroy'])->name('admins.destroy');
+        Route::put('admins/{admin}/password', [AdminController::class, 'updatePassword'])->name('admins.password');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Role Management Routes
+        |--------------------------------------------------------------------------
+        */
+        Route::get('roles', [RoleController::class, 'index'])->name('roles.index');
+        Route::post('roles', [RoleController::class, 'store'])->name('roles.store');
+        Route::get('roles/{role}', [RoleController::class, 'show'])->name('roles.show');
+        Route::put('roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+        Route::delete('roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+        // Permissions
+        Route::get('permissions', [RoleController::class, 'permissions'])->name('permissions.index');
+
+        /*
+        |--------------------------------------------------------------------------
+        | User Management Routes (Admin managing users)
+        |--------------------------------------------------------------------------
+        */
+        Route::get('users', [UserController::class, 'index'])->name('users.index');
+        Route::get('users/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::put('users/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+        Route::post('users/{user}/impersonate', [UserController::class, 'impersonate'])->name('users.impersonate');
+        Route::get('users/{user}/payments', [UserController::class, 'paymentHistory'])->name('users.payments');
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Dashboard Routes (Self-Service)
+    |--------------------------------------------------------------------------
+    | Routes for authenticated users to manage their own profile and data.
+    | Guard: api_user
+    */
+    Route::middleware('auth:api_user')->group(function () {
+        // Dashboard
+        Route::get('dashboard', [UserDashboardController::class, 'dashboard'])->name('dashboard');
+
+        // Profile management
+        Route::get('profile', [UserDashboardController::class, 'profile'])->name('profile');
+        Route::put('profile', [UserDashboardController::class, 'updateProfile'])->name('profile.update');
+        Route::post('profile/change-password', [UserDashboardController::class, 'changePassword'])->name('profile.password');
+
+        // User's own tenants (alternative to /tenants)
+        Route::get('my-tenants', [UserDashboardController::class, 'tenants'])->name('my-tenants.index');
+        Route::post('my-tenants', [UserDashboardController::class, 'createTenant'])->name('my-tenants.store');
+
+        // Support tickets
+        Route::get('my-tickets', [UserDashboardController::class, 'supportTickets'])->name('my-tickets.index');
+
+        // Payment history
+        Route::get('my-payments', [UserDashboardController::class, 'paymentHistory'])->name('my-payments.index');
     });
 
     /*
