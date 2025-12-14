@@ -1767,6 +1767,1333 @@
                 }
             }
         },
+        "/api/v1/admin/admins": {
+            "get": {
+                "tags": [
+                    "Admin Management"
+                ],
+                "summary": "List all admins",
+                "description": "Get paginated list of all administrators with optional filters",
+                "operationId": "9d45e807b64639efce22090974258461",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name, email, or username",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "john"
+                        }
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Filter by role name",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "admin"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter by status (active/inactive)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "active",
+                                "inactive"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (max 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Admins retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admins retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/AdminResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 50
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin Management"
+                ],
+                "summary": "Create new admin",
+                "description": "Create a new administrator account",
+                "operationId": "21808be8985ec0e98d4b16c901d8b18e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreAdminRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Admin created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admin created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/AdminResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "email": [
+                                                    "This email is already registered."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/admins/{admin}": {
+            "get": {
+                "tags": [
+                    "Admin Management"
+                ],
+                "summary": "Get admin details",
+                "description": "Retrieve details of a specific administrator",
+                "operationId": "364a806380474863b5132c93c993b985",
+                "parameters": [
+                    {
+                        "name": "admin",
+                        "in": "path",
+                        "description": "Admin ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Admin retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admin retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/AdminResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Admin not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admin not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Admin Management"
+                ],
+                "summary": "Update admin",
+                "description": "Update an existing administrator",
+                "operationId": "d89f58143f658ee4ce362042f52cd910",
+                "parameters": [
+                    {
+                        "name": "admin",
+                        "in": "path",
+                        "description": "Admin ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateAdminRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Admin updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admin updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/AdminResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Admin not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admin not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin Management"
+                ],
+                "summary": "Delete admin",
+                "description": "Delete an administrator account",
+                "operationId": "5e3f8076219390c1f0f8913a2c6ddebe",
+                "parameters": [
+                    {
+                        "name": "admin",
+                        "in": "path",
+                        "description": "Admin ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Admin deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admin deleted successfully"
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Cannot delete yourself",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "You cannot delete your own account"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Admin not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admin not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/admins/{admin}/password": {
+            "put": {
+                "tags": [
+                    "Admin Management"
+                ],
+                "summary": "Update admin password",
+                "description": "Update the password of a specific administrator",
+                "operationId": "176c61246a1f955c967d5d1e5a0dd5fa",
+                "parameters": [
+                    {
+                        "name": "admin",
+                        "in": "path",
+                        "description": "Admin ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdatePasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Password updated successfully"
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Admin not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Admin not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/profile": {
+            "put": {
+                "tags": [
+                    "Admin Management"
+                ],
+                "summary": "Update own profile",
+                "description": "Update the authenticated admin's profile",
+                "operationId": "d979d45c0c3ee3741c07f7cd6b8f5a5a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateProfileRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Profile updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/AdminResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/roles": {
+            "get": {
+                "tags": [
+                    "Role Management"
+                ],
+                "summary": "List all roles",
+                "description": "Get list of all roles with permissions count",
+                "operationId": "41f5abd803d2de0507c473530582b6d4",
+                "responses": {
+                    "200": {
+                        "description": "Roles retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Roles retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RoleResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Role Management"
+                ],
+                "summary": "Create new role",
+                "description": "Create a new role with permissions",
+                "operationId": "036cc2b28a11bb29fcf6d38c78c6dcc9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreRoleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Role created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RoleResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "name": [
+                                                    "This role name already exists."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/roles/{role}": {
+            "get": {
+                "tags": [
+                    "Role Management"
+                ],
+                "summary": "Get role details",
+                "description": "Retrieve details of a specific role with all its permissions",
+                "operationId": "bcb9e25078749b3aa390f89995b3495c",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RoleResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Role not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Role Management"
+                ],
+                "summary": "Update role",
+                "description": "Update an existing role and its permissions",
+                "operationId": "70080f916d4d85452fc6f0c688a4205a",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateRoleRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RoleResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Cannot modify protected role",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cannot modify the super-admin role"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Role not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Role Management"
+                ],
+                "summary": "Delete role",
+                "description": "Delete a role. Protected roles (super-admin) cannot be deleted.",
+                "operationId": "2f0f391b3d471a43ef53133fd24a6319",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role deleted successfully"
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Cannot delete protected role",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cannot delete the super-admin role"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Role not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Role not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/permissions": {
+            "get": {
+                "tags": [
+                    "Role Management"
+                ],
+                "summary": "List all permissions",
+                "description": "Get list of all available permissions, optionally grouped by module",
+                "operationId": "cfef0b9a394b73ee82a754975dfac4ff",
+                "parameters": [
+                    {
+                        "name": "grouped",
+                        "in": "query",
+                        "description": "Return permissions grouped by module",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permissions retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Permissions retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/PermissionResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
         "/api/v1/tenants": {
             "get": {
                 "tags": [
@@ -2732,6 +4059,1312 @@
                 ]
             }
         },
+        "/api/v1/admin/users": {
+            "get": {
+                "tags": [
+                    "User Management (Admin)"
+                ],
+                "summary": "List all users",
+                "description": "Get paginated list of all landlord users with tenant info",
+                "operationId": "a5f79ed3db1ac458ccaf73f3d7946c88",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name, email, username, or company",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "john"
+                        }
+                    },
+                    {
+                        "name": "has_subdomain",
+                        "in": "query",
+                        "description": "Filter by users with/without tenants",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "email_verified",
+                        "in": "query",
+                        "description": "Filter by email verification status",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (max 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Users retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Users retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UserResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 50
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/users/{user}": {
+            "get": {
+                "tags": [
+                    "User Management (Admin)"
+                ],
+                "summary": "Get user details",
+                "description": "Retrieve details of a specific user with all tenants and payment history",
+                "operationId": "47c3b5b6518ecd9cdc1f9bafe8aed53c",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "User Management (Admin)"
+                ],
+                "summary": "Update user",
+                "description": "Update user details by administrator",
+                "operationId": "3581f3ea6e318f5eceea9d39bfe465dd",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUpdateUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "User Management (Admin)"
+                ],
+                "summary": "Deactivate user",
+                "description": "Deactivate a user by revoking all their tokens",
+                "operationId": "935c2ab82b3825dba4f2de6cc2c1d079",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deactivated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User deactivated successfully"
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/users/{user}/impersonate": {
+            "post": {
+                "tags": [
+                    "User Management (Admin)"
+                ],
+                "summary": "Impersonate user",
+                "description": "Get a token to act as this user. Token expires in 2 hours.",
+                "operationId": "8c0ad680982ac3cce6908c7425dc3321",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Impersonation token generated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Impersonation token generated"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "1|abc123..."
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/users/{user}/payments": {
+            "get": {
+                "tags": [
+                    "User Management (Admin)"
+                ],
+                "summary": "Get user payment history",
+                "description": "Get paginated payment history for a specific user",
+                "operationId": "017da32079522f653945764158b9af20",
+                "parameters": [
+                    {
+                        "name": "user",
+                        "in": "path",
+                        "description": "User ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment history retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Payment history retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/PaymentLogResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/dashboard": {
+            "get": {
+                "tags": [
+                    "User Dashboard"
+                ],
+                "summary": "Get dashboard stats",
+                "description": "Get user dashboard statistics including tenant count, active packages, and support tickets",
+                "operationId": "d531dcc3d72cd99da960e4f65860f0ce",
+                "responses": {
+                    "200": {
+                        "description": "Dashboard data retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Dashboard data retrieved"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserDashboardResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/profile": {
+            "get": {
+                "tags": [
+                    "User Dashboard"
+                ],
+                "summary": "Get own profile",
+                "description": "Get the authenticated user's profile",
+                "operationId": "8c4413ed2192e1e86236f5f08e7e8cbd",
+                "responses": {
+                    "200": {
+                        "description": "Profile retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Profile retrieved"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "User Dashboard"
+                ],
+                "summary": "Update own profile",
+                "description": "Update the authenticated user's profile",
+                "operationId": "c864c1407c0314cc6490c625cd076e87",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserUpdateProfileRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Profile updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Profile updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/UserResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/profile/change-password": {
+            "post": {
+                "tags": [
+                    "User Dashboard"
+                ],
+                "summary": "Change password",
+                "description": "Change the authenticated user's password. This will revoke all existing tokens.",
+                "operationId": "0af163b3de88e6e8efb4d9faba429227",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePasswordRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password changed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Password changed successfully. Please login again."
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid current password",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Current password is incorrect"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/my-tenants": {
+            "get": {
+                "tags": [
+                    "User Dashboard"
+                ],
+                "summary": "List own tenants",
+                "description": "Get list of all tenants owned by the authenticated user with status",
+                "operationId": "102f7f722c339b05868aeb7b5b262382",
+                "responses": {
+                    "200": {
+                        "description": "Tenants retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenants retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TenantResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User Dashboard"
+                ],
+                "summary": "Create new tenant",
+                "description": "Create a new tenant with plan selection. Database setup is asynchronous.",
+                "operationId": "1a3d93496a10df86f7a4388420d402cb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "subdomain",
+                                    "plan_id"
+                                ],
+                                "properties": {
+                                    "subdomain": {
+                                        "description": "Unique subdomain (lowercase, alphanumeric with hyphens)",
+                                        "type": "string",
+                                        "example": "my-property"
+                                    },
+                                    "plan_id": {
+                                        "description": "Price plan ID",
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "theme": {
+                                        "type": "string",
+                                        "example": "default",
+                                        "nullable": true
+                                    },
+                                    "theme_code": {
+                                        "type": "string",
+                                        "example": "#3498DB",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Tenant created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant created successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant": {
+                                                    "$ref": "#/components/schemas/TenantResource"
+                                                },
+                                                "message": {
+                                                    "type": "string",
+                                                    "example": "Database setup is in progress."
+                                                },
+                                                "database_status": {
+                                                    "type": "string",
+                                                    "example": "pending"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Validation failed"
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/my-tickets": {
+            "get": {
+                "tags": [
+                    "User Dashboard"
+                ],
+                "summary": "List own support tickets",
+                "description": "Get paginated list of support tickets created by the authenticated user",
+                "operationId": "e06126173eee5874fe2c8d22c3172721",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Support tickets retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Support tickets retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SupportTicketResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/my-payments": {
+            "get": {
+                "tags": [
+                    "User Dashboard"
+                ],
+                "summary": "Get own payment history",
+                "description": "Get paginated payment history for the authenticated user",
+                "operationId": "c0d45c504e23a6d883d09f0f5693db2f",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payment history retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Payment history retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/PaymentLogResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
         "/api/health": {
             "get": {
                 "tags": [
@@ -2772,6 +5405,394 @@
     },
     "components": {
         "schemas": {
+            "StoreAdminRequest": {
+                "title": "Store Admin Request",
+                "required": [
+                    "name",
+                    "email",
+                    "username",
+                    "password",
+                    "role"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Store Admin Request DTO\n\nValidates admin creation data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 191,
+                        "example": "john@aqar.com"
+                    },
+                    "username": {
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "johndoe"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 8,
+                        "example": "SecurePass123!"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "SecurePass123!"
+                    },
+                    "role": {
+                        "type": "string",
+                        "example": "admin"
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "uploads/admins/avatar.jpg",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreRoleRequest": {
+                "title": "Store Role Request",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Store Role Request DTO\n\nValidates role creation data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "editor"
+                    },
+                    "permissions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "page-list"
+                        },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateAdminRequest": {
+                "title": "Update Admin Request",
+                "required": [
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Update Admin Request DTO\n\nValidates admin update data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 191,
+                        "example": "john@aqar.com"
+                    },
+                    "role": {
+                        "type": "string",
+                        "example": "admin",
+                        "nullable": true
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "uploads/admins/avatar.jpg",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdatePasswordRequest": {
+                "title": "Update Password Request",
+                "required": [
+                    "password",
+                    "password_confirmation"
+                ],
+                "properties": {
+                    "password": {
+                        "description": "Update Password Request DTO\n\nValidates password update data.",
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 8,
+                        "example": "NewSecurePass123!"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "NewSecurePass123!"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateProfileRequest": {
+                "title": "Update Profile Request",
+                "required": [
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Update Profile Request DTO\n\nValidates own profile update data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 191,
+                        "example": "john@aqar.com"
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "uploads/admins/avatar.jpg",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateRoleRequest": {
+                "title": "Update Role Request",
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Update Role Request DTO\n\nValidates role update data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "editor"
+                    },
+                    "permissions": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "example": "page-list"
+                        },
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AdminUpdateUserRequest": {
+                "title": "Admin Update User Request",
+                "required": [
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Admin Update User Request DTO\n\nValidates user update data when admin is updating a user.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 191,
+                        "example": "john@example.com"
+                    },
+                    "username": {
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "johndoe",
+                        "nullable": true
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Acme Corp",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "123 Main St",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "New York",
+                        "nullable": true
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "NY",
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "USA",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "uploads/users/avatar.jpg",
+                        "nullable": true
+                    },
+                    "email_verified": {
+                        "type": "boolean",
+                        "example": true,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "ChangePasswordRequest": {
+                "title": "Change Password Request",
+                "required": [
+                    "old_password",
+                    "password",
+                    "password_confirmation"
+                ],
+                "properties": {
+                    "old_password": {
+                        "description": "Change Password Request DTO\n\nValidates password change data.",
+                        "type": "string",
+                        "format": "password",
+                        "example": "OldPassword123!"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "minLength": 8,
+                        "example": "NewSecurePass123!"
+                    },
+                    "password_confirmation": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "NewSecurePass123!"
+                    }
+                },
+                "type": "object"
+            },
+            "UserUpdateProfileRequest": {
+                "title": "Update Profile Request",
+                "required": [
+                    "name",
+                    "email"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Update Profile Request DTO\n\nValidates user profile update data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "John Doe"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "maxLength": 191,
+                        "example": "john@example.com"
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "company": {
+                        "type": "string",
+                        "example": "Acme Corp",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "123 Main St",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "New York",
+                        "nullable": true
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "NY",
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "USA",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "uploads/users/avatar.jpg",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "AdminCollection": {
+                "title": "Admin Collection",
+                "description": "Paginated collection of admin resources",
+                "properties": {
+                    "data": {
+                        "description": "Admin Collection Resource\n\nCollection wrapper for admin resources with pagination metadata.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AdminResource"
+                        }
+                    },
+                    "meta": {
+                        "properties": {
+                            "current_page": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "from": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "last_page": {
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "per_page": {
+                                "type": "integer",
+                                "example": 15
+                            },
+                            "to": {
+                                "type": "integer",
+                                "example": 15
+                            },
+                            "total": {
+                                "type": "integer",
+                                "example": 150
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
             "AdminResource": {
                 "title": "Admin Resource",
                 "description": "Admin user resource representation",
@@ -2993,6 +6014,180 @@
                 },
                 "type": "object"
             },
+            "PermissionResource": {
+                "title": "Permission Resource",
+                "description": "Permission resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "page-list"
+                    },
+                    "guard_name": {
+                        "type": "string",
+                        "example": "api_admin"
+                    },
+                    "group": {
+                        "description": "Permission group derived from name",
+                        "type": "string",
+                        "example": "page",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "RoleResource": {
+                "title": "Role Resource",
+                "description": "Role resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "admin"
+                    },
+                    "guard_name": {
+                        "type": "string",
+                        "example": "api_admin"
+                    },
+                    "permissions_count": {
+                        "type": "integer",
+                        "example": 15,
+                        "nullable": true
+                    },
+                    "permissions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PermissionResource"
+                        },
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "SupportTicketResource": {
+                "title": "Support Ticket Resource",
+                "description": "Support ticket resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Unable to login",
+                        "nullable": true
+                    },
+                    "subject": {
+                        "type": "string",
+                        "example": "Login Issue",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "I cannot login to my account",
+                        "nullable": true
+                    },
+                    "via": {
+                        "type": "string",
+                        "example": "email",
+                        "nullable": true
+                    },
+                    "operating_system": {
+                        "type": "string",
+                        "example": "Windows 10",
+                        "nullable": true
+                    },
+                    "status": {
+                        "description": "0 = open, 1 = closed, 2 = pending",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "status_label": {
+                        "type": "string",
+                        "example": "open"
+                    },
+                    "priority": {
+                        "description": "0 = low, 1 = medium, 2 = high, 3 = urgent",
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "priority_label": {
+                        "type": "string",
+                        "example": "high"
+                    },
+                    "user": {
+                        "description": "User details (when loaded)",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "admin": {
+                        "description": "Admin details (when loaded)",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "department": {
+                        "description": "Department details (when loaded)",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "messages": {
+                        "description": "Ticket messages (when loaded)",
+                        "type": "array",
+                        "items": {
+                            "type": "object"
+                        },
+                        "nullable": true
+                    },
+                    "messages_count": {
+                        "description": "Messages count (when counted)",
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "TenantCollection": {
+                "title": "Tenant Collection",
+                "description": "Collection of tenant resources",
+                "properties": {
+                    "data": {
+                        "description": "Tenant Collection Resource\n\nCollection wrapper for tenant resources.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TenantResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "TenantResource": {
                 "title": "Tenant Resource",
                 "description": "Tenant (property/organization) resource representation",
@@ -3132,6 +6327,84 @@
                 },
                 "type": "object"
             },
+            "UserCollection": {
+                "title": "User Collection",
+                "description": "Paginated collection of user resources",
+                "properties": {
+                    "data": {
+                        "description": "User Collection Resource\n\nCollection wrapper for user resources with pagination metadata.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserResource"
+                        }
+                    },
+                    "meta": {
+                        "properties": {
+                            "current_page": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "from": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "last_page": {
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "per_page": {
+                                "type": "integer",
+                                "example": 15
+                            },
+                            "to": {
+                                "type": "integer",
+                                "example": 15
+                            },
+                            "total": {
+                                "type": "integer",
+                                "example": 150
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "UserDashboardResource": {
+                "title": "User Dashboard Resource",
+                "description": "User dashboard statistics and summary",
+                "properties": {
+                    "tenants_count": {
+                        "description": "User Dashboard Resource\n\nResource for user dashboard data.",
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "active_packages": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "support_tickets_count": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "open_tickets_count": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "total_spent": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 299.99
+                    },
+                    "recent_payments": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/PaymentLogResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "UserResource": {
                 "title": "User Resource",
                 "description": "User (landlord/tenant owner) resource representation",
@@ -3263,8 +6536,24 @@
             "description": "API health and status endpoints"
         },
         {
+            "name": "Admin Management",
+            "description": "Admin user management endpoints (Guard: api_admin). Manage platform administrators."
+        },
+        {
+            "name": "Role Management",
+            "description": "Role and permission management endpoints (Guard: api_admin). Manage roles and their permissions."
+        },
+        {
             "name": "Tenant Management",
             "description": "Tenant management endpoints for landlord users (Guard: api_user). Manage tenants/properties owned by the authenticated user."
+        },
+        {
+            "name": "User Management (Admin)",
+            "description": "Admin endpoints to manage landlord users (Guard: api_admin). Manage tenant owners and their subscriptions."
+        },
+        {
+            "name": "User Dashboard",
+            "description": "User self-service endpoints (Guard: api_user). Manage own profile, tenants, and view dashboard."
         }
     ]
 }
