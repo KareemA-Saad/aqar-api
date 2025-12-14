@@ -6,10 +6,14 @@ use App\Http\Controllers\Api\V1\Auth\AdminAuthController;
 use App\Http\Controllers\Api\V1\Auth\TenantUserAuthController;
 use App\Http\Controllers\Api\V1\Auth\UserAuthController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\AdminController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\PricePlanController as AdminPricePlanController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\RoleController;
+use App\Http\Controllers\Api\V1\Landlord\PlanController;
+use App\Http\Controllers\Api\V1\Landlord\SubscriptionController;
 use App\Http\Controllers\Api\V1\Landlord\TenantController;
 use App\Http\Controllers\Api\V1\Landlord\UserController;
 use App\Http\Controllers\Api\V1\Landlord\UserDashboardController;
+use App\Http\Controllers\Api\V1\Tenant\TenantInfoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,6 +33,24 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::prefix('v1')->name('api.v1.')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Public Price Plan Routes
+    |--------------------------------------------------------------------------
+    | Public endpoints for viewing pricing plans.
+    | No authentication required for most endpoints.
+    */
+    Route::prefix('plans')->name('plans.')->group(function () {
+        Route::get('/', [PlanController::class, 'index'])->name('index');
+        Route::get('compare', [PlanController::class, 'compare'])->name('compare');
+        Route::get('{slug}', [PlanController::class, 'show'])->name('show');
+
+        // Requires authentication
+        Route::middleware('auth:api_user')->group(function () {
+            Route::post('check-coupon', [PlanController::class, 'checkCoupon'])->name('check-coupon');
+        });
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -163,6 +185,21 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         /*
         |--------------------------------------------------------------------------
+        | Price Plan Management Routes (Admin)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('price-plans')->name('price-plans.')->group(function () {
+            Route::get('/', [AdminPricePlanController::class, 'index'])->name('index');
+            Route::post('/', [AdminPricePlanController::class, 'store'])->name('store');
+            Route::get('{id}', [AdminPricePlanController::class, 'show'])->name('show');
+            Route::put('{id}', [AdminPricePlanController::class, 'update'])->name('update');
+            Route::delete('{id}', [AdminPricePlanController::class, 'destroy'])->name('destroy');
+            Route::patch('{id}/toggle-status', [AdminPricePlanController::class, 'toggleStatus'])->name('toggle-status');
+            Route::patch('{id}/reorder-features', [AdminPricePlanController::class, 'reorderFeatures'])->name('reorder-features');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
         | User Management Routes (Admin managing users)
         |--------------------------------------------------------------------------
         */
@@ -199,6 +236,22 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         // Payment history
         Route::get('my-payments', [UserDashboardController::class, 'paymentHistory'])->name('my-payments.index');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Subscription Management Routes
+        |--------------------------------------------------------------------------
+        | Routes for users to manage their subscriptions.
+        */
+        Route::prefix('subscriptions')->name('subscriptions.')->group(function () {
+            Route::get('current', [SubscriptionController::class, 'current'])->name('current');
+            Route::get('history', [SubscriptionController::class, 'history'])->name('history');
+            Route::post('initiate', [SubscriptionController::class, 'initiate'])->name('initiate');
+            Route::post('complete', [SubscriptionController::class, 'complete'])->name('complete');
+            Route::post('upgrade', [SubscriptionController::class, 'upgrade'])->name('upgrade');
+            Route::post('{subscriptionId}/cancel', [SubscriptionController::class, 'cancel'])->name('cancel');
+            Route::post('{subscriptionId}/renew', [SubscriptionController::class, 'renew'])->name('renew');
+        });
     });
 
     /*
@@ -225,19 +278,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         ->name('tenant.')
         ->group(function () {
             // Tenant info endpoint - always available
-            Route::get('info', function () {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Tenant context active',
-                    'data' => [
-                        'tenant_id' => tenant_id(),
-                        'settings' => tenant_settings(),
-                        'package' => tenant_package_info(),
-                        'remaining_days' => tenant_remaining_days(),
-                        'features' => tenant_features(),
-                    ],
-                ]);
-            })->name('info');
+            Route::get('info', [TenantInfoController::class, 'info'])->name('info');
 
             // Add tenant-specific endpoints here
             // These routes have access to the tenant's database

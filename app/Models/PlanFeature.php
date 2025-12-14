@@ -28,6 +28,7 @@ class PlanFeature extends Model
         'plan_id',
         'feature_name',
         'status',
+        'order',
     ];
 
     /**
@@ -37,9 +38,20 @@ class PlanFeature extends Model
      */
     protected $casts = [
         'status' => 'boolean',
+        'order' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * Default ordering by order column.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope('ordered', function ($query) {
+            $query->orderBy('order');
+        });
+    }
 
     /**
      * Get the plan that owns this feature.
