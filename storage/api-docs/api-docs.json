@@ -3808,6 +3808,1204 @@
                 ]
             }
         },
+        "/api/v1/admin/support-departments": {
+            "get": {
+                "tags": [
+                    "Admin Support Departments"
+                ],
+                "summary": "List all departments",
+                "description": "Get paginated list of all support departments with ticket counts",
+                "operationId": "0d9ac27e60f821a74c5b8a80a9f56267",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (max 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Departments retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Departments retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SupportDepartmentResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Admin Support Departments"
+                ],
+                "summary": "Create department",
+                "description": "Create a new support department",
+                "operationId": "2b9a49ba4e44eef74dfb75744a02f86f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreDepartmentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Department created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Department created"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportDepartmentResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object",
+                                            "example": {
+                                                "name": [
+                                                    "A department with this name already exists."
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/support-departments/{department}": {
+            "get": {
+                "tags": [
+                    "Admin Support Departments"
+                ],
+                "summary": "Get department details",
+                "description": "Retrieve a specific support department",
+                "operationId": "d2006a3d1e6ff73a9a3407f8732a696e",
+                "parameters": [
+                    {
+                        "name": "department",
+                        "in": "path",
+                        "description": "Department ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Department retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Department retrieved"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportDepartmentResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Department not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Department not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Admin Support Departments"
+                ],
+                "summary": "Update department",
+                "description": "Update an existing support department",
+                "operationId": "72f1beecf017b9b355d46c61c0d11b7f",
+                "parameters": [
+                    {
+                        "name": "department",
+                        "in": "path",
+                        "description": "Department ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreDepartmentRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Department updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Department updated"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportDepartmentResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Department not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Department not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Admin Support Departments"
+                ],
+                "summary": "Delete department",
+                "description": "Delete a support department (only if no tickets exist)",
+                "operationId": "f0a118c9405d3fd7b2978d1efd37af4e",
+                "parameters": [
+                    {
+                        "name": "department",
+                        "in": "path",
+                        "description": "Department ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Department deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Department deleted"
+                                        },
+                                        "data": {
+                                            "type": "null",
+                                            "example": null
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Cannot delete department with tickets",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cannot delete department with existing tickets"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Department not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Department not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/support-tickets": {
+            "get": {
+                "tags": [
+                    "Admin Support Tickets"
+                ],
+                "summary": "List all support tickets",
+                "description": "Get paginated list of all support tickets with optional filters",
+                "operationId": "ffb357689514de6cd9b671b05db7764e",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter by status (0=open, 1=closed, 2=pending)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1,
+                                2
+                            ]
+                        }
+                    },
+                    {
+                        "name": "priority",
+                        "in": "query",
+                        "description": "Filter by priority (0=low, 1=medium, 2=high, 3=urgent)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1,
+                                2,
+                                3
+                            ]
+                        }
+                    },
+                    {
+                        "name": "department_id",
+                        "in": "query",
+                        "description": "Filter by department ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "admin_id",
+                        "in": "query",
+                        "description": "Filter by assigned admin ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by title, subject, description, or user name/email",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "login issue"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (max 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tickets retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Support tickets retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SupportTicketResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 50
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 4
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/support-tickets/{id}": {
+            "get": {
+                "tags": [
+                    "Admin Support Tickets"
+                ],
+                "summary": "Get ticket details",
+                "description": "Retrieve a specific support ticket with all messages",
+                "operationId": "0ac24b859ee33228ba7aa49697102f1f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket retrieved"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportTicketResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Admin Support Tickets"
+                ],
+                "summary": "Update ticket",
+                "description": "Update ticket status, priority, assignee, or department",
+                "operationId": "d10623cd01071ebdc7724cb128fb0b23",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateTicketRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ticket updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket updated"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportTicketResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/support-tickets/{id}/reply": {
+            "post": {
+                "tags": [
+                    "Admin Support Tickets"
+                ],
+                "summary": "Reply to ticket",
+                "description": "Add an admin reply to a support ticket",
+                "operationId": "c78efb7a69aea51cb6b0411dd517dc9a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TicketReplyRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reply added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Reply added"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportTicketMessageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/support-tickets/{id}/close": {
+            "post": {
+                "tags": [
+                    "Admin Support Tickets"
+                ],
+                "summary": "Close ticket",
+                "description": "Close a support ticket",
+                "operationId": "6b83b5522e42b4aa83bdfd2fc2e40ed1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket closed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket closed"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportTicketResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/support-tickets/stats": {
+            "get": {
+                "tags": [
+                    "Admin Support Tickets"
+                ],
+                "summary": "Get ticket statistics",
+                "description": "Get support ticket statistics (open, pending, closed counts)",
+                "operationId": "e41d275e5ed0b694a5a270639989a0eb",
+                "responses": {
+                    "200": {
+                        "description": "Statistics retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Statistics retrieved"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 150
+                                                },
+                                                "open": {
+                                                    "type": "integer",
+                                                    "example": 45
+                                                },
+                                                "pending": {
+                                                    "type": "integer",
+                                                    "example": 30
+                                                },
+                                                "closed": {
+                                                    "type": "integer",
+                                                    "example": 75
+                                                },
+                                                "by_priority": {
+                                                    "properties": {
+                                                        "low": {
+                                                            "type": "integer",
+                                                            "example": 20
+                                                        },
+                                                        "medium": {
+                                                            "type": "integer",
+                                                            "example": 30
+                                                        },
+                                                        "high": {
+                                                            "type": "integer",
+                                                            "example": 15
+                                                        },
+                                                        "urgent": {
+                                                            "type": "integer",
+                                                            "example": 10
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                },
+                                                "by_department": {
+                                                    "type": "object",
+                                                    "example": {
+                                                        "Technical Support": 40,
+                                                        "Billing": 25,
+                                                        "General": 10
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
         "/api/v1/plans": {
             "get": {
                 "tags": [
@@ -4921,6 +6119,592 @@
                                         },
                                         "errors": {
                                             "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/support-tickets": {
+            "get": {
+                "tags": [
+                    "User Support Tickets"
+                ],
+                "summary": "List own tickets",
+                "description": "Get paginated list of the authenticated user's support tickets",
+                "operationId": "2a2d82cf721fcc1d0b2b21927276c875",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter by status (0=open, 1=closed, 2=pending)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1,
+                                2
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page (max 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tickets retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Your support tickets retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SupportTicketResource"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "User Support Tickets"
+                ],
+                "summary": "Create a ticket",
+                "description": "Create a new support ticket",
+                "operationId": "b797afb53bbf311d20dc8ad157eca9a8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreTicketRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Ticket created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportTicketResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/support-tickets/{id}": {
+            "get": {
+                "tags": [
+                    "User Support Tickets"
+                ],
+                "summary": "Get ticket details",
+                "description": "Retrieve a specific support ticket with all messages (only own tickets)",
+                "operationId": "dcdc0ae3cc448f6f037d41e504090a38",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket retrieved"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportTicketResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/support-tickets/{id}/reply": {
+            "post": {
+                "tags": [
+                    "User Support Tickets"
+                ],
+                "summary": "Reply to ticket",
+                "description": "Add a reply to your own support ticket",
+                "operationId": "2139907e9d800d05ad7993805acf4125",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TicketReplyRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Reply added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Reply added"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportTicketMessageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Ticket is closed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Cannot reply to a closed ticket"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/support-tickets/{id}/close": {
+            "post": {
+                "tags": [
+                    "User Support Tickets"
+                ],
+                "summary": "Close ticket",
+                "description": "Close your own support ticket",
+                "operationId": "da8137a418b3fefd8d7c9f7999943d63",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Ticket ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Ticket closed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket closed"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SupportTicketResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Ticket not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ticket not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/support-departments": {
+            "get": {
+                "tags": [
+                    "User Support Tickets"
+                ],
+                "summary": "List departments",
+                "description": "Get list of active support departments for ticket creation",
+                "operationId": "d2f4f68d325ec012f6a07e5c934ebda3",
+                "responses": {
+                    "200": {
+                        "description": "Departments retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Departments retrieved"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SupportDepartmentResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
                                         }
                                     },
                                     "type": "object"
@@ -7985,6 +9769,140 @@
                 },
                 "type": "object"
             },
+            "TicketReplyRequest": {
+                "title": "Ticket Reply Request",
+                "required": [
+                    "message"
+                ],
+                "properties": {
+                    "message": {
+                        "description": "Reply Request DTO\n\nValidates ticket reply data.",
+                        "type": "string",
+                        "minLength": 5,
+                        "example": "Thank you for reaching out. We are looking into this issue."
+                    },
+                    "attachment": {
+                        "description": "Path to attachment file",
+                        "type": "string",
+                        "example": "uploads/tickets/response.pdf",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreDepartmentRequest": {
+                "title": "Store Department Request",
+                "required": [
+                    "name",
+                    "status"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Store Department Request DTO\n\nValidates support department creation/update data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "Technical Support"
+                    },
+                    "status": {
+                        "description": "Whether the department is active",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "StoreTicketRequest": {
+                "title": "Store Ticket Request",
+                "required": [
+                    "title",
+                    "subject",
+                    "description",
+                    "priority",
+                    "department_id"
+                ],
+                "properties": {
+                    "title": {
+                        "description": "Store Ticket Request DTO\n\nValidates support ticket creation data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "Cannot access my dashboard"
+                    },
+                    "subject": {
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "Login Issue"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 10,
+                        "example": "I am unable to login to my dashboard. I keep getting an error message."
+                    },
+                    "priority": {
+                        "description": "0 = low, 1 = medium, 2 = high, 3 = urgent",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1,
+                            2,
+                            3
+                        ],
+                        "example": 1
+                    },
+                    "department_id": {
+                        "description": "Support department ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "attachment": {
+                        "description": "Path to attachment file",
+                        "type": "string",
+                        "example": "uploads/tickets/screenshot.png",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateTicketRequest": {
+                "title": "Update Ticket Request",
+                "properties": {
+                    "status": {
+                        "description": "0 = open, 1 = closed, 2 = pending",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1,
+                            2
+                        ],
+                        "example": 2,
+                        "nullable": true
+                    },
+                    "priority": {
+                        "description": "0 = low, 1 = medium, 2 = high, 3 = urgent",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1,
+                            2,
+                            3
+                        ],
+                        "example": 2,
+                        "nullable": true
+                    },
+                    "admin_id": {
+                        "description": "Assigned admin ID (null to unassign)",
+                        "type": "integer",
+                        "example": 1,
+                        "nullable": true
+                    },
+                    "department_id": {
+                        "description": "Transfer to another department",
+                        "type": "integer",
+                        "example": 2,
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "AdminUpdateUserRequest": {
                 "title": "Admin Update User Request",
                 "required": [
@@ -8902,6 +10820,159 @@
                 },
                 "type": "object"
             },
+            "SupportDepartmentResource": {
+                "title": "Support Department Resource",
+                "description": "Support department resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Technical Support"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "tickets_count": {
+                        "type": "integer",
+                        "example": 15,
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "SupportTicketCollection": {
+                "title": "Support Ticket Collection",
+                "description": "Paginated collection of support tickets",
+                "properties": {
+                    "data": {
+                        "description": "Support Ticket Collection Resource",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SupportTicketResource"
+                        }
+                    },
+                    "links": {
+                        "properties": {
+                            "first": {
+                                "type": "string",
+                                "example": "http://example.com/api/v1/tickets?page=1"
+                            },
+                            "last": {
+                                "type": "string",
+                                "example": "http://example.com/api/v1/tickets?page=10"
+                            },
+                            "prev": {
+                                "type": "string",
+                                "nullable": true
+                            },
+                            "next": {
+                                "type": "string",
+                                "example": "http://example.com/api/v1/tickets?page=2"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "meta": {
+                        "properties": {
+                            "current_page": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "from": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "last_page": {
+                                "type": "integer",
+                                "example": 10
+                            },
+                            "per_page": {
+                                "type": "integer",
+                                "example": 15
+                            },
+                            "to": {
+                                "type": "integer",
+                                "example": 15
+                            },
+                            "total": {
+                                "type": "integer",
+                                "example": 150
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "SupportTicketMessageResource": {
+                "title": "Support Ticket Message Resource",
+                "description": "Support ticket message resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Thank you for reaching out. We are working on your issue."
+                    },
+                    "attachment": {
+                        "type": "string",
+                        "example": "uploads/tickets/file.pdf",
+                        "nullable": true
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "user",
+                            "admin"
+                        ],
+                        "example": "admin"
+                    },
+                    "is_from_admin": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "notify": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "sender": {
+                        "description": "Sender details (User or Admin)",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
             "SupportTicketResource": {
                 "title": "Support Ticket Resource",
                 "description": "Support ticket resource representation",
@@ -9370,12 +11441,24 @@
             "description": "Role and permission management endpoints (Guard: api_admin). Manage roles and their permissions."
         },
         {
+            "name": "Admin Support Departments",
+            "description": "Support department management endpoints for administrators (Guard: api_admin)"
+        },
+        {
+            "name": "Admin Support Tickets",
+            "description": "Support ticket management endpoints for administrators (Guard: api_admin)"
+        },
+        {
             "name": "Price Plans (Public)",
             "description": "Public endpoints for viewing pricing plans and comparing features"
         },
         {
             "name": "Subscriptions",
             "description": "User subscription management endpoints (Guard: api_user)"
+        },
+        {
+            "name": "User Support Tickets",
+            "description": "Support ticket endpoints for users (Guard: api_user). Manage own support tickets."
         },
         {
             "name": "Tenant Management",
