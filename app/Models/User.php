@@ -48,6 +48,9 @@ class User extends Authenticatable
         'image',
         'facebook_id',
         'google_id',
+        'google2fa_secret',
+        'two_factor_enabled',
+        'two_factor_confirmed_at',
     ];
 
     /**
@@ -63,6 +66,7 @@ class User extends Authenticatable
         'temp_password',
         'facebook_id',
         'google_id',
+        'google2fa_secret',
     ];
 
     /**
@@ -74,6 +78,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'email_verified' => 'boolean',
         'has_subdomain' => 'boolean',
+        'two_factor_enabled' => 'boolean',
+        'two_factor_confirmed_at' => 'datetime',
+        'google2fa_secret' => 'encrypted',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
@@ -142,5 +149,52 @@ class User extends Authenticatable
     public function countryRelation(): BelongsTo
     {
         return $this->belongsTo(Country::class, 'country', 'id');
+    }
+
+    /**
+     * Get the trusted devices for this user (2FA bypass).
+     */
+    public function trustedDevices(): HasMany
+    {
+        return $this->hasMany(TrustedDevice::class);
+    }
+
+    /**
+     * Check if the user has 2FA enabled and confirmed.
+     */
+    public function hasTwoFactorEnabled(): bool
+    {
+        return $this->two_factor_enabled
+            && $this->two_factor_confirmed_at !== null
+            && $this->google2fa_secret !== null;
+    }
+
+    /**
+     * Enable two-factor authentication for the user.
+     *
+     * @param string $secret The encrypted 2FA secret
+     */
+    public function enableTwoFactor(string $secret): void
+    {
+        $this->update([
+            'google2fa_secret' => $secret,
+            'two_factor_enabled' => true,
+            'two_factor_confirmed_at' => now(),
+        ]);
+    }
+
+    /**
+     * Disable two-factor authentication for the user.
+     */
+    public function disableTwoFactor(): void
+    {
+        $this->update([
+            'google2fa_secret' => null,
+            'two_factor_enabled' => false,
+            'two_factor_confirmed_at' => null,
+        ]);
+
+        // Revoke all trusted devices
+        $this->trustedDevices()->delete();
     }
 }

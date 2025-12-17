@@ -131,7 +131,7 @@ final class UserAuthController extends BaseApiController
     #[OA\Post(
         path: '/api/v1/auth/login',
         summary: 'User Login',
-        description: 'Authenticate a landlord/tenant owner user and receive bearer token',
+        description: 'Authenticate a landlord/tenant owner user and receive bearer token. If 2FA is enabled, returns a two_factor_token instead.',
         tags: ['User Authentication']
     )]
     #[OA\RequestBody(
@@ -141,12 +141,13 @@ final class UserAuthController extends BaseApiController
             properties: [
                 new OA\Property(property: 'credential', type: 'string', example: 'user@example.com', description: 'Email or username'),
                 new OA\Property(property: 'password', type: 'string', format: 'password', example: 'SecurePass123!'),
+                new OA\Property(property: 'device_token', type: 'string', example: 'dev_abc123...', description: 'Trusted device token (optional)', nullable: true),
             ]
         )
     )]
     #[OA\Response(
         response: 200,
-        description: 'Login successful',
+        description: 'Login successful or 2FA required',
         content: new OA\JsonContent(
             properties: [
                 new OA\Property(property: 'success', type: 'boolean', example: true),
@@ -155,10 +156,12 @@ final class UserAuthController extends BaseApiController
                     property: 'data',
                     properties: [
                         new OA\Property(property: 'user', ref: '#/components/schemas/UserResource'),
-                        new OA\Property(property: 'token', type: 'string', example: '2|xyz789456...'),
-                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
-                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time'),
-                        new OA\Property(property: 'email_verified', type: 'boolean', example: true),
+                        new OA\Property(property: 'token', type: 'string', example: '2|xyz789456...', nullable: true),
+                        new OA\Property(property: 'token_type', type: 'string', example: 'Bearer', nullable: true),
+                        new OA\Property(property: 'expires_at', type: 'string', format: 'date-time', nullable: true),
+                        new OA\Property(property: 'email_verified', type: 'boolean', example: true, nullable: true),
+                        new OA\Property(property: 'requires_2fa', type: 'boolean', example: true, nullable: true),
+                        new OA\Property(property: 'two_factor_token', type: 'string', example: '2fa_abc123...', nullable: true),
                     ],
                     type: 'object'
                 ),
@@ -172,11 +175,20 @@ final class UserAuthController extends BaseApiController
         try {
             $result = $this->authService->authenticateUser(
                 $request->getCredential(),
-                $request->getPassword()
+                $request->getPassword(),
+                $request->input('device_token')
             );
 
             /** @var User $user */
             $user = $result['user'];
+
+            // Check if 2FA is required
+            if (isset($result['requires_2fa']) && $result['requires_2fa']) {
+                return $this->success([
+                    'requires_2fa' => true,
+                    'two_factor_token' => $result['two_factor_token'],
+                ], 'Two-factor authentication required');
+            }
 
             return $this->success([
                 'user' => new UserResource($user->load(['tenants.domains', 'latestPaymentLog'])),

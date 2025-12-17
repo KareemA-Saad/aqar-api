@@ -1166,6 +1166,487 @@
                 }
             }
         },
+        "/api/v1/2fa/status": {
+            "get": {
+                "tags": [
+                    "Two-Factor Authentication"
+                ],
+                "summary": "Get 2FA Status",
+                "description": "Returns the current two-factor authentication status for the user.",
+                "operationId": "b2d54a307cdc9fe54482778b2b317cd0",
+                "responses": {
+                    "200": {
+                        "description": "2FA status retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "enabled": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "confirmed_at": {
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2024-12-17T10:00:00.000000Z",
+                                                    "nullable": true
+                                                },
+                                                "trusted_devices_count": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/2fa/setup": {
+            "post": {
+                "tags": [
+                    "Two-Factor Authentication"
+                ],
+                "summary": "Setup 2FA",
+                "description": "Generates a new 2FA secret and returns a QR code to scan with authenticator app.",
+                "operationId": "978278800e28965a1fb7f6c72db1a6c9",
+                "responses": {
+                    "200": {
+                        "description": "QR code generated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Scan the QR code with your authenticator app"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "secret": {
+                                                    "type": "string",
+                                                    "example": "JBSWY3DPEHPK3PXP"
+                                                },
+                                                "qr_code_url": {
+                                                    "type": "string",
+                                                    "example": "data:image/svg+xml;base64,..."
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "2FA already enabled"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/2fa/enable": {
+            "post": {
+                "tags": [
+                    "Two-Factor Authentication"
+                ],
+                "summary": "Enable 2FA",
+                "description": "Verifies the OTP code from authenticator app and enables 2FA for the account.",
+                "operationId": "7feb622244b02c79f3560198e203219a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "description": "6-digit code from authenticator app",
+                                        "type": "string",
+                                        "example": "123456"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "2FA enabled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Two-factor authentication has been enabled."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "enabled": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                },
+                                                "confirmed_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "2FA already enabled or setup not initiated"
+                    },
+                    "422": {
+                        "description": "Invalid verification code"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/2fa/disable": {
+            "post": {
+                "tags": [
+                    "Two-Factor Authentication"
+                ],
+                "summary": "Disable 2FA",
+                "description": "Disables two-factor authentication. Requires password confirmation.",
+                "operationId": "6bcece52a555b08fb5f04376873008f5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "password"
+                                ],
+                                "properties": {
+                                    "password": {
+                                        "description": "Current account password",
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "CurrentPassword123!"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "2FA disabled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Two-factor authentication has been disabled."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "2FA not enabled"
+                    },
+                    "422": {
+                        "description": "Invalid password"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/2fa/verify": {
+            "post": {
+                "tags": [
+                    "Two-Factor Authentication"
+                ],
+                "summary": "Verify 2FA during Login",
+                "description": "Completes the login process by verifying the 2FA code. Use this after receiving a requires_2fa response from login.",
+                "operationId": "fc4025ef268f0604ed2c73a6fcfe98ac",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "two_factor_token",
+                                    "code"
+                                ],
+                                "properties": {
+                                    "two_factor_token": {
+                                        "description": "Token received from login response",
+                                        "type": "string",
+                                        "example": "2fa_abc123..."
+                                    },
+                                    "code": {
+                                        "description": "6-digit code from authenticator app",
+                                        "type": "string",
+                                        "example": "123456"
+                                    },
+                                    "remember_device": {
+                                        "description": "Remember this device for 30 days",
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Login successful",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login successful"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "user": {
+                                                    "$ref": "#/components/schemas/UserResource"
+                                                },
+                                                "token": {
+                                                    "type": "string",
+                                                    "example": "2|xyz789..."
+                                                },
+                                                "token_type": {
+                                                    "type": "string",
+                                                    "example": "Bearer"
+                                                },
+                                                "expires_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "device_token": {
+                                                    "description": "Device token if remember_device was true",
+                                                    "type": "string",
+                                                    "example": "dev_abc123...",
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid or expired token"
+                    },
+                    "422": {
+                        "description": "Invalid verification code"
+                    },
+                    "429": {
+                        "description": "Too many attempts"
+                    }
+                }
+            }
+        },
+        "/api/v1/2fa/devices": {
+            "get": {
+                "tags": [
+                    "Two-Factor Authentication"
+                ],
+                "summary": "List Trusted Devices",
+                "description": "Returns a list of trusted devices for the authenticated user.",
+                "operationId": "1a6134b4feabcaca5340e6fc3c5673f1",
+                "responses": {
+                    "200": {
+                        "description": "Trusted devices retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/TrustedDeviceResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Two-Factor Authentication"
+                ],
+                "summary": "Revoke All Trusted Devices",
+                "description": "Removes all devices from the trusted devices list.",
+                "operationId": "252ee944078a174699ff5cff1afba224",
+                "responses": {
+                    "200": {
+                        "description": "All devices revoked successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "All trusted devices have been revoked."
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "revoked_count": {
+                                                    "type": "integer",
+                                                    "example": 3
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/2fa/devices/{deviceId}": {
+            "delete": {
+                "tags": [
+                    "Two-Factor Authentication"
+                ],
+                "summary": "Revoke Trusted Device",
+                "description": "Removes a device from the trusted devices list.",
+                "operationId": "dec0b59b16565cd86d04f57597055c4e",
+                "parameters": [
+                    {
+                        "name": "deviceId",
+                        "in": "path",
+                        "description": "The ID of the trusted device to revoke",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Device revoked successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Device has been removed from trusted devices."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Device not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
         "/api/v1/auth/register": {
             "post": {
                 "tags": [
@@ -1301,7 +1782,7 @@
                     "User Authentication"
                 ],
                 "summary": "User Login",
-                "description": "Authenticate a landlord/tenant owner user and receive bearer token",
+                "description": "Authenticate a landlord/tenant owner user and receive bearer token. If 2FA is enabled, returns a two_factor_token instead.",
                 "operationId": "917427e56be91b32cb64adc3eb2a9856",
                 "requestBody": {
                     "required": true,
@@ -1322,6 +1803,12 @@
                                         "type": "string",
                                         "format": "password",
                                         "example": "SecurePass123!"
+                                    },
+                                    "device_token": {
+                                        "description": "Trusted device token (optional)",
+                                        "type": "string",
+                                        "example": "dev_abc123...",
+                                        "nullable": true
                                     }
                                 },
                                 "type": "object"
@@ -1331,7 +1818,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Login successful",
+                        "description": "Login successful or 2FA required",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1351,19 +1838,33 @@
                                                 },
                                                 "token": {
                                                     "type": "string",
-                                                    "example": "2|xyz789456..."
+                                                    "example": "2|xyz789456...",
+                                                    "nullable": true
                                                 },
                                                 "token_type": {
                                                     "type": "string",
-                                                    "example": "Bearer"
+                                                    "example": "Bearer",
+                                                    "nullable": true
                                                 },
                                                 "expires_at": {
                                                     "type": "string",
-                                                    "format": "date-time"
+                                                    "format": "date-time",
+                                                    "nullable": true
                                                 },
                                                 "email_verified": {
                                                     "type": "boolean",
-                                                    "example": true
+                                                    "example": true,
+                                                    "nullable": true
+                                                },
+                                                "requires_2fa": {
+                                                    "type": "boolean",
+                                                    "example": true,
+                                                    "nullable": true
+                                                },
+                                                "two_factor_token": {
+                                                    "type": "string",
+                                                    "example": "2fa_abc123...",
+                                                    "nullable": true
                                                 }
                                             },
                                             "type": "object"
@@ -11220,6 +11721,46 @@
                 },
                 "type": "object"
             },
+            "TrustedDeviceResource": {
+                "title": "Trusted Device Resource",
+                "description": "Trusted device data for 2FA",
+                "properties": {
+                    "id": {
+                        "description": "Trusted Device Resource\n\nAPI Resource for trusted device data transformation.",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "device_name": {
+                        "type": "string",
+                        "example": "Chrome on Windows"
+                    },
+                    "ip_address": {
+                        "type": "string",
+                        "example": "192.168.1.1"
+                    },
+                    "last_used_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-12-17T10:00:00.000000Z",
+                        "nullable": true
+                    },
+                    "expires_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-01-17T10:00:00.000000Z"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-12-17T10:00:00.000000Z"
+                    },
+                    "is_current": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
             "UserCollection": {
                 "title": "User Collection",
                 "description": "Paginated collection of user resources",
@@ -11412,6 +11953,10 @@
         }
     },
     "tags": [
+        {
+            "name": "Two-Factor Authentication",
+            "description": "Two-factor authentication management endpoints (Guard: api_user)"
+        },
         {
             "name": "Admin Authentication",
             "description": "Authentication endpoints for platform administrators (Guard: api_admin)"

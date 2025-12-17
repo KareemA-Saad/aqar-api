@@ -5,13 +5,23 @@ namespace Database\Seeders\Tenant;
 use App\Mail\TenantCredentialMail;
 use App\Models\Admin;
 use App\Models\Language;
-use App\Models\Menu;
+// TODO: Uncomment when Menu model is implemented
+// use App\Models\Menu;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 
+/**
+ * RolePermissionSeed - Seeds tenant-level roles and permissions
+ * 
+ * Note: Uses 'api_admin' guard to match the main RolesAndPermissionsSeeder
+ */
 class RolePermissionSeed extends Seeder
 {
+    /**
+     * The guard name for admin permissions - should match auth.php config
+     */
+    private const GUARD_NAME = 'api_admin';
 
     public static function process_seeding()
     {
@@ -216,10 +226,10 @@ class RolePermissionSeed extends Seeder
         ];
 
         foreach ($permissions as $permission){
-            \Spatie\Permission\Models\Permission::updateOrCreate(['name' => $permission,'guard_name' => 'admin']);
+            \Spatie\Permission\Models\Permission::updateOrCreate(['name' => $permission,'guard_name' => self::GUARD_NAME]);
         }
         $demo_permissions = [];
-        $role = Role::updateOrCreate(['name' => 'Super Admin','guard_name' => 'admin'],['name' => 'Super Admin','guard_name' => 'admin']);
+        $role = Role::updateOrCreate(['name' => 'Super Admin','guard_name' => self::GUARD_NAME],['name' => 'Super Admin','guard_name' => self::GUARD_NAME]);
         $role->syncPermissions($demo_permissions);
     }
 }

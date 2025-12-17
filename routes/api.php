@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Api\V1\Auth\AdminAuthController;
 use App\Http\Controllers\Api\V1\Auth\TenantUserAuthController;
+use App\Http\Controllers\Api\V1\Auth\TwoFactorAuthController;
 use App\Http\Controllers\Api\V1\Auth\UserAuthController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\AdminController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\PricePlanController as AdminPricePlanController;
@@ -90,6 +91,11 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::post('forgot-password', [UserAuthController::class, 'forgotPassword'])->name('forgot-password');
         Route::post('reset-password', [UserAuthController::class, 'resetPassword'])->name('reset-password');
         Route::post('social-login', [UserAuthController::class, 'socialLogin'])->name('social-login');
+
+        // Two-Factor Authentication - Verify (public, uses 2FA token)
+        Route::post('2fa/verify', [TwoFactorAuthController::class, 'verify'])
+            ->middleware('throttle:5,1') // 5 attempts per minute
+            ->name('2fa.verify');
 
         // Protected routes (authentication required)
         Route::middleware('auth:api_user')->group(function () {
@@ -263,6 +269,21 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
         // Support tickets (legacy endpoint via UserDashboardController)
         Route::get('my-tickets', [UserDashboardController::class, 'supportTickets'])->name('my-tickets.index');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Two-Factor Authentication Routes (User)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('2fa')->name('2fa.')->group(function () {
+            Route::get('status', [TwoFactorAuthController::class, 'status'])->name('status');
+            Route::post('setup', [TwoFactorAuthController::class, 'setup'])->name('setup');
+            Route::post('enable', [TwoFactorAuthController::class, 'enable'])->name('enable');
+            Route::post('disable', [TwoFactorAuthController::class, 'disable'])->name('disable');
+            Route::get('devices', [TwoFactorAuthController::class, 'devices'])->name('devices.index');
+            Route::delete('devices', [TwoFactorAuthController::class, 'revokeAllDevices'])->name('devices.destroy-all');
+            Route::delete('devices/{deviceId}', [TwoFactorAuthController::class, 'revokeDevice'])->name('devices.destroy');
+        });
 
         /*
         |--------------------------------------------------------------------------
