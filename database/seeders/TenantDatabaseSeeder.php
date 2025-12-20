@@ -59,10 +59,25 @@ use Database\Seeders\Tenant\ModuleData\Gallery\GalleryCategorySeed;
 use Database\Seeders\Tenant\ModuleData\Gallery\GallerySeed;
 use Database\Seeders\Tenant\ModuleData\Others\SupportTicketCategorySeed;
 
+/**
+ * TenantDatabaseSeeder - Seeds demo data for tenant databases
+ * 
+ * TODO: This seeder requires tenant context and various module dependencies.
+ * Uncomment when the following are implemented:
+ * - Tenant context (tenant() helper with payment_log relationship)
+ * - All module entities (Blog, Donation, Event, Job, etc.)
+ * - ImageDataSeedingHelper
+ * - Static option helpers (get_static_option, update_static_option)
+ * - Media uploader tables
+ */
 class TenantDatabaseSeeder extends Seeder
 {
     public function run()
     {
+        // TODO: Uncomment entire seeder when tenant context and module entities are ready
+        return; // Early return - seeder disabled until dependencies are implemented
+        
+        /*
         $package = tenant()->payment_log()->first()?->package()->first() ?? [];
         $all_features = $package->plan_features ?? [];
 
@@ -186,7 +201,7 @@ class TenantDatabaseSeeder extends Seeder
         //Dynamic assets set
         $dynamic_css_path = 'assets/tenant/frontend/themes/css/dynamic-styles/'.tenant()->id.'-style.css';
         $dynamic_js_path = 'assets/tenant/frontend/themes/js/dynamic-scripts/'.tenant()->id.'-script.js';
-        $css_comment_string = '/*Write Css*/';
+        $css_comment_string = '/ *Write Css* /';
         $js_comment_string = '//Write js';
 
         file_put_contents($dynamic_css_path,$css_comment_string);
@@ -209,7 +224,7 @@ class TenantDatabaseSeeder extends Seeder
         update_static_option('terms_condition_page',22);
         update_static_option('privacy_policy_page',24);
         update_static_option('shop_page',21);
-
+        */
     }
 
 

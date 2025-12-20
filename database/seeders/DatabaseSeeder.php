@@ -23,139 +23,162 @@ class DatabaseSeeder extends Seeder
 
     public function run()
     {
-        setEnvValue(['QUEUE_CONNECTION' => 'database']);
+       // setEnvValue(['QUEUE_CONNECTION' => 'database']);
 
-        $this->landlord_new_theme_data_seed();
+        // Seed roles and permissions first (this is the main seeder for auth)
+        $this->call([
+            RolesAndPermissionsSeeder::class,
+        ]);
 
+        // TODO: Uncomment when Themes model and related assets are implemented
+        // $this->landlord_new_theme_data_seed();
+
+        // TODO: Uncomment when get_static_option_central() helper is implemented
         //Theme auto code set
-        if(get_static_option_central('auto_theme_slug_update_status') != 1){
-            $this->update_theme_slug_and_code();
-            $this->update_old_theme_slug();
-        }
+        // if(get_static_option_central('auto_theme_slug_update_status') != 1){
+        //     $this->update_theme_slug_and_code();
+        //     $this->update_old_theme_slug();
+        // }
         //Theme auto code set
 
+        // TODO: Uncomment when update_static_option() helper is implemented
+        // $this->static_data_or_switcher_update();
 
-        $this->static_data_or_switcher_update();
+        // TODO: Uncomment when payment gateway JSON assets are available
+        // $this->landlord_new_payment_gateway_seed();
 
-
-        $this->landlord_new_payment_gateway_seed();
-
+        // TODO: Uncomment when static_option helpers are implemented
         //for custom domain request email sent from tenant admin
-        update_static_option_central('site_global_email',get_static_option('site_global_email'));
+        // update_static_option_central('site_global_email',get_static_option('site_global_email'));
 
-        //For new permission store
+        //For new permission store (additional landlord permissions)
         $this->landlord_new_permission_seed();
 
-        //new tables exists or not
-        $this->check_tables_exists();
+        // TODO: Uncomment when blog tables migration is ready
+        // $this->check_tables_exists();
 
+        // TODO: Uncomment when User and Tenant models have unique_key field
         //Generating tenant table token for direct login from landlord user dashboard
-        $this->generating_token_for_login_action();
+        // $this->generating_token_for_login_action();
 
 
     }
 
 
+    /**
+     * TODO: Uncomment when Themes model and JSON assets are implemented
+     * Requires: App\Models\Themes, assets/landlord/admin/demo-theme-asset/json-data/all-themes.json
+     */
     private function landlord_new_theme_data_seed()
     {
-        $theme_json_path = json_decode(file_get_contents('assets/landlord/admin/demo-theme-asset/json-data/all-themes.json'));
-        $existing_database_themes = Themes::pluck('id')->toArray();
+        // $theme_json_path = json_decode(file_get_contents('assets/landlord/admin/demo-theme-asset/json-data/all-themes.json'));
+        // $existing_database_themes = Themes::pluck('id')->toArray();
 
-        foreach ($theme_json_path as $item){
-            foreach ($item as $data){
+        // foreach ($theme_json_path as $item){
+        //     foreach ($item as $data){
 
-                if(!in_array($data->id,$existing_database_themes )){
+        //         if(!in_array($data->id,$existing_database_themes )){
 
-                    $ti = json_decode($data->title);
-                    $desc = json_decode($data->description);
+        //             $ti = json_decode($data->title);
+        //             $desc = json_decode($data->description);
 
-                    $title_condition_eng = $ti->en_GB ?? '';
-                    $title_condition_ar= $ti->ar ?? '';
+        //             $title_condition_eng = $ti->en_GB ?? '';
+        //             $title_condition_ar= $ti->ar ?? '';
 
-                    $desc_condition_eng = $desc->en_GB ?? '';
-                    $desc_condition_ar= $desc->ar ?? '';
+        //             $desc_condition_eng = $desc->en_GB ?? '';
+        //             $desc_condition_ar= $desc->ar ?? '';
 
-                    \App\Models\Themes::updateOrCreate([
-                        'title' => [
-                            'en_GB' => $title_condition_eng,
-                            'ar' => $title_condition_ar,
-                        ],
-                        'description' => [
-                            'en_GB' => $desc_condition_eng,
-                            'ar' => $desc_condition_ar,
-                        ],
+        //             \App\Models\Themes::updateOrCreate([
+        //                 'title' => [
+        //                     'en_GB' => $title_condition_eng,
+        //                     'ar' => $title_condition_ar,
+        //                 ],
+        //                 'description' => [
+        //                     'en_GB' => $desc_condition_eng,
+        //                     'ar' => $desc_condition_ar,
+        //                 ],
 
-                        'slug' => $data->slug,
-                        'image' => null,
-                        'status' => $data->status,
-                        'is_available' => $data->is_available,
-                        'url' => $data->url,
-                    ]);
+        //                 'slug' => $data->slug,
+        //                 'image' => null,
+        //                 'status' => $data->status,
+        //                 'is_available' => $data->is_available,
+        //                 'url' => $data->url,
+        //             ]);
 
 
-                }
-            }
-        }
+        //         }
+        //     }
+        // }
     }
 
+    /**
+     * TODO: Uncomment when default_lang() and update_static_option_central() helpers are implemented
+     */
     private function update_theme_slug_and_code()
     {
-        $this->update_action_theme_slug_and_code('donation','Donation', 'Donation description','on');
-        $this->update_action_theme_slug_and_code('job-find','Job Find', 'Job finding description','on');
-        $this->update_action_theme_slug_and_code('event','Event', 'Event description','on');
-        $this->update_action_theme_slug_and_code('support-ticketing','Support Ticket', 'Support ticket description','on');
-        $this->update_action_theme_slug_and_code('article-listing','Article', 'Article description','on');
-        $this->update_action_theme_slug_and_code('eCommerce','Ecommerce', 'Ecommerce shop description','on');
-        $this->update_action_theme_slug_and_code('construction','Construction', 'Construction description','on');
-        $this->update_action_theme_slug_and_code('consultancy','Consultancy', 'Consultancy description','on');
-        $this->update_action_theme_slug_and_code('agency','Agency', 'Agency description','on');
-        $this->update_action_theme_slug_and_code('newspaper','Newspaper', 'Newspaper description','on');
-        $this->update_action_theme_slug_and_code('portfolio','Portfolio', 'Portfolio description','on');
-        $this->update_action_theme_slug_and_code('software-business','Software Business', 'Software business description','on');
-        $this->update_action_theme_slug_and_code('wedding','Wedding', 'Wedding description','on');
-        $this->update_action_theme_slug_and_code('photography','Photography', 'Photography description','on');
-        $this->update_action_theme_slug_and_code('barber-shop','Barber Shop', 'Barber shop description','on');
-        $this->update_action_theme_slug_and_code('hotel-booking','Hotel Booking', 'Hotel booking theme',NULL);
-        $this->update_action_theme_slug_and_code('course','Course', 'Course management theme',NULL);
+        // $this->update_action_theme_slug_and_code('donation','Donation', 'Donation description','on');
+        // $this->update_action_theme_slug_and_code('job-find','Job Find', 'Job finding description','on');
+        // $this->update_action_theme_slug_and_code('event','Event', 'Event description','on');
+        // $this->update_action_theme_slug_and_code('support-ticketing','Support Ticket', 'Support ticket description','on');
+        // $this->update_action_theme_slug_and_code('article-listing','Article', 'Article description','on');
+        // $this->update_action_theme_slug_and_code('eCommerce','Ecommerce', 'Ecommerce shop description','on');
+        // $this->update_action_theme_slug_and_code('construction','Construction', 'Construction description','on');
+        // $this->update_action_theme_slug_and_code('consultancy','Consultancy', 'Consultancy description','on');
+        // $this->update_action_theme_slug_and_code('agency','Agency', 'Agency description','on');
+        // $this->update_action_theme_slug_and_code('newspaper','Newspaper', 'Newspaper description','on');
+        // $this->update_action_theme_slug_and_code('portfolio','Portfolio', 'Portfolio description','on');
+        // $this->update_action_theme_slug_and_code('software-business','Software Business', 'Software business description','on');
+        // $this->update_action_theme_slug_and_code('wedding','Wedding', 'Wedding description','on');
+        // $this->update_action_theme_slug_and_code('photography','Photography', 'Photography description','on');
+        // $this->update_action_theme_slug_and_code('barber-shop','Barber Shop', 'Barber shop description','on');
+        // $this->update_action_theme_slug_and_code('hotel-booking','Hotel Booking', 'Hotel booking theme',NULL);
+        // $this->update_action_theme_slug_and_code('course','Course', 'Course management theme',NULL);
     }
 
+    /**
+     * TODO: Uncomment when default_lang() and update_static_option_central() helpers are implemented
+     */
     private function update_action_theme_slug_and_code($slug,$title,$description,$available)
     {
-        $lang = default_lang();
-        $name_field = 'theme_name_'.$lang;
-        $description_field = 'theme_description_'.$lang;
-        $available_field = 'theme_is_available';
+        // $lang = default_lang();
+        // $name_field = 'theme_name_'.$lang;
+        // $description_field = 'theme_description_'.$lang;
+        // $available_field = 'theme_is_available';
 
-        update_static_option_central($slug.'_'.$name_field,$title);
-        update_static_option_central($slug.'_'.$description_field,$description);
-        update_static_option_central($slug.'_'.$available_field,$available);
+        // update_static_option_central($slug.'_'.$name_field,$title);
+        // update_static_option_central($slug.'_'.$description_field,$description);
+        // update_static_option_central($slug.'_'.$available_field,$available);
     }
 
+    /**
+     * TODO: Uncomment when payment gateway JSON assets are available
+     * Requires: assets/common/common-json-data/payment-gateways.json
+     */
     private function landlord_new_payment_gateway_seed()
     {
-        $gateway_json_path = json_decode(file_get_contents('assets/common/common-json-data/payment-gateways.json'));
-        $existing_database_gateway = PaymentGateway::pluck('name')->toArray();
+        // $gateway_json_path = json_decode(file_get_contents('assets/common/common-json-data/payment-gateways.json'));
+        // $existing_database_gateway = PaymentGateway::pluck('name')->toArray();
 
 
-        foreach ($gateway_json_path as $item){
-            foreach ($item as $data){
+        // foreach ($gateway_json_path as $item){
+        //     foreach ($item as $data){
 
-                if($data->name == 'manual_payment_'){
-                    PaymentGateway::where('name',$data->name)->update(['name' => 'bank_transfer']);
-                }
+        //         if($data->name == 'manual_payment_'){
+        //             PaymentGateway::where('name',$data->name)->update(['name' => 'bank_transfer']);
+        //         }
 
-                if(!in_array($data->name,$existing_database_gateway)){
-                    PaymentGateway::UpdateOrCreate([
-                        'name' => $data->name,
-                        'image' => $data->image,
-                        'description' => $data->description,
-                        'status' => $data->status,
-                        'test_mode' => $data->test_mode,
-                        'credentials' => $data->credentials,
-                    ]);
-                }
-            }
-        }
+        //         if(!in_array($data->name,$existing_database_gateway)){
+        //             PaymentGateway::UpdateOrCreate([
+        //                 'name' => $data->name,
+        //                 'image' => $data->image,
+        //                 'description' => $data->description,
+        //                 'status' => $data->status,
+        //                 'test_mode' => $data->test_mode,
+        //                 'credentials' => $data->credentials,
+        //             ]);
+        //         }
+        //     }
+        // }
     }
 
     private function landlord_new_permission_seed()
@@ -168,8 +191,9 @@ class DatabaseSeeder extends Seeder
             'user-website-instruction-edit','user-website-instruction-delete','other-demo-data','page-builder-demo-data','plugin-manage'
         ];
 
+        // Using 'api_admin' guard to match RolesAndPermissionsSeeder
         foreach ($permissions as $permission){
-            \Spatie\Permission\Models\Permission::updateOrCreate(['name' => $permission,'guard_name' => 'admin']);
+            \Spatie\Permission\Models\Permission::updateOrCreate(['name' => $permission,'guard_name' => 'api_admin']);
         }
     }
 
@@ -233,34 +257,40 @@ class DatabaseSeeder extends Seeder
         }
     }
 
+    /**
+     * TODO: Uncomment when update_static_option() helper is implemented
+     */
     private function static_data_or_switcher_update()
     {
-        update_static_option('section_title_extra_design_status','on');
-        update_static_option('landlord_frontend_contact_info_show_hide','on');
-        update_static_option('landlord_frontend_social_info_show_hide','on');
-        update_static_option('landlord_frontend_language_show_hide','on');
+        // update_static_option('section_title_extra_design_status','on');
+        // update_static_option('landlord_frontend_contact_info_show_hide','on');
+        // update_static_option('landlord_frontend_social_info_show_hide','on');
+        // update_static_option('landlord_frontend_language_show_hide','on');
     }
 
+    /**
+     * TODO: Uncomment when update_static_option_central() helper is implemented
+     */
     private function update_old_theme_slug()
     {
-        $this->update_action_old_theme_slug('theme-1','donation');
-        $this->update_action_old_theme_slug('theme-2','job-find');
-        $this->update_action_old_theme_slug('theme-3','event');
-        $this->update_action_old_theme_slug('theme-4','support-ticketing');
-        $this->update_action_old_theme_slug('theme-6','article-listing');
-        $this->update_action_old_theme_slug('theme-5','eCommerce');
-        $this->update_action_old_theme_slug('theme-9','construction');
-        $this->update_action_old_theme_slug('theme-10','consultancy');
-        $this->update_action_old_theme_slug('theme-7','agency');
-        $this->update_action_old_theme_slug('theme-8','newspaper');
-        $this->update_action_old_theme_slug('theme-13','portfolio');
-        $this->update_action_old_theme_slug('theme-14','software-business');
-        $this->update_action_old_theme_slug('theme-11','wedding');
-        $this->update_action_old_theme_slug('theme-12','photography');
-        $this->update_action_old_theme_slug('theme-15','barber-shop');
+        // $this->update_action_old_theme_slug('theme-1','donation');
+        // $this->update_action_old_theme_slug('theme-2','job-find');
+        // $this->update_action_old_theme_slug('theme-3','event');
+        // $this->update_action_old_theme_slug('theme-4','support-ticketing');
+        // $this->update_action_old_theme_slug('theme-6','article-listing');
+        // $this->update_action_old_theme_slug('theme-5','eCommerce');
+        // $this->update_action_old_theme_slug('theme-9','construction');
+        // $this->update_action_old_theme_slug('theme-10','consultancy');
+        // $this->update_action_old_theme_slug('theme-7','agency');
+        // $this->update_action_old_theme_slug('theme-8','newspaper');
+        // $this->update_action_old_theme_slug('theme-13','portfolio');
+        // $this->update_action_old_theme_slug('theme-14','software-business');
+        // $this->update_action_old_theme_slug('theme-11','wedding');
+        // $this->update_action_old_theme_slug('theme-12','photography');
+        // $this->update_action_old_theme_slug('theme-15','barber-shop');
 
         //for auto
-        update_static_option_central('auto_theme_slug_update_status',1);
+        // update_static_option_central('auto_theme_slug_update_status',1);
     }
 
     private function update_action_old_theme_slug($old_slug,$new_slug)

@@ -23,6 +23,7 @@ use Illuminate\Support\Str;
  * - Password reset flow
  * - Email verification
  * - Social login integration
+ * - Two-factor authentication integration
  */
 final class AuthService
 {
@@ -90,10 +91,11 @@ final class AuthService
      *
      * @param string $credential Email or username
      * @param string $password
-     * @return array{user: User, token: string, expires_at: string}
+     * @param string|null $deviceToken Optional trusted device token for 2FA bypass
+     * @return array{user: User, token: string, expires_at: string}|array{user: User, requires_2fa: true, two_factor_token: string}
      * @throws AuthenticationException
      */
-    public function authenticateUser(string $credential, string $password): array
+    public function authenticateUser(string $credential, string $password, ?string $deviceToken = null): array
     {
         $user = $this->findUserByCredential(User::class, $credential);
 
@@ -102,12 +104,63 @@ final class AuthService
             throw new AuthenticationException('Invalid credentials');
         }
 
+        /** @var User $user */
+        // Check if 2FA is enabled
+        if ($user->hasTwoFactorEnabled()) {
+            // Check for trusted device
+            if ($deviceToken) {
+                $twoFactorService = app(TwoFactorAuthService::class);
+                if ($twoFactorService->isTrustedDevice($user, $deviceToken)) {
+                    // Device is trusted, skip 2FA
+                    Log::info('User login with trusted device', ['user_id' => $user->id]);
+
+                    $token = $this->createToken($user, 'user-token', self::USER_ABILITIES);
+
+                    return [
+                        'user' => $user,
+                        'token' => $token['token'],
+                        'expires_at' => $token['expires_at'],
+                    ];
+                }
+            }
+
+            // 2FA required - generate temporary token
+            $twoFactorService = app(TwoFactorAuthService::class);
+            $twoFactorToken = $twoFactorService->generateTwoFactorToken($user);
+
+            Log::info('User login requires 2FA', ['user_id' => $user->id]);
+
+            return [
+                'user' => $user,
+                'requires_2fa' => true,
+                'two_factor_token' => $twoFactorToken,
+            ];
+        }
+
         $token = $this->createToken($user, 'user-token', self::USER_ABILITIES);
 
         Log::info('User logged in', ['user_id' => $user->id]);
 
         return [
             'user' => $user,
+            'token' => $token['token'],
+            'expires_at' => $token['expires_at'],
+        ];
+    }
+
+    /**
+     * Authenticate user directly (skip credential check, used after 2FA verification).
+     *
+     * @param User $user
+     * @return array{token: string, expires_at: string}
+     */
+    public function authenticateUserDirect(User $user): array
+    {
+        $token = $this->createToken($user, 'user-token', self::USER_ABILITIES);
+
+        Log::info('User logged in after 2FA', ['user_id' => $user->id]);
+
+        return [
             'token' => $token['token'],
             'expires_at' => $token['expires_at'],
         ];

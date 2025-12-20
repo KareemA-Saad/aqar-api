@@ -2,20 +2,34 @@
 
 namespace Database\Seeders\Tenant;
 
-use App\Helpers\ImageDataSeedingHelper;
+// TODO: Uncomment when ImageDataSeedingHelper is implemented
+// use App\Helpers\ImageDataSeedingHelper;
 use App\Mail\TenantCredentialMail;
 use App\Models\Admin;
 use App\Models\Language;
-use App\Models\Menu;
-use App\Models\TopbarInfo;
+// TODO: Uncomment when Menu model is implemented
+// use App\Models\Menu;
+// TODO: Uncomment when TopbarInfo model is implemented
+// use App\Models\TopbarInfo;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Mail;
 
+/**
+ * GeneralData - Seeds static options for tenant
+ * 
+ * TODO: Requires static_options table and various models
+ * This seeder inserts raw SQL data - ensure tables exist before running
+ */
 class GeneralData extends Seeder
 {
 
     public static function excute()
     {
+        // TODO: Uncomment when static_options table is created
+        // Requires: static_options table with columns (id, option_name, option_value, created_at, updated_at)
+        return; // Early return - disabled until dependencies are ready
+        
+        /*
         \DB::statement("INSERT INTO `static_options` (`id`, `option_name`, `option_value`, `created_at`, `updated_at`)
 VALUES
 	(1,'site_logo','310','2022-08-10 16:00:53','2023-01-12 12:04:51'),
@@ -572,5 +586,6 @@ VALUES
 	(600,'set_environment_env',NULL,'2023-05-25 10:25:07','2023-05-25 10:25:07'),
 	(601,'table_list_data_orderable_status',NULL,'2023-05-25 10:25:07','2023-05-25 04:27:45'),
 	(602,'mysql_database_engine',NULL,'2023-05-25 10:25:07','2023-05-25 10:25:07')");
+        */
     }
 }

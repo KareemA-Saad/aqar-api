@@ -6,20 +6,35 @@ use App\Helpers\SanitizeInput;
 use App\Mail\TenantCredentialMail;
 use App\Models\Admin;
 use App\Models\Language;
-use App\Models\Menu;
+// TODO: Uncomment when Menu model is implemented
+// use App\Models\Menu;
 use App\Models\Page;
-use App\Models\PageBuilder;
+// TODO: Uncomment when PageBuilder model is implemented
+// use App\Models\PageBuilder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
+/**
+ * MediaSeed - Seeds media assets for tenant
+ * 
+ * TODO: Requires tenant context, media_uploaders table, and demo assets
+ */
 class MediaSeed extends Seeder
 {
 
     public static function run()
     {
+        // TODO: Uncomment when tenant context, assets directory, and media_uploaders table are ready
+        // Requires: 
+        // - tenant() helper returning initialized tenant
+        // - assets/tenant/seeder-demo-assets directory
+        // - media_uploaders table
+        return; // Early return - disabled until dependencies are ready
+        
+        /*
         $source_dir = 'assets/tenant/seeder-demo-assets';
         $destination_dir = 'assets/tenant/uploads/media-uploader/'.tenant()->id;
         File::copyDirectory($source_dir,$destination_dir);
@@ -541,6 +556,7 @@ class MediaSeed extends Seeder
         (550, 'restaurant_leaf_one.png', 'restaurant_leaf_one.png', NULL, '4.01 KB', 0, 1, '101 x 115 pixels', '2023-10-25 08:04:46', '2023-10-25 08:04:46'),
         (551,'hotel_booking_header.jpg','hotel_booking_header.jpg',NULL,'8.03 KB',0,1,'948 x 671 pixels','2023-05-29 10:33:28','2023-05-29 10:33:28')
         ");
+        */
     }
 }
 
