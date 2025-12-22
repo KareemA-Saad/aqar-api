@@ -3023,6 +3023,371 @@
                 ]
             }
         },
+        "/api/v1/admin/email-settings/smtp": {
+            "get": {
+                "tags": [
+                    "Email Settings"
+                ],
+                "summary": "Get SMTP configuration",
+                "description": "Retrieves current SMTP settings. Password is always masked.",
+                "operationId": "89e25158cff4992ccf30e71dbcf9c418",
+                "responses": {
+                    "200": {
+                        "description": "SMTP configuration retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "SMTP configuration retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SmtpConfigResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Email Settings"
+                ],
+                "summary": "Update SMTP configuration",
+                "description": "Updates SMTP settings for sending emails. Leave password empty to keep existing password.",
+                "operationId": "37d4e8f7a5cb466e56a6ee8b27360d58",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SmtpSettingsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "SMTP configuration updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "SMTP configuration updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SmtpConfigResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/email-settings/test": {
+            "post": {
+                "tags": [
+                    "Email Settings"
+                ],
+                "summary": "Send test email",
+                "description": "Sends a test email to verify SMTP configuration is working correctly",
+                "operationId": "09dcb3b816efbdf595e5b7fc509950bf",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/TestEmailRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Test email sent successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Test email sent successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failed to send test email",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Failed to send test email"
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Connection refused"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/email-settings/templates": {
+            "get": {
+                "tags": [
+                    "Email Settings"
+                ],
+                "summary": "Get all email templates",
+                "description": "Retrieves a list of all available email templates with their current configuration",
+                "operationId": "e2b456c3a0a56c5d6cbe5d67ff354277",
+                "responses": {
+                    "200": {
+                        "description": "Email templates retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email templates retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/EmailTemplateResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/email-settings/templates/{template}": {
+            "get": {
+                "tags": [
+                    "Email Settings"
+                ],
+                "summary": "Get single email template",
+                "description": "Retrieves a specific email template by its ID",
+                "operationId": "a174f4ff315725864ef458056d206274",
+                "parameters": [
+                    {
+                        "name": "template",
+                        "in": "path",
+                        "description": "Template ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "welcome_email"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Email template retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email template retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/EmailTemplateResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Template not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Email Settings"
+                ],
+                "summary": "Update email template",
+                "description": "Updates a specific email template by its ID",
+                "operationId": "c1fe7b07025857f20368174793688ec5",
+                "parameters": [
+                    {
+                        "name": "template",
+                        "in": "path",
+                        "description": "Template ID",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "welcome_email"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/EmailTemplateRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email template updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email template updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/EmailTemplateResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Template not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
         "/api/v1/admin/price-plans": {
             "get": {
                 "tags": [
@@ -4300,6 +4665,531 @@
                                 }
                             }
                         }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/settings/{group}": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Get settings by group",
+                "description": "Retrieves all settings for a specific group (general, email, seo, payment, tenant, appearance, typography, third_party, gdpr, pages)",
+                "operationId": "bfc5ba048ec0f2c18b56cc2ab46c2802",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "Settings group name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "general",
+                                "email",
+                                "seo",
+                                "payment",
+                                "tenant",
+                                "appearance",
+                                "typography",
+                                "third_party",
+                                "gdpr",
+                                "pages"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Settings retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Settings retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SettingsGroupResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Settings group not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Settings group not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Update settings by group",
+                "description": "Updates multiple settings at once for a specific group",
+                "operationId": "e70c3dc75a2771e87102cbd4177e155f",
+                "parameters": [
+                    {
+                        "name": "group",
+                        "in": "path",
+                        "description": "Settings group name",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "general",
+                                "email",
+                                "seo",
+                                "payment",
+                                "tenant",
+                                "appearance",
+                                "typography",
+                                "third_party",
+                                "gdpr",
+                                "pages"
+                            ]
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GeneralSettingsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Settings updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Settings updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SettingsGroupResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid settings keys for group"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Settings group not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/settings/key/{key}": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Get single setting by key",
+                "description": "Retrieves a single setting value by its key",
+                "operationId": "859b59288d630513b13ee5754fbce288",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "Setting key",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "site_title"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Setting retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Setting retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SettingResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Update single setting by key",
+                "description": "Updates a single setting value by its key",
+                "operationId": "cca2724d549b8c9c683235901e26b032",
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "Setting key",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "site_title"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateSingleSettingRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Setting updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Setting updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/SettingResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/settings": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Get all settings groups",
+                "description": "Returns a list of all available settings groups and their keys",
+                "operationId": "2b3ae41ad3c709c59d53a35c359eca6c",
+                "responses": {
+                    "200": {
+                        "description": "Groups retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Settings groups retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "groups": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    },
+                                                    "example": [
+                                                        "general",
+                                                        "email",
+                                                        "seo",
+                                                        "payment"
+                                                    ]
+                                                },
+                                                "keys_by_group": {
+                                                    "type": "object",
+                                                    "additionalProperties": {
+                                                        "type": "array",
+                                                        "items": {
+                                                            "type": "string"
+                                                        }
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/settings/all": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Get all settings",
+                "description": "Returns all settings organized by groups",
+                "operationId": "db49a315f7d39f7a386c20e505349e13",
+                "responses": {
+                    "200": {
+                        "description": "All settings retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "All settings retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "additionalProperties": {
+                                                "type": "object",
+                                                "additionalProperties": {}
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/settings/clear-cache": {
+            "post": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Clear settings cache",
+                "description": "Clears all cached settings values",
+                "operationId": "00d5d3700a896f7c38a8eb81f0c60171",
+                "responses": {
+                    "200": {
+                        "description": "Cache cleared successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Settings cache cleared successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/settings/search": {
+            "get": {
+                "tags": [
+                    "Settings"
+                ],
+                "summary": "Search settings",
+                "description": "Search settings by key pattern",
+                "operationId": "1ea8f24ac00c98286563d969dc217871",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Search query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "smtp"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Search completed"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/SettingResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden"
                     }
                 },
                 "security": [
@@ -10762,6 +11652,140 @@
                 },
                 "type": "object"
             },
+            "EmailTemplateRequest": {
+                "title": "Email Template Request",
+                "description": "Request body for updating email template",
+                "required": [
+                    "subject",
+                    "body"
+                ],
+                "properties": {
+                    "subject": {
+                        "description": "Email Template Request DTO\n\nValidates email template update data.",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "Welcome to {{site_name}}"
+                    },
+                    "body": {
+                        "type": "string",
+                        "example": "<h1>Hello {{user_name}}</h1><p>Welcome to our platform!</p>"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "GeneralSettingsRequest": {
+                "title": "General Settings Request",
+                "description": "Request body for updating general settings",
+                "properties": {
+                    "settings": {
+                        "description": "Key-value pairs of settings to update",
+                        "type": "object",
+                        "example": {
+                            "site_title": "My Site",
+                            "timezone": "UTC"
+                        },
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "SmtpSettingsRequest": {
+                "title": "SMTP Settings Request",
+                "description": "Request body for updating SMTP configuration",
+                "required": [
+                    "host",
+                    "port",
+                    "username",
+                    "encryption",
+                    "from_email"
+                ],
+                "properties": {
+                    "driver": {
+                        "description": "SMTP Settings Request DTO\n\nValidates SMTP/Email settings update data.",
+                        "type": "string",
+                        "enum": [
+                            "smtp",
+                            "sendmail",
+                            "mailgun",
+                            "ses",
+                            "postmark"
+                        ],
+                        "example": "smtp"
+                    },
+                    "host": {
+                        "type": "string",
+                        "example": "smtp.gmail.com"
+                    },
+                    "port": {
+                        "type": "integer",
+                        "example": 587
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "your-email@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "your-app-password"
+                    },
+                    "encryption": {
+                        "type": "string",
+                        "enum": [
+                            "tls",
+                            "ssl",
+                            "none"
+                        ],
+                        "example": "tls"
+                    },
+                    "from_email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "noreply@example.com"
+                    },
+                    "from_name": {
+                        "type": "string",
+                        "example": "My Application"
+                    }
+                },
+                "type": "object"
+            },
+            "TestEmailRequest": {
+                "title": "Test Email Request",
+                "description": "Request body for sending a test email",
+                "required": [
+                    "email"
+                ],
+                "properties": {
+                    "email": {
+                        "description": "Test Email Request DTO\n\nValidates test email request data.",
+                        "type": "string",
+                        "format": "email",
+                        "example": "test@example.com"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateSingleSettingRequest": {
+                "title": "Update Single Setting Request",
+                "description": "Request body for updating a single setting",
+                "required": [
+                    "value"
+                ],
+                "properties": {
+                    "value": {
+                        "description": "The setting value",
+                        "example": "My Site Title"
+                    }
+                },
+                "type": "object"
+            },
             "CancelSubscriptionRequest": {
                 "title": "Cancel Subscription Request",
                 "required": [
@@ -11342,6 +12366,49 @@
                 },
                 "type": "object"
             },
+            "EmailTemplateResource": {
+                "title": "Email Template Resource",
+                "description": "Email template response",
+                "properties": {
+                    "id": {
+                        "description": "Email Template Resource\n\nTransforms email template for API responses.",
+                        "type": "string",
+                        "example": "welcome_email"
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Welcome Email"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Sent when a new user registers"
+                    },
+                    "subject": {
+                        "type": "string",
+                        "example": "Welcome to {{site_name}}"
+                    },
+                    "body": {
+                        "type": "string",
+                        "example": "<h1>Hello {{user_name}}</h1>"
+                    },
+                    "enabled": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "variables": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "{{site_name}}",
+                            "{{user_name}}",
+                            "{{user_email}}"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
             "MediaCollection": {
                 "title": "Media Collection",
                 "description": "Collection of media resources",
@@ -11842,6 +12909,101 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "SettingResource": {
+                "title": "Setting Resource",
+                "description": "Single setting response",
+                "properties": {
+                    "key": {
+                        "description": "Setting Resource\n\nTransforms a single setting for API responses.",
+                        "type": "string",
+                        "example": "site_title"
+                    },
+                    "value": {
+                        "description": "The setting value",
+                        "example": "My Site"
+                    },
+                    "group": {
+                        "type": "string",
+                        "example": "general",
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "SettingsGroupResource": {
+                "title": "Settings Group Resource",
+                "description": "Settings grouped by category",
+                "properties": {
+                    "group": {
+                        "description": "Settings Group Resource\n\nTransforms settings grouped by category for API responses.",
+                        "type": "string",
+                        "example": "general"
+                    },
+                    "settings": {
+                        "type": "object",
+                        "example": {
+                            "site_title": "My Site",
+                            "timezone": "UTC"
+                        },
+                        "additionalProperties": {
+                            "description": "Setting key-value pairs"
+                        }
+                    },
+                    "keys": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "example": [
+                            "site_title",
+                            "timezone",
+                            "site_logo"
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "SmtpConfigResource": {
+                "title": "SMTP Config Resource",
+                "description": "SMTP configuration response (password masked)",
+                "properties": {
+                    "driver": {
+                        "description": "SMTP Config Resource\n\nTransforms SMTP configuration for API responses.",
+                        "type": "string",
+                        "example": "smtp"
+                    },
+                    "host": {
+                        "type": "string",
+                        "example": "smtp.gmail.com"
+                    },
+                    "port": {
+                        "type": "string",
+                        "example": "587"
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "your-email@gmail.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "********"
+                    },
+                    "encryption": {
+                        "type": "string",
+                        "example": "tls"
+                    },
+                    "from_email": {
+                        "type": "string",
+                        "example": "noreply@example.com"
+                    },
+                    "from_name": {
+                        "type": "string",
+                        "example": "My Application",
+                        "nullable": true
                     }
                 },
                 "type": "object"
@@ -12673,12 +13835,20 @@
             "description": "Admin user management endpoints (Guard: api_admin). Manage platform administrators."
         },
         {
+            "name": "Email Settings",
+            "description": "Email and SMTP configuration management endpoints"
+        },
+        {
             "name": "Price Plan Management (Admin)",
             "description": "Admin endpoints to manage price plans and features (Guard: api_admin)"
         },
         {
             "name": "Role Management",
             "description": "Role and permission management endpoints (Guard: api_admin). Manage roles and their permissions."
+        },
+        {
+            "name": "Settings",
+            "description": "Application settings management endpoints"
         },
         {
             "name": "Admin Support Departments",
