@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\V1\Landlord\SupportTicketController;
 use App\Http\Controllers\Api\V1\Landlord\TenantController;
 use App\Http\Controllers\Api\V1\Landlord\UserController;
 use App\Http\Controllers\Api\V1\Landlord\UserDashboardController;
+use App\Http\Controllers\Api\V1\Shared\MediaController;
 use App\Http\Controllers\Api\V1\Tenant\TenantInfoController;
 use Illuminate\Support\Facades\Route;
 
@@ -245,6 +246,21 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::put('{department}', [SupportDepartmentController::class, 'update'])->name('update');
             Route::delete('{department}', [SupportDepartmentController::class, 'destroy'])->name('destroy');
         });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Media Management Routes (Admin)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('media')->name('media.')->group(function () {
+            Route::get('/', [MediaController::class, 'index'])->name('index');
+            Route::post('/', [MediaController::class, 'upload'])->name('upload');
+            Route::get('storage-info', [MediaController::class, 'storageInfo'])->name('storage-info');
+            Route::post('bulk-delete', [MediaController::class, 'bulkDelete'])->name('bulk-delete');
+            Route::get('{id}', [MediaController::class, 'show'])->name('show');
+            Route::put('{id}', [MediaController::class, 'update'])->name('update');
+            Route::delete('{id}', [MediaController::class, 'destroy'])->name('destroy');
+        });
     });
 
     /*
@@ -319,6 +335,21 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::post('{subscriptionId}/cancel', [SubscriptionController::class, 'cancel'])->name('cancel');
             Route::post('{subscriptionId}/renew', [SubscriptionController::class, 'renew'])->name('renew');
         });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Media Management Routes (User)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('media')->name('media.')->group(function () {
+            Route::get('/', [MediaController::class, 'index'])->name('index');
+            Route::post('/', [MediaController::class, 'upload'])->name('upload');
+            Route::get('storage-info', [MediaController::class, 'storageInfo'])->name('storage-info');
+            Route::post('bulk-delete', [MediaController::class, 'bulkDelete'])->name('bulk-delete');
+            Route::get('{id}', [MediaController::class, 'show'])->name('show');
+            Route::put('{id}', [MediaController::class, 'update'])->name('update');
+            Route::delete('{id}', [MediaController::class, 'destroy'])->name('destroy');
+        });
     });
 
     /*
@@ -346,6 +377,21 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         ->group(function () {
             // Tenant info endpoint - always available
             Route::get('info', [TenantInfoController::class, 'info'])->name('info');
+
+            /*
+            |--------------------------------------------------------------------------
+            | Media Management Routes (Tenant Context)
+            |--------------------------------------------------------------------------
+            */
+            Route::prefix('media')->name('media.')->group(function () {
+                Route::get('/', [MediaController::class, 'index'])->name('index');
+                Route::post('/', [MediaController::class, 'upload'])->name('upload');
+                Route::get('storage-info', [MediaController::class, 'storageInfo'])->name('storage-info');
+                Route::post('bulk-delete', [MediaController::class, 'bulkDelete'])->name('bulk-delete');
+                Route::get('{id}', [MediaController::class, 'show'])->name('show');
+                Route::put('{id}', [MediaController::class, 'update'])->name('update');
+                Route::delete('{id}', [MediaController::class, 'destroy'])->name('destroy');
+            });
 
             // Add tenant-specific endpoints here
             // These routes have access to the tenant's database
