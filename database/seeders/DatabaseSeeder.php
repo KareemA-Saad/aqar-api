@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         // Seed roles and permissions first (this is the main seeder for auth)
         $this->call([
             RolesAndPermissionsSeeder::class,
+            LanguageSeeder::class,
         ]);
 
         // TODO: Uncomment when Themes model and related assets are implemented

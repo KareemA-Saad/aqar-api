@@ -182,7 +182,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        // 'Example' => App\Facades\Example::class,
+        'GlobalLanguage' => App\Facades\GlobalLanguage::class,
     ])->toArray(),
 
 ];
