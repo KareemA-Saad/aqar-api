@@ -3388,6 +3388,653 @@
                 ]
             }
         },
+        "/api/v1/admin/languages": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "List all languages",
+                "description": "Retrieves a list of all available languages with their status and configuration.",
+                "operationId": "d4183de00d5b90c9618e4ebbf489a50b",
+                "parameters": [
+                    {
+                        "name": "active_only",
+                        "in": "query",
+                        "description": "Filter to show only active languages",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": false
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Languages retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Languages retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/LanguageCollection"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Create a new language",
+                "description": "Creates a new language with the provided name, code, direction, and status.",
+                "operationId": "c36a909d5098037da52337c30cc35a53",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreLanguageRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Language created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Language created successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/LanguageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Get language details",
+                "description": "Retrieves detailed information for a specific language including translation statistics.",
+                "operationId": "7102069edc63a75e715b17d48c12d3ab",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Language retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Language retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/LanguageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Update a language",
+                "description": "Updates an existing language with the provided details.",
+                "operationId": "b11ec8895ad48c28c5a78ef97284dbb5",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "en"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateLanguageRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Language updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Language updated successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/LanguageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Delete a language",
+                "description": "Deletes a language. Cannot delete the default language.",
+                "operationId": "9d93caebb1c58e6a7c2b5dfb0d950759",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "fr"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Language deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Language deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "400": {
+                        "description": "Cannot delete the default language"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}/set-default": {
+            "post": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Set language as default",
+                "description": "Sets the specified language as the default language for the application.",
+                "operationId": "8aec39f01a9ba772629d0b5af5558042",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default language set successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Default language set successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/LanguageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}/toggle-status": {
+            "patch": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Toggle language status",
+                "description": "Toggles the active/inactive status of a language. Cannot deactivate the default language.",
+                "operationId": "4d8cf538c2318c829d00f4f9dedfc782",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "fr"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Language status toggled successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Language status toggled successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/LanguageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "400": {
+                        "description": "Cannot deactivate the default language"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}/export": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Export translations",
+                "description": "Exports all translations for a language as a JSON file.",
+                "operationId": "bedb8cf24584224ce7b9e78f6f356869",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translations exported successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "example": {
+                                        "Hello": "مرحبا",
+                                        "Welcome": "أهلاً وسهلاً"
+                                    },
+                                    "additionalProperties": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}/import": {
+            "post": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Import translations",
+                "description": "Imports translations from a JSON object or file. Can merge with existing translations or replace all.",
+                "operationId": "de0378ecf030e68a7afe8d9511a56f6d",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ImportTranslationsRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "description": "JSON file containing translations",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "merge": {
+                                        "description": "Whether to merge with existing translations",
+                                        "type": "boolean",
+                                        "default": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Translations imported successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Translations imported successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "imported_count": {
+                                                    "type": "integer",
+                                                    "example": 150
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}/sync": {
+            "post": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Sync translations",
+                "description": "Synchronizes translations with the default language file, adding any missing keys.",
+                "operationId": "35320c73916a3222a0d4fb4a62ae72be",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translations synchronized successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Translations synchronized successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
         "/api/v1/admin/price-plans": {
             "get": {
                 "tags": [
@@ -6397,6 +7044,550 @@
                 ]
             }
         },
+        "/api/v1/admin/languages/{code}/translations": {
+            "get": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Get translations",
+                "description": "Retrieves all translations for a language, optionally filtered by group.",
+                "operationId": "6b0f151df9c5e663375faf140bcc1701",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    },
+                    {
+                        "name": "group",
+                        "in": "query",
+                        "description": "Filter translations by group/namespace",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "admin"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 50,
+                            "maximum": 200
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translations retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Translations retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "language_code": {
+                                                    "type": "string",
+                                                    "example": "ar"
+                                                },
+                                                "group": {
+                                                    "type": "string",
+                                                    "example": null,
+                                                    "nullable": true
+                                                },
+                                                "total_keys": {
+                                                    "type": "integer",
+                                                    "example": 150
+                                                },
+                                                "translated_keys": {
+                                                    "type": "integer",
+                                                    "example": 145
+                                                },
+                                                "missing_keys": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "completion_percentage": {
+                                                    "type": "number",
+                                                    "example": 96.67
+                                                },
+                                                "translations": {
+                                                    "type": "object",
+                                                    "additionalProperties": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "pagination": {
+                                                    "properties": {
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 50
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 150
+                                                        },
+                                                        "total_pages": {
+                                                            "type": "integer",
+                                                            "example": 3
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Bulk update translations",
+                "description": "Updates multiple translations at once for a specific language.",
+                "operationId": "d001e42f13388347d673c87554066bf1",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    },
+                    {
+                        "name": "group",
+                        "in": "query",
+                        "description": "Translation group/namespace (for prefixing keys)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "admin"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateTranslationsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Translations updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Translations updated successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "updated_count": {
+                                                    "type": "integer",
+                                                    "example": 10
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}/translations/search": {
+            "get": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Search translations",
+                "description": "Searches translations by key or value for a specific language.",
+                "operationId": "ae337fc3e6c820c383549319cc589d59",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    },
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Search query string",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "minLength": 2,
+                            "example": "login"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Search results retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Search results retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "query": {
+                                                    "type": "string",
+                                                    "example": "login"
+                                                },
+                                                "results_count": {
+                                                    "type": "integer",
+                                                    "example": 5
+                                                },
+                                                "results": {
+                                                    "type": "object",
+                                                    "example": {
+                                                        "Login": "تسجيل الدخول",
+                                                        "Login Button": "زر تسجيل الدخول"
+                                                    },
+                                                    "additionalProperties": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "422": {
+                        "description": "Search query is required and must be at least 2 characters"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}/translations/missing": {
+            "get": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Get missing translations",
+                "description": "Returns translation keys that are missing or untranslated (same as source language).",
+                "operationId": "5bfb8585bab016a82f65e244ea07fc0c",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number for pagination",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 50,
+                            "maximum": 200
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Missing translations retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Missing translations retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "language_code": {
+                                                    "type": "string",
+                                                    "example": "ar"
+                                                },
+                                                "total_missing": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                },
+                                                "missing_keys": {
+                                                    "description": "Key-value pairs where value is the source text",
+                                                    "type": "object",
+                                                    "additionalProperties": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "pagination": {
+                                                    "properties": {
+                                                        "current_page": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        },
+                                                        "per_page": {
+                                                            "type": "integer",
+                                                            "example": 50
+                                                        },
+                                                        "total": {
+                                                            "type": "integer",
+                                                            "example": 25
+                                                        },
+                                                        "total_pages": {
+                                                            "type": "integer",
+                                                            "example": 1
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/languages/{code}/translations/{key}": {
+            "patch": {
+                "tags": [
+                    "Translations"
+                ],
+                "summary": "Update single translation",
+                "description": "Updates a single translation key-value pair.",
+                "operationId": "64368231363662ff4c6a9e941a465274",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    },
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "Translation key (URL encoded)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Welcome"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "value"
+                                ],
+                                "properties": {
+                                    "value": {
+                                        "description": "Translated value",
+                                        "type": "string",
+                                        "example": "أهلاً وسهلاً"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Translation updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Translation updated successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "key": {
+                                                    "type": "string",
+                                                    "example": "Welcome"
+                                                },
+                                                "value": {
+                                                    "type": "string",
+                                                    "example": "أهلاً وسهلاً"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    },
+                    "403": {
+                        "description": "Forbidden - Insufficient permissions"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_admin": []
+                    }
+                ]
+            }
+        },
         "/api/v1/plans": {
             "get": {
                 "tags": [
@@ -6760,6 +7951,167 @@
                         "sanctum_user": []
                     }
                 ]
+            }
+        },
+        "/api/v1/languages": {
+            "get": {
+                "tags": [
+                    "Public Languages"
+                ],
+                "summary": "List active languages",
+                "description": "Retrieves a list of all active languages available for the application. No authentication required.",
+                "operationId": "05d041452e28e83cd3a717a1dfc89a2f",
+                "responses": {
+                    "200": {
+                        "description": "Languages retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Languages retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "languages": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/LanguageResource"
+                                                    }
+                                                },
+                                                "default": {
+                                                    "$ref": "#/components/schemas/LanguageResource"
+                                                },
+                                                "current": {
+                                                    "type": "string",
+                                                    "example": "en"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/languages/current": {
+            "get": {
+                "tags": [
+                    "Public Languages"
+                ],
+                "summary": "Get current language",
+                "description": "Returns the currently active language based on request headers or session.",
+                "operationId": "b142701a7023ef5d78ef6509a88aec13",
+                "responses": {
+                    "200": {
+                        "description": "Current language retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Current language retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "locale": {
+                                                    "type": "string",
+                                                    "example": "en"
+                                                },
+                                                "language": {
+                                                    "oneOf": [
+                                                        {
+                                                            "$ref": "#/components/schemas/LanguageResource"
+                                                        }
+                                                    ],
+                                                    "nullable": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/languages/{code}/translations": {
+            "get": {
+                "tags": [
+                    "Public Languages"
+                ],
+                "summary": "Get public translations",
+                "description": "Returns all translations for a specific language code. Useful for frontend localization.",
+                "operationId": "8ebac0c540f54788f3aecfd5577e39cc",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Language code (slug)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ar"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Translations retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Translations retrieved successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "language_code": {
+                                                    "type": "string",
+                                                    "example": "ar"
+                                                },
+                                                "translations": {
+                                                    "type": "object",
+                                                    "additionalProperties": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found or inactive"
+                    }
+                }
             }
         },
         "/api/v1/subscriptions/current": {
@@ -11308,6 +12660,131 @@
                 },
                 "type": "object"
             },
+            "ImportTranslationsRequest": {
+                "title": "Import Translations Request",
+                "description": "Request body for importing translations",
+                "required": [
+                    "translations"
+                ],
+                "properties": {
+                    "translations": {
+                        "description": "Key-value pairs of translations",
+                        "type": "object",
+                        "example": {
+                            "Hello": "مرحبا",
+                            "Goodbye": "مع السلامة"
+                        },
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    },
+                    "merge": {
+                        "description": "Whether to merge with existing translations (true) or replace all (false)",
+                        "type": "boolean",
+                        "default": true,
+                        "example": true
+                    },
+                    "file": {
+                        "description": "JSON file containing translations (alternative to translations object)",
+                        "type": "string",
+                        "format": "binary"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreLanguageRequest": {
+                "title": "Store Language Request",
+                "description": "Request body for creating a new language",
+                "required": [
+                    "name",
+                    "slug"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Display name of the language",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "English"
+                    },
+                    "slug": {
+                        "description": "Language code (ISO 639-1 or locale code)",
+                        "type": "string",
+                        "maxLength": 10,
+                        "example": "en"
+                    },
+                    "direction": {
+                        "description": "Text direction (0 = LTR, 1 = RTL)",
+                        "type": "integer",
+                        "default": 0,
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "example": 0
+                    },
+                    "status": {
+                        "description": "Whether the language is active",
+                        "type": "boolean",
+                        "default": true,
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateLanguageRequest": {
+                "title": "Update Language Request",
+                "description": "Request body for updating an existing language",
+                "properties": {
+                    "name": {
+                        "description": "Display name of the language",
+                        "type": "string",
+                        "maxLength": 191,
+                        "example": "English (US)"
+                    },
+                    "slug": {
+                        "description": "Language code (ISO 639-1 or locale code)",
+                        "type": "string",
+                        "maxLength": 10,
+                        "example": "en_US"
+                    },
+                    "direction": {
+                        "description": "Text direction (0 = LTR, 1 = RTL)",
+                        "type": "integer",
+                        "enum": [
+                            0,
+                            1
+                        ],
+                        "example": 0
+                    },
+                    "status": {
+                        "description": "Whether the language is active",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateTranslationsRequest": {
+                "title": "Update Translations Request",
+                "description": "Request body for bulk updating translations",
+                "required": [
+                    "translations"
+                ],
+                "properties": {
+                    "translations": {
+                        "description": "Key-value pairs of translations to update",
+                        "type": "object",
+                        "example": {
+                            "Welcome": "أهلاً وسهلاً",
+                            "Login": "تسجيل الدخول"
+                        },
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "BulkDeleteMediaRequest": {
                 "title": "Bulk Delete Media Request",
                 "required": [
@@ -12405,6 +13882,143 @@
                             "{{user_name}}",
                             "{{user_email}}"
                         ]
+                    }
+                },
+                "type": "object"
+            },
+            "LanguageCollection": {
+                "title": "Language Collection",
+                "description": "Paginated collection of languages",
+                "properties": {
+                    "data": {
+                        "description": "Language Collection Resource\n\nTransforms a collection of languages for API responses.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/LanguageResource"
+                        }
+                    },
+                    "meta": {
+                        "properties": {
+                            "current_page": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "from": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "last_page": {
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "per_page": {
+                                "type": "integer",
+                                "example": 15
+                            },
+                            "to": {
+                                "type": "integer",
+                                "example": 5
+                            },
+                            "total": {
+                                "type": "integer",
+                                "example": 5
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "links": {
+                        "properties": {
+                            "first": {
+                                "type": "string",
+                                "example": "/api/v1/admin/languages?page=1"
+                            },
+                            "last": {
+                                "type": "string",
+                                "example": "/api/v1/admin/languages?page=1"
+                            },
+                            "prev": {
+                                "type": "string",
+                                "example": null,
+                                "nullable": true
+                            },
+                            "next": {
+                                "type": "string",
+                                "example": null,
+                                "nullable": true
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "LanguageResource": {
+                "title": "Language Resource",
+                "description": "Language data for API responses",
+                "properties": {
+                    "id": {
+                        "description": "Language Resource\n\nTransforms a language model for API responses.",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "English"
+                    },
+                    "slug": {
+                        "type": "string",
+                        "example": "en"
+                    },
+                    "direction": {
+                        "description": "0 = LTR, 1 = RTL",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "direction_label": {
+                        "type": "string",
+                        "enum": [
+                            "ltr",
+                            "rtl"
+                        ],
+                        "example": "ltr"
+                    },
+                    "status": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "default": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "translation_stats": {
+                        "description": "Translation statistics (only included when requested)",
+                        "properties": {
+                            "total_keys": {
+                                "type": "integer",
+                                "example": 150
+                            },
+                            "translated_keys": {
+                                "type": "integer",
+                                "example": 145
+                            },
+                            "completion_percentage": {
+                                "type": "number",
+                                "format": "float",
+                                "example": 96.67
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15T10:30:00.000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-15T10:30:00.000Z"
                     }
                 },
                 "type": "object"
@@ -13578,6 +15192,56 @@
                 },
                 "type": "object"
             },
+            "TranslationResource": {
+                "title": "Translation Resource",
+                "description": "Translation data for a language",
+                "properties": {
+                    "language_code": {
+                        "description": "Language code",
+                        "type": "string",
+                        "example": "ar"
+                    },
+                    "group": {
+                        "description": "Translation group/namespace",
+                        "type": "string",
+                        "example": "admin",
+                        "nullable": true
+                    },
+                    "total_keys": {
+                        "description": "Total number of translation keys",
+                        "type": "integer",
+                        "example": 150
+                    },
+                    "translated_keys": {
+                        "description": "Number of translated keys",
+                        "type": "integer",
+                        "example": 145
+                    },
+                    "missing_keys": {
+                        "description": "Number of missing translations",
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "completion_percentage": {
+                        "description": "Translation completion percentage",
+                        "type": "number",
+                        "format": "float",
+                        "example": 96.67
+                    },
+                    "translations": {
+                        "description": "Key-value pairs of translations",
+                        "type": "object",
+                        "example": {
+                            "Hello": "مرحبا",
+                            "Welcome": "أهلاً وسهلاً"
+                        },
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "TrustedDeviceResource": {
                 "title": "Trusted Device Resource",
                 "description": "Trusted device data for 2FA",
@@ -13839,6 +15503,10 @@
             "description": "Email and SMTP configuration management endpoints"
         },
         {
+            "name": "Languages",
+            "description": "Language management endpoints for multi-language support"
+        },
+        {
             "name": "Price Plan Management (Admin)",
             "description": "Admin endpoints to manage price plans and features (Guard: api_admin)"
         },
@@ -13859,8 +15527,16 @@
             "description": "Support ticket management endpoints for administrators (Guard: api_admin)"
         },
         {
+            "name": "Translations",
+            "description": "Translation management endpoints for language localization"
+        },
+        {
             "name": "Price Plans (Public)",
             "description": "Public endpoints for viewing pricing plans and comparing features"
+        },
+        {
+            "name": "Public Languages",
+            "description": "Public language endpoints (no authentication required)"
         },
         {
             "name": "Subscriptions",
