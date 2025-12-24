@@ -24,6 +24,11 @@ use App\Http\Controllers\Api\V1\Landlord\Admin\EmailSettingsController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\SettingsController;
 use App\Http\Controllers\Api\V1\Shared\MediaController;
 use App\Http\Controllers\Api\V1\Tenant\TenantInfoController;
+use App\Http\Controllers\Api\V1\Tenant\Admin\DashboardController as TenantAdminDashboardController;
+use App\Http\Controllers\Api\V1\Tenant\Admin\SettingsController as TenantAdminSettingsController;
+use App\Http\Controllers\Api\V1\Tenant\Admin\ProfileController as TenantAdminProfileController;
+use App\Http\Controllers\Api\V1\Tenant\Admin\CustomerController as TenantAdminCustomerController;
+use App\Http\Controllers\Api\V1\Tenant\CustomerDashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -484,6 +489,72 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
                 Route::delete('{id}', [MediaController::class, 'destroy'])->name('destroy');
             });
 
+            /*
+            |--------------------------------------------------------------------------
+            | Tenant Admin Dashboard Routes
+            |--------------------------------------------------------------------------
+            | Routes for tenant admin dashboard statistics and charts.
+            */
+            Route::prefix('admin')->name('admin.')->group(function () {
+                // Dashboard Routes
+                Route::prefix('dashboard')->name('dashboard.')->group(function () {
+                    Route::get('/', [TenantAdminDashboardController::class, 'index'])->name('index');
+                    Route::get('revenue-chart', [TenantAdminDashboardController::class, 'revenueChart'])->name('revenue-chart');
+                    Route::get('orders-chart', [TenantAdminDashboardController::class, 'ordersChart'])->name('orders-chart');
+                    Route::get('top-products', [TenantAdminDashboardController::class, 'topProducts'])->name('top-products');
+                    Route::get('recent-orders', [TenantAdminDashboardController::class, 'recentOrders'])->name('recent-orders');
+                    Route::get('low-stock', [TenantAdminDashboardController::class, 'lowStock'])->name('low-stock');
+                    Route::get('recent-activity', [TenantAdminDashboardController::class, 'recentActivity'])->name('recent-activity');
+                });
+
+                // Settings Routes
+                Route::prefix('settings')->name('settings.')->group(function () {
+                    Route::get('/', [TenantAdminSettingsController::class, 'index'])->name('index');
+                    Route::get('general', [TenantAdminSettingsController::class, 'general'])->name('general');
+                    Route::put('general', [TenantAdminSettingsController::class, 'updateGeneral'])->name('general.update');
+                    Route::get('appearance', [TenantAdminSettingsController::class, 'appearance'])->name('appearance');
+                    Route::put('appearance', [TenantAdminSettingsController::class, 'updateAppearance'])->name('appearance.update');
+                    Route::get('email', [TenantAdminSettingsController::class, 'email'])->name('email');
+                    Route::put('email', [TenantAdminSettingsController::class, 'updateEmail'])->name('email.update');
+                    Route::get('social', [TenantAdminSettingsController::class, 'social'])->name('social');
+                    Route::put('social', [TenantAdminSettingsController::class, 'updateSocial'])->name('social.update');
+                    Route::get('seo', [TenantAdminSettingsController::class, 'seo'])->name('seo');
+                    Route::put('seo', [TenantAdminSettingsController::class, 'updateSeo'])->name('seo.update');
+                });
+
+                // Profile Routes
+                Route::prefix('profile')->name('profile.')->group(function () {
+                    Route::get('/', [TenantAdminProfileController::class, 'show'])->name('show');
+                    Route::put('/', [TenantAdminProfileController::class, 'update'])->name('update');
+                    Route::post('change-password', [TenantAdminProfileController::class, 'changePassword'])->name('change-password');
+                    Route::post('avatar', [TenantAdminProfileController::class, 'updateAvatar'])->name('avatar');
+                    Route::get('2fa', [TenantAdminProfileController::class, 'twoFactorSetup'])->name('2fa');
+                    Route::post('2fa/enable', [TenantAdminProfileController::class, 'enableTwoFactor'])->name('2fa.enable');
+                    Route::post('2fa/disable', [TenantAdminProfileController::class, 'disableTwoFactor'])->name('2fa.disable');
+                });
+
+                /*
+                |--------------------------------------------------------------------------
+                | Customer Management Routes (Tenant Admin)
+                |--------------------------------------------------------------------------
+                | Routes for tenant admins to manage customers (frontend users).
+                */
+                Route::prefix('customers')->name('customers.')->group(function () {
+                    Route::get('statistics', [TenantAdminCustomerController::class, 'statistics'])->name('statistics');
+                    Route::get('export', [TenantAdminCustomerController::class, 'export'])->name('export');
+                    Route::get('/', [TenantAdminCustomerController::class, 'index'])->name('index');
+                    Route::post('/', [TenantAdminCustomerController::class, 'store'])->name('store');
+                    Route::get('{id}', [TenantAdminCustomerController::class, 'show'])->name('show');
+                    Route::put('{id}', [TenantAdminCustomerController::class, 'update'])->name('update');
+                    Route::delete('{id}', [TenantAdminCustomerController::class, 'destroy'])->name('destroy');
+                    Route::patch('{id}/toggle-status', [TenantAdminCustomerController::class, 'toggleStatus'])->name('toggle-status');
+                    Route::post('{id}/change-password', [TenantAdminCustomerController::class, 'changePassword'])->name('change-password');
+                    Route::get('{id}/orders', [TenantAdminCustomerController::class, 'orders'])->name('orders');
+                    Route::post('{id}/send-email', [TenantAdminCustomerController::class, 'sendEmail'])->name('send-email');
+                    Route::post('{id}/resend-verification', [TenantAdminCustomerController::class, 'resendVerification'])->name('resend-verification');
+                });
+            });
+
             // Add tenant-specific endpoints here
             // These routes have access to the tenant's database
             //
@@ -517,12 +588,35 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         ->prefix('tenant/{tenant}/user')
         ->name('tenant.user.')
         ->group(function () {
-            // Add tenant user specific endpoints here
-            // Example: User profile, orders, etc.
-            //
-            // Route::get('profile', [TenantUserController::class, 'profile'])->name('profile');
-            // Route::put('profile', [TenantUserController::class, 'updateProfile'])->name('profile.update');
-            // Route::apiResource('orders', TenantUserOrderController::class)->only(['index', 'show']);
+            /*
+            |--------------------------------------------------------------------------
+            | Customer Dashboard Routes (Self-Service)
+            |--------------------------------------------------------------------------
+            | Routes for authenticated tenant customers to manage their account.
+            */
+            // Dashboard
+            Route::get('dashboard', [CustomerDashboardController::class, 'dashboard'])->name('dashboard');
+
+            // Profile management
+            Route::get('profile', [CustomerDashboardController::class, 'profile'])->name('profile');
+            Route::put('profile', [CustomerDashboardController::class, 'updateProfile'])->name('profile.update');
+            Route::post('change-password', [CustomerDashboardController::class, 'changePassword'])->name('change-password');
+
+            // Orders
+            Route::get('orders', [CustomerDashboardController::class, 'orders'])->name('orders.index');
+
+            // Wishlist management
+            Route::get('wishlist', [CustomerDashboardController::class, 'wishlist'])->name('wishlist.index');
+            Route::post('wishlist', [CustomerDashboardController::class, 'addToWishlist'])->name('wishlist.store');
+            Route::delete('wishlist', [CustomerDashboardController::class, 'clearWishlist'])->name('wishlist.clear');
+            Route::delete('wishlist/{productId}', [CustomerDashboardController::class, 'removeFromWishlist'])->name('wishlist.destroy');
+
+            // Address management
+            Route::get('addresses', [CustomerDashboardController::class, 'addresses'])->name('addresses.index');
+            Route::post('addresses', [CustomerDashboardController::class, 'addAddress'])->name('addresses.store');
+            Route::put('addresses/{addressId}', [CustomerDashboardController::class, 'updateAddress'])->name('addresses.update');
+            Route::delete('addresses/{addressId}', [CustomerDashboardController::class, 'deleteAddress'])->name('addresses.destroy');
+            Route::post('addresses/{addressId}/set-default', [CustomerDashboardController::class, 'setDefaultAddress'])->name('addresses.set-default');
         });
 });
 
