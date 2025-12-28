@@ -1,0 +1,7 @@
+{
+    "Blog": true,
+    "Product": true,
+    "Attributes": true,
+    "ShippingModule": true,
+    "CouponManage": true
+}

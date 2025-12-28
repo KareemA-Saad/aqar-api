@@ -1,0 +1,11 @@
+{
+    "name": "Attributes",
+    "alias": "attributes",
+    "description": "Product attributes module for managing categories, brands, colors, sizes, and tags",
+    "keywords": ["attributes", "categories", "brands", "colors", "sizes", "tags"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Attributes\\Providers\\AttributesServiceProvider"
+    ],
+    "files": []
+}
