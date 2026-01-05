@@ -7,9 +7,12 @@ use App\Http\Controllers\Api\V1\Auth\TenantUserAuthController;
 use App\Http\Controllers\Api\V1\Auth\TwoFactorAuthController;
 use App\Http\Controllers\Api\V1\Auth\UserAuthController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\AdminController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\LanguageController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\PricePlanController as AdminPricePlanController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\RoleController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\TranslationController;
 use App\Http\Controllers\Api\V1\Landlord\PlanController;
+use App\Http\Controllers\Api\V1\Landlord\PublicLanguageController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\SupportDepartmentController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\SupportTicketController as AdminSupportTicketController;
 use App\Http\Controllers\Api\V1\Landlord\SubscriptionController;
@@ -40,6 +43,19 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 Route::prefix('v1')->name('api.v1.')->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | Public Language Routes
+    |--------------------------------------------------------------------------
+    | Public endpoints for getting available languages and translations.
+    | No authentication required.
+    */
+    Route::prefix('languages')->name('languages.')->group(function () {
+        Route::get('/', [PublicLanguageController::class, 'index'])->name('index');
+        Route::get('current', [PublicLanguageController::class, 'current'])->name('current');
+        Route::get('{code}/translations', [PublicLanguageController::class, 'translations'])->name('translations');
+    });
 
     /*
     |--------------------------------------------------------------------------
@@ -308,6 +324,33 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::get('templates', [EmailSettingsController::class, 'getEmailTemplates'])->name('templates.index');
             Route::get('templates/{template}', [EmailSettingsController::class, 'getEmailTemplate'])->name('templates.show');
             Route::put('templates/{template}', [EmailSettingsController::class, 'updateEmailTemplate'])->name('templates.update');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Language Management Routes (Admin)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('languages')->name('languages.')->group(function () {
+            Route::get('/', [LanguageController::class, 'index'])->name('index');
+            Route::post('/', [LanguageController::class, 'store'])->name('store');
+            Route::get('{code}', [LanguageController::class, 'show'])->name('show');
+            Route::put('{code}', [LanguageController::class, 'update'])->name('update');
+            Route::delete('{code}', [LanguageController::class, 'destroy'])->name('destroy');
+            Route::post('{code}/set-default', [LanguageController::class, 'setDefault'])->name('set-default');
+            Route::patch('{code}/toggle-status', [LanguageController::class, 'toggleStatus'])->name('toggle-status');
+            Route::get('{code}/export', [LanguageController::class, 'export'])->name('export');
+            Route::post('{code}/import', [LanguageController::class, 'import'])->name('import');
+            Route::post('{code}/sync', [LanguageController::class, 'sync'])->name('sync');
+
+            // Translation Management Routes
+            Route::get('{code}/translations', [TranslationController::class, 'index'])->name('translations.index');
+            Route::put('{code}/translations', [TranslationController::class, 'update'])->name('translations.update');
+            Route::get('{code}/translations/search', [TranslationController::class, 'search'])->name('translations.search');
+            Route::get('{code}/translations/missing', [TranslationController::class, 'missingKeys'])->name('translations.missing');
+            Route::patch('{code}/translations/{key}', [TranslationController::class, 'updateSingle'])
+                ->where('key', '.*')
+                ->name('translations.update-single');
         });
     });
 

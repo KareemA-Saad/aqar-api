@@ -289,13 +289,99 @@ if (!function_exists('site_global_email')) {
 
 if (!function_exists('default_lang')) {
     /**
-     * Get the default language slug.
+     * Get the default language slug from the Language model.
      *
      * @return string
      */
     function default_lang(): string
     {
-        return get_static_option('default_language', 'en');
+        try {
+            return \App\Facades\GlobalLanguage::default_slug();
+        } catch (\Exception $e) {
+            return config('app.locale', 'en');
+        }
+    }
+}
+
+if (!function_exists('get_user_lang')) {
+    /**
+     * Get the current user's language slug.
+     *
+     * @return string
+     */
+    function get_user_lang(): string
+    {
+        try {
+            return \App\Facades\GlobalLanguage::user_lang_slug();
+        } catch (\Exception $e) {
+            return default_lang();
+        }
+    }
+}
+
+if (!function_exists('default_lang_name')) {
+    /**
+     * Get the default language name.
+     *
+     * @return string
+     */
+    function default_lang_name(): string
+    {
+        try {
+            $defaultLang = \App\Facades\GlobalLanguage::default();
+            return $defaultLang?->name ?? 'English';
+        } catch (\Exception $e) {
+            return 'English';
+        }
+    }
+}
+
+if (!function_exists('user_lang_dir')) {
+    /**
+     * Get the current user's language direction (ltr/rtl).
+     *
+     * @return string
+     */
+    function user_lang_dir(): string
+    {
+        try {
+            return \App\Facades\GlobalLanguage::user_lang_dir();
+        } catch (\Exception $e) {
+            return 'ltr';
+        }
+    }
+}
+
+if (!function_exists('default_lang_dir')) {
+    /**
+     * Get the default language direction (ltr/rtl).
+     *
+     * @return string
+     */
+    function default_lang_dir(): string
+    {
+        try {
+            return \App\Facades\GlobalLanguage::default_dir();
+        } catch (\Exception $e) {
+            return 'ltr';
+        }
+    }
+}
+
+if (!function_exists('all_languages')) {
+    /**
+     * Get all languages or active languages.
+     *
+     * @param int|null $type 1 for active only, null for all
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    function all_languages(?int $type = 1): \Illuminate\Database\Eloquent\Collection
+    {
+        try {
+            return \App\Facades\GlobalLanguage::all_languages($type);
+        } catch (\Exception $e) {
+            return new \Illuminate\Database\Eloquent\Collection();
+        }
     }
 }
 

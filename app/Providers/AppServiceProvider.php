@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Helpers\LanguageHelper;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -11,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Register GlobalLanguage singleton for language helper access
+        $this->app->singleton('GlobalLanguage', function ($app) {
+            return new LanguageHelper();
+        });
     }
 
     /**

@@ -42,6 +42,7 @@ class Kernel extends HttpKernel
             // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             \Illuminate\Routing\Middleware\ThrottleRequests::class.':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\SetApiLanguage::class,
         ],
     ];
 
@@ -79,5 +80,13 @@ class Kernel extends HttpKernel
         'tenant.context' => \App\Http\Middleware\EnsureTenantContext::class,
         'package.active' => \App\Http\Middleware\CheckPackageExpiry::class,
         'feature' => \App\Http\Middleware\CheckFeaturePermission::class,
+
+        // Localization Middleware
+        'api.language' => \App\Http\Middleware\SetApiLanguage::class,
+
+        // Spatie Permission Middleware
+        'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
     ];
 }

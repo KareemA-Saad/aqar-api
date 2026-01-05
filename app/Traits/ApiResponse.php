@@ -164,5 +164,37 @@ trait ApiResponse
     ): JsonResponse {
         return $this->error($message, 422, $errors);
     }
+
+    /**
+     * Alias for success() method.
+     *
+     * @param mixed $data
+     * @param string $message
+     * @param int $code
+     * @return JsonResponse
+     */
+    protected function successResponse(
+        mixed $data = null,
+        string $message = 'Success',
+        int $code = 200
+    ): JsonResponse {
+        return $this->success($data, $message, $code);
+    }
+
+    /**
+     * Alias for error() method.
+     *
+     * @param string $message
+     * @param int $code
+     * @param array $errors
+     * @return JsonResponse
+     */
+    protected function errorResponse(
+        string $message = 'Error',
+        int $code = 400,
+        array $errors = []
+    ): JsonResponse {
+        return $this->error($message, $code, $errors);
+    }
 }
 
