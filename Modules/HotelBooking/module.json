@@ -1,0 +1,13 @@
+{
+    "name": "HotelBooking",
+    "alias": "hotelbooking",
+    "description": "Hotel Booking module for hotel/room reservation system",
+    "keywords": ["hotel", "booking", "reservation", "rooms", "accommodation"],
+    "priority": 0,
+    "providers": [
+        "Modules\\HotelBooking\\Providers\\HotelBookingServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

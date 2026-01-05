@@ -3,5 +3,6 @@
     "Product": true,
     "Attributes": true,
     "ShippingModule": true,
-    "CouponManage": true
+    "CouponManage": true,
+    "HotelBooking": true
 }
