@@ -45,6 +45,11 @@ return [
                  */
                 'annotations' => [
                     base_path('app'),
+                    base_path('Modules/Blog/Http'),
+                    base_path('Modules/Product/Http'),
+                    base_path('Modules/Attributes/Http'),
+                    base_path('Modules/ShippingModule/Http'),
+                    base_path('Modules/CouponManage/Http'),
                 ],
             ],
         ],

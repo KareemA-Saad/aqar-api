@@ -1,0 +1,13 @@
+{
+    "name": "Blog",
+    "alias": "blog",
+    "description": "Blog module for tenant blog functionality",
+    "keywords": ["blog", "posts", "categories", "comments"],
+    "priority": 0,
+    "providers": [
+        "Modules\\Blog\\Providers\\BlogServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

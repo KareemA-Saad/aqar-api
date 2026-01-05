@@ -1,0 +1,11 @@
+{
+    "name": "CouponManage",
+    "alias": "couponmanage",
+    "description": "Coupon and discount code management for e-commerce",
+    "keywords": ["coupon", "discount", "promo"],
+    "priority": 0,
+    "providers": [
+        "Modules\\CouponManage\\Providers\\CouponManageServiceProvider"
+    ],
+    "files": []
+}

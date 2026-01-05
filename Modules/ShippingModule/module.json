@@ -1,0 +1,11 @@
+{
+    "name": "ShippingModule",
+    "alias": "shippingmodule",
+    "description": "Shipping zones and methods management for e-commerce",
+    "keywords": ["shipping", "zones", "methods", "delivery"],
+    "priority": 0,
+    "providers": [
+        "Modules\\ShippingModule\\Providers\\ShippingModuleServiceProvider"
+    ],
+    "files": []
+}
