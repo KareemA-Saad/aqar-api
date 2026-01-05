@@ -29181,159 +29181,6 @@
                 },
                 "type": "object"
             },
-            "TenantCollection": {
-                "title": "Tenant Collection",
-                "description": "Collection of tenant resources",
-                "properties": {
-                    "data": {
-                        "description": "Tenant Collection Resource\n\nCollection wrapper for tenant resources.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/TenantResource"
-                        }
-                    }
-                },
-                "type": "object"
-            },
-            "TenantResource": {
-                "title": "Tenant Resource",
-                "description": "Tenant (property/organization) resource representation",
-                "properties": {
-                    "id": {
-                        "description": "Tenant unique identifier (subdomain)",
-                        "type": "string",
-                        "example": "acme-corp"
-                    },
-                    "user_id": {
-                        "description": "Owner user ID",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "instruction_status": {
-                        "description": "Current tenant status",
-                        "type": "string",
-                        "example": "active"
-                    },
-                    "theme": {
-                        "description": "Theme name",
-                        "type": "string",
-                        "example": "default",
-                        "nullable": true
-                    },
-                    "theme_code": {
-                        "description": "Theme color code",
-                        "type": "string",
-                        "example": "#FF5733",
-                        "nullable": true
-                    },
-                    "user": {
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/UserResource"
-                            }
-                        ],
-                        "nullable": true,
-                        "description": "Owner user details (when loaded)"
-                    },
-                    "domains": {
-                        "description": "Tenant domains (when loaded)",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/DomainResource"
-                        },
-                        "nullable": true
-                    },
-                    "latest_payment": {
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/PaymentLogResource"
-                            }
-                        ],
-                        "nullable": true,
-                        "description": "Latest payment record (when loaded)"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
-                    }
-                },
-                "type": "object"
-            },
-            "TenantUserResource": {
-                "title": "Tenant User Resource",
-                "description": "Tenant user (end-user within a tenant) resource representation",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "Jane Smith"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email",
-                        "example": "jane@acme-corp.com"
-                    },
-                    "username": {
-                        "type": "string",
-                        "example": "janesmith",
-                        "nullable": true
-                    },
-                    "mobile": {
-                        "type": "string",
-                        "example": "+1234567890",
-                        "nullable": true
-                    },
-                    "address": {
-                        "type": "string",
-                        "example": "456 Oak St",
-                        "nullable": true
-                    },
-                    "city": {
-                        "type": "string",
-                        "example": "San Francisco",
-                        "nullable": true
-                    },
-                    "state": {
-                        "type": "string",
-                        "example": "CA",
-                        "nullable": true
-                    },
-                    "country": {
-                        "type": "string",
-                        "example": "USA",
-                        "nullable": true
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "https://example.com/avatar.jpg",
-                        "nullable": true
-                    },
-                    "email_verified": {
-                        "type": "boolean",
-                        "example": true
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
-                    }
-                },
-                "type": "object"
-            },
             "AddressResource": {
                 "title": "Address Resource",
                 "description": "Customer address resource representation",
@@ -29770,6 +29617,159 @@
                         "nullable": true
                     },
                     "added_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "TenantCollection": {
+                "title": "Tenant Collection",
+                "description": "Collection of tenant resources",
+                "properties": {
+                    "data": {
+                        "description": "Tenant Collection Resource\n\nCollection wrapper for tenant resources.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TenantResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "TenantResource": {
+                "title": "Tenant Resource",
+                "description": "Tenant (property/organization) resource representation",
+                "properties": {
+                    "id": {
+                        "description": "Tenant unique identifier (subdomain)",
+                        "type": "string",
+                        "example": "acme-corp"
+                    },
+                    "user_id": {
+                        "description": "Owner user ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "instruction_status": {
+                        "description": "Current tenant status",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "theme": {
+                        "description": "Theme name",
+                        "type": "string",
+                        "example": "default",
+                        "nullable": true
+                    },
+                    "theme_code": {
+                        "description": "Theme color code",
+                        "type": "string",
+                        "example": "#FF5733",
+                        "nullable": true
+                    },
+                    "user": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/UserResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Owner user details (when loaded)"
+                    },
+                    "domains": {
+                        "description": "Tenant domains (when loaded)",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DomainResource"
+                        },
+                        "nullable": true
+                    },
+                    "latest_payment": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/PaymentLogResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Latest payment record (when loaded)"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "TenantUserResource": {
+                "title": "Tenant User Resource",
+                "description": "Tenant user (end-user within a tenant) resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Jane Smith"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "jane@acme-corp.com"
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "janesmith",
+                        "nullable": true
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "456 Oak St",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "San Francisco",
+                        "nullable": true
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "CA",
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "USA",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://example.com/avatar.jpg",
+                        "nullable": true
+                    },
+                    "email_verified": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
                         "type": "string",
                         "format": "date-time",
                         "example": "2024-01-01T00:00:00.000000Z"

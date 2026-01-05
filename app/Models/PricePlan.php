@@ -45,6 +45,13 @@ class PricePlan extends Model
         'zero_price',
         'storage_permission_feature',
         'appointment_permission_feature',
+        'service_permission_feature',
+        'donation_permission_feature',
+        'job_permission_feature',
+        'event_permission_feature',
+        'knowledgebase_permission_feature',
+        'product_create_permission',
+        'campaign_create_permission',
     ];
 
     /**
