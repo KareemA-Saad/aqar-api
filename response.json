@@ -1,0 +1,359 @@
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0{
+    "message": "SQLSTATE[HY000] [1049] Unknown database 'aqarsjis' (Connection: mysql, SQL: select * from `admins` where `email` = admin@aqar.com limit 1)",
+    "exception": "Illuminate\\Database\\QueryException",
+    "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Connection.php",
+    "line": 829,
+    "trace": [
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Connection.php",
+            "line": 783,
+            "function": "runQueryCallback",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Connection.php",
+            "line": 414,
+            "function": "run",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php",
+            "line": 2913,
+            "function": "select",
+            "class": "Illuminate\\Database\\Connection",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php",
+            "line": 2902,
+            "function": "runSelect",
+            "class": "Illuminate\\Database\\Query\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php",
+            "line": 3456,
+            "function": "{closure:Illuminate\\Database\\Query\\Builder::get():2901}",
+            "class": "Illuminate\\Database\\Query\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Query/Builder.php",
+            "line": 2901,
+            "function": "onceWithColumns",
+            "class": "Illuminate\\Database\\Query\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php",
+            "line": 739,
+            "function": "get",
+            "class": "Illuminate\\Database\\Query\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Eloquent/Builder.php",
+            "line": 723,
+            "function": "getModels",
+            "class": "Illuminate\\Database\\Eloquent\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Database/Concerns/BuildsQueries.php",
+            "line": 333,
+            "function": "get",
+            "class": "Illuminate\\Database\\Eloquent\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/app/Services/AuthService.php",
+            "line": 532,
+            "function": "first",
+            "class": "Illuminate\\Database\\Eloquent\\Builder",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/app/Services/AuthService.php",
+            "line": 71,
+            "function": "findUserByCredential",
+            "class": "App\\Services\\AuthService",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/app/Http/Controllers/Api/V1/Auth/AdminAuthController.php",
+            "line": 109,
+            "function": "authenticateAdmin",
+            "class": "App\\Services\\AuthService",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Controller.php",
+            "line": 54,
+            "function": "login",
+            "class": "App\\Http\\Controllers\\Api\\V1\\Auth\\AdminAuthController",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/ControllerDispatcher.php",
+            "line": 43,
+            "function": "callAction",
+            "class": "Illuminate\\Routing\\Controller",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Route.php",
+            "line": 259,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\ControllerDispatcher",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Route.php",
+            "line": 205,
+            "function": "runController",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Router.php",
+            "line": 806,
+            "function": "run",
+            "class": "Illuminate\\Routing\\Route",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 144,
+            "function": "{closure:Illuminate\\Routing\\Router::runRouteWithinStack():805}",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Middleware/SubstituteBindings.php",
+            "line": 50,
+            "function": "{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\SubstituteBindings",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php",
+            "line": 159,
+            "function": "{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php",
+            "line": 125,
+            "function": "handleRequest",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Middleware/ThrottleRequests.php",
+            "line": 87,
+            "function": "handleRequestUsingNamedLimiter",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Routing\\Middleware\\ThrottleRequests",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 119,
+            "function": "{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Router.php",
+            "line": 805,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Router.php",
+            "line": 784,
+            "function": "runRouteWithinStack",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Router.php",
+            "line": 748,
+            "function": "runRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Routing/Router.php",
+            "line": 737,
+            "function": "dispatchToRoute",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php",
+            "line": 200,
+            "function": "dispatch",
+            "class": "Illuminate\\Routing\\Router",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 144,
+            "function": "{closure:Illuminate\\Foundation\\Http\\Kernel::dispatchToRouter():197}",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php",
+            "line": 21,
+            "function": "{closure:Illuminate\\Pipeline\\Pipeline::prepareDestination():142}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ConvertEmptyStringsToNull.php",
+            "line": 31,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ConvertEmptyStringsToNull",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TransformsRequest.php",
+            "line": 21,
+            "function": "{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/TrimStrings.php",
+            "line": 40,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TransformsRequest",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\TrimStrings",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/ValidatePostSize.php",
+            "line": 27,
+            "function": "{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+100 16109    0 16037  100    72   603k   2772 --:--:-- --:--:-- --:--:--  629k
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\ValidatePostSize",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Middleware/PreventRequestsDuringMaintenance.php",
+            "line": 99,
+            "function": "{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Middleware\\PreventRequestsDuringMaintenance",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Http/Middleware/HandleCors.php",
+            "line": 62,
+            "function": "{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\HandleCors",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Http/Middleware/TrustProxies.php",
+            "line": 39,
+            "function": "{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 183,
+            "function": "handle",
+            "class": "Illuminate\\Http\\Middleware\\TrustProxies",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Pipeline/Pipeline.php",
+            "line": 119,
+            "function": "{closure:{closure:Illuminate\\Pipeline\\Pipeline::carry():158}:159}",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php",
+            "line": 175,
+            "function": "then",
+            "class": "Illuminate\\Pipeline\\Pipeline",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/Http/Kernel.php",
+            "line": 144,
+            "function": "sendRequestThroughRouter",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/public/index.php",
+            "line": 51,
+            "function": "handle",
+            "class": "Illuminate\\Foundation\\Http\\Kernel",
+            "type": "->"
+        },
+        {
+            "file": "/home/karim/Downloads/Projects/aqar-api/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php",
+            "line": 16,
+            "function": "require_once"
+        }
+    ]
+}
