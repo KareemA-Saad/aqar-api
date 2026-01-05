@@ -17,6 +17,8 @@ use App\Http\Controllers\Api\V1\Landlord\SupportTicketController;
 use App\Http\Controllers\Api\V1\Landlord\TenantController;
 use App\Http\Controllers\Api\V1\Landlord\UserController;
 use App\Http\Controllers\Api\V1\Landlord\UserDashboardController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\EmailSettingsController;
+use App\Http\Controllers\Api\V1\Landlord\Admin\SettingsController;
 use App\Http\Controllers\Api\V1\Shared\MediaController;
 use App\Http\Controllers\Api\V1\Tenant\TenantInfoController;
 use Illuminate\Support\Facades\Route;
@@ -260,6 +262,52 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::get('{id}', [MediaController::class, 'show'])->name('show');
             Route::put('{id}', [MediaController::class, 'update'])->name('update');
             Route::delete('{id}', [MediaController::class, 'destroy'])->name('destroy');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Settings Management Routes (Admin)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('settings')->name('settings.')->group(function () {
+            // Get all available settings groups
+            Route::get('/', [SettingsController::class, 'groups'])->name('groups');
+
+            // Get all settings organized by groups
+            Route::get('all', [SettingsController::class, 'all'])->name('all');
+
+            // Search settings by key pattern
+            Route::get('search', [SettingsController::class, 'search'])->name('search');
+
+            // Clear settings cache
+            Route::post('clear-cache', [SettingsController::class, 'clearCache'])->name('clear-cache');
+
+            // Single setting by key
+            Route::get('key/{key}', [SettingsController::class, 'getByKey'])->name('key.show');
+            Route::put('key/{key}', [SettingsController::class, 'updateByKey'])->name('key.update');
+
+            // Settings by group
+            Route::get('{group}', [SettingsController::class, 'index'])->name('group.show');
+            Route::put('{group}', [SettingsController::class, 'update'])->name('group.update');
+        });
+
+        /*
+        |--------------------------------------------------------------------------
+        | Email Settings Management Routes (Admin)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('email-settings')->name('email-settings.')->group(function () {
+            // SMTP Configuration
+            Route::get('smtp', [EmailSettingsController::class, 'getSmtpConfig'])->name('smtp.show');
+            Route::put('smtp', [EmailSettingsController::class, 'updateSmtpConfig'])->name('smtp.update');
+
+            // Test Email
+            Route::post('test', [EmailSettingsController::class, 'testEmail'])->name('test');
+
+            // Email Templates
+            Route::get('templates', [EmailSettingsController::class, 'getEmailTemplates'])->name('templates.index');
+            Route::get('templates/{template}', [EmailSettingsController::class, 'getEmailTemplate'])->name('templates.show');
+            Route::put('templates/{template}', [EmailSettingsController::class, 'updateEmailTemplate'])->name('templates.update');
         });
     });
 
