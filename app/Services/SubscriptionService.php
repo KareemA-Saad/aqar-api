@@ -13,6 +13,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 /**
@@ -216,8 +217,11 @@ final class SubscriptionService
                 // Create new tenant
                 $tenant = $this->createTenant($paymentLog);
             } else {
-                // Update existing tenant
+                // Update existing tenant (plan change detected)
                 $this->updateTenant($tenant, $paymentLog);
+                
+                // Check if plan changed and run new module migrations
+                $this->handlePlanChange($tenant, $paymentLog);
             }
 
             // Update user
@@ -490,5 +494,70 @@ final class SubscriptionService
             'theme_slug' => $paymentLog->theme,
             'user_id' => $paymentLog->user_id,
         ]);
+    }
+
+    /**
+     * Handle plan change and run new module migrations if needed.
+     *
+     * @param Tenant $tenant
+     * @param PaymentLog $newPaymentLog
+     * @return void
+     */
+    private function handlePlanChange(Tenant $tenant, PaymentLog $newPaymentLog): void
+    {
+        // Get the previous payment log
+        $previousLog = PaymentLog::where('tenant_id', $tenant->id)
+            ->where('id', '<', $newPaymentLog->id)
+            ->where('payment_status', self::PAYMENT_STATUS_COMPLETE)
+            ->with(['package.planFeatures'])
+            ->orderByDesc('id')
+            ->first();
+
+        // If no previous log, this is likely a first subscription - skip
+        if ($previousLog === null || $previousLog->package_id === $newPaymentLog->package_id) {
+            return;
+        }
+
+        $tenantService = app(TenantService::class);
+
+        // Load packages with features
+        $oldPlan = $previousLog->package;
+        $newPlan = $newPaymentLog->package()->with('planFeatures')->first();
+
+        if ($oldPlan === null || $newPlan === null) {
+            Log::warning('Cannot detect plan change: package not found', [
+                'tenant_id' => $tenant->id,
+                'old_plan_id' => $previousLog->package_id,
+                'new_plan_id' => $newPaymentLog->package_id,
+            ]);
+            return;
+        }
+
+        // Get modules for both plans
+        $oldModules = $tenantService->getModulesForPlan($oldPlan);
+        $newModules = $tenantService->getModulesForPlan($newPlan);
+
+        // Find newly enabled modules
+        $addedModules = array_diff($newModules, $oldModules);
+
+        if (!empty($addedModules)) {
+            Log::info('Plan upgrade detected, running new module migrations', [
+                'tenant_id' => $tenant->id,
+                'old_plan' => $oldPlan->id,
+                'new_plan' => $newPlan->id,
+                'old_modules' => $oldModules,
+                'new_modules' => $newModules,
+                'added_modules' => $addedModules,
+            ]);
+
+            // Run migrations for new modules
+            $tenantService->runModuleMigrationsForUpgrade($tenant, $addedModules);
+        } else {
+            Log::info('Plan changed but no new modules detected', [
+                'tenant_id' => $tenant->id,
+                'old_plan' => $oldPlan->id,
+                'new_plan' => $newPlan->id,
+            ]);
+        }
     }
 }
