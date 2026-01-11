@@ -206,7 +206,7 @@ final class TenantService
     }
 
     /**
-     * Run migrations for a tenant.
+     * Run migrations for a tenant (base + enabled modules only).
      *
      * @param Tenant $tenant
      * @return void
@@ -218,12 +218,57 @@ final class TenantService
             return;
         }
 
+        // Base migrations always run
+        $migrationPaths = [
+            database_path('migrations/tenant'),
+        ];
+
+        // Get enabled modules from plan features
+        $enabledModules = $this->getEnabledModulesForTenant($tenant);
+
+        if (config('modules.log_enabled_modules', true)) {
+            Log::info('Running migrations for tenant', [
+                'tenant_id' => $tenant->id,
+                'enabled_modules' => $enabledModules,
+            ]);
+        }
+
+        // Add module migration paths
+        foreach ($enabledModules as $moduleName) {
+            $modulePath = module_path($moduleName, 'Database/Migrations');
+
+            if (is_dir($modulePath)) {
+                $migrationPaths[] = $modulePath;
+
+                if (config('modules.log_migration_paths', false)) {
+                    Log::debug('Added module migrations', [
+                        'module' => $moduleName,
+                        'path' => $modulePath,
+                    ]);
+                }
+            } else {
+                if (config('modules.validate_migration_paths', true)) {
+                    Log::warning('Module migration path not found', [
+                        'module' => $moduleName,
+                        'expected_path' => $modulePath,
+                    ]);
+                }
+            }
+        }
+
+        // Run migrations with all paths
         Artisan::call('tenants:migrate', [
             '--tenants' => [$tenant->id],
             '--force' => true,
+            '--path' => $migrationPaths,
+            '--realpath' => true,
         ]);
 
-        Log::info('Tenant migrations completed', ['tenant_id' => $tenant->id]);
+        Log::info('Tenant migrations completed', [
+            'tenant_id' => $tenant->id,
+            'modules' => $enabledModules,
+            'total_paths' => count($migrationPaths),
+        ]);
     }
 
     /**
@@ -439,6 +484,173 @@ final class TenantService
             2 => null, // Lifetime
             default => $startDate->copy()->addMonth(),
         };
+    }
+
+    /**
+     * Get enabled modules for a tenant based on plan features.
+     *
+     * @param Tenant $tenant
+     * @return array<string> Module names
+     */
+    private function getEnabledModulesForTenant(Tenant $tenant): array
+    {
+        // Get payment log with package and features
+        $paymentLog = $tenant->paymentLog()
+            ->with(['package.planFeatures'])
+            ->first();
+
+        if (!$paymentLog || !$paymentLog->package) {
+            Log::warning('No payment log or package found for tenant', [
+                'tenant_id' => $tenant->id,
+            ]);
+            // Return only core modules if no plan
+            return config('modules.core_modules', []);
+        }
+
+        // Handle trial plans
+        if (in_array($paymentLog->status, ['trial', 'pending'])) {
+            return $this->getTrialModules();
+        }
+
+        // Get feature names from plan (only active features)
+        $features = $paymentLog->package
+            ->planFeatures()
+            ->where('status', true)
+            ->pluck('feature_name')
+            ->toArray();
+
+        // Map features to modules
+        $modules = $this->mapFeaturesToModules($features);
+
+        if (config('modules.log_enabled_modules', true)) {
+            Log::info('Enabled modules determined for tenant', [
+                'tenant_id' => $tenant->id,
+                'plan_id' => $paymentLog->package->id,
+                'features' => $features,
+                'modules' => $modules,
+            ]);
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Get modules for trial plans.
+     *
+     * @return array<string>
+     */
+    private function getTrialModules(): array
+    {
+        $behavior = config('modules.trial_modules', 'all');
+
+        return match ($behavior) {
+            'all' => array_merge(
+                config('modules.core_modules', []),
+                array_values(array_filter(
+                    config('modules.feature_module_map', []),
+                    fn($module) => $module !== null
+                ))
+            ),
+            'core' => config('modules.core_modules', []),
+            default => config('modules.core_modules', []),
+        };
+    }
+
+    /**
+     * Map feature names to module names.
+     *
+     * @param array<string> $features
+     * @return array<string>
+     */
+    private function mapFeaturesToModules(array $features): array
+    {
+        $featureMap = config('modules.feature_module_map', []);
+        $modules = config('modules.core_modules', []);
+
+        foreach ($features as $feature) {
+            $featureLower = strtolower(trim($feature));
+
+            if (isset($featureMap[$featureLower])) {
+                $moduleName = $featureMap[$featureLower];
+
+                // Skip null values (features that use base tables only)
+                if ($moduleName !== null && !in_array($moduleName, $modules, true)) {
+                    $modules[] = $moduleName;
+                }
+            }
+        }
+
+        // Remove duplicates and re-index
+        return array_values(array_unique($modules));
+    }
+
+    /**
+     * Run migrations for newly enabled modules (plan upgrade).
+     *
+     * @param Tenant $tenant
+     * @param array<string> $newModules Module names to migrate
+     * @return void
+     */
+    public function runModuleMigrationsForUpgrade(Tenant $tenant, array $newModules): void
+    {
+        if (!$this->databaseExists($tenant)) {
+            Log::warning('Cannot migrate for upgrade: database does not exist', [
+                'tenant_id' => $tenant->id,
+            ]);
+            return;
+        }
+
+        if (empty($newModules)) {
+            Log::info('No new modules to migrate for upgrade', ['tenant_id' => $tenant->id]);
+            return;
+        }
+
+        $migrationPaths = [];
+
+        foreach ($newModules as $moduleName) {
+            $modulePath = module_path($moduleName, 'Database/Migrations');
+
+            if (is_dir($modulePath)) {
+                $migrationPaths[] = $modulePath;
+            } else {
+                Log::warning('Module migration path not found for upgrade', [
+                    'tenant_id' => $tenant->id,
+                    'module' => $moduleName,
+                    'expected_path' => $modulePath,
+                ]);
+            }
+        }
+
+        if (!empty($migrationPaths)) {
+            Artisan::call('tenants:migrate', [
+                '--tenants' => [$tenant->id],
+                '--force' => true,
+                '--path' => $migrationPaths,
+                '--realpath' => true,
+            ]);
+
+            Log::info('Module migrations run for plan upgrade', [
+                'tenant_id' => $tenant->id,
+                'new_modules' => $newModules,
+                'paths_count' => count($migrationPaths),
+            ]);
+        }
+    }
+
+    /**
+     * Get list of modules that would be enabled for a given plan.
+     *
+     * @param PricePlan $plan
+     * @return array<string> Module names
+     */
+    public function getModulesForPlan(PricePlan $plan): array
+    {
+        $features = $plan->planFeatures()
+            ->where('status', true)
+            ->pluck('feature_name')
+            ->toArray();
+
+        return $this->mapFeaturesToModules($features);
     }
 }
 
