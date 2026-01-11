@@ -47,7 +47,7 @@ return new class extends Migration
             $table->unsignedInteger('refund_percentage')->comment('Percentage of payment to refund (0-100)');
             $table->timestamps();
 
-            $table->index(['cancellation_policy_id', 'hours_before_checkin']);
+            $table->index(['cancellation_policy_id', 'hours_before_checkin'], 'cp_tiers_policy_hours_index');
         });
     }
 
