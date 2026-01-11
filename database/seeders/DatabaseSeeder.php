@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionsSeeder::class,
             AdminSeeder::class,
             LanguageSeeder::class,
+            PricePlanSeeder::class,
         ]);
 
         // TODO: Uncomment when Themes model and related assets are implemented

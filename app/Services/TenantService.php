@@ -51,7 +51,7 @@ final class TenantService
             $tenant = Tenant::create([
                 'id' => $tenantId,
                 'user_id' => $user->id,
-                'theme' => $data['theme'] ?? null,
+                'theme_slug' => $data['theme'] ?? null,
                 'theme_code' => $data['theme_code'] ?? null,
                 'instruction_status' => false,
             ]);
@@ -95,7 +95,7 @@ final class TenantService
     public function updateTenant(Tenant $tenant, array $data): Tenant
     {
         $tenant->update([
-            'theme' => $data['theme'] ?? $tenant->theme,
+            'theme_slug' => $data['theme'] ?? $tenant->theme_slug,
             'theme_code' => $data['theme_code'] ?? $tenant->theme_code,
             'instruction_status' => $data['instruction_status'] ?? $tenant->instruction_status,
         ]);
@@ -235,6 +235,10 @@ final class TenantService
 
         // Add module migration paths
         foreach ($enabledModules as $moduleName) {
+            $module = \Nwidart\Modules\Facades\Module::find($moduleName);
+            if (!$module) {
+                continue;
+            }
             $modulePath = module_path($moduleName, 'Database/Migrations');
 
             if (is_dir($modulePath)) {

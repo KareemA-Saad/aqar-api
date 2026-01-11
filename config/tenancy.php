@@ -102,7 +102,7 @@ return [
         /**
          * Template connection for tenant databases.
          */
-        'template_tenant_connection' => null,
+        'template_tenant_connection' => 'tenant',
 
         /**
          * Tenant database naming pattern.

@@ -89,7 +89,6 @@ class PricePlanSeeder extends Seeder
             $insertData = [
                 'title' => $title,
                 'subtitle' => $subtitle,
-                'features' => $features,
                 'price' => (float)$planData['price'],
                 'type' => (int)$planData['type'],
                 'status' => 1,

@@ -40,7 +40,7 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'id',
             'user_id',
             'instruction_status',
-            'theme',
+            'theme_slug',
             'theme_code',
         ];
     }
