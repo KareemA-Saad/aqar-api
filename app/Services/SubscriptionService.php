@@ -202,6 +202,11 @@ final class SubscriptionService
         ?string $paymentGateway = null
     ): Tenant {
         return DB::transaction(function () use ($paymentLog, $transactionId, $paymentGateway) {
+            // For testing purposes: bypass real payment verification for manual gateway or local environment
+            if ($paymentGateway === 'manual' || config('app.env') === 'local') {
+                $transactionId = $transactionId ?: 'manual_' . Str::random(16);
+            }
+
             // Update payment log
             $paymentLog->update([
                 'transaction_id' => $transactionId,
