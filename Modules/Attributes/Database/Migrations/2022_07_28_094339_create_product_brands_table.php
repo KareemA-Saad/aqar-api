@@ -9,7 +9,8 @@ return new class extends Migration
 
     public function up(): void
     {
-        Schema::create('product_brands', function (Blueprint $table) {
+        if (!Schema::hasTable('product_brands')) {
+            Schema::create('product_brands', function (Blueprint $table) {
             $table->id();
             $table->string("name");
             $table->string("slug");
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        }
     }
 
 

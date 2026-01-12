@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('user_delivery_addresses', function (Blueprint $table) {
-            $table->unsignedBigInteger('state_id')->nullable()->change();
-        });
+        if (Schema::hasTable('user_delivery_addresses') && !Schema::hasColumn('user_delivery_addresses', 'state_id')) {
+            Schema::table('user_delivery_addresses', function (Blueprint $table) {
+                $table->unsignedBigInteger('state_id')->nullable()->change();
+            });
+        }
     }
 
     /**

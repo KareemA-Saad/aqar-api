@@ -13,7 +13,8 @@ class CreateSubAppointmentCommentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('sub_appointment_comments', function (Blueprint $table) {
+        if (!Schema::hasTable('sub_appointment_comments')) {
+            Schema::create('sub_appointment_comments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('sub_appointment_id');
             $table->unsignedBigInteger('user_id');
@@ -23,6 +24,7 @@ class CreateSubAppointmentCommentsTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     /**

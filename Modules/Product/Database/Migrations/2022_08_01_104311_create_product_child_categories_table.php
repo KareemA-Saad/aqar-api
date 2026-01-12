@@ -13,13 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_child_categories', function (Blueprint $table) {
+        if (!Schema::hasTable('product_child_categories')) {
+            Schema::create('product_child_categories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("product_id");
             $table->unsignedBigInteger("child_category_id");
             $table->foreign("product_id")->references("id")->on("products")->cascadeOnDelete();
             $table->foreign("child_category_id")->references("id")->on("child_categories");
         });
+        }
     }
 
     /**

@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('bookings', function (Blueprint $table) {
+        if (!Schema::hasTable('bookings')) {
+            Schema::create('bookings', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

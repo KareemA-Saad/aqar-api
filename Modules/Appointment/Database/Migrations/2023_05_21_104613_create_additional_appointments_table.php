@@ -13,12 +13,14 @@ class CreateAdditionalAppointmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('additional_appointments', function (Blueprint $table) {
+        if (!Schema::hasTable('additional_appointments')) {
+            Schema::create('additional_appointments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('appointment_id')->nullable();
             $table->unsignedBigInteger('sub_appointment_id')->nullable();
             $table->timestamps();
         });
+        }
     }
 
 

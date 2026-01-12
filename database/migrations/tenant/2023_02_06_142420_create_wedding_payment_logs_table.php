@@ -9,7 +9,8 @@ class CreateWeddingPaymentLogsTable extends Migration
 
     public function up()
     {
-        Schema::create('wedding_payment_logs', function (Blueprint $table) {
+        if (!Schema::hasTable('wedding_payment_logs')) {
+            Schema::create('wedding_payment_logs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('package_id');
             $table->unsignedBigInteger('user_id');
@@ -28,6 +29,7 @@ class CreateWeddingPaymentLogsTable extends Migration
             $table->foreign('package_id')->references('id')->on('wedding_price_plans')->cascadeOnDelete();
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
+        }
     }
 
     public function down()

@@ -9,12 +9,14 @@ class CreatePortfolioCategoriesTable extends Migration
 
     public function up()
     {
-        Schema::create('portfolio_categories', function (Blueprint $table) {
+        if (!Schema::hasTable('portfolio_categories')) {
+            Schema::create('portfolio_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

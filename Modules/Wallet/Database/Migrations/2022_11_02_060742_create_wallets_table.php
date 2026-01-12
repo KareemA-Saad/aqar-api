@@ -13,13 +13,15 @@ class CreateWalletsTable extends Migration
      */
     public function up()
     {
-        Schema::create('wallets', function (Blueprint $table) {
+        if (!Schema::hasTable('wallets')) {
+            Schema::create('wallets', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
             $table->double('balance');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     /**

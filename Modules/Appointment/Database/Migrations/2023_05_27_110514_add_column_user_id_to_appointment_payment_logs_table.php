@@ -10,9 +10,11 @@ class AddColumnUserIdToAppointmentPaymentLogsTable extends Migration
     public function up()
     {
         if(!Schema::hasColumn('appointment_payment_logs','user_id')){
+            if (Schema::hasTable('appointment_payment_logs') && !Schema::hasColumn('appointment_payment_logs', 'user_id')) {
             Schema::table('appointment_payment_logs', function (Blueprint $table) {
-                $table->unsignedBigInteger('user_id')->nullable()->after('id');
-            });
+                    $table->unsignedBigInteger('user_id')->nullable()->after('id');
+                });
+        }
         }
     }
 

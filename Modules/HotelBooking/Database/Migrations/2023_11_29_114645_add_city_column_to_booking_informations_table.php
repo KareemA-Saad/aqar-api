@@ -13,9 +13,11 @@ class AddCityColumnToBookingInformationsTable extends Migration
      */
     public function up()
     {
-        Schema::table('booking_informations', function (Blueprint $table) {
-            $table->text('city')->after('state')->nullable();
-        });
+        if (Schema::hasTable('booking_informations') && !Schema::hasColumn('booking_informations', 'city')) {
+            Schema::table('booking_informations', function (Blueprint $table) {
+                $table->text('city')->after('state')->nullable();
+            });
+        }
     }
 
     /**

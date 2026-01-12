@@ -88,7 +88,9 @@ class HotelBookingServiceProvider extends ServiceProvider
         });
 
         $this->app->singleton(RoomSearchService::class, function ($app) {
-            return new RoomSearchService();
+            return new RoomSearchService(
+                $app->make(PricingService::class)
+            );
         });
 
         $this->app->singleton(CancellationPolicyService::class, function ($app) {

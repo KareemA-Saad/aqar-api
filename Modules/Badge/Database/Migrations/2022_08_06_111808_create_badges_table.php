@@ -13,7 +13,8 @@ class CreateBadgesTable extends Migration
      */
     public function up()
     {
-        Schema::create('badges', function (Blueprint $table) {
+        if (!Schema::hasTable('badges')) {
+            Schema::create('badges', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
             $table->unsignedInteger('image')->nullable();
@@ -24,6 +25,7 @@ class CreateBadgesTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        }
     }
 
     /**

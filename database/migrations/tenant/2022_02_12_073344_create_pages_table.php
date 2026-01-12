@@ -13,7 +13,8 @@ class CreatePagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
+        if (!Schema::hasTable('pages')) {
+            Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->text('title');
             $table->string('slug')->unique();
@@ -26,6 +27,7 @@ class CreatePagesTable extends Migration
             $table->string('footer_variant')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

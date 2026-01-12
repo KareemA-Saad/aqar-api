@@ -10,9 +10,11 @@ class AddTestColumnManualAttachmentToProductsTable extends Migration
     public function up()
     {
        if(!Schema::hasColumn('product_orders','manual_payment_attachment')){
-           Schema::table('product_orders', function (Blueprint $table) {
-               $table->string('manual_payment_attachment')->nullable();
-           });
+           if (Schema::hasTable('product_orders') && !Schema::hasColumn('product_orders', 'manual_payment_attachment')) {
+            Schema::table('product_orders', function (Blueprint $table) {
+                   $table->string('manual_payment_attachment')->nullable();
+               });
+        }
        }
     }
 

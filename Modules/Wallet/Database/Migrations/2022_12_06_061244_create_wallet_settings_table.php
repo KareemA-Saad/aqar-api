@@ -13,7 +13,8 @@ class CreateWalletSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('wallet_settings', function (Blueprint $table) {
+        if (!Schema::hasTable('wallet_settings')) {
+            Schema::create('wallet_settings', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
             $table->boolean('renew_package')->nullable()->default(0);
@@ -24,6 +25,7 @@ class CreateWalletSettingsTable extends Migration
 
             $table->timestamps();
         });
+        }
     }
 
     /**

@@ -9,7 +9,8 @@ class CreateDonationsTable extends Migration
 
     public function up()
     {
-        Schema::create('donations', function (Blueprint $table) {
+        if (!Schema::hasTable('donations')) {
+            Schema::create('donations', function (Blueprint $table) {
             $table->id();
             $table->text('title');
             $table->longText('description')->nullable();
@@ -29,6 +30,7 @@ class CreateDonationsTable extends Migration
             $table->bigInteger('views')->default(0);
             $table->timestamps();
         });
+        }
     }
 
 

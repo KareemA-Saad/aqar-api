@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
 
     {
-        Schema::create('image_galleries', function (Blueprint $table) {
+        if (!Schema::hasTable('image_galleries')) {
+            Schema::create('image_galleries', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('category_id');
             $table->string('title');
@@ -23,6 +24,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     /**

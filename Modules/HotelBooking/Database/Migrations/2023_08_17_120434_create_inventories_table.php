@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('inventories', function (Blueprint $table) {
+        if (!Schema::hasTable('inventories')) {
+            Schema::create('inventories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->foreignId('room_type_id')->nullable()->constrained('room_types')->cascadeOnDelete();
@@ -24,6 +25,7 @@ return new class extends Migration {
             $table->integer("status")->comment("0 = not bookable and 1 = bookable");
             $table->timestamps();
         });
+        }
     }
 
     public function down()

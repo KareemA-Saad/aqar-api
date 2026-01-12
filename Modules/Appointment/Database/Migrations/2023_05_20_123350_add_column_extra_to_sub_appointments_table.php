@@ -14,10 +14,12 @@ class AddColumnExtraToSubAppointmentsTable extends Migration
     public function up()
     {
         if(!Schema::hasColumns('sub_appointments',['views','is_popular'])){
+            if (Schema::hasTable('sub_appointments') && !Schema::hasColumn('sub_appointments', 'views')) {
             Schema::table('sub_appointments', function (Blueprint $table) {
-                $table->bigInteger('views')->default(0);
-                $table->string('is_popular')->nullable();
-            });
+                    $table->bigInteger('views')->default(0);
+                    $table->string('is_popular')->nullable();
+                });
+        }
         }
 
     }

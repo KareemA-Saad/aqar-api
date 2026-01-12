@@ -13,7 +13,8 @@ class CreateWidgetsTable extends Migration
      */
     public function up()
     {
-        Schema::create('widgets', function (Blueprint $table) {
+        if (!Schema::hasTable('widgets')) {
+            Schema::create('widgets', function (Blueprint $table) {
             $table->id();
             $table->string('widget_area')->nullable();
             $table->integer('widget_order')->nullable();
@@ -22,6 +23,7 @@ class CreateWidgetsTable extends Migration
             $table->longText('widget_content');
             $table->timestamps();
         });
+        }
     }
 
     /**

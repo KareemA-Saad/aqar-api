@@ -13,13 +13,15 @@ class CreateStatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('states', function (Blueprint $table) {
+        if (!Schema::hasTable('states')) {
+            Schema::create('states', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('country_id');
             $table->string('status')->default('publish');
             $table->timestamps();
         });
+        }
     }
 
     /**

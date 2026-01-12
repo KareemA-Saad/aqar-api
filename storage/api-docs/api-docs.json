@@ -22194,6 +22194,275 @@
                 ]
             }
         },
+        "/api/v1/themes": {
+            "get": {
+                "tags": [
+                    "Themes"
+                ],
+                "summary": "List all themes",
+                "description": "Get a list of all available themes for subscription selection. Can be filtered by status and availability.",
+                "operationId": "78ca7daccde5ce9d51f43c260f02a5ef",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Filter by active/inactive status (1 for active, 0 for inactive)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    },
+                    {
+                        "name": "available",
+                        "in": "query",
+                        "description": "Filter by availability (1 for available, 0 for unavailable)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page (default: 20, max: 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Themes retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Themes retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ThemeResource"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "from": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "to": {
+                                                    "type": "integer",
+                                                    "example": 20
+                                                },
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 25
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request parameters",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "status": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The status field must be 0 or 1."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/themes/{identifier}": {
+            "get": {
+                "tags": [
+                    "Themes"
+                ],
+                "summary": "Get theme by ID or slug",
+                "description": "Retrieve detailed information about a specific theme using its ID or slug",
+                "operationId": "5686b789cea53ff7b5e27a10b6597afe",
+                "parameters": [
+                    {
+                        "name": "identifier",
+                        "in": "path",
+                        "description": "Theme ID (integer) or slug (string)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "ecommerce"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Theme retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Theme retrieved successfully"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/ThemeResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Theme not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Theme not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/themes/available": {
+            "get": {
+                "tags": [
+                    "Themes"
+                ],
+                "summary": "List available themes",
+                "description": "Get only active and available themes for subscription selection",
+                "operationId": "1c1190499133a3ecb5382d470b17dcfb",
+                "parameters": [
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Number of items per page (default: 20, max: 100)",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": 20,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Available themes retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Available themes retrieved successfully"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ThemeResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/admin/users": {
             "get": {
                 "tags": [
@@ -34900,6 +35169,159 @@
                 },
                 "type": "object"
             },
+            "TenantCollection": {
+                "title": "Tenant Collection",
+                "description": "Collection of tenant resources",
+                "properties": {
+                    "data": {
+                        "description": "Tenant Collection Resource\n\nCollection wrapper for tenant resources.",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TenantResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "TenantResource": {
+                "title": "Tenant Resource",
+                "description": "Tenant (property/organization) resource representation",
+                "properties": {
+                    "id": {
+                        "description": "Tenant unique identifier (subdomain)",
+                        "type": "string",
+                        "example": "acme-corp"
+                    },
+                    "user_id": {
+                        "description": "Owner user ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "instruction_status": {
+                        "description": "Current tenant status",
+                        "type": "string",
+                        "example": "active"
+                    },
+                    "theme": {
+                        "description": "Theme name",
+                        "type": "string",
+                        "example": "default",
+                        "nullable": true
+                    },
+                    "theme_code": {
+                        "description": "Theme color code",
+                        "type": "string",
+                        "example": "#FF5733",
+                        "nullable": true
+                    },
+                    "user": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/UserResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Owner user details (when loaded)"
+                    },
+                    "domains": {
+                        "description": "Tenant domains (when loaded)",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/DomainResource"
+                        },
+                        "nullable": true
+                    },
+                    "latest_payment": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/PaymentLogResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "Latest payment record (when loaded)"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
+            "TenantUserResource": {
+                "title": "Tenant User Resource",
+                "description": "Tenant user (end-user within a tenant) resource representation",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Jane Smith"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "jane@acme-corp.com"
+                    },
+                    "username": {
+                        "type": "string",
+                        "example": "janesmith",
+                        "nullable": true
+                    },
+                    "mobile": {
+                        "type": "string",
+                        "example": "+1234567890",
+                        "nullable": true
+                    },
+                    "address": {
+                        "type": "string",
+                        "example": "456 Oak St",
+                        "nullable": true
+                    },
+                    "city": {
+                        "type": "string",
+                        "example": "San Francisco",
+                        "nullable": true
+                    },
+                    "state": {
+                        "type": "string",
+                        "example": "CA",
+                        "nullable": true
+                    },
+                    "country": {
+                        "type": "string",
+                        "example": "USA",
+                        "nullable": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://example.com/avatar.jpg",
+                        "nullable": true
+                    },
+                    "email_verified": {
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2024-01-01T00:00:00.000000Z"
+                    }
+                },
+                "type": "object"
+            },
             "AddressResource": {
                 "title": "Address Resource",
                 "description": "Customer address resource representation",
@@ -35343,155 +35765,62 @@
                 },
                 "type": "object"
             },
-            "TenantCollection": {
-                "title": "Tenant Collection",
-                "description": "Collection of tenant resources",
-                "properties": {
-                    "data": {
-                        "description": "Tenant Collection Resource\n\nCollection wrapper for tenant resources.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/TenantResource"
-                        }
-                    }
-                },
-                "type": "object"
-            },
-            "TenantResource": {
-                "title": "Tenant Resource",
-                "description": "Tenant (property/organization) resource representation",
+            "ThemeResource": {
+                "title": "Theme Resource",
+                "description": "Theme data representation",
                 "properties": {
                     "id": {
-                        "description": "Tenant unique identifier (subdomain)",
-                        "type": "string",
-                        "example": "acme-corp"
-                    },
-                    "user_id": {
-                        "description": "Owner user ID",
+                        "description": "Theme Resource\n\nTransforms theme model data for API responses.",
                         "type": "integer",
                         "example": 1
                     },
-                    "instruction_status": {
-                        "description": "Current tenant status",
+                    "title": {
                         "type": "string",
-                        "example": "active"
+                        "example": "E-Commerce Theme"
                     },
-                    "theme": {
-                        "description": "Theme name",
+                    "slug": {
                         "type": "string",
-                        "example": "default",
+                        "example": "ecommerce"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Modern e-commerce theme with shopping cart",
                         "nullable": true
                     },
-                    "theme_code": {
-                        "description": "Theme color code",
-                        "type": "string",
-                        "example": "#FF5733",
-                        "nullable": true
-                    },
-                    "user": {
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/UserResource"
-                            }
-                        ],
-                        "nullable": true,
-                        "description": "Owner user details (when loaded)"
-                    },
-                    "domains": {
-                        "description": "Tenant domains (when loaded)",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/DomainResource"
-                        },
-                        "nullable": true
-                    },
-                    "latest_payment": {
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/PaymentLogResource"
-                            }
-                        ],
-                        "nullable": true,
-                        "description": "Latest payment record (when loaded)"
-                    },
-                    "created_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
-                    },
-                    "updated_at": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
-                    }
-                },
-                "type": "object"
-            },
-            "TenantUserResource": {
-                "title": "Tenant User Resource",
-                "description": "Tenant user (end-user within a tenant) resource representation",
-                "properties": {
-                    "id": {
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "name": {
-                        "type": "string",
-                        "example": "Jane Smith"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email",
-                        "example": "jane@acme-corp.com"
-                    },
-                    "username": {
-                        "type": "string",
-                        "example": "janesmith",
-                        "nullable": true
-                    },
-                    "mobile": {
-                        "type": "string",
-                        "example": "+1234567890",
-                        "nullable": true
-                    },
-                    "address": {
-                        "type": "string",
-                        "example": "456 Oak St",
-                        "nullable": true
-                    },
-                    "city": {
-                        "type": "string",
-                        "example": "San Francisco",
-                        "nullable": true
-                    },
-                    "state": {
-                        "type": "string",
-                        "example": "CA",
-                        "nullable": true
-                    },
-                    "country": {
-                        "type": "string",
-                        "example": "USA",
-                        "nullable": true
-                    },
-                    "image": {
-                        "type": "string",
-                        "example": "https://example.com/avatar.jpg",
-                        "nullable": true
-                    },
-                    "email_verified": {
+                    "status": {
+                        "description": "Active/inactive status",
                         "type": "boolean",
                         "example": true
                     },
+                    "is_available": {
+                        "description": "Available for selection",
+                        "type": "boolean",
+                        "example": true
+                    },
+                    "image": {
+                        "type": "string",
+                        "example": "https://example.com/themes/ecommerce.jpg",
+                        "nullable": true
+                    },
+                    "url": {
+                        "type": "string",
+                        "example": "https://demo.example.com/ecommerce",
+                        "nullable": true
+                    },
+                    "theme_code": {
+                        "type": "string",
+                        "example": "ecom-v1",
+                        "nullable": true
+                    },
                     "created_at": {
                         "type": "string",
                         "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
+                        "example": "2024-01-15T10:30:00.000000Z"
                     },
                     "updated_at": {
                         "type": "string",
                         "format": "date-time",
-                        "example": "2024-01-01T00:00:00.000000Z"
+                        "example": "2024-01-15T10:30:00.000000Z"
                     }
                 },
                 "type": "object"
@@ -35977,6 +36306,10 @@
         {
             "name": "Tenant Management",
             "description": "Tenant management endpoints for landlord users (Guard: api_user). Manage tenants/properties owned by the authenticated user."
+        },
+        {
+            "name": "Themes",
+            "description": "Theme management and listing endpoints"
         },
         {
             "name": "User Management (Admin)",

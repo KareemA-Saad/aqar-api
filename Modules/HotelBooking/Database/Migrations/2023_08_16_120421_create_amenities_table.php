@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('amenities', function (Blueprint $table) {
+        if (!Schema::hasTable('amenities')) {
+            Schema::create('amenities', function (Blueprint $table) {
             $table->id();
             $table->string("icon");
             $table->text("name");
             $table->timestamps();
         });
+        }
     }
 
     /**

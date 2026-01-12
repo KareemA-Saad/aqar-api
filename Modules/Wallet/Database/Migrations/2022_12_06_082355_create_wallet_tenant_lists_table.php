@@ -13,13 +13,15 @@ class CreateWalletTenantListsTable extends Migration
      */
     public function up()
     {
-        Schema::create('wallet_tenant_lists', function (Blueprint $table) {
+        if (!Schema::hasTable('wallet_tenant_lists')) {
+            Schema::create('wallet_tenant_lists', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id')->index();
             $table->string('tenant_id')->index();
 
             $table->timestamps();
         });
+        }
     }
 
     /**

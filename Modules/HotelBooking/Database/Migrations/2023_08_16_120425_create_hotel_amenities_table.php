@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('hotel_amenities', function (Blueprint $table) {
+        if (!Schema::hasTable('hotel_amenities')) {
+            Schema::create('hotel_amenities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("hotel_id");
             $table->unsignedBigInteger("amenities_id");
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->foreign('amenities_id')->references("id")->on("amenities")->cascadeOnDelete();
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

@@ -8,7 +8,8 @@ class CreateLanguagesTable extends Migration
 {
     public function up()
     {
-        Schema::create('languages', function (Blueprint $table) {
+        if (!Schema::hasTable('languages')) {
+            Schema::create('languages', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug',10);
@@ -17,6 +18,7 @@ class CreateLanguagesTable extends Migration
             $table->unsignedBigInteger('default')->default(0);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

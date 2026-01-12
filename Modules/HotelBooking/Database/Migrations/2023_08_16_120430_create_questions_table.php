@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('questions', function (Blueprint $table) {
+        if (!Schema::hasTable('questions')) {
+            Schema::create('questions', function (Blueprint $table) {
             $table->increments('id');
             $table->text('name');
             $table->string('email');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

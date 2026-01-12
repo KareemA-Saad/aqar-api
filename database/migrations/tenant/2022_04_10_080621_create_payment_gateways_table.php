@@ -9,7 +9,8 @@ class CreatePaymentGatewaysTable extends Migration
 
     public function up()
     {
-        Schema::create('payment_gateways', function (Blueprint $table) {
+        if (!Schema::hasTable('payment_gateways')) {
+            Schema::create('payment_gateways', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('image')->nullable();
@@ -19,6 +20,7 @@ class CreatePaymentGatewaysTable extends Migration
             $table->longText('credentials');
             $table->timestamps();
         });
+        }
     }
 
     public function down()

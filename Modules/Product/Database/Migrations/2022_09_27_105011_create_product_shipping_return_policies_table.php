@@ -13,7 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_shipping_return_policies', function (Blueprint $table) {
+        if (!Schema::hasTable('product_shipping_return_policies')) {
+            Schema::create('product_shipping_return_policies', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('product_id')->nullable();
             $table->text('shipping_return_description')->nullable();
@@ -21,6 +22,7 @@ return new class extends Migration
 
             $table->foreign('product_id')->references('id')->on('products')->cascadeOnDelete();
         });
+        }
     }
 
     /**

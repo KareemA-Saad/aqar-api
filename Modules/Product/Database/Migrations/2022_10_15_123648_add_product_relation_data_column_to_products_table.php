@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('products', function (Blueprint $table) {
-            $table->foreign("badge_id")->references("id")->on("badges");
-            $table->foreign("brand_id")->references("id")->on("brands");
-            $table->foreign("status_id")->references("id")->on("statuses");
-        });
+        if (Schema::hasTable('products') && !Schema::hasColumn('products', 'badge_id')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->foreign("badge_id")->references("id")->on("badges");
+                $table->foreign("brand_id")->references("id")->on("brands");
+                $table->foreign("status_id")->references("id")->on("statuses");
+            });
+        }
     }
 
     /**

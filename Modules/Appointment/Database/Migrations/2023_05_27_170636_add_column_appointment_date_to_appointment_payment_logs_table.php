@@ -10,9 +10,11 @@ class AddColumnAppointmentDateToAppointmentPaymentLogsTable extends Migration
     public function up()
     {
         if(!Schema::hasColumn('appointment_payment_logs','appointment_date')){
+            if (Schema::hasTable('appointment_payment_logs') && !Schema::hasColumn('appointment_payment_logs', 'appointment_date')) {
             Schema::table('appointment_payment_logs', function (Blueprint $table) {
-                $table->string('appointment_date')->after('phone');
-            });
+                    $table->string('appointment_date')->after('phone');
+                });
+        }
         }
     }
 

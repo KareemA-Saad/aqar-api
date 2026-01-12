@@ -13,13 +13,15 @@ class CreateAppointmentSubcategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('appointment_subcategories', function (Blueprint $table) {
+        if (!Schema::hasTable('appointment_subcategories')) {
+            Schema::create('appointment_subcategories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('appointment_category_id');
             $table->string('title');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     /**

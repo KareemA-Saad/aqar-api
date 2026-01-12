@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('carts', function (Blueprint $table) {
+        if (!Schema::hasTable('carts')) {
+            Schema::create('carts', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->nullable()->index();
             $table->string('cart_token', 64)->nullable()->index();
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->unique(['user_id']);
             $table->unique(['cart_token']);
         });
+        }
 
         Schema::create('cart_items', function (Blueprint $table) {
             $table->id();

@@ -10,9 +10,11 @@ class AddColumnTaxStatusToAppointmentsTable extends Migration
     public function up()
     {
         if(!Schema::hasColumn('appointments','tax_status')){
+            if (Schema::hasTable('appointments') && !Schema::hasColumn('appointments', 'tax_status')) {
             Schema::table('appointments', function (Blueprint $table) {
-                $table->string('tax_status')->nullable();
-            });
+                    $table->string('tax_status')->nullable();
+                });
+        }
         }
 
     }

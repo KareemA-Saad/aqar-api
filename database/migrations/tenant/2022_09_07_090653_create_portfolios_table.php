@@ -9,7 +9,8 @@ class CreatePortfoliosTable extends Migration
 
     public function up()
     {
-        Schema::create('portfolios', function (Blueprint $table) {
+        if (!Schema::hasTable('portfolios')) {
+            Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('category_id');
             $table->text('title');
@@ -27,6 +28,7 @@ class CreatePortfoliosTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

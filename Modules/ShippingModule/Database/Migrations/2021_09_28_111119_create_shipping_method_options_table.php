@@ -13,7 +13,8 @@ class CreateShippingMethodOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipping_method_options', function (Blueprint $table) {
+        if (!Schema::hasTable('shipping_method_options')) {
+            Schema::create('shipping_method_options', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->unsignedBigInteger('shipping_method_id');
@@ -24,6 +25,7 @@ class CreateShippingMethodOptionsTable extends Migration
             $table->float('minimum_order_amount')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

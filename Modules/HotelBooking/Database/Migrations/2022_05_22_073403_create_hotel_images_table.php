@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('hotel_images', function (Blueprint $table) {
+        if (!Schema::hasTable('hotel_images')) {
+            Schema::create('hotel_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("hotel_id");
             $table->unsignedBigInteger("image_id");
             $table->foreign("hotel_id")->references("id")->on("hotels")->cascadeOnDelete();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

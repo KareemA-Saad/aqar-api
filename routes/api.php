@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\V1\Landlord\UserController;
 use App\Http\Controllers\Api\V1\Landlord\UserDashboardController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\EmailSettingsController;
 use App\Http\Controllers\Api\V1\Landlord\Admin\SettingsController;
+use App\Http\Controllers\Api\V1\Landlord\ThemeController;
 use App\Http\Controllers\Api\V1\Shared\MediaController;
 use App\Http\Controllers\Api\V1\Tenant\TenantInfoController;
 use App\Http\Controllers\Api\V1\Tenant\Admin\DashboardController as TenantAdminDashboardController;
@@ -78,6 +79,19 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         Route::middleware('auth:api_user')->group(function () {
             Route::post('check-coupon', [PlanController::class, 'checkCoupon'])->name('check-coupon');
         });
+    });
+
+    /*
+    |--------------------------------------------------------------------------
+    | Public Theme Routes
+    |--------------------------------------------------------------------------
+    | Public endpoints for browsing available themes.
+    | No authentication required.
+    */
+    Route::prefix('themes')->name('themes.')->group(function () {
+        Route::get('/', [ThemeController::class, 'index'])->name('index');
+        Route::get('available', [ThemeController::class, 'available'])->name('available');
+        Route::get('{identifier}', [ThemeController::class, 'show'])->name('show');
     });
 
     /*

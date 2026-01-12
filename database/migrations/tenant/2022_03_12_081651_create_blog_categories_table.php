@@ -8,12 +8,14 @@ class CreateBlogCategoriesTable extends Migration
 {
     public function up()
     {
-        Schema::create('blog_categories', function (Blueprint $table) {
+        if (!Schema::hasTable('blog_categories')) {
+            Schema::create('blog_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('status')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     public function down()

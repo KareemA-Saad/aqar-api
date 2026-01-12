@@ -8,7 +8,8 @@ class CreateAppointmentsTable extends Migration
 {
     public function up()
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        if (!Schema::hasTable('appointments')) {
+            Schema::create('appointments', function (Blueprint $table) {
             $table->id();
             $table->text('title');
             $table->longText('description');
@@ -20,6 +21,7 @@ class CreateAppointmentsTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
 

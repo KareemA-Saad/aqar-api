@@ -16,7 +16,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('booking_room_types', function (Blueprint $table) {
+        if (!Schema::hasTable('booking_room_types')) {
+            Schema::create('booking_room_types', function (Blueprint $table) {
             $table->id();
             $table->foreignId('booking_information_id')
                 ->constrained('booking_informations')
@@ -34,6 +35,7 @@ return new class extends Migration
 
             $table->index(['booking_information_id', 'room_type_id']);
         });
+        }
     }
 
     /**

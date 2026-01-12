@@ -13,7 +13,8 @@ class CreateRoomTypeInventoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('room_type_inventories', function (Blueprint $table) {
+        if (!Schema::hasTable('room_type_inventories')) {
+            Schema::create('room_type_inventories', function (Blueprint $table) {
             $table->id();
             $table->foreignId('room_type_id')->nullable()->constrained('room_types')->cascadeOnDelete();
             $table->date('date');
@@ -22,6 +23,7 @@ class CreateRoomTypeInventoriesTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     /**

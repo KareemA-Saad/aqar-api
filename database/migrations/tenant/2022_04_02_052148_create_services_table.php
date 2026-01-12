@@ -9,7 +9,8 @@ class CreateServicesTable extends Migration
 
     public function up()
     {
-        Schema::create('services', function (Blueprint $table) {
+        if (!Schema::hasTable('services')) {
+            Schema::create('services', function (Blueprint $table) {
             $table->id();
             $table->integer('category_id');
             $table->string('title');
@@ -22,6 +23,7 @@ class CreateServicesTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('bed_types', function (Blueprint $table) {
+        if (!Schema::hasTable('bed_types')) {
+            Schema::create('bed_types', function (Blueprint $table) {
             $table->id();
             $table->text('name');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

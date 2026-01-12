@@ -14,9 +14,11 @@ class AddColumnSubAppointmentStatusToAppointmentsTable extends Migration
     public function up()
     {
         if(!Schema::hasColumn('appointments','sub_appointment_status')){
+            if (Schema::hasTable('appointments') && !Schema::hasColumn('appointments', 'sub_appointment_status')) {
             Schema::table('appointments', function (Blueprint $table) {
-                $table->string('sub_appointment_status')->nullable();
-            });
+                    $table->string('sub_appointment_status')->nullable();
+                });
+        }
         }
 
     }

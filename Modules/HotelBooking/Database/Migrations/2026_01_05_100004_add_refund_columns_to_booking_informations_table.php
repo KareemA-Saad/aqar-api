@@ -15,46 +15,48 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('booking_informations', function (Blueprint $table) {
-            $table->foreignId('cancellation_policy_id')
-                ->nullable()
-                ->after('payment_type')
-                ->constrained('cancellation_policies')
-                ->nullOnDelete();
-            $table->string('refund_status')
-                ->nullable()
-                ->after('cancellation_policy_id')
-                ->comment('pending, processing, completed, failed, not_applicable');
-            $table->decimal('refund_amount', 10, 2)
-                ->nullable()
-                ->after('refund_status');
-            $table->string('refund_transaction_id')
-                ->nullable()
-                ->after('refund_amount');
-            $table->timestamp('refund_processed_at')
-                ->nullable()
-                ->after('refund_transaction_id');
-            $table->timestamp('cancelled_at')
-                ->nullable()
-                ->after('refund_processed_at');
-            $table->text('cancellation_reason')
-                ->nullable()
-                ->after('cancelled_at');
-            $table->time('check_in_time')
-                ->nullable()
-                ->default('15:00:00')
-                ->after('cancellation_reason');
-            $table->time('check_out_time')
-                ->nullable()
-                ->default('11:00:00')
-                ->after('check_in_time');
-            $table->timestamp('checked_in_at')
-                ->nullable()
-                ->after('check_out_time');
-            $table->timestamp('checked_out_at')
-                ->nullable()
-                ->after('checked_in_at');
-        });
+        if (Schema::hasTable('booking_informations') && !Schema::hasColumn('booking_informations', 'cancellation_policy_id')) {
+            Schema::table('booking_informations', function (Blueprint $table) {
+                $table->foreignId('cancellation_policy_id')
+                    ->nullable()
+                    ->after('payment_type')
+                    ->constrained('cancellation_policies')
+                    ->nullOnDelete();
+                $table->string('refund_status')
+                    ->nullable()
+                    ->after('cancellation_policy_id')
+                    ->comment('pending, processing, completed, failed, not_applicable');
+                $table->decimal('refund_amount', 10, 2)
+                    ->nullable()
+                    ->after('refund_status');
+                $table->string('refund_transaction_id')
+                    ->nullable()
+                    ->after('refund_amount');
+                $table->timestamp('refund_processed_at')
+                    ->nullable()
+                    ->after('refund_transaction_id');
+                $table->timestamp('cancelled_at')
+                    ->nullable()
+                    ->after('refund_processed_at');
+                $table->text('cancellation_reason')
+                    ->nullable()
+                    ->after('cancelled_at');
+                $table->time('check_in_time')
+                    ->nullable()
+                    ->default('15:00:00')
+                    ->after('cancellation_reason');
+                $table->time('check_out_time')
+                    ->nullable()
+                    ->default('11:00:00')
+                    ->after('check_in_time');
+                $table->timestamp('checked_in_at')
+                    ->nullable()
+                    ->after('check_out_time');
+                $table->timestamp('checked_out_at')
+                    ->nullable()
+                    ->after('checked_in_at');
+            });
+        }
     }
 
     /**

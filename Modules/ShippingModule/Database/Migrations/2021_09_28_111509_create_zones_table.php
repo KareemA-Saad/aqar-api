@@ -13,11 +13,13 @@ class CreateZonesTable extends Migration
      */
     public function up()
     {
-        Schema::create('zones', function (Blueprint $table) {
+        if (!Schema::hasTable('zones')) {
+            Schema::create('zones', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->timestamps();
         });
+        }
     }
 
     /**

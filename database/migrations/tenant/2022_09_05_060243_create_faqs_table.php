@@ -9,7 +9,8 @@ return new class extends Migration
 
     public function up()
     {
-        Schema::create('faqs', function (Blueprint $table) {
+        if (!Schema::hasTable('faqs')) {
+            Schema::create('faqs', function (Blueprint $table) {
             $table->id();
             $table->integer('category_id');
             $table->longText('title');
@@ -17,6 +18,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

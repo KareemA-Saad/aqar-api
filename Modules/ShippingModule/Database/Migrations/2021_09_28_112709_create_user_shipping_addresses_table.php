@@ -13,13 +13,15 @@ class CreateUserShippingAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('user_shipping_addresses', function (Blueprint $table) {
+        if (!Schema::hasTable('user_shipping_addresses')) {
+            Schema::create('user_shipping_addresses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('name');
             $table->longText('address');
             $table->timestamps();
         });
+        }
     }
 
     /**

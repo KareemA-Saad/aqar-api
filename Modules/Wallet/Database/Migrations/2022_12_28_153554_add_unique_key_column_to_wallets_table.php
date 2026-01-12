@@ -13,9 +13,11 @@ class AddUniqueKeyColumnToWalletsTable extends Migration
      */
     public function up()
     {
-        Schema::table('wallets', function (Blueprint $table) {
-            $table->string('unique_key')->nullable();
-        });
+        if (Schema::hasTable('wallets') && !Schema::hasColumn('wallets', 'unique_key')) {
+            Schema::table('wallets', function (Blueprint $table) {
+                $table->string('unique_key')->nullable();
+            });
+        }
     }
 
     /**

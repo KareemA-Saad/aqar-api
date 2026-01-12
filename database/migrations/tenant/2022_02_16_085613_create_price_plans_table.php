@@ -13,7 +13,8 @@ class CreatePricePlansTable extends Migration
      */
     public function up()
     {
-        Schema::create('price_plans', function (Blueprint $table) {
+        if (!Schema::hasTable('price_plans')) {
+            Schema::create('price_plans', function (Blueprint $table) {
             $table->id();
             $table->longText('title');
             $table->longText('features');
@@ -22,6 +23,7 @@ class CreatePricePlansTable extends Migration
             $table->double('price');
             $table->timestamps();
         });
+        }
     }
 
     /**

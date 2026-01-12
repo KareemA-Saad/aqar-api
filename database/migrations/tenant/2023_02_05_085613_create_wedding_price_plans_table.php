@@ -9,7 +9,8 @@ class CreateWeddingPricePlansTable extends Migration
 
     public function up()
     {
-        Schema::create('wedding_price_plans', function (Blueprint $table) {
+        if (!Schema::hasTable('wedding_price_plans')) {
+            Schema::create('wedding_price_plans', function (Blueprint $table) {
             $table->id();
             $table->longText('title');
             $table->longText('features');
@@ -18,6 +19,7 @@ class CreateWeddingPricePlansTable extends Migration
             $table->bigInteger('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

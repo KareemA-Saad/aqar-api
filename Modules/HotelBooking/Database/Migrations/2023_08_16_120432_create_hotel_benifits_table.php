@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('hotel_benifits', function (Blueprint $table) {
+        if (!Schema::hasTable('hotel_benifits')) {
+            Schema::create('hotel_benifits', function (Blueprint $table) {
             $table->increments('id')->foreign('hotels.id');
             $table->string('icon');
             $table->longText('description');
@@ -21,6 +22,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

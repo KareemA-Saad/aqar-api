@@ -8,7 +8,8 @@ class CreateDonationUpdatesTable extends Migration
 {
     public function up()
     {
-        Schema::create('donation_updates', function (Blueprint $table) {
+        if (!Schema::hasTable('donation_updates')) {
+            Schema::create('donation_updates', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('donation_id')->unsigned();
             $table->text('title')->nullable();
@@ -17,6 +18,7 @@ class CreateDonationUpdatesTable extends Migration
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

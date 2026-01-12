@@ -13,13 +13,15 @@ class CreateStateTaxesTable extends Migration
      */
     public function up()
     {
-        Schema::create('state_taxes', function (Blueprint $table) {
+        if (!Schema::hasTable('state_taxes')) {
+            Schema::create('state_taxes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('state_id');
             $table->unsignedBigInteger('country_id');
             $table->double('tax_percentage');
             $table->timestamps();
         });
+        }
     }
 
     /**

@@ -9,7 +9,8 @@ class CreateBlogCommentsTable extends Migration
 
     public function up()
     {
-        Schema::create('blog_comments', function (Blueprint $table) {
+        if (!Schema::hasTable('blog_comments')) {
+            Schema::create('blog_comments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('blog_id');
             $table->unsignedBigInteger('user_id');
@@ -18,6 +19,7 @@ class CreateBlogCommentsTable extends Migration
             $table->longText('comment_content');
             $table->timestamps();
         });
+        }
     }
 
     public function down()

@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        if(Schema::hasTable('countries')){
-            return;
+        if(!Schema::hasTable('countries')){
+            Schema::create('countries', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->string('status')->default('publish');
+                $table->timestamps();
+            });
         }
-        Schema::create('countries', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('status')->default('publish');
-            $table->timestamps();
-        });
     }
 
     /**

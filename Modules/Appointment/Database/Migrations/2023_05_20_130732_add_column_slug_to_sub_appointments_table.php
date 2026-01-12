@@ -15,9 +15,11 @@ class AddColumnSlugToSubAppointmentsTable extends Migration
     {
 
         if(!Schema::hasColumn('sub_appointments','slug')){
+            if (Schema::hasTable('sub_appointments') && !Schema::hasColumn('sub_appointments', 'slug')) {
             Schema::table('sub_appointments', function (Blueprint $table) {
-                $table->text('slug')->nullable()->after('title');
-            });
+                    $table->text('slug')->nullable()->after('title');
+                });
+        }
         }
     }
 

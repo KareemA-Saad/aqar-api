@@ -13,7 +13,8 @@ class CreateCitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cities', function (Blueprint $table) {
+        if (!Schema::hasTable('cities')) {
+            Schema::create('cities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('country_id')->nullable()->constrained('countries')->cascadeOnDelete();
             $table->text('name');
@@ -24,6 +25,7 @@ class CreateCitiesTable extends Migration
 
             $table->timestamps();
         });
+        }
     }
 
     /**

@@ -13,12 +13,14 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('hotel_room_types', function (Blueprint $table) {
+        if (!Schema::hasTable('hotel_room_types')) {
+            Schema::create('hotel_room_types', function (Blueprint $table) {
             $table->id();
             $table->text('name');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

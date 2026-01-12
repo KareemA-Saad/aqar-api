@@ -14,10 +14,12 @@ return new class extends Migration
     public function up()
     {
           if(!Schema::hasColumns('tenant_activity_log',['batch_uuid','event'])){
-              Schema::table('tenant_activity_log', function (Blueprint $table) {
-                  $table->uuid('batch_uuid')->nullable();
-                  $table->string('event')->nullable();
-              });
+              if (Schema::hasTable('tenant_activity_log') && !Schema::hasColumn('tenant_activity_log', 'batch_uuid')) {
+            Schema::table('tenant_activity_log', function (Blueprint $table) {
+                      $table->uuid('batch_uuid')->nullable();
+                      $table->string('event')->nullable();
+                  });
+        }
           }
     }
 

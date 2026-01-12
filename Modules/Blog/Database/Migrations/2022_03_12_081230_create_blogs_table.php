@@ -9,7 +9,8 @@ class CreateBlogsTable extends Migration
 
     public function up()
     {
-        Schema::create('blogs', function (Blueprint $table) {
+        if (!Schema::hasTable('blogs')) {
+            Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('user_id');
@@ -31,6 +32,7 @@ class CreateBlogsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+        }
     }
 
     public function down()
