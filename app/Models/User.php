@@ -22,6 +22,13 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'central';
+
+    /**
      * The guard name for authentication.
      */
     protected string $guard_name = 'api_user';

@@ -261,12 +261,46 @@ final class TenantService
         }
 
         // Run migrations with all paths
-        Artisan::call('tenants:migrate', [
-            '--tenants' => [$tenant->id],
-            '--force' => true,
-            '--path' => $migrationPaths,
-            '--realpath' => true,
+        // Manually initialize tenancy to ensure connection switch
+        $this->tenancy->initialize($tenant);
+        
+        // Debug config
+        Log::info('Tenancy Config Check', [
+            'template' => config('tenancy.database.template_tenant_connection'),
+            'initialized' => $this->tenancy->initialized,
+            'tenant' => $this->tenancy->tenant->id,
         ]);
+
+        // Force connection switch if Tenancy failed to do it
+        if (DB::getDefaultConnection() === 'central') {
+            Log::warning('Tenancy failed to switch default connection. Forcing switch to tenant connection.');
+            
+            // Ensure tenant connection is configured with correct DB name
+            // (Tenancy should have done this, but let's verify/fix)
+            $dbName = config('tenancy.database.prefix') . $tenant->id . config('tenancy.database.suffix');
+            config(['database.connections.tenant.database' => $dbName]);
+            
+            DB::purge('tenant');
+            DB::setDefaultConnection('tenant');
+            DB::reconnect('tenant');
+        }
+
+        try {
+            Log::info('Running migrations with manual context switch', [
+                'tenant_id' => $tenant->id,
+                'current_db' => DB::connection()->getDatabaseName(),
+                'default_conn' => DB::getDefaultConnection(),
+            ]);
+
+            Artisan::call('migrate', [
+                '--force' => true,
+                '--path' => $migrationPaths,
+                '--realpath' => true,
+            ]);
+        } finally {
+            // Always end tenancy to revert to central context
+            $this->tenancy->end();
+        }
 
         Log::info('Tenant migrations completed', [
             'tenant_id' => $tenant->id,

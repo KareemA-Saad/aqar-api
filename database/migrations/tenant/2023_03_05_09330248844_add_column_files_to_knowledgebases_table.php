@@ -9,7 +9,7 @@ return new class extends Migration
 
     public function up()
     {
-        if(!Schema::hasColumn('knowledgebases','files')){
+        if(Schema::hasTable('knowledgebases') && !Schema::hasColumn('knowledgebases','files')){
             Schema::table('knowledgebases', function (Blueprint $table) {
                 $table->longText('files')->nullable();
             });
@@ -19,7 +19,7 @@ return new class extends Migration
 
     public function down()
     {
-        if(!Schema::hasColumn('knowledgebases','files')){
+        if(Schema::hasTable('knowledgebases') && Schema::hasColumn('knowledgebases','files')){
             Schema::table('knowledgebases', function (Blueprint $table) {
                 $table->dropColumn('files');
             });

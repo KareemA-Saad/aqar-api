@@ -16,6 +16,13 @@ class PricePlan extends Model
     use HasTranslations;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'central';
+
+    /**
      * Plan type constants.
      */
     public const TYPE_MONTHLY = 0;
