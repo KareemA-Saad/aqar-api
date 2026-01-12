@@ -20,7 +20,7 @@ return [
     /**
      * Domain model (kept for compatibility, optional for API-first approach).
      */
-    'domain_model' => Domain::class,
+    'domain_model' => \App\Models\Domain::class,
 
     /**
      * Central domains configuration.
