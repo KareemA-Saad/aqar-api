@@ -9,6 +9,12 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
 class Domain extends BaseDomain
 {
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'central';
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>

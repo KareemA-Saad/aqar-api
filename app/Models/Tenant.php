@@ -18,6 +18,13 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     use HasDomains;
 
     /**
+     * The connection name for the model.
+     *
+     * @var string|null
+     */
+    protected $connection = 'central';
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>
