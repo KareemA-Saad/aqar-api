@@ -13,13 +13,15 @@ class CreateZoneRegionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('zone_regions', function (Blueprint $table) {
+        if (!Schema::hasTable('zone_regions')) {
+            Schema::create('zone_regions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('zone_id');
             $table->longText('country')->nullable();
             $table->longText('state')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

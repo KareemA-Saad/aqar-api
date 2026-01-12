@@ -13,7 +13,8 @@ class CreateAdminsTable extends Migration
      */
     public function up()
     {
-        Schema::create('admins', function (Blueprint $table) {
+        if (!Schema::hasTable('admins')) {
+            Schema::create('admins', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('username');
@@ -27,6 +28,7 @@ class CreateAdminsTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+        }
     }
 
     /**

@@ -13,8 +13,10 @@ class AddKeyColumnToAppointmentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('appointment_days', function (Blueprint $table) {
-            $table->string("key")->nullable()->after("day");
-        });
+        if (Schema::hasTable('appointment_days') && !Schema::hasColumn('appointment_days', 'key')) {
+            Schema::table('appointment_days', function (Blueprint $table) {
+                $table->string("key")->nullable()->after("day");
+            });
+        }
     }
 }

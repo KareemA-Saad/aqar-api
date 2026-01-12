@@ -13,7 +13,8 @@ class CreateSupportTicketMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('support_ticket_messages', function (Blueprint $table) {
+        if (!Schema::hasTable('support_ticket_messages')) {
+            Schema::create('support_ticket_messages', function (Blueprint $table) {
             $table->id();
             $table->longText('message')->nullable();
             $table->string('notify')->nullable();
@@ -24,6 +25,7 @@ class CreateSupportTicketMessagesTable extends Migration
 
             $table->timestamps();
         });
+        }
     }
 
     /**

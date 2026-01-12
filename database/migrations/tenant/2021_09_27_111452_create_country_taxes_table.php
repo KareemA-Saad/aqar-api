@@ -13,12 +13,14 @@ class CreateCountryTaxesTable extends Migration
      */
     public function up()
     {
-        Schema::create('country_taxes', function (Blueprint $table) {
+        if (!Schema::hasTable('country_taxes')) {
+            Schema::create('country_taxes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('country_id')->unique();
             $table->double('tax_percentage');
             $table->timestamps();
         });
+        }
     }
 
     /**

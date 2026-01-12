@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up()
     {
-        Schema::create('room_inventories', function (Blueprint $table) {
+        if (!Schema::hasTable('room_inventories')) {
+            Schema::create('room_inventories', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("inventory_id");
             $table->unsignedBigInteger("room_type_id");
@@ -18,6 +19,7 @@ return new class extends Migration {
             $table->foreign("room_type_id")->references("id")->on("room_types")->cascadeOnDelete();
             $table->foreign("room_id")->references("id")->on("rooms")->cascadeOnDelete();
         });
+        }
     }
 
     public function down()

@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('faq_categories', function (Blueprint $table) {
+        if (!Schema::hasTable('faq_categories')) {
+            Schema::create('faq_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

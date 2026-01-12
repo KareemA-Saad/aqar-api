@@ -10,9 +10,11 @@ return new class extends Migration
     public function up()
     {
         if(!Schema::hasColumn('wedding_price_plans','not_available_features')){
+            if (Schema::hasTable('wedding_price_plans') && !Schema::hasColumn('wedding_price_plans', 'not_available_features')) {
             Schema::table('wedding_price_plans', function (Blueprint $table) {
-                $table->longText('not_available_features')->nullable();
-            });
+                    $table->longText('not_available_features')->nullable();
+                });
+        }
         }
 
     }

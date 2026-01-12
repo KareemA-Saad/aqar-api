@@ -9,7 +9,8 @@ class CreateDonationActivitiesTable extends Migration
 
     public function up()
     {
-        Schema::create('donation_activities', function (Blueprint $table) {
+        if (!Schema::hasTable('donation_activities')) {
+            Schema::create('donation_activities', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('category_id')->unsigned();
             $table->text('title');
@@ -19,6 +20,7 @@ class CreateDonationActivitiesTable extends Migration
             $table->string('image')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     public function down()

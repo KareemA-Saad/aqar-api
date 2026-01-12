@@ -9,7 +9,8 @@ class CreateSubAppointmentsTable extends Migration
 
     public function up()
     {
-        Schema::create('sub_appointments', function (Blueprint $table) {
+        if (!Schema::hasTable('sub_appointments')) {
+            Schema::create('sub_appointments', function (Blueprint $table) {
             $table->id();
             $table->text('title');
             $table->longText('description')->nullable();
@@ -19,6 +20,7 @@ class CreateSubAppointmentsTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
 

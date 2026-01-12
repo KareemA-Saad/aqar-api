@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('hotels', function (Blueprint $table) {
+        if (!Schema::hasTable('hotels')) {
+            Schema::create('hotels', function (Blueprint $table) {
             $table->id();
             $table->integer('state_id');
             $table->integer('country_id');
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

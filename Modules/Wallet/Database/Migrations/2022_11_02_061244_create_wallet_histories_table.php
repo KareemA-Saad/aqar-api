@@ -13,7 +13,8 @@ class CreateWalletHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('wallet_histories', function (Blueprint $table) {
+        if (!Schema::hasTable('wallet_histories')) {
+            Schema::create('wallet_histories', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('user_id');
             $table->string('payment_gateway')->nullable();
@@ -27,6 +28,7 @@ class CreateWalletHistoriesTable extends Migration
 
             $table->timestamps();
         });
+        }
     }
 
     /**

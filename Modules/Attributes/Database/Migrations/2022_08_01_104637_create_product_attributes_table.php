@@ -9,12 +9,14 @@ return new class extends Migration
 
     public function up()
     {
-        Schema::create('product_attributes', function (Blueprint $table) {
+        if (!Schema::hasTable('product_attributes')) {
+            Schema::create('product_attributes', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
             $table->longText('terms')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     public function down()

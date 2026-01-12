@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('room_type_amenities', function (Blueprint $table) {
+        if (!Schema::hasTable('room_type_amenities')) {
+            Schema::create('room_type_amenities', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("room_type_id");
             $table->unsignedBigInteger("amenity_id");
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

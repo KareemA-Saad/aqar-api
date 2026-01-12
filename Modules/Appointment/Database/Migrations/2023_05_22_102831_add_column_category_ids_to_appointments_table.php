@@ -11,10 +11,12 @@ class AddColumnCategoryIdsToAppointmentsTable extends Migration
     {
 
         if(!Schema::hasColumns('appointments',['appointment_category_id','appointment_subcategory_id'])){
+            if (Schema::hasTable('appointments') && !Schema::hasColumn('appointments', 'appointment_category_id')) {
             Schema::table('appointments', function (Blueprint $table) {
-                $table->unsignedBigInteger('appointment_category_id')->after('id');
-                $table->unsignedBigInteger('appointment_subcategory_id')->after('appointment_category_id');
-            });
+                    $table->unsignedBigInteger('appointment_category_id')->after('id');
+                    $table->unsignedBigInteger('appointment_subcategory_id')->after('appointment_category_id');
+                });
+        }
         }
 
     }

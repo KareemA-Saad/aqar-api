@@ -13,7 +13,8 @@ class CreateMediaUploadersTable extends Migration
      */
     public function up()
     {
-        Schema::create('media_uploaders', function (Blueprint $table) {
+        if (!Schema::hasTable('media_uploaders')) {
+            Schema::create('media_uploaders', function (Blueprint $table) {
             $table->id();
             $table->text('title');
             $table->text('path');
@@ -24,6 +25,7 @@ class CreateMediaUploadersTable extends Migration
             $table->string('dimensions')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

@@ -8,7 +8,8 @@ class CreateTestimonialsTable extends Migration
 {
     public function up()
     {
-        Schema::create('testimonials', function (Blueprint $table) {
+        if (!Schema::hasTable('testimonials')) {
+            Schema::create('testimonials', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('designation')->nullable();
@@ -18,6 +19,7 @@ class CreateTestimonialsTable extends Migration
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

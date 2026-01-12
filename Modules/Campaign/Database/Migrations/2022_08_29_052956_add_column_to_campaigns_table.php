@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('campaigns', function (Blueprint $table) {
-            $table->unsignedBigInteger("admin_id")->nullable();
-            $table->unsignedBigInteger("vendor_id")->nullable();
-            $table->string("type")->nullable();
-            $table->foreign("admin_id")->references("id")->on("admins");
-        });
+        if (Schema::hasTable('campaigns') && !Schema::hasColumn('campaigns', 'admin_id')) {
+            Schema::table('campaigns', function (Blueprint $table) {
+                $table->unsignedBigInteger("admin_id")->nullable();
+                $table->unsignedBigInteger("vendor_id")->nullable();
+                $table->string("type")->nullable();
+                $table->foreign("admin_id")->references("id")->on("admins");
+            });
+        }
     }
 
     /**

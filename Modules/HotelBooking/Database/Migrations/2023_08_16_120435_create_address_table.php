@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create('address', function (Blueprint $table) {
+        if (!Schema::hasTable('address')) {
+            Schema::create('address', function (Blueprint $table) {
             $table->increments('id');
             $table->bigInteger('country_id');
             $table->bigInteger('state_id');
@@ -25,6 +26,7 @@ return new class extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
 
         Schema::enableForeignKeyConstraints();
     }

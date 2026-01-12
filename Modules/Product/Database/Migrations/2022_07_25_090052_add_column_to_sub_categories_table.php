@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('sub_categories', function (Blueprint $table) {
-            $table->unsignedBigInteger("status_id")->nullable();
-        });
+        if (Schema::hasTable('sub_categories') && !Schema::hasColumn('sub_categories', 'status_id')) {
+            Schema::table('sub_categories', function (Blueprint $table) {
+                $table->unsignedBigInteger("status_id")->nullable();
+            });
+        }
     }
 
     /**

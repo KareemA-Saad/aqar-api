@@ -13,13 +13,15 @@ class CreateShippingMethodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipping_methods', function (Blueprint $table) {
+        if (!Schema::hasTable('shipping_methods')) {
+            Schema::create('shipping_methods', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('zone_id')->nullable(); // could be zone independent, so default = null
             $table->boolean('is_default')->default(false);
             $table->timestamps();
         });
+        }
     }
 
     /**

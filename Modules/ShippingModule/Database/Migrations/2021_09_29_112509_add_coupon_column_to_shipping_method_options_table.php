@@ -13,9 +13,11 @@ class AddCouponColumnToShippingMethodOptionsTable extends Migration
      */
     public function up()
     {
-        Schema::table('shipping_method_options', function (Blueprint $table) {
-            $table->string('coupon')->nullable()->after('minimum_order_amount');
-        });
+        if (Schema::hasTable('shipping_method_options') && !Schema::hasColumn('shipping_method_options', 'coupon')) {
+            Schema::table('shipping_method_options', function (Blueprint $table) {
+                $table->string('coupon')->nullable()->after('minimum_order_amount');
+            });
+        }
     }
 
     /**

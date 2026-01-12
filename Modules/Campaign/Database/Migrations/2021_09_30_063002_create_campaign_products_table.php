@@ -13,7 +13,8 @@ class CreateCampaignProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('campaign_products', function (Blueprint $table) {
+        if (!Schema::hasTable('campaign_products')) {
+            Schema::create('campaign_products', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id');
             $table->bigInteger('campaign_id')->nullable();
@@ -23,6 +24,7 @@ class CreateCampaignProductsTable extends Migration
             $table->timestamp('end_date')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

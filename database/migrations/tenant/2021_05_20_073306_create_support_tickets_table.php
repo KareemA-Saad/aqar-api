@@ -13,7 +13,8 @@ class CreateSupportTicketsTable extends Migration
      */
     public function up()
     {
-        Schema::create('support_tickets', function (Blueprint $table) {
+        if (!Schema::hasTable('support_tickets')) {
+            Schema::create('support_tickets', function (Blueprint $table) {
             $table->id();
             $table->text('title')->nullable();
             $table->text('via')->nullable();
@@ -28,6 +29,7 @@ class CreateSupportTicketsTable extends Migration
             $table->unsignedBigInteger('admin_id')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

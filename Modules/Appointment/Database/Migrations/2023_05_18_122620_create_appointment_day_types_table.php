@@ -9,12 +9,14 @@ class CreateAppointmentDayTypesTable extends Migration
 
     public function up()
     {
-        Schema::create('appointment_day_types', function (Blueprint $table) {
+        if (!Schema::hasTable('appointment_day_types')) {
+            Schema::create('appointment_day_types', function (Blueprint $table) {
             $table->id();
             $table->text('title');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
 

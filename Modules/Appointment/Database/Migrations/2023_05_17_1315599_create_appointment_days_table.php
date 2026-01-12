@@ -8,12 +8,14 @@ class CreateAppointmentDaysTable extends Migration
 {
     public function up()
     {
-        Schema::create('appointment_days', function (Blueprint $table) {
+        if (!Schema::hasTable('appointment_days')) {
+            Schema::create('appointment_days', function (Blueprint $table) {
             $table->id();
             $table->string('day');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

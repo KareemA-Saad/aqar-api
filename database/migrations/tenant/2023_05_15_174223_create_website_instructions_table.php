@@ -8,7 +8,8 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('website_instructions', function (Blueprint $table) {
+        if (!Schema::hasTable('website_instructions')) {
+            Schema::create('website_instructions', function (Blueprint $table) {
             $table->id();
             $table->text('title');
             $table->longText('description');
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->text('unique_key')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     public function down()

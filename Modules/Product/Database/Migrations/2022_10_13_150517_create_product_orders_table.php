@@ -13,7 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('product_orders', function (Blueprint $table) {
+        if (!Schema::hasTable('product_orders')) {
+            Schema::create('product_orders', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->nullable();
@@ -41,6 +42,7 @@ return new class extends Migration
             $table->text('checkout_image_path')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

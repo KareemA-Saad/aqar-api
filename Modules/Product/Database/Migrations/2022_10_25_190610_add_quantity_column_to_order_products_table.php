@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('order_products', function (Blueprint $table) {
-            $table->integer('quantity')->nullable();
-        });
+        if (Schema::hasTable('order_products') && !Schema::hasColumn('order_products', 'quantity')) {
+            Schema::table('order_products', function (Blueprint $table) {
+                $table->integer('quantity')->nullable();
+            });
+        }
     }
 
     /**

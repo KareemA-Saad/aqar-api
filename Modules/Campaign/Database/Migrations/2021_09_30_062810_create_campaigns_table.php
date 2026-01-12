@@ -13,7 +13,8 @@ class CreateCampaignsTable extends Migration
      */
     public function up()
     {
-        Schema::create('campaigns', function (Blueprint $table) {
+        if (!Schema::hasTable('campaigns')) {
+            Schema::create('campaigns', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->longText('subtitle')->nullable();
@@ -23,6 +24,7 @@ class CreateCampaignsTable extends Migration
             $table->string('status')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

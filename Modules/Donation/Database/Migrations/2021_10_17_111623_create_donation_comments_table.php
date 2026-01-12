@@ -9,7 +9,8 @@ class CreateDonationCommentsTable extends Migration
 
     public function up()
     {
-        Schema::create('donation_comments', function (Blueprint $table) {
+        if (!Schema::hasTable('donation_comments')) {
+            Schema::create('donation_comments', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('donation_id');
             $table->unsignedBigInteger('user_id');
@@ -17,6 +18,7 @@ class CreateDonationCommentsTable extends Migration
             $table->longText('comment_content');
             $table->timestamps();
         });
+        }
     }
 
     public function down()

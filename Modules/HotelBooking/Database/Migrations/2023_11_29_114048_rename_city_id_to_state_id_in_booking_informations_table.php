@@ -13,11 +13,13 @@ class RenameCityIdToStateIdInBookingInformationsTable extends Migration
      */
     public function up()
     {
-        Schema::table('booking_informations', function (Blueprint $table) {
-            $table->dropForeign(['city_id']);
-            $table->renameColumn('city_id', 'state_id');
-            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
-        });
+        if (Schema::hasTable('booking_informations') && !Schema::hasColumn('booking_informations', 'city_id')) {
+            Schema::table('booking_informations', function (Blueprint $table) {
+                $table->dropForeign(['city_id']);
+                $table->renameColumn('city_id', 'state_id');
+                $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade');
+            });
+        }
     }
 
     /**

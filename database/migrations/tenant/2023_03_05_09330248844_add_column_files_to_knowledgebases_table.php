@@ -11,8 +11,9 @@ return new class extends Migration
     {
         if(Schema::hasTable('knowledgebases') && !Schema::hasColumn('knowledgebases','files')){
             Schema::table('knowledgebases', function (Blueprint $table) {
-                $table->longText('files')->nullable();
-            });
+                    $table->longText('files')->nullable();
+                });
+        }
         }
 
     }

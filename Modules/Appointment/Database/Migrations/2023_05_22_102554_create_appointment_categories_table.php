@@ -9,12 +9,14 @@ class CreateAppointmentCategoriesTable extends Migration
 
     public function up()
     {
-        Schema::create('appointment_categories', function (Blueprint $table) {
+        if (!Schema::hasTable('appointment_categories')) {
+            Schema::create('appointment_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
 

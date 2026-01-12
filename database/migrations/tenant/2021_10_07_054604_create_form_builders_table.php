@@ -13,7 +13,8 @@ class CreateFormBuildersTable extends Migration
      */
     public function up()
     {
-        Schema::create('form_builders', function (Blueprint $table) {
+        if (!Schema::hasTable('form_builders')) {
+            Schema::create('form_builders', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
             $table->string('email')->nullable();
@@ -22,6 +23,7 @@ class CreateFormBuildersTable extends Migration
             $table->longText('success_message')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

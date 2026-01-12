@@ -14,9 +14,11 @@ class ChangeDataTypeOfCountryTaxesTable extends Migration
      */
     public function up()
     {
-        Schema::table('country_taxes', function (Blueprint $table) {
-            $this->changeColumnType('country_taxes','tax_percentage','float(8,2)');
-        });
+        if (Schema::hasTable('country_taxes')) {
+            Schema::table('country_taxes', function (Blueprint $table) {
+                $this->changeColumnType('country_taxes','tax_percentage','float(8,2)');
+            });
+        }
     }
     
     public function changeColumnType($table, $column, $newColumnType) {                

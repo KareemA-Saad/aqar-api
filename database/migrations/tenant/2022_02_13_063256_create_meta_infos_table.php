@@ -13,7 +13,8 @@ class CreateMetaInfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('meta_infos', function (Blueprint $table) {
+        if (!Schema::hasTable('meta_infos')) {
+            Schema::create('meta_infos', function (Blueprint $table) {
             $table->id();
             $table->text('title')->nullable();
             $table->text('description')->nullable();
@@ -31,6 +32,7 @@ class CreateMetaInfosTable extends Migration
 
             $table->timestamps();
         });
+        }
     }
 
     /**

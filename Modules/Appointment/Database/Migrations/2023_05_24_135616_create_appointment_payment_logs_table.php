@@ -9,7 +9,8 @@ class CreateAppointmentPaymentLogsTable extends Migration
 
     public function up()
     {
-        Schema::create('appointment_payment_logs', function (Blueprint $table) {
+        if (!Schema::hasTable('appointment_payment_logs')) {
+            Schema::create('appointment_payment_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('appointment_id');
             $table->string('name');
@@ -30,6 +31,7 @@ class CreateAppointmentPaymentLogsTable extends Migration
             $table->string('manual_payment_attachment')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     public function down()

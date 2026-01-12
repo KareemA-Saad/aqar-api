@@ -13,7 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('order_products', function (Blueprint $table) {
+        if (!Schema::hasTable('order_products')) {
+            Schema::create('order_products', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('order_id');
             $table->integer('product_id');
@@ -22,6 +23,7 @@ return new class extends Migration
 
             $table->foreign('order_id')->references('id')->on('product_orders')->cascadeOnDelete();
         });
+        }
     }
 
     /**

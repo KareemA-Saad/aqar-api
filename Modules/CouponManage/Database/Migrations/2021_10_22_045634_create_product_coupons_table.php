@@ -13,7 +13,8 @@ class CreateProductCouponsTable extends Migration
      */
     public function up()
     {
-        Schema::create('product_coupons', function (Blueprint $table) {
+        if (!Schema::hasTable('product_coupons')) {
+            Schema::create('product_coupons', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('code')->unique();
@@ -25,6 +26,7 @@ class CreateProductCouponsTable extends Migration
             $table->string('status')->default('draft');
             $table->timestamps();
         });
+        }
     }
 
     /**

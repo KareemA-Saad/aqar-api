@@ -13,12 +13,14 @@ class CreateSupportDepartmentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('support_departments', function (Blueprint $table) {
+        if (!Schema::hasTable('support_departments')) {
+            Schema::create('support_departments', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('status')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('image_gallery_categories', function (Blueprint $table) {
+        if (!Schema::hasTable('image_gallery_categories')) {
+            Schema::create('image_gallery_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     /**

@@ -10,9 +10,11 @@ return new class extends Migration
     public function up()
     {
         if(!Schema::hasColumn('users','image')){
+            if (Schema::hasTable('users') && !Schema::hasColumn('users', 'image')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->string('image')->nullable();
-            });
+                    $table->string('image')->nullable();
+                });
+        }
         }
 
     }

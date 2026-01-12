@@ -13,7 +13,8 @@ class CreateOrdersTable extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        if (!Schema::hasTable('orders')) {
+            Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id',false,true)->nullable();
             $table->string('checkout_type')->nullable();
@@ -26,6 +27,7 @@ class CreateOrdersTable extends Migration
             $table->longText('attachment')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

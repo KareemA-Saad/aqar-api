@@ -13,12 +13,14 @@ class CreateRoomImagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('room_images', function (Blueprint $table) {
+        if (!Schema::hasTable('room_images')) {
+            Schema::create('room_images', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger("room_id");
             $table->unsignedBigInteger("image_id");
             $table->foreign("room_id")->references("id")->on("rooms")->cascadeOnDelete();
         });
+        }
     }
 
     /**

@@ -14,9 +14,11 @@ class ChangeDataTypeOfStateTaxesTable extends Migration
      */
     public function up()
     {
-        Schema::table('state_taxes', function (Blueprint $table) {
-            $this->changeColumnType('state_taxes','tax_percentage','float(8,2)');
-        });
+        if (Schema::hasTable('state_taxes')) {
+            Schema::table('state_taxes', function (Blueprint $table) {
+                $this->changeColumnType('state_taxes','tax_percentage','float(8,2)');
+            });
+        }
     }
     public function changeColumnType($table, $column, $newColumnType) {
         DB::statement("ALTER TABLE $table CHANGE $column $column $newColumnType");

@@ -9,13 +9,15 @@ class CreateDonationCategoriesTable extends Migration
 
     public function up()
     {
-        Schema::create('donation_categories', function (Blueprint $table) {
+        if (!Schema::hasTable('donation_categories')) {
+            Schema::create('donation_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
+        }
     }
 
 

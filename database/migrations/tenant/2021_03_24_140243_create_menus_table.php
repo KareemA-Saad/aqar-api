@@ -9,13 +9,15 @@ class CreateMenusTable extends Migration
 
     public function up()
     {
-        Schema::create('menus', function (Blueprint $table) {
+        if (!Schema::hasTable('menus')) {
+            Schema::create('menus', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
             $table->longText('content')->nullable();
             $table->string('status')->nullable();
             $table->timestamps();
         });
+        }
     }
 
 

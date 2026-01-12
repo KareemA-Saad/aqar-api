@@ -13,7 +13,8 @@ class CreateShippingAddressesTable extends Migration
      */
     public function up()
     {
-        Schema::create('shipping_addresses', function (Blueprint $table) {
+        if (!Schema::hasTable('shipping_addresses')) {
+            Schema::create('shipping_addresses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->nullable();
@@ -26,6 +27,7 @@ class CreateShippingAddressesTable extends Migration
             $table->text('address')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

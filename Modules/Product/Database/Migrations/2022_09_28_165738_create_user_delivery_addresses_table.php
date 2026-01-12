@@ -13,7 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_delivery_addresses', function (Blueprint $table) {
+        if (!Schema::hasTable('user_delivery_addresses')) {
+            Schema::create('user_delivery_addresses', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('country_id');
@@ -29,6 +30,7 @@ return new class extends Migration
             $table->foreign('country_id')->references('id')->on('countries')->cascadeOnDelete();
             $table->foreign('state_id')->references('id')->on('states')->cascadeOnDelete();
         });
+        }
     }
 
     /**

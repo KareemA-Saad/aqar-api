@@ -9,7 +9,8 @@ class CreateContactMessagesTable extends Migration
 
     public function up()
     {
-        Schema::create('contact_messages', function (Blueprint $table) {
+        if (!Schema::hasTable('contact_messages')) {
+            Schema::create('contact_messages', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('form_builder_id');
             $table->text('fields')->nullable();
@@ -17,6 +18,7 @@ class CreateContactMessagesTable extends Migration
             $table->boolean('status')->default(1);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

@@ -13,7 +13,8 @@ class CreateHotelReviewsTable extends Migration
      */
     public function up()
     {
-        Schema::create('hotel_reviews', function (Blueprint $table) {
+        if (!Schema::hasTable('hotel_reviews')) {
+            Schema::create('hotel_reviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId("hotel_id")->constrained();
             $table->foreignId("room_id")->constrained();
@@ -26,6 +27,7 @@ class CreateHotelReviewsTable extends Migration
             $table->tinyText("description");
             $table->timestamps();
         });
+        }
     }
 
     /**

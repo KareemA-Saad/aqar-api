@@ -13,13 +13,15 @@ class CreateCampaignSoldProductsTable extends Migration
      */
     public function up()
     {
-        Schema::create('campaign_sold_products', function (Blueprint $table) {
+        if (!Schema::hasTable('campaign_sold_products')) {
+            Schema::create('campaign_sold_products', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('product_id')->nullable();
             $table->integer('sold_count')->nullable();
             $table->double('total_amount')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

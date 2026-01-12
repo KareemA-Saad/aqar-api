@@ -9,7 +9,8 @@ class CreateAppointmentPaymentAdditionalLogsTable extends Migration
 
     public function up()
     {
-        Schema::create('appointment_payment_additional_logs', function (Blueprint $table) {
+        if (!Schema::hasTable('appointment_payment_additional_logs')) {
+            Schema::create('appointment_payment_additional_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('appointment_payment_log_id');
             $table->unsignedBigInteger('appointment_id');
@@ -18,6 +19,7 @@ class CreateAppointmentPaymentAdditionalLogsTable extends Migration
             $table->double('sub_appointment_price')->nullable();
             $table->timestamps();
         });
+        }
     }
 
 

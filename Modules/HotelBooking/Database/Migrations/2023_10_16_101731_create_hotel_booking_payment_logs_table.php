@@ -13,7 +13,8 @@ class CreateHotelBookingPaymentLogsTable extends Migration
      */
     public function up()
     {
-        Schema::create('hotel_booking_payment_logs', function (Blueprint $table) {
+        if (!Schema::hasTable('hotel_booking_payment_logs')) {
+            Schema::create('hotel_booking_payment_logs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('booking_information_id');
             $table->unsignedBigInteger('user_id');
@@ -37,6 +38,7 @@ class CreateHotelBookingPaymentLogsTable extends Migration
             $table->string('manual_payment_attachment')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     /**

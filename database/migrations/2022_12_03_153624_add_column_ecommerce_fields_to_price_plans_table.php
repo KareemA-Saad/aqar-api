@@ -15,7 +15,7 @@ return new class extends Migration
                 if(!Schema::hasColumn('price_plans','product_create_permission')){
                     $table->integer('product_create_permission')->nullable();
                 }
-                if(!Schema::hasColumn('price_plans','product_create_permission')){
+                if(!Schema::hasColumn('price_plans','campaign_create_permission')){
                     $table->integer('campaign_create_permission')->nullable();
                 }
 
@@ -28,10 +28,10 @@ return new class extends Migration
     {
         if(Schema::hasTable('price_plans')){
             Schema::table('price_plans', function (Blueprint $table) {
-                if(!Schema::hasColumn('price_plans','product_create_permission')){
+                if(Schema::hasColumn('price_plans','product_create_permission')){
                     $table->dropColumn('product_create_permission');
                 }
-                if(!Schema::hasColumn('price_plans','product_create_permission')){
+                if(Schema::hasColumn('price_plans','campaign_create_permission')){
                     $table->dropColumn('campaign_create_permission');
                 }
 

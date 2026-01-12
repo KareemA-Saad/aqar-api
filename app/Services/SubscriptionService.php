@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Services;
 
-use App\Events\TenantRegisterEvent;
 use App\Models\Coupon;
 use App\Models\CouponLog;
 use App\Models\PaymentLog;
@@ -479,11 +478,8 @@ final class SubscriptionService
             'domain' => $paymentLog->tenant_id,
         ]);
 
-        // Fire tenant creation event (for database setup, etc.)
-        $user = User::find($paymentLog->user_id);
-        if ($user !== null) {
-            event(new TenantRegisterEvent($user, $tenant->id, $paymentLog->theme));
-        }
+        // Note: TenantCreated event (from Stancl) is automatically fired by Tenant::create()
+        // which triggers TenantCreatedListener to dispatch CreateTenantDatabase job
 
         return $tenant;
     }

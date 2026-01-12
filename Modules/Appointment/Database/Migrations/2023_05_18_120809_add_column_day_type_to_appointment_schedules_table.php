@@ -10,9 +10,11 @@ class AddColumnDayTypeToAppointmentSchedulesTable extends Migration
     public function up()
     {
         if(!Schema::hasColumn('appointment_schedules','day_type')) {
+            if (Schema::hasTable('appointment_schedules') && !Schema::hasColumn('appointment_schedules', 'day_type')) {
             Schema::table('appointment_schedules', function (Blueprint $table) {
-                $table->text('day_type')->nullable();
-            });
+                    $table->text('day_type')->nullable();
+                });
+        }
         }
     }
 

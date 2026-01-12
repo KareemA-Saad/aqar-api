@@ -9,13 +9,15 @@ class CreateDonationActivityCategoriesTable extends Migration
 
     public function up()
     {
-        Schema::create('donation_activity_categories', function (Blueprint $table) {
+        if (!Schema::hasTable('donation_activity_categories')) {
+            Schema::create('donation_activity_categories', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('slug')->nullable();
             $table->boolean('status')->default(0);
             $table->timestamps();
         });
+        }
     }
 
     public function down()

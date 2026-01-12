@@ -16,7 +16,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('cancellation_policies', function (Blueprint $table) {
+        if (!Schema::hasTable('cancellation_policies')) {
+            Schema::create('cancellation_policies', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hotel_id')
                 ->nullable()
@@ -36,6 +37,7 @@ return new class extends Migration
             $table->index(['hotel_id', 'is_default']);
             $table->index(['room_type_id']);
         });
+        }
 
         // Policy tiers for graduated refund rules
         Schema::create('cancellation_policy_tiers', function (Blueprint $table) {

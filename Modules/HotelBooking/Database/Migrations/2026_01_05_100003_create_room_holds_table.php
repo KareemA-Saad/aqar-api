@@ -16,7 +16,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('room_holds', function (Blueprint $table) {
+        if (!Schema::hasTable('room_holds')) {
+            Schema::create('room_holds', function (Blueprint $table) {
             $table->id();
             $table->string('hold_token', 64)->unique()->comment('Unique token for the hold session');
             $table->foreignId('room_type_id')
@@ -37,6 +38,7 @@ return new class extends Migration
             $table->index(['room_type_id', 'check_in_date', 'check_out_date']);
             $table->index(['user_id']);
         });
+        }
     }
 
     /**

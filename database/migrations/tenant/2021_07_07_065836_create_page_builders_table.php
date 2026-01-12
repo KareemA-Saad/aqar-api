@@ -13,7 +13,8 @@ class CreatePageBuildersTable extends Migration
      */
     public function up()
     {
-        Schema::create('page_builders', function (Blueprint $table) {
+        if (!Schema::hasTable('page_builders')) {
+            Schema::create('page_builders', function (Blueprint $table) {
             $table->id();
             $table->string('addon_name')->nullable();
             $table->string('addon_type')->nullable();
@@ -26,6 +27,7 @@ class CreatePageBuildersTable extends Migration
             $table->timestamps();
 
         });
+        }
     }
 
     /**

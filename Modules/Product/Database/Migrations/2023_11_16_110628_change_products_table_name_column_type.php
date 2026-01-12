@@ -10,9 +10,11 @@ class ChangeProductsTableNameColumnType extends Migration
     public function up()
     {
         // Drop the existing index
-        Schema::table('products', function (Blueprint $table) {
-            $table->dropIndex('products_name_index');
-        });
+        if (Schema::hasTable('products') && !Schema::hasColumn('products', 'products_name_index')) {
+            Schema::table('products', function (Blueprint $table) {
+                $table->dropIndex('products_name_index');
+            });
+        }
 
         // Change column type to longText
         DB::statement('ALTER TABLE products MODIFY name TEXT');
