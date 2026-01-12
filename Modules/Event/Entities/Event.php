@@ -35,4 +35,9 @@ class Event extends Model
     {
         return $this->hasMany(EventComment::class,'event_id','id');
     }
+
+    public function paymentLogs() : HasMany
+    {
+        return $this->hasMany(EventPaymentLog::class,'event_id','id');
+    }
 }
