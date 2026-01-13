@@ -12,4 +12,8 @@ class EventCategory extends Model
     protected $fillable = ['title','status'];
     protected $translatable = ['title'];
 
+    public function events()
+    {
+        return $this->hasMany(Event::class, 'category_id');
+    }
 }

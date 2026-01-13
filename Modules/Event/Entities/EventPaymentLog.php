@@ -13,8 +13,15 @@ class EventPaymentLog extends Model
 
     protected $fillable = [
         'event_id','user_id','name','email','phone','address',
-        'transaction_id','ticket_qty','amount','payment_gateway',
-        'track','manual_payment_attachment','status','note'
+        'transaction_id','ticket_code','ticket_qty','amount','payment_gateway',
+        'track','manual_payment_attachment','status','note',
+        'check_in_status','check_in_at'
+    ];
+
+    protected $casts = [
+        'check_in_status' => 'boolean',
+        'check_in_at' => 'datetime',
+        'status' => 'boolean',
     ];
 
     public function event() : BelongsTo
