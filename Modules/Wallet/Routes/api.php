@@ -28,6 +28,7 @@ Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
         // User wallet management
         Route::get('/wallet', [FrontendWalletController::class, 'show']);
         Route::get('/wallet/history', [FrontendWalletController::class, 'history']);
+        Route::post('/wallet/deposit', [FrontendWalletController::class, 'deposit']);
         Route::post('/wallet/add-funds', [FrontendWalletController::class, 'addFunds']);
         
         // Wallet settings
@@ -53,6 +54,7 @@ Route::prefix('v1/admin')->middleware(['auth:sanctum', 'package.active', 'featur
     // Wallet history management
     Route::get('/wallet-histories', [WalletHistoryController::class, 'index']);
     Route::get('/wallet-histories/{id}', [WalletHistoryController::class, 'show']);
+    Route::put('/wallet-histories/{id}/approve', [WalletHistoryController::class, 'approveManualPayment']);
     Route::put('/wallet-histories/{id}/status', [WalletHistoryController::class, 'updatePaymentStatus']);
     Route::delete('/wallet-histories/{id}', [WalletHistoryController::class, 'destroy']);
     Route::post('/wallet-histories/bulk', [WalletHistoryController::class, 'bulkAction']);

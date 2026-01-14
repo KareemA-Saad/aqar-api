@@ -241,7 +241,7 @@ final class PortfolioService
      * @param int $limit
      * @return Collection
      */
-    public function getRelatedPortfolios(Portfolio $portfolio, int $limit = 4): Collection
+    public function getRelatedPortfolios(Portfolio $portfolio, int $limit = 5): Collection
     {
         return Portfolio::where('category_id', $portfolio->category_id)
             ->where('id', '!=', $portfolio->id)
@@ -250,6 +250,53 @@ final class PortfolioService
             ->orderBy('created_at', 'desc')
             ->limit($limit)
             ->get();
+    }
+
+    /**
+     * Clone an existing portfolio.
+     *
+     * @param Portfolio $portfolio
+     * @return Portfolio
+     */
+    public function clonePortfolio(Portfolio $portfolio): Portfolio
+    {
+        return DB::transaction(function () use ($portfolio) {
+            $clone = $portfolio->replicate();
+            
+            // Set status to 0 (draft) for cloned portfolio
+            $clone->status = false;
+            
+            // Generate new unique slug
+            $clone->slug = $this->ensureUniqueSlug($portfolio->slug . '-copy');
+            
+            // Reset download counter
+            $clone->download = 0;
+            
+            $clone->save();
+
+            // Clone meta info if exists
+            if ($portfolio->metainfo) {
+                $metaClone = $portfolio->metainfo->replicate();
+                $clone->metainfo()->save($metaClone);
+            }
+
+            return $clone->load(['category', 'metainfo']);
+        });
+    }
+
+    /**
+     * Increment download counter for portfolio file.
+     *
+     * @param Portfolio $portfolio
+     * @return bool
+     */
+    public function incrementDownload(Portfolio $portfolio): bool
+    {
+        if (empty($portfolio->file)) {
+            return false;
+        }
+
+        return $portfolio->increment('download');
     }
 
     /**

@@ -29,7 +29,7 @@ class CouponController extends Controller
                 description: 'Active coupons retrieved successfully',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'data', type: 'array', items: new OA\Items(ref: '#/components/schemas/CouponResource')),
+                        new OA\Property(property: 'data', type: 'array', items: new OA\Items(ref: '#/components/schemas/ProductCouponResource')),
                     ]
                 )
             ),
@@ -61,7 +61,7 @@ class CouponController extends Controller
                     properties: [
                         new OA\Property(property: 'valid', type: 'boolean', example: true),
                         new OA\Property(property: 'message', type: 'string', example: 'Coupon is valid'),
-                        new OA\Property(property: 'coupon', ref: '#/components/schemas/CouponResource'),
+                        new OA\Property(property: 'coupon', ref: '#/components/schemas/ProductCouponResource'),
                     ]
                 )
             ),
@@ -89,7 +89,7 @@ class CouponController extends Controller
             new OA\Response(
                 response: 200,
                 description: 'Coupon retrieved successfully',
-                content: new OA\JsonContent(ref: '#/components/schemas/CouponResource')
+                content: new OA\JsonContent(ref: '#/components/schemas/ProductCouponResource')
             ),
             new OA\Response(response: 404, description: 'Coupon not found'),
         ]

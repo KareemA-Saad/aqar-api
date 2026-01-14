@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Service\Http\Requests\ServiceCategoryRequest;
+use Modules\Service\Http\Requests\BulkServiceCategoryRequest;
 use Modules\Service\Http\Resources\ServiceCategoryResource;
 use Modules\Service\Services\ServiceCategoryService;
 use Modules\Service\Entities\ServiceCategory;
@@ -185,5 +186,58 @@ class ServiceCategoryController extends Controller
                 'message' => $e->getMessage(),
             ], 400);
         }
+    }
+
+    #[OA\Post(
+        path: '/api/v1/admin/service-categories/bulk',
+        summary: 'Perform bulk actions on service categories',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: '#/components/schemas/BulkServiceCategoryRequest')
+        ),
+        tags: ['Admin - Service Categories'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Bulk action completed successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string'),
+                        new OA\Property(property: 'processed', type: 'integer'),
+                        new OA\Property(property: 'failed', type: 'integer'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 422, description: 'Validation error'),
+        ]
+    )]
+    public function bulkAction(BulkServiceCategoryRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $categories = ServiceCategory::whereIn('id', $validated['ids'])->get();
+        
+        $processed = 0;
+        $failed = 0;
+        
+        foreach ($categories as $category) {
+            try {
+                match ($validated['action']) {
+                    'delete' => $this->categoryService->deleteCategory($category),
+                };
+                $processed++;
+            } catch (\Exception $e) {
+                $failed++;
+                \Log::warning('Failed to delete service category in bulk action', [
+                    'category_id' => $category->id,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+        
+        return response()->json([
+            'message' => "Bulk action '{$validated['action']}' completed: {$processed} processed, {$failed} failed",
+            'processed' => $processed,
+            'failed' => $failed,
+        ]);
     }
 }

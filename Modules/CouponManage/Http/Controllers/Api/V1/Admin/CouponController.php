@@ -8,6 +8,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\CouponManage\Entities\ProductCoupon;
+use Modules\CouponManage\Http\Requests\StoreCouponRequest;
+use Modules\CouponManage\Http\Requests\UpdateCouponRequest;
 use Modules\CouponManage\Http\Resources\CouponResource;
 use OpenApi\Attributes as OA;
 
@@ -85,19 +87,9 @@ class CouponController extends Controller
         ),
         responses: [new OA\Response(response: 201, description: 'Coupon created')]
     )]
-    public function store(Request $request): JsonResponse
+    public function store(StoreCouponRequest $request): JsonResponse
     {
-        $data = $request->validate([
-            'title' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:product_coupons,code',
-            'discount' => 'required|numeric|min:0',
-            'discount_type' => 'required|in:percentage,amount',
-            'discount_on' => 'nullable|in:all,category,product',
-            'discount_on_details' => 'nullable|string',
-            'expire_date' => 'nullable|date|after_or_equal:today',
-            'status' => 'nullable|integer|in:0,1',
-        ]);
-
+        $data = $request->validated();
         $data['status'] = $data['status'] ?? 1;
         $coupon = ProductCoupon::create($data);
 
@@ -144,21 +136,10 @@ class CouponController extends Controller
         requestBody: new OA\RequestBody(content: new OA\JsonContent()),
         responses: [new OA\Response(response: 200, description: 'Coupon updated')]
     )]
-    public function update(Request $request, int $id): JsonResponse
+    public function update(UpdateCouponRequest $request, int $id): JsonResponse
     {
         $coupon = ProductCoupon::findOrFail($id);
-        $data = $request->validate([
-            'title' => 'sometimes|string|max:255',
-            'code' => 'sometimes|string|max:50|unique:product_coupons,code,' . $id,
-            'discount' => 'sometimes|numeric|min:0',
-            'discount_type' => 'sometimes|in:percentage,amount',
-            'discount_on' => 'nullable|in:all,category,product',
-            'discount_on_details' => 'nullable|string',
-            'expire_date' => 'nullable|date',
-            'status' => 'nullable|integer|in:0,1',
-        ]);
-
-        $coupon->update($data);
+        $coupon->update($request->validated());
 
         return response()->json([
             'success' => true,
@@ -209,6 +190,48 @@ class CouponController extends Controller
         return response()->json([
             'success' => true,
             'message' => __('Coupon status updated'),
+            'data' => new CouponResource($coupon),
+        ]);
+    }
+
+    #[OA\Get(
+        path: '/api/v1/tenant/{tenant}/admin/coupons/check/{code}',
+        summary: 'Check if a coupon code exists and is valid',
+        tags: ['Admin - Coupons'],
+        security: [['bearerAuth' => []]],
+        parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+            new OA\Parameter(name: 'code', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+            new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
+        ],
+        responses: [new OA\Response(response: 200, description: 'Coupon check result')]
+    )]
+    public function checkCoupon(string $code): JsonResponse
+    {
+        $coupon = ProductCoupon::where('code', $code)
+            ->where('status', 1)
+            ->first();
+
+        if (!$coupon) {
+            return response()->json([
+                'success' => false,
+                'message' => __('Coupon not found or inactive'),
+                'data' => null,
+            ], 404);
+        }
+
+        // Check if expired
+        if ($coupon->expire_date && now()->isAfter($coupon->expire_date)) {
+            return response()->json([
+                'success' => false,
+                'message' => __('Coupon has expired'),
+                'data' => null,
+            ], 400);
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => __('Coupon is valid'),
             'data' => new CouponResource($coupon),
         ]);
     }

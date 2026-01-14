@@ -7,16 +7,19 @@ namespace Modules\Wallet\Http\Controllers\Api\V1\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Modules\Wallet\Http\Requests\ApproveManualPaymentRequest;
 use Modules\Wallet\Http\Requests\BulkWalletHistoryRequest;
 use Modules\Wallet\Http\Resources\WalletHistoryResource;
 use Modules\Wallet\Services\WalletHistoryService;
+use Modules\Wallet\Services\WalletService;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Wallet History', description: 'Wallet transaction history management endpoints')]
 class WalletHistoryController extends Controller
 {
     public function __construct(
-        private readonly WalletHistoryService $walletHistoryService
+        private readonly WalletHistoryService $walletHistoryService,
+        private readonly WalletService $walletService
     ) {
     }
 
@@ -99,6 +102,109 @@ class WalletHistoryController extends Controller
             'success' => true,
             'data' => new WalletHistoryResource($history),
         ]);
+    }
+
+    #[OA\Put(
+        path: '/api/v1/admin/wallet-histories/{id}/approve',
+        summary: 'Approve or reject manual payment',
+        tags: ['Admin - Wallet History'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(ref: '#/components/schemas/ApproveManualPaymentRequest')
+        ),
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'Payment approved successfully'),
+            new OA\Response(response: 404, description: 'Wallet history not found'),
+            new OA\Response(response: 400, description: 'Invalid payment status'),
+        ]
+    )]
+    public function approveManualPayment(ApproveManualPaymentRequest $request, int $id): JsonResponse
+    {
+        $validated = $request->validated();
+        $history = $this->walletHistoryService->getHistoryById($id);
+        
+        if (!$history) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Wallet history not found',
+            ], 404);
+        }
+
+        // Only allow approval for pending manual payments
+        if ($history->payment_status !== 'pending') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Only pending payments can be approved or rejected',
+            ], 400);
+        }
+
+        \DB::beginTransaction();
+        try {
+            // Update payment status
+            $this->walletHistoryService->updateHistory($id, [
+                'payment_status' => $validated['payment_status'],
+                'admin_note' => $validated['admin_note'] ?? null,
+            ]);
+
+            // If approved, add funds to wallet
+            if ($validated['payment_status'] === 'completed') {
+                $success = $this->walletService->addFunds(
+                    $history->user_id,
+                    $history->amount,
+                    [
+                        'payment_gateway' => 'manual_payment',
+                        'payment_status' => 'completed',
+                        'transaction_id' => 'manual_' . $id,
+                    ]
+                );
+
+                if (!$success) {
+                    \DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to add funds to wallet',
+                    ], 500);
+                }
+
+                \Log::info('Manual payment approved', [
+                    'history_id' => $id,
+                    'user_id' => $history->user_id,
+                    'amount' => $history->amount,
+                    'admin_note' => $validated['admin_note'] ?? null,
+                ]);
+            } else {
+                \Log::info('Manual payment rejected', [
+                    'history_id' => $id,
+                    'user_id' => $history->user_id,
+                    'amount' => $history->amount,
+                    'admin_note' => $validated['admin_note'] ?? null,
+                ]);
+            }
+
+            \DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => $validated['payment_status'] === 'completed' 
+                    ? 'Payment approved and wallet credited successfully' 
+                    : 'Payment rejected successfully',
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            \Log::error('Manual payment approval failed', [
+                'history_id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to process payment approval',
+            ], 500);
+        }
     }
 
     #[OA\Put(

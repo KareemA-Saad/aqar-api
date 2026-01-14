@@ -157,4 +157,61 @@ final class NewsletterService
             ->pluck('email')
             ->toArray();
     }
+
+    /**
+     * Send email to all verified subscribers.
+     *
+     * @param string $subject
+     * @param string $message
+     * @return int Number of emails sent
+     */
+    public function sendEmailToAll(string $subject, string $message): int
+    {
+        $subscribers = Newsletter::where('verified', true)->get();
+        $count = 0;
+
+        foreach ($subscribers as $subscriber) {
+            try {
+                \Mail::to($subscriber->email)->send(
+                    new \Modules\Newsletter\Mail\SubscriberMessage($subject, $message)
+                );
+                $count++;
+            } catch (\Exception $e) {
+                \Log::error('Failed to send newsletter email', [
+                    'email' => $subscriber->email,
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return $count;
+    }
+
+    /**
+     * Send email to a specific subscriber.
+     *
+     * @param Newsletter $newsletter
+     * @param string $subject
+     * @param string $message
+     * @return bool
+     */
+    public function sendEmailToSubscriber(Newsletter $newsletter, string $subject, string $message): bool
+    {
+        if (!$newsletter->verified) {
+            return false;
+        }
+
+        try {
+            \Mail::to($newsletter->email)->send(
+                new \Modules\Newsletter\Mail\SubscriberMessage($subject, $message)
+            );
+            return true;
+        } catch (\Exception $e) {
+            \Log::error('Failed to send newsletter email to subscriber', [
+                'email' => $newsletter->email,
+                'error' => $e->getMessage(),
+            ]);
+            return false;
+        }
+    }
 }

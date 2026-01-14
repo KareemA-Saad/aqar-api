@@ -186,6 +186,37 @@ class KnowledgebaseController extends Controller
     }
 
     #[OA\Post(
+        path: '/api/v1/admin/knowledgebases/{id}/clone',
+        summary: 'Clone a knowledgebase article',
+        tags: ['Admin - Knowledgebase'],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
+        ],
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'Knowledgebase article cloned successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/KnowledgebaseResource'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Knowledgebase article not found'),
+        ]
+    )]
+    public function clone(Knowledgebase $knowledgebase): JsonResponse
+    {
+        $clonedArticle = $this->knowledgebaseService->cloneKnowledgebase($knowledgebase);
+        
+        return response()->json([
+            'message' => 'Knowledgebase article cloned successfully',
+            'data' => KnowledgebaseResource::make($clonedArticle),
+        ], 201);
+    }
+
+    #[OA\Post(
         path: '/api/v1/admin/knowledgebases/bulk',
         summary: 'Perform bulk actions on knowledgebase articles',
         requestBody: new OA\RequestBody(

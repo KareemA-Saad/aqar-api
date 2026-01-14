@@ -197,7 +197,7 @@ class KnowledgebaseController extends Controller
         summary: 'Get popular knowledgebase articles',
         tags: ['Frontend - Knowledgebase'],
         parameters: [
-            new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer', default: 10)),
+            new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer', default: 4)),
         ],
         responses: [
             new OA\Response(
@@ -217,11 +217,44 @@ class KnowledgebaseController extends Controller
     )]
     public function popular(Request $request): JsonResponse
     {
-        $limit = (int) $request->get('limit', 10);
+        $limit = (int) $request->get('limit', 4);
         $popular = $this->knowledgebaseService->getPopularKnowledgebases($limit);
         
         return response()->json([
             'data' => KnowledgebaseResource::collection($popular),
+        ]);
+    }
+
+    #[OA\Get(
+        path: '/api/v1/frontend/knowledgebases/recent/list',
+        summary: 'Get recent knowledgebase articles',
+        tags: ['Frontend - Knowledgebase'],
+        parameters: [
+            new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer', default: 4)),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Recent articles retrieved successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/KnowledgebaseResource')
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+    public function recent(Request $request): JsonResponse
+    {
+        $limit = (int) $request->get('limit', 4);
+        $recent = $this->knowledgebaseService->getRecentKnowledgebases($limit);
+        
+        return response()->json([
+            'data' => KnowledgebaseResource::collection($recent),
         ]);
     }
 }

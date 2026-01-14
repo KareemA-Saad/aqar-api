@@ -91,6 +91,14 @@ class WalletHistoryService
     }
 
     /**
+     * Get wallet history by transaction ID (for idempotency check)
+     */
+    public function getHistoryByTransactionId(string $transactionId): ?WalletHistory
+    {
+        return WalletHistory::where('transaction_id', $transactionId)->first();
+    }
+
+    /**
      * Create wallet history record
      */
     public function createHistory(array $data): WalletHistory

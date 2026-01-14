@@ -37,6 +37,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         ->group(function () {
             Route::get('/', [CouponController::class, 'index'])->name('index');
             Route::post('/', [CouponController::class, 'store'])->name('store');
+            Route::get('check/{code}', [CouponController::class, 'checkCoupon'])->name('check');
             Route::get('{id}', [CouponController::class, 'show'])->where('id', '[0-9]+')->name('show');
             Route::put('{id}', [CouponController::class, 'update'])->where('id', '[0-9]+')->name('update');
             Route::delete('{id}', [CouponController::class, 'destroy'])->where('id', '[0-9]+')->name('destroy');

@@ -120,10 +120,25 @@ final class KnowledgebaseService
      * @param int $limit
      * @return Collection
      */
-    public function getPopularKnowledgebases(int $limit = 10): Collection
+    public function getPopularKnowledgebases(int $limit = 4): Collection
     {
         return Knowledgebase::where('status', true)
             ->orderBy('views', 'desc')
+            ->limit($limit)
+            ->with(['category'])
+            ->get();
+    }
+
+    /**
+     * Get recent knowledgebase articles.
+     *
+     * @param int $limit
+     * @return Collection
+     */
+    public function getRecentKnowledgebases(int $limit = 4): Collection
+    {
+        return Knowledgebase::where('status', true)
+            ->orderBy('id', 'desc')
             ->limit($limit)
             ->with(['category'])
             ->get();
@@ -231,6 +246,38 @@ final class KnowledgebaseService
     public function incrementViews(Knowledgebase $knowledgebase): void
     {
         $knowledgebase->increment('views');
+    }
+
+    /**
+     * Clone an existing knowledgebase article.
+     *
+     * @param Knowledgebase $knowledgebase
+     * @return Knowledgebase
+     */
+    public function cloneKnowledgebase(Knowledgebase $knowledgebase): Knowledgebase
+    {
+        return DB::transaction(function () use ($knowledgebase) {
+            $clone = $knowledgebase->replicate();
+            
+            // Set status to 0 (draft) for cloned article
+            $clone->status = false;
+            
+            // Generate new unique slug
+            $clone->slug = $this->ensureUniqueSlug($knowledgebase->slug . '-copy');
+            
+            // Reset views counter
+            $clone->views = 0;
+            
+            $clone->save();
+
+            // Clone meta info if exists
+            if ($knowledgebase->metainfo) {
+                $metaClone = $knowledgebase->metainfo->replicate();
+                $clone->metainfo()->save($metaClone);
+            }
+
+            return $clone->load(['category', 'metainfo']);
+        });
     }
 
     /**

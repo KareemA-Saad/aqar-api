@@ -31,14 +31,14 @@ class StoreCouponRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:255', 'unique:product_coupons,code'],
-            'discount' => ['required', 'string', 'max:255'],
+            'title' => ['required', 'string', 'max:191'],
+            'code' => ['required', 'string', 'max:191', 'unique:product_coupons,code'],
+            'discount' => ['required', 'string', 'max:191'],
             'discount_type' => ['required', 'string', 'in:percentage,fixed'],
-            'discount_on' => ['nullable', 'string', 'max:255'],
-            'discount_on_details' => ['nullable', 'string'],
-            'expire_date' => ['nullable', 'date', 'after_or_equal:today'],
-            'status' => ['required', 'string', 'in:draft,publish'],
+            'discount_on' => ['required', 'string', 'in:product,category,subcategory,childcategory,order'],
+            'discount_on_details' => ['nullable', 'json'],
+            'expire_date' => ['required', 'date'],
+            'status' => ['required', 'integer', 'in:0,1'],
         ];
     }
 
@@ -46,13 +46,20 @@ class StoreCouponRequest extends FormRequest
     {
         return [
             'title.required' => 'Coupon title is required',
+            'title.max' => 'Title must not exceed 191 characters',
             'code.required' => 'Coupon code is required',
             'code.unique' => 'This coupon code already exists',
+            'code.max' => 'Code must not exceed 191 characters',
             'discount.required' => 'Discount value is required',
             'discount_type.required' => 'Discount type is required',
             'discount_type.in' => 'Discount type must be either percentage or fixed',
-            'expire_date.after_or_equal' => 'Expiry date must be today or a future date',
-            'status.in' => 'Status must be either draft or publish',
+            'discount_on.required' => 'Discount applicability is required',
+            'discount_on.in' => 'Discount on must be product, category, subcategory, childcategory, or order',
+            'discount_on_details.json' => 'Discount details must be valid JSON',
+            'expire_date.required' => 'Expiry date is required',
+            'expire_date.date' => 'Expiry date must be a valid date',
+            'status.required' => 'Status is required',
+            'status.in' => 'Status must be either 0 or 1',
         ];
     }
 }

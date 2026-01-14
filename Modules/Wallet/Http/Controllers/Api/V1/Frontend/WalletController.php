@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Modules\Wallet\Http\Requests\AddFundsRequest;
 use Modules\Wallet\Http\Requests\DeductFundsRequest;
+use Modules\Wallet\Http\Requests\DepositWalletRequest;
 use Modules\Wallet\Http\Requests\UpdateWalletSettingsRequest;
 use Modules\Wallet\Http\Resources\WalletHistoryResource;
 use Modules\Wallet\Http\Resources\WalletResource;
@@ -91,6 +92,94 @@ class WalletController extends Controller
                 'total' => $histories->total(),
             ],
         ]);
+    }
+
+    #[OA\Post(
+        path: '/api/v1/frontend/wallet/deposit',
+        summary: 'Create wallet deposit request',
+        security: [['sanctum' => []]],
+        tags: ['Frontend - Wallet'],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\MediaType(
+                mediaType: 'multipart/form-data',
+                schema: new OA\Schema(
+                    required: ['amount', 'payment_gateway'],
+                    properties: [
+                        new OA\Property(property: 'amount', type: 'number', example: 100.00),
+                        new OA\Property(property: 'payment_gateway', type: 'string', example: 'manual_payment'),
+                        new OA\Property(property: 'manual_payment_image', type: 'string', format: 'binary'),
+                    ]
+                )
+            )
+        ),
+        responses: [
+            new OA\Response(response: 200, description: 'Deposit request created successfully'),
+            new OA\Response(response: 400, description: 'Failed to create deposit request'),
+        ]
+    )]
+    public function deposit(DepositWalletRequest $request): JsonResponse
+    {
+        $userId = Auth::id();
+        $validated = $request->validated();
+        
+        $imagePath = null;
+        if ($request->hasFile('manual_payment_image')) {
+            $file = $request->file('manual_payment_image');
+            $imageName = 'manual_payment_' . time() . '_' . $userId . '.' . $file->extension();
+            $imagePath = $file->storeAs('wallet/manual_payments', $imageName, 'public');
+        }
+
+        \DB::beginTransaction();
+        try {
+            // Ensure wallet exists
+            $this->walletService->getOrCreateWallet($userId);
+            
+            // Create pending deposit history
+            $history = $this->walletHistoryService->createHistory([
+                'user_id' => $userId,
+                'amount' => $validated['amount'],
+                'payment_gateway' => $validated['payment_gateway'],
+                'payment_status' => $validated['payment_gateway'] === 'manual_payment' ? 'pending' : 'processing',
+                'manual_payment_image' => $imagePath,
+                'status' => 1,
+            ]);
+
+            \Log::info('Wallet deposit request created', [
+                'user_id' => $userId,
+                'amount' => $validated['amount'],
+                'payment_gateway' => $validated['payment_gateway'],
+                'history_id' => $history->id,
+            ]);
+
+            \DB::commit();
+
+            $message = $validated['payment_gateway'] === 'manual_payment'
+                ? 'Manual deposit request submitted. Your wallet will be credited after admin approval.'
+                : 'Deposit request created. Proceed with payment gateway.';
+
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'data' => [
+                    'history_id' => $history->id,
+                    'amount' => $validated['amount'],
+                    'payment_status' => $history->payment_status,
+                ],
+            ]);
+        } catch (\Exception $e) {
+            \DB::rollBack();
+            \Log::error('Wallet deposit request failed', [
+                'user_id' => $userId,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create deposit request',
+            ], 500);
+        }
     }
 
     #[OA\Post(
