@@ -12,9 +12,9 @@ use OpenApi\Attributes as OA;
  * @mixin \App\Models\Coupon
  */
 #[OA\Schema(
-    schema: 'CouponResource',
-    title: 'Coupon Resource',
-    description: 'Coupon resource representation',
+    schema: 'SubscriptionCouponResource',
+    title: 'Subscription Coupon Resource',
+    description: 'Coupon resource for subscription plan discounts (landlord/central)',
     properties: [
         new OA\Property(property: 'id', type: 'integer', example: 1),
         new OA\Property(property: 'title', type: 'string', example: 'Summer Sale'),

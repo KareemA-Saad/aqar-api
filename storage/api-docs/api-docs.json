@@ -4217,7 +4217,7 @@
                                         "data": {
                                             "type": "array",
                                             "items": {
-                                                "$ref": "#/components/schemas/CouponManageResource"
+                                                "$ref": "#/components/schemas/ProductCouponResource"
                                             }
                                         }
                                     },
@@ -4262,7 +4262,7 @@
                                             "example": "Coupon is valid"
                                         },
                                         "coupon": {
-                                            "$ref": "#/components/schemas/CouponManageResource"
+                                            "$ref": "#/components/schemas/ProductCouponResource"
                                         }
                                     },
                                     "type": "object"
@@ -4296,7 +4296,7 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/CouponManageResource"
+                                    "$ref": "#/components/schemas/ProductCouponResource"
                                 }
                             }
                         }
@@ -29612,9 +29612,9 @@
                 },
                 "type": "object"
             },
-            "CouponManageResource": {
-                "title": "Coupon Manage Resource",
-                "description": "Coupon resource representation for CouponManage module",
+            "ProductCouponResource": {
+                "title": "Product Coupon Resource",
+                "description": "Product coupon resource for tenant e-commerce",
                 "properties": {
                     "id": {
                         "type": "integer",
@@ -34443,9 +34443,9 @@
                 },
                 "type": "object"
             },
-            "CouponResource": {
-                "title": "Coupon Resource",
-                "description": "Coupon resource representation",
+            "SubscriptionCouponResource": {
+                "title": "Subscription Coupon Resource",
+                "description": "Coupon resource for subscription plan discounts (landlord/central)",
                 "properties": {
                     "id": {
                         "type": "integer",

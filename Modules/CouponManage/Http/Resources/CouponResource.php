@@ -9,9 +9,9 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'CouponManageResource',
-    title: 'Coupon Manage Resource',
-    description: 'Coupon resource representation for CouponManage module',
+    schema: 'ProductCouponResource',
+    title: 'Product Coupon Resource',
+    description: 'Product coupon resource for tenant e-commerce',
     properties: [
         new OA\Property(property: 'id', type: 'integer', example: 1),
         new OA\Property(property: 'title', type: 'string', example: 'Summer Sale'),
