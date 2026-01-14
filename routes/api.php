@@ -338,11 +338,19 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
 
             // Test Email
             Route::post('test', [EmailSettingsController::class, 'testEmail'])->name('test');
+        });
 
-            // Email Templates
-            Route::get('templates', [EmailSettingsController::class, 'getEmailTemplates'])->name('templates.index');
-            Route::get('templates/{template}', [EmailSettingsController::class, 'getEmailTemplate'])->name('templates.show');
-            Route::put('templates/{template}', [EmailSettingsController::class, 'updateEmailTemplate'])->name('templates.update');
+        /*
+        |--------------------------------------------------------------------------
+        | Email Template Management Routes (Admin)
+        |--------------------------------------------------------------------------
+        */
+        Route::prefix('email-templates')->name('email-templates.')->group(function () {
+            Route::get('types', [\App\Http\Controllers\Api\V1\Admin\EmailTemplateController::class, 'types'])->name('types');
+            Route::get('{type}', [\App\Http\Controllers\Api\V1\Admin\EmailTemplateController::class, 'showAll'])->name('show-all');
+            Route::get('{type}/{lang}', [\App\Http\Controllers\Api\V1\Admin\EmailTemplateController::class, 'show'])->name('show');
+            Route::put('{type}/{lang}', [\App\Http\Controllers\Api\V1\Admin\EmailTemplateController::class, 'update'])->name('update');
+            Route::post('{type}/batch', [\App\Http\Controllers\Api\V1\Admin\EmailTemplateController::class, 'batchUpdate'])->name('batch-update');
         });
 
         /*

@@ -38,7 +38,9 @@ Route::middleware(['tenancy.token', 'tenant.context', 'auth:sanctum', 'package.a
         Route::get('newsletters', [AdminNewsletterController::class, 'index']);
         Route::get('newsletters/statistics/overview', [AdminNewsletterController::class, 'statistics']);
         Route::get('newsletters/export/emails', [AdminNewsletterController::class, 'exportEmails']);
+        Route::post('newsletters/send/all', [AdminNewsletterController::class, 'sendToAll']);
         Route::get('newsletters/{newsletter}', [AdminNewsletterController::class, 'show']);
+        Route::post('newsletters/{newsletter}/send', [AdminNewsletterController::class, 'sendToSubscriber']);
         Route::delete('newsletters/{newsletter}', [AdminNewsletterController::class, 'destroy']);
         Route::post('newsletters/bulk', [AdminNewsletterController::class, 'bulkAction']);
     });

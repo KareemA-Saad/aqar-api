@@ -94,7 +94,7 @@ class ServiceController extends Controller
             ], 404);
         }
         
-        $related = $this->serviceService->getRelatedServices($service, 4);
+        $related = $this->serviceService->getRelatedServices($service, 2);
         
         return response()->json([
             'data' => ServiceResource::make($service),

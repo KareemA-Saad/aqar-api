@@ -26,6 +26,7 @@ Route::middleware(['tenancy.token', 'tenant.context'])
         // Public knowledgebase browsing
         Route::get('knowledgebases', [FrontendKnowledgebaseController::class, 'index']);
         Route::get('knowledgebases/popular/list', [FrontendKnowledgebaseController::class, 'popular']);
+        Route::get('knowledgebases/recent/list', [FrontendKnowledgebaseController::class, 'recent']);
         Route::get('knowledgebases/{slug}', [FrontendKnowledgebaseController::class, 'show']);
         Route::get('knowledgebases/category/{categoryId}', [FrontendKnowledgebaseController::class, 'byCategory']);
         Route::get('knowledgebases/search/{query}', [FrontendKnowledgebaseController::class, 'search']);
@@ -45,6 +46,7 @@ Route::middleware(['tenancy.token', 'tenant.context', 'auth:sanctum', 'package.a
         Route::get('knowledgebases/{knowledgebase}', [AdminKnowledgebaseController::class, 'show']);
         Route::put('knowledgebases/{knowledgebase}', [AdminKnowledgebaseController::class, 'update']);
         Route::delete('knowledgebases/{knowledgebase}', [AdminKnowledgebaseController::class, 'destroy']);
+        Route::post('knowledgebases/{knowledgebase}/clone', [AdminKnowledgebaseController::class, 'clone']);
         Route::post('knowledgebases/bulk', [AdminKnowledgebaseController::class, 'bulkAction']);
 
         // Knowledgebase category management

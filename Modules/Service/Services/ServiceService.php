@@ -224,7 +224,7 @@ final class ServiceService
      * @param int $limit
      * @return Collection
      */
-    public function getRelatedServices(Service $service, int $limit = 4): Collection
+    public function getRelatedServices(Service $service, int $limit = 2): Collection
     {
         return Service::where('category_id', $service->category_id)
             ->where('id', '!=', $service->id)

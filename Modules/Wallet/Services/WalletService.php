@@ -96,15 +96,47 @@ class WalletService
     }
 
     /**
-     * Add funds to wallet
+     * Add funds to wallet with pessimistic locking
      */
     public function addFunds(int $userId, float $amount, array $transactionData = []): bool
     {
         return DB::transaction(function () use ($userId, $amount, $transactionData) {
-            $wallet = $this->getOrCreateWallet($userId);
+            // Get or create wallet with pessimistic lock to prevent race conditions
+            $wallet = Wallet::where('user_id', $userId)->lockForUpdate()->first();
+            
+            if (!$wallet) {
+                $wallet = Wallet::create([
+                    'user_id' => $userId,
+                    'balance' => 0,
+                    'status' => 1
+                ]);
+            }
+            
+            // Check for idempotency - prevent duplicate transactions
+            if (!empty($transactionData['transaction_id'])) {
+                $existingTransaction = app(WalletHistoryService::class)
+                    ->getHistoryByTransactionId($transactionData['transaction_id']);
+                
+                if ($existingTransaction) {
+                    \Log::warning('Duplicate transaction attempt prevented', [
+                        'user_id' => $userId,
+                        'transaction_id' => $transactionData['transaction_id'],
+                        'amount' => $amount
+                    ]);
+                    return false;
+                }
+            }
             
             $newBalance = $wallet->balance + $amount;
             $wallet->update(['balance' => $newBalance]);
+
+            \Log::info('Wallet funds added', [
+                'user_id' => $userId,
+                'amount' => $amount,
+                'old_balance' => $wallet->balance - $amount,
+                'new_balance' => $newBalance,
+                'transaction_id' => $transactionData['transaction_id'] ?? null
+            ]);
 
             // Create wallet history record if transaction data provided
             if (!empty($transactionData)) {
@@ -119,19 +151,43 @@ class WalletService
     }
 
     /**
-     * Deduct funds from wallet
+     * Deduct funds from wallet with pessimistic locking
      */
     public function deductFunds(int $userId, float $amount, array $transactionData = []): bool
     {
         return DB::transaction(function () use ($userId, $amount, $transactionData) {
-            $wallet = $this->getWalletByUserId($userId);
+            // Get wallet with pessimistic lock to prevent race conditions
+            $wallet = Wallet::where('user_id', $userId)->lockForUpdate()->first();
             
-            if (!$wallet || $wallet->balance < $amount) {
+            if (!$wallet) {
+                \Log::error('Wallet deduction failed: Wallet not found', [
+                    'user_id' => $userId,
+                    'amount' => $amount
+                ]);
                 return false;
             }
 
+            // Prevent negative balance
+            if ($wallet->balance < $amount) {
+                \Log::warning('Wallet deduction failed: Insufficient balance', [
+                    'user_id' => $userId,
+                    'current_balance' => $wallet->balance,
+                    'requested_amount' => $amount
+                ]);
+                return false;
+            }
+
+            $oldBalance = $wallet->balance;
             $newBalance = $wallet->balance - $amount;
             $wallet->update(['balance' => $newBalance]);
+
+            \Log::info('Wallet funds deducted', [
+                'user_id' => $userId,
+                'amount' => $amount,
+                'old_balance' => $oldBalance,
+                'new_balance' => $newBalance,
+                'transaction_id' => $transactionData['transaction_id'] ?? null
+            ]);
 
             // Create wallet history record if transaction data provided
             if (!empty($transactionData)) {

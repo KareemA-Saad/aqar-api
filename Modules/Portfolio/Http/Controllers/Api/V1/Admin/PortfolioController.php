@@ -187,6 +187,37 @@ class PortfolioController extends Controller
     }
 
     #[OA\Post(
+        path: '/api/v1/admin/portfolios/{id}/clone',
+        summary: 'Clone a portfolio',
+        tags: ['Admin - Portfolios'],
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
+        ],
+        responses: [
+            new OA\Response(
+                response: 201,
+                description: 'Portfolio cloned successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/PortfolioResource'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Portfolio not found'),
+        ]
+    )]
+    public function clone(Portfolio $portfolio): JsonResponse
+    {
+        $clonedPortfolio = $this->portfolioService->clonePortfolio($portfolio);
+        
+        return response()->json([
+            'message' => 'Portfolio cloned successfully',
+            'data' => PortfolioResource::make($clonedPortfolio),
+        ], 201);
+    }
+
+    #[OA\Post(
         path: '/api/v1/admin/portfolios/bulk',
         summary: 'Perform bulk actions on portfolios',
         requestBody: new OA\RequestBody(

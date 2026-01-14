@@ -11,7 +11,7 @@ class ServiceCategory extends Model
 {
     use HasFactory, HasTranslations;
 
-    protected $fillable = ['title','status'];
+    protected $fillable = ['title', 'icon_type', 'icon_class', 'image', 'status'];
     private $translatable = ['title'];
 
     protected static function newFactory()

@@ -33,14 +33,14 @@ class UpdateCouponRequest extends FormRequest
         $couponId = $this->route('id');
         
         return [
-            'title' => ['sometimes', 'string', 'max:255'],
-            'code' => ['sometimes', 'string', 'max:255', Rule::unique('product_coupons', 'code')->ignore($couponId)],
-            'discount' => ['sometimes', 'string', 'max:255'],
+            'title' => ['sometimes', 'string', 'max:191'],
+            'code' => ['sometimes', 'string', 'max:191', Rule::unique('product_coupons', 'code')->ignore($couponId)],
+            'discount' => ['sometimes', 'string', 'max:191'],
             'discount_type' => ['sometimes', 'string', 'in:percentage,fixed'],
-            'discount_on' => ['nullable', 'string', 'max:255'],
-            'discount_on_details' => ['nullable', 'string'],
-            'expire_date' => ['nullable', 'date'],
-            'status' => ['sometimes', 'string', 'in:draft,publish'],
+            'discount_on' => ['sometimes', 'string', 'in:product,category,subcategory,childcategory,order'],
+            'discount_on_details' => ['nullable', 'json'],
+            'expire_date' => ['sometimes', 'date'],
+            'status' => ['sometimes', 'integer', 'in:0,1'],
         ];
     }
 
@@ -49,7 +49,9 @@ class UpdateCouponRequest extends FormRequest
         return [
             'code.unique' => 'This coupon code already exists',
             'discount_type.in' => 'Discount type must be either percentage or fixed',
-            'status.in' => 'Status must be either draft or publish',
+            'discount_on.in' => 'The discount on must be one of: product, category, subcategory, childcategory, or order',
+            'discount_on_details.json' => 'The discount on details must be a valid JSON array',
+            'status.in' => 'Status must be either 0 (inactive) or 1 (active)',
         ];
     }
 }

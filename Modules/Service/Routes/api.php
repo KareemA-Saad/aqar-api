@@ -48,6 +48,7 @@ Route::middleware(['tenancy.token', 'tenant.context', 'auth:sanctum', 'package.a
         // Service category management
         Route::get('service-categories', [AdminServiceCategoryController::class, 'index']);
         Route::post('service-categories', [AdminServiceCategoryController::class, 'store']);
+        Route::post('service-categories/bulk', [AdminServiceCategoryController::class, 'bulkAction']);
         Route::get('service-categories/{serviceCategory}', [AdminServiceCategoryController::class, 'show']);
         Route::put('service-categories/{serviceCategory}', [AdminServiceCategoryController::class, 'update']);
         Route::delete('service-categories/{serviceCategory}', [AdminServiceCategoryController::class, 'destroy']);

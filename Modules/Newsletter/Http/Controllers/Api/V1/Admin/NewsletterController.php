@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\Newsletter\Http\Requests\BulkNewsletterRequest;
+use Modules\Newsletter\Http\Requests\SendEmailRequest;
 use Modules\Newsletter\Http\Resources\NewsletterResource;
 use Modules\Newsletter\Services\NewsletterService;
 use Modules\Newsletter\Entities\Newsletter;
@@ -208,6 +209,108 @@ class NewsletterController extends Controller
         return response()->json([
             'emails' => $emails,
             'count' => count($emails),
+        ]);
+    }
+
+    #[OA\Post(
+        path: '/api/v1/admin/newsletters/send/all',
+        summary: 'Send email to all verified subscribers',
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['subject', 'message'],
+                properties: [
+                    new OA\Property(property: 'subject', type: 'string', maxLength: 191, example: 'Monthly Newsletter'),
+                    new OA\Property(property: 'message', type: 'string', maxLength: 5000, example: 'Hello subscribers, here is our latest update...'),
+                ]
+            )
+        ),
+        tags: ['Admin - Newsletter'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Emails sent successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string'),
+                        new OA\Property(property: 'sent_count', type: 'integer'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 422, description: 'Validation error'),
+        ]
+    )]
+    public function sendToAll(SendEmailRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        
+        $sentCount = $this->newsletterService->sendEmailToAll(
+            $validated['subject'],
+            $validated['message']
+        );
+        
+        return response()->json([
+            'message' => "Email sent to {$sentCount} subscribers successfully",
+            'sent_count' => $sentCount,
+        ]);
+    }
+
+    #[OA\Post(
+        path: '/api/v1/admin/newsletters/{id}/send',
+        summary: 'Send email to a specific subscriber',
+        parameters: [
+            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
+        ],
+        requestBody: new OA\RequestBody(
+            required: true,
+            content: new OA\JsonContent(
+                required: ['subject', 'message'],
+                properties: [
+                    new OA\Property(property: 'subject', type: 'string', maxLength: 191, example: 'Personal Message'),
+                    new OA\Property(property: 'message', type: 'string', maxLength: 5000, example: 'Hello, we have a special update for you...'),
+                ]
+            )
+        ),
+        tags: ['Admin - Newsletter'],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Email sent successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 400, description: 'Subscriber not verified'),
+            new OA\Response(response: 404, description: 'Subscriber not found'),
+            new OA\Response(response: 422, description: 'Validation error'),
+        ]
+    )]
+    public function sendToSubscriber(SendEmailRequest $request, Newsletter $newsletter): JsonResponse
+    {
+        if (!$newsletter->verified) {
+            return response()->json([
+                'message' => 'Cannot send email to unverified subscriber',
+            ], 400);
+        }
+
+        $validated = $request->validated();
+        
+        $sent = $this->newsletterService->sendEmailToSubscriber(
+            $newsletter,
+            $validated['subject'],
+            $validated['message']
+        );
+        
+        if (!$sent) {
+            return response()->json([
+                'message' => 'Failed to send email',
+            ], 500);
+        }
+        
+        return response()->json([
+            'message' => 'Email sent successfully',
         ]);
     }
 }

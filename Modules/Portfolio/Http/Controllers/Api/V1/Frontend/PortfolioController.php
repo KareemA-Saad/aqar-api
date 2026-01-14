@@ -93,7 +93,7 @@ class PortfolioController extends Controller
             ], 404);
         }
         
-        $related = $this->portfolioService->getRelatedPortfolios($portfolio, 4);
+        $related = $this->portfolioService->getRelatedPortfolios($portfolio, 5);
         
         return response()->json([
             'data' => PortfolioResource::make($portfolio),
@@ -246,6 +246,52 @@ class PortfolioController extends Controller
         
         return response()->json([
             'data' => $tags,
+        ]);
+    }
+
+    #[OA\Post(
+        path: '/api/v1/frontend/portfolios/{slug}/download',
+        summary: 'Increment download counter for portfolio file',
+        tags: ['Frontend - Portfolios'],
+        parameters: [
+            new OA\Parameter(name: 'slug', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Download counter incremented',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string'),
+                        new OA\Property(property: 'download_count', type: 'integer'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 404, description: 'Portfolio not found or no file attached'),
+        ]
+    )]
+    public function download(string $slug): JsonResponse
+    {
+        $portfolio = $this->portfolioService->getPortfolioBySlug($slug);
+        
+        if (!$portfolio) {
+            return response()->json([
+                'message' => 'Portfolio not found',
+            ], 404);
+        }
+
+        if (empty($portfolio->file)) {
+            return response()->json([
+                'message' => 'No file attached to this portfolio',
+            ], 404);
+        }
+
+        $this->portfolioService->incrementDownload($portfolio);
+        $portfolio->refresh();
+        
+        return response()->json([
+            'message' => 'Download counter incremented',
+            'download_count' => $portfolio->download ?? 0,
         ]);
     }
 }

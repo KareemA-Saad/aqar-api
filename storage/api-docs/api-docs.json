@@ -4155,6 +4155,158 @@
                 ]
             }
         },
+        "/api/v1/tenant/{tenant}/admin/coupons/check/{code}": {
+            "get": {
+                "tags": [
+                    "Admin - Coupons"
+                ],
+                "summary": "Check if a coupon code exists and is valid",
+                "operationId": "52337fc9e4cff2edba01866d0162be04",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "X-Tenant-Token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Coupon check result"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/frontend/coupons/active": {
+            "get": {
+                "tags": [
+                    "Frontend - Coupon"
+                ],
+                "summary": "Get active non-expired coupons",
+                "operationId": "690ca8a5e6641059375386bf6cb24bf1",
+                "responses": {
+                    "200": {
+                        "description": "Active coupons retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/CouponManageResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/frontend/coupons/validate": {
+            "post": {
+                "tags": [
+                    "Frontend - Coupon"
+                ],
+                "summary": "Validate coupon code",
+                "operationId": "424645b8fb17dfe73c5400e2ae4d63ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ValidateCouponRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Coupon validation result",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "valid": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Coupon is valid"
+                                        },
+                                        "coupon": {
+                                            "$ref": "#/components/schemas/CouponManageResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/frontend/coupons/{code}": {
+            "get": {
+                "tags": [
+                    "Frontend - Coupon"
+                ],
+                "summary": "Get coupon by code",
+                "operationId": "6b50bca3a2206e014cee416c763c6b2f",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Coupon retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CouponManageResource"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Coupon not found"
+                    }
+                }
+            }
+        },
         "/api/v1/tenant/{tenant}/coupons/validate": {
             "post": {
                 "tags": [
@@ -11782,6 +11934,351 @@
                 "security": [
                     {
                         "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/email-templates/types": {
+            "get": {
+                "tags": [
+                    "Admin - Email Templates"
+                ],
+                "summary": "Get available email template types",
+                "description": "Get list of available template types",
+                "operationId": "d856a1a6337cdbaef3039354a5dafcc2",
+                "responses": {
+                    "200": {
+                        "description": "List of template types",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/email-templates/{type}/{lang}": {
+            "get": {
+                "tags": [
+                    "Admin - Email Templates"
+                ],
+                "summary": "Get email template",
+                "description": "Get email template for specific type and language",
+                "operationId": "0f92d81bf75e691f315487ca64ad746a",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "user_reset_password"
+                        }
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "en"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Email template retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "type": {
+                                                    "type": "string"
+                                                },
+                                                "lang": {
+                                                    "type": "string"
+                                                },
+                                                "subject": {
+                                                    "type": "string"
+                                                },
+                                                "message": {
+                                                    "type": "string"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Template not found"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Admin - Email Templates"
+                ],
+                "summary": "Update email template",
+                "description": "Update email template",
+                "operationId": "fb78f2c63004175f69bb1b560f046a38",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "user_reset_password"
+                        }
+                    },
+                    {
+                        "name": "lang",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "en"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "subject",
+                                    "message"
+                                ],
+                                "properties": {
+                                    "subject": {
+                                        "type": "string",
+                                        "example": "Reset Your Password"
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "example": "Click the link to reset your password..."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Template updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "500": {
+                        "description": "Update failed"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/email-templates/{type}": {
+            "get": {
+                "tags": [
+                    "Admin - Email Templates"
+                ],
+                "summary": "Get email template for all languages",
+                "description": "Get all templates for a specific type across all languages",
+                "operationId": "47033cf6b7f8113a03453c50e8f555bf",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "user_reset_password"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Templates retrieved for all languages",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "type": {
+                                                    "type": "string"
+                                                },
+                                                "templates": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/admin/email-templates/{type}/batch": {
+            "post": {
+                "tags": [
+                    "Admin - Email Templates"
+                ],
+                "summary": "Batch update email templates for multiple languages",
+                "description": "Batch update templates for multiple languages",
+                "operationId": "d691386e1db360bc83cfadf764ea678d",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "user_reset_password"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "templates"
+                                ],
+                                "properties": {
+                                    "templates": {
+                                        "properties": {
+                                            "en": {
+                                                "properties": {
+                                                    "subject": {
+                                                        "type": "string"
+                                                    },
+                                                    "message": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "ar": {
+                                                "properties": {
+                                                    "subject": {
+                                                        "type": "string"
+                                                    },
+                                                    "message": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Templates updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        },
+                                        "failed": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
                     }
                 ]
             }
@@ -28972,37 +29469,202 @@
                 },
                 "type": "object"
             },
-            "ProductCouponResource": {
-                "title": "Product Coupon Resource",
+            "BulkCouponRequest": {
+                "required": [
+                    "action",
+                    "coupon_ids"
+                ],
                 "properties": {
-                    "id": {
-                        "type": "integer"
+                    "action": {
+                        "type": "string",
+                        "enum": [
+                            "delete",
+                            "activate",
+                            "deactivate"
+                        ],
+                        "example": "activate"
                     },
+                    "coupon_ids": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer"
+                        },
+                        "example": [
+                            1,
+                            2,
+                            3
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "StoreCouponRequest": {
+                "required": [
+                    "title",
+                    "code",
+                    "discount",
+                    "discount_type"
+                ],
+                "properties": {
                     "title": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "Summer Sale Coupon"
                     },
                     "code": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "SUMMER2026"
                     },
                     "discount": {
-                        "type": "number"
+                        "type": "string",
+                        "example": "20"
                     },
                     "discount_type": {
                         "type": "string",
                         "enum": [
                             "percentage",
-                            "amount"
-                        ]
+                            "fixed"
+                        ],
+                        "example": "percentage"
                     },
                     "discount_on": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "all",
+                        "nullable": true
+                    },
+                    "discount_on_details": {
+                        "type": "string",
+                        "nullable": true
                     },
                     "expire_date": {
                         "type": "string",
-                        "format": "date"
+                        "format": "date",
+                        "example": "2026-12-31",
+                        "nullable": true
                     },
                     "status": {
-                        "type": "integer"
+                        "type": "string",
+                        "enum": [
+                            "draft",
+                            "publish"
+                        ],
+                        "example": "publish"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateCouponRequest": {
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "example": "Summer Sale Coupon"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "SUMMER2026"
+                    },
+                    "discount": {
+                        "type": "string",
+                        "example": "20"
+                    },
+                    "discount_type": {
+                        "type": "string",
+                        "enum": [
+                            "percentage",
+                            "fixed"
+                        ],
+                        "example": "percentage"
+                    },
+                    "discount_on": {
+                        "type": "string",
+                        "example": "all",
+                        "nullable": true
+                    },
+                    "discount_on_details": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "expire_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2026-12-31",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "draft",
+                            "publish"
+                        ],
+                        "example": "publish"
+                    }
+                },
+                "type": "object"
+            },
+            "ValidateCouponRequest": {
+                "required": [
+                    "code"
+                ],
+                "properties": {
+                    "code": {
+                        "type": "string",
+                        "example": "SUMMER2026"
+                    }
+                },
+                "type": "object"
+            },
+            "CouponManageResource": {
+                "title": "Coupon Manage Resource",
+                "description": "Coupon resource representation for CouponManage module",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Summer Sale"
+                    },
+                    "code": {
+                        "type": "string",
+                        "example": "SUMMER2026"
+                    },
+                    "discount": {
+                        "type": "string",
+                        "example": "20"
+                    },
+                    "discount_type": {
+                        "type": "string",
+                        "example": "percentage"
+                    },
+                    "discount_on": {
+                        "type": "string",
+                        "example": "all",
+                        "nullable": true
+                    },
+                    "discount_on_details": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "expire_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "publish"
+                    },
+                    "is_expired": {
+                        "type": "boolean",
+                        "example": false
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -36156,6 +36818,10 @@
             "description": "Coupon management endpoints"
         },
         {
+            "name": "Frontend - Coupon",
+            "description": "Public coupon endpoints"
+        },
+        {
             "name": "Coupons",
             "description": "Coupon validation for checkout"
         },
@@ -36346,6 +37012,10 @@
         {
             "name": "Tenant Context",
             "description": "Tenant context information endpoints. Access tenant-specific data and settings within the active tenant database."
+        },
+        {
+            "name": "Admin - Email Templates",
+            "description": "Admin - Email Templates"
         }
     ]
 }

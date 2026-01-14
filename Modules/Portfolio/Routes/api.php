@@ -26,6 +26,7 @@ Route::middleware(['tenancy.token', 'tenant.context'])
         // Public portfolio browsing
         Route::get('portfolios', [FrontendPortfolioController::class, 'index']);
         Route::get('portfolios/{slug}', [FrontendPortfolioController::class, 'show']);
+        Route::post('portfolios/{slug}/download', [FrontendPortfolioController::class, 'download']);
         Route::get('portfolios/category/{categoryId}', [FrontendPortfolioController::class, 'byCategory']);
         Route::get('portfolios/tag/{tag}', [FrontendPortfolioController::class, 'byTag']);
         Route::get('portfolios/search/{query}', [FrontendPortfolioController::class, 'search']);
@@ -46,6 +47,7 @@ Route::middleware(['tenancy.token', 'tenant.context', 'auth:sanctum', 'package.a
         Route::get('portfolios/{portfolio}', [AdminPortfolioController::class, 'show']);
         Route::put('portfolios/{portfolio}', [AdminPortfolioController::class, 'update']);
         Route::delete('portfolios/{portfolio}', [AdminPortfolioController::class, 'destroy']);
+        Route::post('portfolios/{portfolio}/clone', [AdminPortfolioController::class, 'clone']);
         Route::post('portfolios/bulk', [AdminPortfolioController::class, 'bulkAction']);
 
         // Portfolio category management
