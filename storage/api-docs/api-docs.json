@@ -4386,15 +4386,24 @@
                 }
             }
         },
-        "/api/v1/admin/amenities": {
+        "/api/v1/tenant/{tenant}/admin/amenities": {
             "get": {
                 "tags": [
                     "Admin Amenity Management"
                 ],
                 "summary": "List all amenities",
                 "description": "Get paginated list of all amenities",
-                "operationId": "0c77875c710e157ab489ea4e9688dd99",
+                "operationId": "8e9a5226ac4f9359847ceaf54ac3068c",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "page",
                         "in": "query",
@@ -4430,7 +4439,18 @@
                 ],
                 "summary": "Create amenity",
                 "description": "Create a new amenity",
-                "operationId": "ef80a240d4d4a9823458e287c1a97143",
+                "operationId": "b746fa3dfc31cc3159f7b01c6fb55dd1",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4459,15 +4479,24 @@
                 ]
             }
         },
-        "/api/v1/admin/amenities/{id}": {
+        "/api/v1/tenant/{tenant}/admin/amenities/{id}": {
             "get": {
                 "tags": [
                     "Admin Amenity Management"
                 ],
                 "summary": "Get amenity details",
                 "description": "Get detailed information about a specific amenity",
-                "operationId": "ac891c260d79d76d4ad4fd9f872a5c6a",
+                "operationId": "b432b431b0188d59cfa777f85ab8cac9",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4500,8 +4529,17 @@
                 ],
                 "summary": "Update amenity",
                 "description": "Update an existing amenity",
-                "operationId": "c18abcce1f9d0b07e859f2306162bb9f",
+                "operationId": "35eea2854e71abe89f0bf7650fb93593",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4547,8 +4585,17 @@
                 ],
                 "summary": "Delete amenity",
                 "description": "Delete an amenity",
-                "operationId": "94a4566e2e5e9ff6d3d72af2438ced6e",
+                "operationId": "f06c98fd29ffbc17dd8c335a011b066e",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4576,15 +4623,24 @@
                 ]
             }
         },
-        "/api/v1/admin/amenities/{id}/toggle-status": {
+        "/api/v1/tenant/{tenant}/admin/amenities/{id}/toggle-status": {
             "patch": {
                 "tags": [
                     "Admin Amenity Management"
                 ],
                 "summary": "Toggle amenity status",
                 "description": "Toggle the active/inactive status of an amenity",
-                "operationId": "ab8e9c0737f0357205a800842d477693",
+                "operationId": "00372df48df562d0c075551cf97f4be5",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4612,15 +4668,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings": {
+        "/api/v1/tenant/{tenant}/admin/bookings": {
             "get": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "List all bookings",
                 "description": "Get paginated list of all bookings with optional filters",
-                "operationId": "90288ceefa4c1956253163076c56ed32",
+                "operationId": "1587d54b95339613b5919a7566a8f771",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "page",
                         "in": "query",
@@ -4695,15 +4760,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}": {
             "get": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Get booking details",
                 "description": "Get detailed information about a specific booking",
-                "operationId": "a26c29c33ee4345457d323512e576c38",
+                "operationId": "c015f2c6c49df295646ed0d943cdc745",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4731,15 +4805,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}/status": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}/status": {
             "patch": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Update booking status",
                 "description": "Update the status of a booking",
-                "operationId": "719b9a6d5fed188e224191eaea83b007",
+                "operationId": "1aaa586d800519063dfdb4aae0d3bc13",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4780,15 +4863,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}/confirm": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}/confirm": {
             "post": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Confirm booking",
                 "description": "Confirm a pending booking",
-                "operationId": "5224de4cb2ad5b334d86a071220cdd1d",
+                "operationId": "6503dbfecd6359b5ec8667ade73e9425",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4816,15 +4908,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}/check-in": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}/check-in": {
             "post": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Check-in guest",
                 "description": "Process check-in for a confirmed booking",
-                "operationId": "4fa99a40a386705d78976dd1eab14681",
+                "operationId": "3800c44866ea35281f8f5575b1cfd4d8",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4855,15 +4956,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}/check-out": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}/check-out": {
             "post": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Check-out guest",
                 "description": "Process check-out for a checked-in booking",
-                "operationId": "0ffb877c36231a61355ef49a5f4190e5",
+                "operationId": "a8f58e851a3b1d8c00844c2f4d71cc26",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4894,15 +5004,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}/cancel": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}/cancel": {
             "post": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Cancel booking",
                 "description": "Cancel a booking and optionally process refund",
-                "operationId": "a42ed59a8b0a0bee60a9a65e3bcf4a1f",
+                "operationId": "d00897e58764d9cdc6e65df6148d591b",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4943,15 +5062,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}/no-show": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}/no-show": {
             "post": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Mark as no-show",
                 "description": "Mark a confirmed booking as no-show",
-                "operationId": "b809d35feb9ae55bea7b0adf8b279fcb",
+                "operationId": "030c4e5a57b7159a62e48cdfe0ec1099",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -4982,15 +5110,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}/refund": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}/refund": {
             "post": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Process refund",
                 "description": "Process refund for a cancelled booking",
-                "operationId": "37cae2bd6139a2b25f80bf90ae403a36",
+                "operationId": "ca6d466838ffed9fe21d4ea6a3f6ff91",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5031,15 +5168,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/{id}/refund-eligibility": {
+        "/api/v1/tenant/{tenant}/admin/bookings/{id}/refund-eligibility": {
             "get": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Check refund eligibility",
                 "description": "Check if a booking is eligible for refund and calculate amount",
-                "operationId": "8ec928ee52cb917387d9852a45d4f9e1",
+                "operationId": "dfd4cd1986d6be8b10c1d88fcd4694b6",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5067,15 +5213,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/today-arrivals": {
+        "/api/v1/tenant/{tenant}/admin/bookings/today-arrivals": {
             "get": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Get today's arrivals",
                 "description": "Get all bookings with check-in today",
-                "operationId": "69dca98e42b3be0a5ed5fec0e2e6daa9",
+                "operationId": "fb08613cd18979949c86dbfd59fa9ab8",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "hotel_id",
                         "in": "query",
@@ -5099,15 +5254,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/today-departures": {
+        "/api/v1/tenant/{tenant}/admin/bookings/today-departures": {
             "get": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Get today's departures",
                 "description": "Get all bookings with check-out today",
-                "operationId": "841d58c754312285885d595bd8fa8cc2",
+                "operationId": "2f26f3ac2fd2d80b358e57d334624737",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "hotel_id",
                         "in": "query",
@@ -5131,15 +5295,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/in-house": {
+        "/api/v1/tenant/{tenant}/admin/bookings/in-house": {
             "get": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Get in-house guests",
                 "description": "Get all currently checked-in guests",
-                "operationId": "e0a62228765116100e617a78fb42d09b",
+                "operationId": "803bdb274cdab3cd3b56e7bb010543da",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "hotel_id",
                         "in": "query",
@@ -5163,15 +5336,24 @@
                 ]
             }
         },
-        "/api/v1/admin/bookings/statistics": {
+        "/api/v1/tenant/{tenant}/admin/bookings/statistics": {
             "get": {
                 "tags": [
                     "Admin Booking Management"
                 ],
                 "summary": "Get booking statistics",
                 "description": "Get booking statistics for a period",
-                "operationId": "63a83c87a01b478289b72a593bb3d050",
+                "operationId": "08e2b532dbc1365a3b0cf6fbc9d4391a",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "hotel_id",
                         "in": "query",
@@ -5208,15 +5390,24 @@
                 ]
             }
         },
-        "/api/v1/admin/cancellation-policies": {
+        "/api/v1/tenant/{tenant}/admin/cancellation-policies": {
             "get": {
                 "tags": [
                     "Admin Cancellation Policy Management"
                 ],
                 "summary": "List all cancellation policies",
                 "description": "Get paginated list of all cancellation policies",
-                "operationId": "d4b0ad81743ac790395e9120b4a51644",
+                "operationId": "52e8ea0f6f874a224dd22af390af39e2",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "page",
                         "in": "query",
@@ -5266,7 +5457,18 @@
                 ],
                 "summary": "Create cancellation policy",
                 "description": "Create a new cancellation policy with tiers",
-                "operationId": "d0e5d6910f6a53635dfefcb993cc5933",
+                "operationId": "6bb45d9473afd57f9f7c0713f5eab42f",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -5295,15 +5497,24 @@
                 ]
             }
         },
-        "/api/v1/admin/cancellation-policies/{id}": {
+        "/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}": {
             "get": {
                 "tags": [
                     "Admin Cancellation Policy Management"
                 ],
                 "summary": "Get policy details",
                 "description": "Get detailed information about a specific cancellation policy",
-                "operationId": "0a34ca6ddca59849e24431dad90cf051",
+                "operationId": "7d394cf5fb6f1c8fddf2db4339140dd1",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5336,8 +5547,17 @@
                 ],
                 "summary": "Update policy",
                 "description": "Update an existing cancellation policy",
-                "operationId": "94e287c37202f758e425e263f6969461",
+                "operationId": "0369059f08de48fb208f07cb35c3ca76",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5383,8 +5603,17 @@
                 ],
                 "summary": "Delete policy",
                 "description": "Delete a cancellation policy (if not in use)",
-                "operationId": "370d6dfb26b4df98e727ee36f18bcd42",
+                "operationId": "0dc93881fde98bf8d58efb176627759c",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5415,15 +5644,24 @@
                 ]
             }
         },
-        "/api/v1/admin/cancellation-policies/{id}/toggle-status": {
+        "/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}/toggle-status": {
             "patch": {
                 "tags": [
                     "Admin Cancellation Policy Management"
                 ],
                 "summary": "Toggle policy status",
                 "description": "Toggle the active/inactive status of a policy",
-                "operationId": "d80de8f01c0508b96f7f1821b8c07d48",
+                "operationId": "fb49676f4d17799f4724943cdb04668a",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5451,15 +5689,24 @@
                 ]
             }
         },
-        "/api/v1/admin/cancellation-policies/{id}/clone": {
+        "/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}/clone": {
             "post": {
                 "tags": [
                     "Admin Cancellation Policy Management"
                 ],
                 "summary": "Clone policy",
                 "description": "Create a copy of an existing policy",
-                "operationId": "1b05889e40b7f1f8192f11f1bb4655c5",
+                "operationId": "64ac297523c130583b8c7e482a46dbb4",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5502,15 +5749,24 @@
                 ]
             }
         },
-        "/api/v1/admin/cancellation-policies/{id}/usage": {
+        "/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}/usage": {
             "get": {
                 "tags": [
                     "Admin Cancellation Policy Management"
                 ],
                 "summary": "Get policy usage",
                 "description": "Get usage statistics for a policy",
-                "operationId": "36dfd9719b5064fe211847ca3e417d16",
+                "operationId": "09d85d271263f64be7682120c9685f87",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5538,14 +5794,25 @@
                 ]
             }
         },
-        "/api/v1/admin/cancellation-policies/active": {
+        "/api/v1/tenant/{tenant}/admin/cancellation-policies/active": {
             "get": {
                 "tags": [
                     "Admin Cancellation Policy Management"
                 ],
                 "summary": "Get active policies",
                 "description": "Get all active cancellation policies",
-                "operationId": "d32002bbf010a0767decf5c74de5c831",
+                "operationId": "d9e1ec87668927ee4584a3610eb833c6",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Active policies retrieved"
@@ -5561,15 +5828,24 @@
                 ]
             }
         },
-        "/api/v1/admin/hotels": {
+        "/api/v1/tenant/{tenant}/admin/hotels": {
             "get": {
                 "tags": [
                     "Admin Hotel Management"
                 ],
                 "summary": "List all hotels",
                 "description": "Get paginated list of all hotels with optional filters",
-                "operationId": "11985d0ba33a459cd9051e70a5acdb63",
+                "operationId": "034cb8b840c038633fe2a6f008af8cf9",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "page",
                         "in": "query",
@@ -5637,7 +5913,18 @@
                 ],
                 "summary": "Create a new hotel",
                 "description": "Create a new hotel with the provided details",
-                "operationId": "1ebb9b8847fd65067894018f988ead4a",
+                "operationId": "34182a2c5181334d7a0cf38439446e1a",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -5666,15 +5953,24 @@
                 ]
             }
         },
-        "/api/v1/admin/hotels/{id}": {
+        "/api/v1/tenant/{tenant}/admin/hotels/{id}": {
             "get": {
                 "tags": [
                     "Admin Hotel Management"
                 ],
                 "summary": "Get hotel details",
                 "description": "Get detailed information about a specific hotel",
-                "operationId": "6b2085f9389c7293fa40eba3ca85aa52",
+                "operationId": "48950306dd7be19bad0c00b9dd22a061",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5707,8 +6003,17 @@
                 ],
                 "summary": "Update hotel",
                 "description": "Update an existing hotel",
-                "operationId": "b44e5eadee740fdee7c787e4a9c8d948",
+                "operationId": "79dcbaa6686c06a66f65d5ea2322f252",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5754,8 +6059,17 @@
                 ],
                 "summary": "Delete hotel",
                 "description": "Delete a hotel (soft delete)",
-                "operationId": "cd262652cef100b74ab2cb7a10b80841",
+                "operationId": "a956ac184a03cf3c5155a381297063de",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5783,15 +6097,24 @@
                 ]
             }
         },
-        "/api/v1/admin/hotels/{id}/toggle-status": {
+        "/api/v1/tenant/{tenant}/admin/hotels/{id}/toggle-status": {
             "patch": {
                 "tags": [
                     "Admin Hotel Management"
                 ],
                 "summary": "Toggle hotel status",
                 "description": "Toggle the active/inactive status of a hotel",
-                "operationId": "134b85af5d8e4022b96fa73d35427e39",
+                "operationId": "5c28e2854d4858f2c473f861e87b2b9a",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5819,15 +6142,24 @@
                 ]
             }
         },
-        "/api/v1/admin/hotels/{id}/images": {
+        "/api/v1/tenant/{tenant}/admin/hotels/{id}/images": {
             "post": {
                 "tags": [
                     "Admin Hotel Management"
                 ],
                 "summary": "Sync hotel images",
                 "description": "Add or update hotel images",
-                "operationId": "a6f72b6af175a1e9e94932d537f07ff7",
+                "operationId": "8bb1e38075e1b88bbc1abf5c6a93706b",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -5873,15 +6205,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory": {
             "get": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Get inventory for room type",
                 "description": "Get inventory data for a room type within a date range",
-                "operationId": "ad224fab87f4a3e948dcd4a07512057b",
+                "operationId": "300f3c824514471ee3635d52a47cc2c6",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -5924,15 +6265,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/{date}": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/{date}": {
             "put": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Update inventory for a date",
                 "description": "Update inventory (price, availability) for a specific date",
-                "operationId": "4afdab06e9145f1db3d4374d0d39787e",
+                "operationId": "27e62186f17679948646dc7a50db0f0c",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -5979,15 +6329,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/bulk": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/bulk": {
             "post": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Bulk update inventory",
                 "description": "Update inventory for a date range",
-                "operationId": "a7daefcd494e4bc7753ce4445da6720e",
+                "operationId": "f39233d0a3118e02cee4b3820d846b11",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6025,15 +6384,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/initialize": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/initialize": {
             "post": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Initialize inventory",
                 "description": "Initialize inventory for a room type for the next N days",
-                "operationId": "7c5b05cb416dd85449076839f70239eb",
+                "operationId": "04bb2c2cccf8c7df29b15de21358ad67",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6083,15 +6451,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/block": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/block": {
             "post": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Block dates",
                 "description": "Block room type for specific dates",
-                "operationId": "0668ad40c377f6637b441d36fd18902c",
+                "operationId": "4e3eb6b6090fb89547475780bdc8158e",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6139,15 +6516,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/unblock": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/unblock": {
             "post": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Unblock dates",
                 "description": "Unblock room type for specific dates",
-                "operationId": "a586ebe0816001804cc6b6dd43caee31",
+                "operationId": "65b8ab4e37a6cd6450f81e9ca5606519",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6192,15 +6578,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/seasonal-pricing": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/seasonal-pricing": {
             "post": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Set seasonal pricing",
                 "description": "Set special pricing for a date range (optionally specific days of week)",
-                "operationId": "0ca2509532048316895b64aebed3ec62",
+                "operationId": "ee79187049d564734153e7281a78bc56",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6254,15 +6649,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/calendar": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/calendar": {
             "get": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Get calendar view",
                 "description": "Get monthly calendar view of inventory",
-                "operationId": "c9bb77ee5e93500e946120cfdcdbea5c",
+                "operationId": "a32fc4c52637782cd5ef57c6b16d625d",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6296,15 +6700,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/statistics": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/statistics": {
             "get": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Get occupancy statistics",
                 "description": "Get occupancy and revenue statistics for a date range",
-                "operationId": "d0b7b2f7f7c4967cec51aa0943553495",
+                "operationId": "39fa034a381d8b845a60ee997c94971e",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6347,15 +6760,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/inventory/sync": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/sync": {
             "post": {
                 "tags": [
                     "Admin Inventory Management"
                 ],
                 "summary": "Sync inventory with room count",
                 "description": "Sync inventory total rooms with actual room count",
-                "operationId": "b6497b5fc8ac3d00c2c6936d582c9e2e",
+                "operationId": "4f2eb5996051fc038445f3b2d5b97a3c",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6380,15 +6802,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{roomTypeId}/rooms": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/rooms": {
             "get": {
                 "tags": [
                     "Admin Room Management"
                 ],
                 "summary": "List rooms for a room type",
                 "description": "Get all rooms for a specific room type",
-                "operationId": "111f80b2939d1723b2d0af227259e3e3",
+                "operationId": "ba754c082d8af84d657ff089b642da99",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "roomTypeId",
                         "in": "path",
@@ -6413,14 +6844,25 @@
                 ]
             }
         },
-        "/api/v1/admin/rooms": {
+        "/api/v1/tenant/{tenant}/admin/rooms": {
             "post": {
                 "tags": [
                     "Admin Room Management"
                 ],
                 "summary": "Create a new room",
                 "description": "Create a new room for a room type",
-                "operationId": "bc861b4f9841ae6fb5ebcf605d299ad9",
+                "operationId": "233a06994ea0561a9ab1f0176315989d",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -6449,15 +6891,24 @@
                 ]
             }
         },
-        "/api/v1/admin/rooms/{id}": {
+        "/api/v1/tenant/{tenant}/admin/rooms/{id}": {
             "get": {
                 "tags": [
                     "Admin Room Management"
                 ],
                 "summary": "Get room details",
                 "description": "Get detailed information about a specific room",
-                "operationId": "daeeb3296dc64998632143b23dd3b0bd",
+                "operationId": "05f7f9e00bfbcac79c0d6c0b0b4813b5",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6490,8 +6941,17 @@
                 ],
                 "summary": "Update room",
                 "description": "Update an existing room",
-                "operationId": "c4d753b286383ed2fcd898758d5c1478",
+                "operationId": "5443940a2e8602ba85ad0b102aae4591",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6537,8 +6997,17 @@
                 ],
                 "summary": "Delete room",
                 "description": "Delete a room",
-                "operationId": "e9c6478a3c9bb44d1b0de00fe9557d14",
+                "operationId": "106ce7ff75b0a36e7415543e1ed8b6a8",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6566,15 +7035,24 @@
                 ]
             }
         },
-        "/api/v1/admin/rooms/{id}/toggle-status": {
+        "/api/v1/tenant/{tenant}/admin/rooms/{id}/toggle-status": {
             "patch": {
                 "tags": [
                     "Admin Room Management"
                 ],
                 "summary": "Toggle room status",
                 "description": "Toggle the active/inactive status of a room",
-                "operationId": "3fce2b6e7293e73c649e36505a77a887",
+                "operationId": "bd4a9e70a57a17ec3fb0401ec39ee1a9",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6602,15 +7080,24 @@
                 ]
             }
         },
-        "/api/v1/admin/rooms/{id}/block": {
+        "/api/v1/tenant/{tenant}/admin/rooms/{id}/block": {
             "post": {
                 "tags": [
                     "Admin Room Management"
                 ],
                 "summary": "Block room for dates",
                 "description": "Block a room for specific dates (maintenance, renovation, etc.)",
-                "operationId": "f4377d312ff3f8888f7e14ca808881fe",
+                "operationId": "567fd2fcb6613565a2df2e5b04451fe2",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6651,15 +7138,24 @@
                 ]
             }
         },
-        "/api/v1/admin/rooms/{id}/unblock": {
+        "/api/v1/tenant/{tenant}/admin/rooms/{id}/unblock": {
             "post": {
                 "tags": [
                     "Admin Room Management"
                 ],
                 "summary": "Unblock room for dates",
                 "description": "Remove block on a room for specific dates",
-                "operationId": "5d5b3b7508291e0691d319c4e7a768f9",
+                "operationId": "a63d1f36484838b5f165b905e3f41e44",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6707,15 +7203,24 @@
                 ]
             }
         },
-        "/api/v1/admin/rooms/{id}/booked-dates": {
+        "/api/v1/tenant/{tenant}/admin/rooms/{id}/booked-dates": {
             "get": {
                 "tags": [
                     "Admin Room Management"
                 ],
                 "summary": "Get booked dates",
                 "description": "Get all booked dates for a room within a date range",
-                "operationId": "850d4fac76411c5381cbc7abea6e4931",
+                "operationId": "f63b0326e677951081e75f125c260de2",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6761,15 +7266,24 @@
                 ]
             }
         },
-        "/api/v1/admin/hotels/{hotelId}/room-types": {
+        "/api/v1/tenant/{tenant}/admin/hotels/{hotelId}/room-types": {
             "get": {
                 "tags": [
                     "Admin Room Type Management"
                 ],
                 "summary": "List room types for a hotel",
                 "description": "Get all room types for a specific hotel",
-                "operationId": "88eb6c3cd9432347182d604f107545ac",
+                "operationId": "aca0abd5f296e22516163bc61f0b80d3",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "hotelId",
                         "in": "path",
@@ -6794,14 +7308,25 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types": {
+        "/api/v1/tenant/{tenant}/admin/room-types": {
             "post": {
                 "tags": [
                     "Admin Room Type Management"
                 ],
                 "summary": "Create a new room type",
                 "description": "Create a new room type for a hotel",
-                "operationId": "4e0216488f7e79740943eafc18e84204",
+                "operationId": "eab92d62c840a486804c539706ef2df7",
+                "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -6830,15 +7355,24 @@
                 ]
             }
         },
-        "/api/v1/admin/room-types/{id}": {
+        "/api/v1/tenant/{tenant}/admin/room-types/{id}": {
             "get": {
                 "tags": [
                     "Admin Room Type Management"
                 ],
                 "summary": "Get room type details",
                 "description": "Get detailed information about a specific room type",
-                "operationId": "d29e7e3a9eaf9e1107d9298f0d7f5d2d",
+                "operationId": "b0a0e81281da70f7e02749b3c1550957",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6871,8 +7405,17 @@
                 ],
                 "summary": "Update room type",
                 "description": "Update an existing room type",
-                "operationId": "8d60e518eaa11ed5585044119654cdb4",
+                "operationId": "b870ef53b92cb239a6c017e6b7c7e2e3",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",
@@ -6918,8 +7461,17 @@
                 ],
                 "summary": "Delete room type",
                 "description": "Delete a room type",
-                "operationId": "e048d468aafa013a113cf371ef4d8460",
+                "operationId": "60870ba08a08f7cafec3eb7f26a76875",
                 "parameters": [
+                    {
+                        "name": "tenant",
+                        "in": "path",
+                        "description": "Tenant identifier",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
                     {
                         "name": "id",
                         "in": "path",

@@ -23,12 +23,13 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/cancellation-policies',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies',
         summary: 'List all cancellation policies',
         description: 'Get paginated list of all cancellation policies',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'page', in: 'query', schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'is_active', in: 'query', schema: new OA\Schema(type: 'boolean')),
@@ -56,11 +57,14 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/cancellation-policies',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies',
         summary: 'Create cancellation policy',
         description: 'Create a new cancellation policy with tiers',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
+        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/StoreCancellationPolicyRequest')
@@ -83,12 +87,13 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/cancellation-policies/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}',
         summary: 'Get policy details',
         description: 'Get detailed information about a specific cancellation policy',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -115,12 +120,13 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Put(
-        path: '/api/v1/admin/cancellation-policies/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}',
         summary: 'Update policy',
         description: 'Update an existing cancellation policy',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -146,12 +152,13 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/v1/admin/cancellation-policies/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}',
         summary: 'Delete policy',
         description: 'Delete a cancellation policy (if not in use)',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -179,12 +186,13 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Patch(
-        path: '/api/v1/admin/cancellation-policies/{id}/toggle-status',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}/toggle-status',
         summary: 'Toggle policy status',
         description: 'Toggle the active/inactive status of a policy',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -208,12 +216,13 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/cancellation-policies/{id}/clone',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}/clone',
         summary: 'Clone policy',
         description: 'Create a copy of an existing policy',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -246,12 +255,13 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/cancellation-policies/{id}/usage',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies/{id}/usage',
         summary: 'Get policy usage',
         description: 'Get usage statistics for a policy',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -271,11 +281,14 @@ class CancellationPolicyController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/cancellation-policies/active',
+        path: '/api/v1/tenant/{tenant}/admin/cancellation-policies/active',
         summary: 'Get active policies',
         description: 'Get all active cancellation policies',
         tags: ['Admin Cancellation Policy Management'],
         security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
+        ],
         responses: [
             new OA\Response(response: 200, description: 'Active policies retrieved'),
             new OA\Response(response: 401, description: 'Unauthorized'),

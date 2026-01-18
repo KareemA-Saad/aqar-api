@@ -23,12 +23,13 @@ class AmenityController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/amenities',
+        path: '/api/v1/tenant/{tenant}/admin/amenities',
         summary: 'List all amenities',
         description: 'Get paginated list of all amenities',
         tags: ['Admin Amenity Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'page', in: 'query', schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
@@ -54,11 +55,14 @@ class AmenityController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/amenities',
+        path: '/api/v1/tenant/{tenant}/admin/amenities',
         summary: 'Create amenity',
         description: 'Create a new amenity',
         tags: ['Admin Amenity Management'],
         security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
+        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/StoreAmenityRequest')
@@ -81,12 +85,13 @@ class AmenityController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/amenities/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/amenities/{id}',
         summary: 'Get amenity details',
         description: 'Get detailed information about a specific amenity',
         tags: ['Admin Amenity Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -113,12 +118,13 @@ class AmenityController extends Controller
     }
 
     #[OA\Put(
-        path: '/api/v1/admin/amenities/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/amenities/{id}',
         summary: 'Update amenity',
         description: 'Update an existing amenity',
         tags: ['Admin Amenity Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -144,12 +150,13 @@ class AmenityController extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/v1/admin/amenities/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/amenities/{id}',
         summary: 'Delete amenity',
         description: 'Delete an amenity',
         tags: ['Admin Amenity Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -169,12 +176,13 @@ class AmenityController extends Controller
     }
 
     #[OA\Patch(
-        path: '/api/v1/admin/amenities/{id}/toggle-status',
+        path: '/api/v1/tenant/{tenant}/admin/amenities/{id}/toggle-status',
         summary: 'Toggle amenity status',
         description: 'Toggle the active/inactive status of an amenity',
         tags: ['Admin Amenity Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [

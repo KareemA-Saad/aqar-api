@@ -24,12 +24,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory',
         summary: 'Get inventory for room type',
         description: 'Get inventory data for a room type within a date range',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'start_date', in: 'query', required: true, schema: new OA\Schema(type: 'string', format: 'date')),
             new OA\Parameter(name: 'end_date', in: 'query', required: true, schema: new OA\Schema(type: 'string', format: 'date')),
@@ -59,12 +60,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Put(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/{date}',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/{date}',
         summary: 'Update inventory for a date',
         description: 'Update inventory (price, availability) for a specific date',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'date', in: 'path', required: true, schema: new OA\Schema(type: 'string', format: 'date')),
         ],
@@ -90,12 +92,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/bulk',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/bulk',
         summary: 'Bulk update inventory',
         description: 'Update inventory for a date range',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -124,12 +127,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/initialize',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/initialize',
         summary: 'Initialize inventory',
         description: 'Initialize inventory for a room type for the next N days',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -170,12 +174,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/block',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/block',
         summary: 'Block dates',
         description: 'Block room type for specific dates',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -215,12 +220,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/unblock',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/unblock',
         summary: 'Unblock dates',
         description: 'Unblock room type for specific dates',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -257,12 +263,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/seasonal-pricing',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/seasonal-pricing',
         summary: 'Set seasonal pricing',
         description: 'Set special pricing for a date range (optionally specific days of week)',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -306,12 +313,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/calendar',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/calendar',
         summary: 'Get calendar view',
         description: 'Get monthly calendar view of inventory',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'month', in: 'query', required: true, schema: new OA\Schema(type: 'string', example: '2024-01')),
         ],
@@ -335,12 +343,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/statistics',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/statistics',
         summary: 'Get occupancy statistics',
         description: 'Get occupancy and revenue statistics for a date range',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'start_date', in: 'query', required: true, schema: new OA\Schema(type: 'string', format: 'date')),
             new OA\Parameter(name: 'end_date', in: 'query', required: true, schema: new OA\Schema(type: 'string', format: 'date')),
@@ -370,12 +379,13 @@ class InventoryController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/room-types/{roomTypeId}/inventory/sync',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/inventory/sync',
         summary: 'Sync inventory with room count',
         description: 'Sync inventory total rooms with actual room count',
         tags: ['Admin Inventory Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
