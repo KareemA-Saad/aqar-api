@@ -29,12 +29,13 @@ class BookingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/bookings',
+        path: '/api/v1/tenant/{tenant}/admin/bookings',
         summary: 'List all bookings',
         description: 'Get paginated list of all bookings with optional filters',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'page', in: 'query', schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -56,12 +57,13 @@ class BookingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/bookings/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}',
         summary: 'Get booking details',
         description: 'Get detailed information about a specific booking',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -88,12 +90,13 @@ class BookingController extends Controller
     }
 
     #[OA\Patch(
-        path: '/api/v1/admin/bookings/{id}/status',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}/status',
         summary: 'Update booking status',
         description: 'Update the status of a booking',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -123,12 +126,13 @@ class BookingController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/bookings/{id}/confirm',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}/confirm',
         summary: 'Confirm booking',
         description: 'Confirm a pending booking',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -149,12 +153,13 @@ class BookingController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/bookings/{id}/check-in',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}/check-in',
         summary: 'Check-in guest',
         description: 'Process check-in for a confirmed booking',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -183,12 +188,13 @@ class BookingController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/bookings/{id}/check-out',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}/check-out',
         summary: 'Check-out guest',
         description: 'Process check-out for a checked-in booking',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -217,12 +223,13 @@ class BookingController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/bookings/{id}/cancel',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}/cancel',
         summary: 'Cancel booking',
         description: 'Cancel a booking and optionally process refund',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -262,12 +269,13 @@ class BookingController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/bookings/{id}/no-show',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}/no-show',
         summary: 'Mark as no-show',
         description: 'Mark a confirmed booking as no-show',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -296,12 +304,13 @@ class BookingController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/bookings/{id}/refund',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}/refund',
         summary: 'Process refund',
         description: 'Process refund for a cancelled booking',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -338,12 +347,13 @@ class BookingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/bookings/{id}/refund-eligibility',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/{id}/refund-eligibility',
         summary: 'Check refund eligibility',
         description: 'Check if a booking is eligible for refund and calculate amount',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -363,12 +373,13 @@ class BookingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/bookings/today-arrivals',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/today-arrivals',
         summary: 'Get today\'s arrivals',
         description: 'Get all bookings with check-in today',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -387,12 +398,13 @@ class BookingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/bookings/today-departures',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/today-departures',
         summary: 'Get today\'s departures',
         description: 'Get all bookings with check-out today',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -411,12 +423,13 @@ class BookingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/bookings/in-house',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/in-house',
         summary: 'Get in-house guests',
         description: 'Get all currently checked-in guests',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -435,12 +448,13 @@ class BookingController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/bookings/statistics',
+        path: '/api/v1/tenant/{tenant}/admin/bookings/statistics',
         summary: 'Get booking statistics',
         description: 'Get booking statistics for a period',
         tags: ['Admin Booking Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'period', in: 'query', schema: new OA\Schema(type: 'string', enum: ['today', 'week', 'month', 'year'])),
         ],

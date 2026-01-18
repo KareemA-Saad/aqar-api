@@ -23,12 +23,13 @@ class RoomTypeController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/hotels/{hotelId}/room-types',
+        path: '/api/v1/tenant/{tenant}/admin/hotels/{hotelId}/room-types',
         summary: 'List room types for a hotel',
         description: 'Get all room types for a specific hotel',
         tags: ['Admin Room Type Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotelId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -47,11 +48,14 @@ class RoomTypeController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/room-types',
+        path: '/api/v1/tenant/{tenant}/admin/room-types',
         summary: 'Create a new room type',
         description: 'Create a new room type for a hotel',
         tags: ['Admin Room Type Management'],
         security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
+        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/StoreRoomTypeRequest')
@@ -74,12 +78,13 @@ class RoomTypeController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/room-types/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{id}',
         summary: 'Get room type details',
         description: 'Get detailed information about a specific room type',
         tags: ['Admin Room Type Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -106,12 +111,13 @@ class RoomTypeController extends Controller
     }
 
     #[OA\Put(
-        path: '/api/v1/admin/room-types/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{id}',
         summary: 'Update room type',
         description: 'Update an existing room type',
         tags: ['Admin Room Type Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -137,12 +143,13 @@ class RoomTypeController extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/v1/admin/room-types/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{id}',
         summary: 'Delete room type',
         description: 'Delete a room type',
         tags: ['Admin Room Type Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [

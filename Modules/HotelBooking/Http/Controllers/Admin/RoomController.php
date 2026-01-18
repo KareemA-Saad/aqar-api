@@ -25,12 +25,13 @@ class RoomController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/room-types/{roomTypeId}/rooms',
+        path: '/api/v1/tenant/{tenant}/admin/room-types/{roomTypeId}/rooms',
         summary: 'List rooms for a room type',
         description: 'Get all rooms for a specific room type',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -49,11 +50,14 @@ class RoomController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/rooms',
+        path: '/api/v1/tenant/{tenant}/admin/rooms',
         summary: 'Create a new room',
         description: 'Create a new room for a room type',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
+        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/StoreRoomRequest')
@@ -76,12 +80,13 @@ class RoomController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/rooms/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/rooms/{id}',
         summary: 'Get room details',
         description: 'Get detailed information about a specific room',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -108,12 +113,13 @@ class RoomController extends Controller
     }
 
     #[OA\Put(
-        path: '/api/v1/admin/rooms/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/rooms/{id}',
         summary: 'Update room',
         description: 'Update an existing room',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -139,12 +145,13 @@ class RoomController extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/v1/admin/rooms/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/rooms/{id}',
         summary: 'Delete room',
         description: 'Delete a room',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -164,12 +171,13 @@ class RoomController extends Controller
     }
 
     #[OA\Patch(
-        path: '/api/v1/admin/rooms/{id}/toggle-status',
+        path: '/api/v1/tenant/{tenant}/admin/rooms/{id}/toggle-status',
         summary: 'Toggle room status',
         description: 'Toggle the active/inactive status of a room',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -193,12 +201,13 @@ class RoomController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/rooms/{id}/block',
+        path: '/api/v1/tenant/{tenant}/admin/rooms/{id}/block',
         summary: 'Block room for dates',
         description: 'Block a room for specific dates (maintenance, renovation, etc.)',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -228,12 +237,13 @@ class RoomController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/rooms/{id}/unblock',
+        path: '/api/v1/tenant/{tenant}/admin/rooms/{id}/unblock',
         summary: 'Unblock room for dates',
         description: 'Remove block on a room for specific dates',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -267,12 +277,13 @@ class RoomController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/rooms/{id}/booked-dates',
+        path: '/api/v1/tenant/{tenant}/admin/rooms/{id}/booked-dates',
         summary: 'Get booked dates',
         description: 'Get all booked dates for a room within a date range',
         tags: ['Admin Room Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'start_date', in: 'query', required: true, schema: new OA\Schema(type: 'string', format: 'date')),
             new OA\Parameter(name: 'end_date', in: 'query', required: true, schema: new OA\Schema(type: 'string', format: 'date')),

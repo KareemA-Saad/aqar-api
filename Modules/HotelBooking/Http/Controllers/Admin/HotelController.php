@@ -25,12 +25,13 @@ class HotelController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/hotels',
+        path: '/api/v1/tenant/{tenant}/admin/hotels',
         summary: 'List all hotels',
         description: 'Get paginated list of all hotels with optional filters',
         tags: ['Admin Hotel Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'page', in: 'query', schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
             new OA\Parameter(name: 'status', in: 'query', schema: new OA\Schema(type: 'integer', enum: [0, 1])),
@@ -50,11 +51,14 @@ class HotelController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/hotels',
+        path: '/api/v1/tenant/{tenant}/admin/hotels',
         summary: 'Create a new hotel',
         description: 'Create a new hotel with the provided details',
         tags: ['Admin Hotel Management'],
         security: [['sanctum' => []]],
+        parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
+        ],
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(ref: '#/components/schemas/StoreHotelRequest')
@@ -77,12 +81,13 @@ class HotelController extends Controller
     }
 
     #[OA\Get(
-        path: '/api/v1/admin/hotels/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/hotels/{id}',
         summary: 'Get hotel details',
         description: 'Get detailed information about a specific hotel',
         tags: ['Admin Hotel Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -109,12 +114,13 @@ class HotelController extends Controller
     }
 
     #[OA\Put(
-        path: '/api/v1/admin/hotels/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/hotels/{id}',
         summary: 'Update hotel',
         description: 'Update an existing hotel',
         tags: ['Admin Hotel Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
@@ -140,12 +146,13 @@ class HotelController extends Controller
     }
 
     #[OA\Delete(
-        path: '/api/v1/admin/hotels/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/hotels/{id}',
         summary: 'Delete hotel',
         description: 'Delete a hotel (soft delete)',
         tags: ['Admin Hotel Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -165,12 +172,13 @@ class HotelController extends Controller
     }
 
     #[OA\Patch(
-        path: '/api/v1/admin/hotels/{id}/toggle-status',
+        path: '/api/v1/tenant/{tenant}/admin/hotels/{id}/toggle-status',
         summary: 'Toggle hotel status',
         description: 'Toggle the active/inactive status of a hotel',
         tags: ['Admin Hotel Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -194,12 +202,13 @@ class HotelController extends Controller
     }
 
     #[OA\Post(
-        path: '/api/v1/admin/hotels/{id}/images',
+        path: '/api/v1/tenant/{tenant}/admin/hotels/{id}/images',
         summary: 'Sync hotel images',
         description: 'Add or update hotel images',
         tags: ['Admin Hotel Management'],
         security: [['sanctum' => []]],
         parameters: [
+            new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         requestBody: new OA\RequestBody(
