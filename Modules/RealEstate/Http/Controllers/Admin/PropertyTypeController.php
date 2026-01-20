@@ -54,7 +54,7 @@ class PropertyTypeController extends Controller
         tags: ['Admin - Property Types'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StorePropertyTypeRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StorePropertyTypeRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Property type created'),
@@ -117,7 +117,7 @@ class PropertyTypeController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StorePropertyTypeRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StorePropertyTypeRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Property type updated'),

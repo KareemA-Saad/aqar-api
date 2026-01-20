@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'StoreCompoundRequest',
+    schema: 'RE_StoreCompoundRequest',
     required: ['area_id', 'title'],
     properties: [
         new OA\Property(property: 'area_id', type: 'integer', example: 1),

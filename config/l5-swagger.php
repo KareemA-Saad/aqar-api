@@ -51,6 +51,8 @@ return [
                     base_path('Modules/ShippingModule/Http'),
                     base_path('Modules/CouponManage/Http'),
                     base_path('Modules/HotelBooking/Http'),
+                    base_path('Modules/RealEstate/Http'),
+                    base_path('Modules/RealEstate/Transformers'),
                 ],
             ],
         ],

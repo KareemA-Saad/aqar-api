@@ -54,7 +54,7 @@ class AmenityController extends Controller
         tags: ['Admin - Amenities'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StoreAmenityRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreAmenityRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Amenity created'),
@@ -115,7 +115,7 @@ class AmenityController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StoreAmenityRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreAmenityRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Amenity updated'),

@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'StorePropertyTypeRequest',
+    schema: 'RE_StorePropertyTypeRequest',
     required: ['name'],
     properties: [
         new OA\Property(property: 'name', type: 'string', example: 'Apartment'),

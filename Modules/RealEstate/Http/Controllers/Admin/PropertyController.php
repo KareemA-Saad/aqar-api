@@ -58,7 +58,7 @@ class PropertyController extends Controller
         tags: ['Admin - Properties'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StorePropertyRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StorePropertyRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Property created'),
@@ -115,7 +115,7 @@ class PropertyController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/UpdatePropertyRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_UpdatePropertyRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Property updated'),
@@ -165,7 +165,7 @@ class PropertyController extends Controller
         tags: ['Admin - Properties'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/BulkActionRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_BulkActionRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Bulk action completed'),

@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'UpdatePropertyRequest',
+    schema: 'RE_UpdatePropertyRequest',
     properties: [
         new OA\Property(property: 'compound_id', type: 'integer'),
         new OA\Property(property: 'property_type_id', type: 'integer'),

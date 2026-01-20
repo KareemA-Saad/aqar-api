@@ -30,7 +30,7 @@ class PropertyInquiryController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StorePropertyInquiryRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StorePropertyInquiryRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Inquiry submitted'),
@@ -62,7 +62,7 @@ class PropertyInquiryController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StorePropertyInquiryRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StorePropertyInquiryRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Inquiry submitted'),
@@ -91,7 +91,7 @@ class PropertyInquiryController extends Controller
         tags: ['Inquiries'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StorePropertyInquiryRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StorePropertyInquiryRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Inquiry submitted'),

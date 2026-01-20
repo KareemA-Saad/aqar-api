@@ -12,7 +12,7 @@ use Modules\RealEstate\Transformers\PropertyResource;
 use Modules\RealEstate\Transformers\CompoundResource;
 use OpenApi\Attributes as OA;
 
-#[OA\Tag(name: 'Search', description: 'Advanced search endpoints')]
+#[OA\Tag(name: 'Search', description: 'Advanced search, autocomplete, and faceted search endpoints')]
 class SearchController extends Controller
 {
     public function __construct(
@@ -25,30 +25,45 @@ class SearchController extends Controller
     #[OA\Get(
         path: '/api/realestate/search/properties',
         summary: 'Search properties',
+        description: 'Advanced property search with comprehensive filtering, sorting, and pagination',
         tags: ['Search'],
         parameters: [
-            new OA\Parameter(name: 'q', in: 'query', description: 'Search query', schema: new OA\Schema(type: 'string')),
-            new OA\Parameter(name: 'area_id', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'compound_id', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'property_type_id', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'developer_id', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'purpose', in: 'query', schema: new OA\Schema(type: 'string', enum: ['sale', 'rent'])),
-            new OA\Parameter(name: 'min_price', in: 'query', schema: new OA\Schema(type: 'number')),
-            new OA\Parameter(name: 'max_price', in: 'query', schema: new OA\Schema(type: 'number')),
-            new OA\Parameter(name: 'min_area', in: 'query', schema: new OA\Schema(type: 'number')),
-            new OA\Parameter(name: 'max_area', in: 'query', schema: new OA\Schema(type: 'number')),
-            new OA\Parameter(name: 'bedrooms', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'bathrooms', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'finishing', in: 'query', schema: new OA\Schema(type: 'string')),
-            new OA\Parameter(name: 'delivery_year', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'amenities', in: 'query', description: 'Comma-separated amenity IDs', schema: new OA\Schema(type: 'string')),
-            new OA\Parameter(name: 'featured', in: 'query', schema: new OA\Schema(type: 'boolean')),
-            new OA\Parameter(name: 'sort', in: 'query', schema: new OA\Schema(type: 'string', enum: ['created_at', 'price', 'area', 'bedrooms'])),
-            new OA\Parameter(name: 'direction', in: 'query', schema: new OA\Schema(type: 'string', enum: ['asc', 'desc'])),
-            new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'q', in: 'query', description: 'Full-text search query', schema: new OA\Schema(type: 'string', example: 'villa new cairo')),
+            new OA\Parameter(name: 'area_id', in: 'query', description: 'Filter by area/location ID', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'compound_id', in: 'query', description: 'Filter by compound ID', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'property_type_id', in: 'query', description: 'Filter by property type', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'developer_id', in: 'query', description: 'Filter by developer', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'purpose', in: 'query', description: 'Sale or rent', schema: new OA\Schema(type: 'string', enum: ['sale', 'rent'])),
+            new OA\Parameter(name: 'min_price', in: 'query', description: 'Minimum price', schema: new OA\Schema(type: 'number', format: 'float')),
+            new OA\Parameter(name: 'max_price', in: 'query', description: 'Maximum price', schema: new OA\Schema(type: 'number', format: 'float')),
+            new OA\Parameter(name: 'min_area', in: 'query', description: 'Minimum area in sqm', schema: new OA\Schema(type: 'number', format: 'float')),
+            new OA\Parameter(name: 'max_area', in: 'query', description: 'Maximum area in sqm', schema: new OA\Schema(type: 'number', format: 'float')),
+            new OA\Parameter(name: 'bedrooms', in: 'query', description: 'Number of bedrooms', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'bathrooms', in: 'query', description: 'Number of bathrooms', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'finishing', in: 'query', description: 'Finishing level', schema: new OA\Schema(type: 'string', enum: ['unfinished', 'semi_finished', 'fully_finished', 'furnished'])),
+            new OA\Parameter(name: 'delivery_year', in: 'query', description: 'Expected delivery year', schema: new OA\Schema(type: 'integer', example: 2025)),
+            new OA\Parameter(name: 'amenities', in: 'query', description: 'Comma-separated amenity IDs', schema: new OA\Schema(type: 'string', example: '1,2,5,8')),
+            new OA\Parameter(name: 'featured', in: 'query', description: 'Featured properties only', schema: new OA\Schema(type: 'boolean')),
+            new OA\Parameter(name: 'sort', in: 'query', description: 'Sort field', schema: new OA\Schema(type: 'string', enum: ['created_at', 'price', 'area', 'bedrooms'], default: 'created_at')),
+            new OA\Parameter(name: 'direction', in: 'query', description: 'Sort direction', schema: new OA\Schema(type: 'string', enum: ['asc', 'desc'], default: 'desc')),
+            new OA\Parameter(name: 'per_page', in: 'query', description: 'Results per page', schema: new OA\Schema(type: 'integer', default: 15, maximum: 100)),
+            new OA\Parameter(name: 'page', in: 'query', description: 'Page number', schema: new OA\Schema(type: 'integer', default: 1)),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Search results'),
+            new OA\Response(
+                response: 200,
+                description: 'Search results with pagination',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_PropertyResource')
+                        ),
+                        new OA\Property(property: 'meta', ref: '#/components/schemas/RE_PaginationMeta'),
+                    ]
+                )
+            ),
         ]
     )]
     public function properties(Request $request): JsonResponse
@@ -78,19 +93,30 @@ class SearchController extends Controller
     #[OA\Get(
         path: '/api/realestate/search/compounds',
         summary: 'Search compounds',
+        description: 'Search compounds/projects with filtering options',
         tags: ['Search'],
         parameters: [
             new OA\Parameter(name: 'q', in: 'query', description: 'Search query', schema: new OA\Schema(type: 'string')),
-            new OA\Parameter(name: 'area_id', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'developer_id', in: 'query', schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'min_price', in: 'query', schema: new OA\Schema(type: 'number')),
-            new OA\Parameter(name: 'max_price', in: 'query', schema: new OA\Schema(type: 'number')),
-            new OA\Parameter(name: 'featured', in: 'query', schema: new OA\Schema(type: 'boolean')),
-            new OA\Parameter(name: 'sort', in: 'query', schema: new OA\Schema(type: 'string')),
-            new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'area_id', in: 'query', description: 'Filter by area', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'developer_id', in: 'query', description: 'Filter by developer', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'min_price', in: 'query', description: 'Minimum starting price', schema: new OA\Schema(type: 'number')),
+            new OA\Parameter(name: 'max_price', in: 'query', description: 'Maximum starting price', schema: new OA\Schema(type: 'number')),
+            new OA\Parameter(name: 'status', in: 'query', description: 'Construction status', schema: new OA\Schema(type: 'string', enum: ['planning', 'under_construction', 'completed'])),
+            new OA\Parameter(name: 'featured', in: 'query', description: 'Featured only', schema: new OA\Schema(type: 'boolean')),
+            new OA\Parameter(name: 'sort', in: 'query', description: 'Sort field', schema: new OA\Schema(type: 'string')),
+            new OA\Parameter(name: 'per_page', in: 'query', description: 'Results per page', schema: new OA\Schema(type: 'integer', default: 15)),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Search results'),
+            new OA\Response(
+                response: 200,
+                description: 'Compound search results',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', type: 'array', items: new OA\Items(ref: '#/components/schemas/RE_CompoundResource')),
+                        new OA\Property(property: 'meta', ref: '#/components/schemas/RE_PaginationMeta'),
+                    ]
+                )
+            ),
         ]
     )]
     public function compounds(Request $request): JsonResponse
@@ -114,13 +140,27 @@ class SearchController extends Controller
     #[OA\Get(
         path: '/api/realestate/search/autocomplete',
         summary: 'Get autocomplete suggestions',
+        description: 'Get instant search suggestions for areas, compounds, developers, and properties based on query input. Minimum 2 characters required.',
         tags: ['Search'],
         parameters: [
-            new OA\Parameter(name: 'q', in: 'query', required: true, description: 'Search query', schema: new OA\Schema(type: 'string', minLength: 2)),
-            new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer', default: 10)),
+            new OA\Parameter(name: 'q', in: 'query', required: true, description: 'Search query (min 2 chars)', schema: new OA\Schema(type: 'string', minLength: 2, example: 'new ca')),
+            new OA\Parameter(name: 'limit', in: 'query', description: 'Max suggestions to return', schema: new OA\Schema(type: 'integer', default: 10, maximum: 20)),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Autocomplete suggestions'),
+            new OA\Response(
+                response: 200,
+                description: 'Autocomplete suggestions grouped by type',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_AutocompleteSuggestion')
+                        ),
+                    ]
+                )
+            ),
+            new OA\Response(response: 422, description: 'Query too short'),
         ]
     )]
     public function autocomplete(Request $request): JsonResponse
@@ -145,12 +185,22 @@ class SearchController extends Controller
     #[OA\Get(
         path: '/api/realestate/search/facets',
         summary: 'Get search facets',
+        description: 'Get available filter options with property counts for building dynamic filter UI. Returns property types, areas, developers, price ranges, and bedroom counts.',
         tags: ['Search'],
         parameters: [
-            new OA\Parameter(name: 'area_id', in: 'query', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'area_id', in: 'query', description: 'Scope facets to specific area', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'purpose', in: 'query', description: 'Filter by purpose', schema: new OA\Schema(type: 'string', enum: ['sale', 'rent'])),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Search facets'),
+            new OA\Response(
+                response: 200,
+                description: 'Search facets with counts',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_SearchFacets'),
+                    ]
+                )
+            ),
         ]
     )]
     public function facets(Request $request): JsonResponse
@@ -168,12 +218,30 @@ class SearchController extends Controller
     #[OA\Get(
         path: '/api/realestate/search/popular',
         summary: 'Get popular searches',
+        description: 'Get trending and most popular search terms/queries',
         tags: ['Search'],
         parameters: [
-            new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer', default: 10)),
+            new OA\Parameter(name: 'limit', in: 'query', description: 'Number of results', schema: new OA\Schema(type: 'integer', default: 10, maximum: 20)),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Popular searches'),
+            new OA\Response(
+                response: 200,
+                description: 'Popular search terms',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: 'term', type: 'string', example: 'villa new cairo'),
+                                    new OA\Property(property: 'count', type: 'integer', example: 1250),
+                                ]
+                            )
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function popular(Request $request): JsonResponse
@@ -191,15 +259,36 @@ class SearchController extends Controller
     #[OA\Get(
         path: '/api/realestate/search/nearby',
         summary: 'Get nearby properties',
+        description: 'Get properties near a geographic location using latitude/longitude coordinates',
         tags: ['Search'],
         parameters: [
-            new OA\Parameter(name: 'latitude', in: 'query', required: true, schema: new OA\Schema(type: 'number')),
-            new OA\Parameter(name: 'longitude', in: 'query', required: true, schema: new OA\Schema(type: 'number')),
-            new OA\Parameter(name: 'radius', in: 'query', description: 'Radius in km', schema: new OA\Schema(type: 'integer', default: 5)),
-            new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer', default: 10)),
+            new OA\Parameter(name: 'latitude', in: 'query', required: true, description: 'Latitude coordinate', schema: new OA\Schema(type: 'number', format: 'float', example: 30.0444)),
+            new OA\Parameter(name: 'longitude', in: 'query', required: true, description: 'Longitude coordinate', schema: new OA\Schema(type: 'number', format: 'float', example: 31.2357)),
+            new OA\Parameter(name: 'radius', in: 'query', description: 'Search radius in kilometers', schema: new OA\Schema(type: 'integer', default: 5, minimum: 1, maximum: 100)),
+            new OA\Parameter(name: 'limit', in: 'query', description: 'Maximum results', schema: new OA\Schema(type: 'integer', default: 10, maximum: 50)),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Nearby properties'),
+            new OA\Response(
+                response: 200,
+                description: 'Nearby properties with distance',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(
+                                allOf: [
+                                    new OA\Schema(ref: '#/components/schemas/RE_PropertyResource'),
+                                    new OA\Schema(properties: [
+                                        new OA\Property(property: 'distance_km', type: 'number', format: 'float', example: 2.5),
+                                    ]),
+                                ]
+                            )
+                        ),
+                    ]
+                )
+            ),
+            new OA\Response(response: 422, description: 'Invalid coordinates'),
         ]
     )]
     public function nearby(Request $request): JsonResponse

@@ -62,7 +62,7 @@ class DeveloperController extends Controller
         tags: ['Admin - Developers'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StoreDeveloperRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreDeveloperRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Developer created'),
@@ -121,7 +121,7 @@ class DeveloperController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/UpdateDeveloperRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_UpdateDeveloperRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Developer updated'),
