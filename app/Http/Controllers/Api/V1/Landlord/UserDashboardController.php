@@ -440,6 +440,25 @@ final class UserDashboardController extends BaseApiController
             );
         }
 
+        // Check tenant creation limit based on plan
+        $maxTenants = $plan->max_tenants ?? 1;
+        $activeTenants = Tenant::where('user_id', $user->id)
+            ->whereIn('subscription_status', ['active', 'trial'])
+            ->count();
+
+        if ($activeTenants >= $maxTenants) {
+            return $this->error(
+                "You have reached the maximum number of tenants ({$maxTenants}) allowed for your plan. Please upgrade to create more tenants.",
+                403,
+                [
+                    'error_code' => 'MAX_TENANTS_REACHED',
+                    'current_count' => $activeTenants,
+                    'max_allowed' => $maxTenants,
+                    'upgrade_url' => config('app.frontend_url') . '/subscription/upgrade',
+                ]
+            );
+        }
+
         try {
             $tenant = $this->userService->createTenantForUser($user, $plan, $data);
 

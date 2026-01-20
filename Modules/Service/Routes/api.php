@@ -39,7 +39,7 @@ Route::middleware(['tenancy.token', 'tenant.context', 'auth:sanctum', 'package.a
     ->group(function () {
         // Service management
         Route::get('services', [AdminServiceController::class, 'index']);
-        Route::post('services', [AdminServiceController::class, 'store']);
+        Route::post('services', [AdminServiceController::class, 'store'])->middleware('limit:service');
         Route::get('services/{service}', [AdminServiceController::class, 'show']);
         Route::put('services/{service}', [AdminServiceController::class, 'update']);
         Route::delete('services/{service}', [AdminServiceController::class, 'destroy']);

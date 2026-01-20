@@ -1,31 +1,37 @@
 ## Relations
-@tenancy/architecture.md
+@tenancy/plan_structure/plan_feature_structure_and_limits.md
+@tenancy/architecture/core_concepts_and_limits.md
 
 ## Raw Concept
 **Task:**
-Implement tenant lifecycle management with dynamic migrations and token-based scoping.
+Implement and document automated module enablement and migration logic.
 
 **Changes:**
-- Implemented dynamic module migration logic based on price plan features
-- Added asynchronous database creation support via CreateTenantDatabase job
-- Implemented Sanctum token generation with 'tenant:{id}' abilities for scoped access
-- Added support for module-specific migrations during plan upgrades
+- Documented automated module enablement logic.
+- Clarified that migrations are plan-dependent and handled by TenantService.
 
 **Files:**
 - app/Services/TenantService.php
 - app/Jobs/CreateTenantDatabase.php
 
 **Flow:**
-Create Tenant -> Dispatch Job (Optional) -> Create DB -> Run Base Migrations -> Run Module Migrations -> Generate Token
+Create Tenant -> Create DB -> runTenantMigrations() -> getEnabledModulesForTenant() -> Run Base + Plan-specific Module Migrations.
 
-**Timestamp:** 2026-01-11
+**Timestamp:** 2026-01-19T11:15:00Z
 
 ## Narrative
 ### Structure
-Implemented in App\Services\TenantService. Handles the full lifecycle from tenant creation to token generation and context switching.
+- `app/Services/TenantService.php`: Central service for lifecycle and migration logic.
+- `app/Jobs/CreateTenantDatabase.php`: Handles asynchronous database setup.
 
 ### Dependencies
-Integrates with nwidart/laravel-modules for feature-based migrations. Uses Laravel Sanctum for token generation.
+- Integrates with `nwidart/laravel-modules` for feature-based migrations.
+- Uses `PricePlan` and `PaymentLog` to determine active modules.
 
 ### Features
-Tenant creation supports both synchronous and asynchronous (queued) database setup via the CreateTenantDatabase job. Migration logic is dynamic, running base migrations plus module-specific migrations (e.g., hotel-booking) determined by the tenant's subscription plan features. Supports plan upgrades by running migrations for newly enabled modules.
+- **Automated Module Enablement**: Users cannot manually enable modules. The subscription plan automatically determines which modules are active.
+- **Dynamic Migrations**: `runTenantMigrations()` checks plan permission features (e.g., `blog_permission_feature`) and only runs migrations for modules included in the plan.
+- **Enabled Modules Discovery**: `getEnabledModulesForTenant()` reads plan features and returns an array of module names to install.
+- **Installation Logic**: If a permission feature is an integer (e.g., 50), the module is enabled. If it is `NULL`, the module is not installed.
+- **Scoped Access**: Generates Sanctum tokens with 'tenant:{id}' abilities.
+- **Upgrades**: Supports running migrations for newly enabled modules during plan upgrades.

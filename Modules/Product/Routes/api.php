@@ -214,8 +214,10 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             // List all products
             Route::get('/', [AdminProductController::class, 'index'])->name('index');
 
-            // Create a new product
-            Route::post('/', [AdminProductController::class, 'store'])->name('store');
+            // Create a new product (with plan limit check)
+            Route::post('/', [AdminProductController::class, 'store'])
+                ->middleware('limit:product')
+                ->name('store');
 
             // Get a specific product
             Route::get('{id}', [AdminProductController::class, 'show'])
