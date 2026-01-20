@@ -12,6 +12,7 @@ use Modules\RealEstate\Http\Controllers\Admin\DeveloperController as AdminDevelo
 use Modules\RealEstate\Http\Controllers\Admin\PropertyTypeController as AdminPropertyTypeController;
 use Modules\RealEstate\Http\Controllers\Admin\AmenityController as AdminAmenityController;
 use Modules\RealEstate\Http\Controllers\Admin\PropertyInquiryController as AdminPropertyInquiryController;
+use Modules\RealEstate\Http\Controllers\Admin\MediaController as AdminMediaController;
 
 // Agent Controllers
 use Modules\RealEstate\Http\Controllers\Agent\AgentDashboardController;
@@ -26,6 +27,7 @@ use Modules\RealEstate\Http\Controllers\Frontend\AmenityController as FrontendAm
 use Modules\RealEstate\Http\Controllers\Frontend\PropertyInquiryController as FrontendPropertyInquiryController;
 use Modules\RealEstate\Http\Controllers\Frontend\SearchController as FrontendSearchController;
 use Modules\RealEstate\Http\Controllers\Frontend\SavedPropertyController;
+use Modules\RealEstate\Http\Controllers\Frontend\GalleryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,12 +40,31 @@ use Modules\RealEstate\Http\Controllers\Frontend\SavedPropertyController;
 |
 */
 
-// ========================================
-// TIER 1: PUBLIC ROUTES (Frontend - No Auth Required)
-// ========================================
-Route::prefix('realestate')
-    ->name('realestate.')
-    ->group(function () {
+/*
+|--------------------------------------------------------------------------
+| Tenant Context Routes (With Database Switching)
+|--------------------------------------------------------------------------
+| Routes that operate within a tenant's database context.
+|
+| Middleware stack:
+| - tenancy.token - Resolves and initializes tenant context
+| - tenant.context - Ensures valid tenant context exists
+|
+| For admin routes, add:
+| - auth:api_tenant_admin - Requires admin authentication
+| - package.active - Checks subscription is not expired
+| - feature:realestate - Checks if real estate feature is allowed by plan
+*/
+
+Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
+
+    // ========================================
+    // TIER 1: PUBLIC ROUTES (Frontend - No Auth Required)
+    // ========================================
+    Route::middleware(['tenancy.token', 'tenant.context'])
+        ->prefix('realestate')
+        ->name('realestate.')
+        ->group(function () {
         
         // ----------------------------------------
         // Properties
@@ -121,6 +142,14 @@ Route::prefix('realestate')
         });
         
         // ----------------------------------------
+        // Map (Geo-spatial Map Endpoints)
+        // ----------------------------------------
+        Route::prefix('map')->name('map.')->group(function () {
+            Route::get('/properties', [FrontendSearchController::class, 'mapProperties'])->name('properties');
+            Route::get('/clusters', [FrontendSearchController::class, 'clusters'])->name('clusters');
+        });
+        
+        // ----------------------------------------
         // Property Inquiries (Public Submission)
         // ----------------------------------------
         Route::prefix('inquiries')->name('inquiries.')->group(function () {
@@ -128,15 +157,23 @@ Route::prefix('realestate')
             Route::post('/compound/{compound}', [FrontendPropertyInquiryController::class, 'storeForCompound'])->name('compound');
             Route::post('/general', [FrontendPropertyInquiryController::class, 'storeGeneral'])->name('general');
         });
+        
+        // ----------------------------------------
+        // Gallery (Public Image Galleries)
+        // ----------------------------------------
+        Route::prefix('gallery')->name('gallery.')->group(function () {
+            Route::get('/properties/{property}', [GalleryController::class, 'propertyGallery'])->name('property');
+            Route::get('/compounds/{compound}', [GalleryController::class, 'compoundGallery'])->name('compound');
+        });
     });
 
-// ========================================
-// TIER 2: AUTHENTICATED USER ROUTES
-// ========================================
-Route::prefix('realestate')
-    ->name('realestate.')
-    ->middleware(['auth:sanctum'])
-    ->group(function () {
+    // ========================================
+    // TIER 2: AUTHENTICATED USER ROUTES
+    // ========================================
+    Route::middleware(['auth:api_tenant_user', 'tenancy.token', 'tenant.context'])
+        ->prefix('realestate')
+        ->name('realestate.')
+        ->group(function () {
         
         // ----------------------------------------
         // Saved/Favorite Properties
@@ -151,13 +188,13 @@ Route::prefix('realestate')
         });
     });
 
-// ========================================
-// TIER 3: ADMIN ROUTES (Auth + Package + Feature)
-// ========================================
-Route::prefix('admin/realestate')
-    ->name('admin.realestate.')
-    ->middleware(['auth:sanctum', 'package.active', 'feature:realestate'])
-    ->group(function () {
+    // ========================================
+    // TIER 3: ADMIN ROUTES (Auth + Package + Feature)
+    // ========================================
+    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:realestate'])
+        ->prefix('admin/realestate')
+        ->name('admin.realestate.')
+        ->group(function () {
         
         // ----------------------------------------
         // Property Management
@@ -174,10 +211,10 @@ Route::prefix('admin/realestate')
             Route::patch('/{property}/status', [AdminPropertyController::class, 'updateStatus'])->name('status');
             
             // Property Images
-            Route::post('/{property}/images', [AdminPropertyController::class, 'uploadImages'])->name('images.upload');
-            Route::delete('/{property}/images/{image}', [AdminPropertyController::class, 'deleteImage'])->name('images.delete');
-            Route::put('/{property}/images/reorder', [AdminPropertyController::class, 'reorderImages'])->name('images.reorder');
-            Route::patch('/{property}/images/{image}/primary', [AdminPropertyController::class, 'setPrimaryImage'])->name('images.primary');
+            Route::post('/{property}/images', [AdminMediaController::class, 'uploadPropertyImages'])->name('images.upload');
+            Route::delete('/{property}/images/{image}', [AdminMediaController::class, 'deletePropertyImage'])->name('images.delete');
+            Route::put('/{property}/images/reorder', [AdminMediaController::class, 'reorderPropertyImages'])->name('images.reorder');
+            Route::patch('/{property}/images/{image}/primary', [AdminMediaController::class, 'setPrimaryImage'])->name('images.primary');
         });
         
         // ----------------------------------------
@@ -196,9 +233,9 @@ Route::prefix('admin/realestate')
             Route::patch('/{compound}/prices', [AdminCompoundController::class, 'updatePrices'])->name('prices');
             
             // Compound Images
-            Route::post('/{compound}/images', [AdminCompoundController::class, 'uploadImages'])->name('images.upload');
-            Route::delete('/{compound}/images/{image}', [AdminCompoundController::class, 'deleteImage'])->name('images.delete');
-            Route::put('/{compound}/images/reorder', [AdminCompoundController::class, 'reorderImages'])->name('images.reorder');
+            Route::post('/{compound}/images', [AdminMediaController::class, 'uploadCompoundImages'])->name('images.upload');
+            Route::delete('/{compound}/images/{image}', [AdminMediaController::class, 'deleteCompoundImage'])->name('images.delete');
+            Route::put('/{compound}/images/reorder', [AdminMediaController::class, 'reorderPropertyImages'])->name('images.reorder');
         });
         
         // ----------------------------------------
@@ -270,13 +307,13 @@ Route::prefix('admin/realestate')
         });
     });
 
-// ========================================
-// TIER 4: AGENT ROUTES (Authenticated Agents)
-// ========================================
-Route::prefix('agent/realestate')
-    ->name('agent.realestate.')
-    ->middleware(['auth:sanctum'])
-    ->group(function () {
+    // ========================================
+    // TIER 4: AGENT ROUTES (Authenticated Agents)
+    // ========================================
+    Route::middleware(['auth:api_tenant_user', 'tenancy.token', 'tenant.context'])
+        ->prefix('agent/realestate')
+        ->name('agent.realestate.')
+        ->group(function () {
         
         // ----------------------------------------
         // Agent Dashboard
@@ -298,3 +335,4 @@ Route::prefix('agent/realestate')
             Route::post('/{inquiry}/contact', [AgentDashboardController::class, 'markContacted'])->name('contact');
         });
     });
+});

@@ -17,7 +17,7 @@ class PropertyTypeController extends Controller
      * List active property types.
      */
     #[OA\Get(
-        path: '/api/realestate/property-types',
+        path: '/api/v1/tenant/{tenant}/realestate/property-types',
         summary: 'List property types',
         tags: ['Property Types'],
         responses: [
@@ -40,7 +40,7 @@ class PropertyTypeController extends Controller
      * Show a single property type.
      */
     #[OA\Get(
-        path: '/api/realestate/property-types/{slug}',
+        path: '/api/v1/tenant/{tenant}/realestate/property-types/{slug}',
         summary: 'Get property type details',
         tags: ['Property Types'],
         parameters: [

@@ -20,7 +20,7 @@ class AmenityController extends Controller
      * List all amenities.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/amenities',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/amenities',
         summary: 'List all amenities',
         tags: ['Admin - Amenities'],
         parameters: [
@@ -49,7 +49,7 @@ class AmenityController extends Controller
      * Store a new amenity.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/amenities',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/amenities',
         summary: 'Create a new amenity',
         tags: ['Admin - Amenities'],
         requestBody: new OA\RequestBody(
@@ -85,7 +85,7 @@ class AmenityController extends Controller
      * Show a single amenity.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/amenities/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/{id}',
         summary: 'Get amenity details',
         tags: ['Admin - Amenities'],
         parameters: [
@@ -107,7 +107,7 @@ class AmenityController extends Controller
      * Update an amenity.
      */
     #[OA\Put(
-        path: '/api/admin/realestate/amenities/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/{id}',
         summary: 'Update an amenity',
         tags: ['Admin - Amenities'],
         parameters: [
@@ -136,7 +136,7 @@ class AmenityController extends Controller
      * Delete an amenity.
      */
     #[OA\Delete(
-        path: '/api/admin/realestate/amenities/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/{id}',
         summary: 'Delete an amenity',
         tags: ['Admin - Amenities'],
         parameters: [
@@ -164,7 +164,7 @@ class AmenityController extends Controller
      * Reorder amenities.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/amenities/reorder',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/reorder',
         summary: 'Reorder amenities',
         tags: ['Admin - Amenities'],
         requestBody: new OA\RequestBody(
@@ -199,7 +199,7 @@ class AmenityController extends Controller
      * Get amenities for compounds.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/amenities/for-compounds',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/for-compounds',
         summary: 'Get amenities available for compounds',
         tags: ['Admin - Amenities'],
         responses: [
@@ -219,7 +219,7 @@ class AmenityController extends Controller
      * Get amenities for properties.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/amenities/for-properties',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/for-properties',
         summary: 'Get amenities available for properties',
         tags: ['Admin - Amenities'],
         responses: [

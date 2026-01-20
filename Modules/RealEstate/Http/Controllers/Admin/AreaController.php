@@ -25,7 +25,7 @@ class AreaController extends Controller
      * List all areas with filters.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/areas',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas',
         summary: 'List all areas',
         tags: ['Admin - Areas'],
         parameters: [
@@ -57,7 +57,7 @@ class AreaController extends Controller
      * Get areas tree structure.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/areas/tree',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas/tree',
         summary: 'Get areas as hierarchical tree',
         tags: ['Admin - Areas'],
         responses: [
@@ -77,7 +77,7 @@ class AreaController extends Controller
      * Store a new area.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/areas',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas',
         summary: 'Create a new area',
         tags: ['Admin - Areas'],
         requestBody: new OA\RequestBody(
@@ -103,7 +103,7 @@ class AreaController extends Controller
      * Show a single area.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/areas/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas/{id}',
         summary: 'Get area details',
         tags: ['Admin - Areas'],
         parameters: [
@@ -131,7 +131,7 @@ class AreaController extends Controller
      * Update an area.
      */
     #[OA\Put(
-        path: '/api/admin/realestate/areas/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas/{id}',
         summary: 'Update an area',
         tags: ['Admin - Areas'],
         parameters: [
@@ -164,7 +164,7 @@ class AreaController extends Controller
      * Delete an area.
      */
     #[OA\Delete(
-        path: '/api/admin/realestate/areas/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas/{id}',
         summary: 'Delete an area',
         tags: ['Admin - Areas'],
         parameters: [
@@ -193,7 +193,7 @@ class AreaController extends Controller
      * Reorder areas.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/areas/reorder',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas/reorder',
         summary: 'Reorder areas',
         tags: ['Admin - Areas'],
         requestBody: new OA\RequestBody(
@@ -226,7 +226,7 @@ class AreaController extends Controller
      * Get area statistics.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/areas/statistics',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas/statistics',
         summary: 'Get area statistics',
         tags: ['Admin - Areas'],
         responses: [
@@ -244,7 +244,7 @@ class AreaController extends Controller
      * Get child areas.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/areas/{id}/children',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/areas/{id}/children',
         summary: 'Get child areas',
         tags: ['Admin - Areas'],
         parameters: [

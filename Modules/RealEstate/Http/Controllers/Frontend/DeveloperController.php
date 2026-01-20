@@ -24,7 +24,7 @@ class DeveloperController extends Controller
      * List active developers.
      */
     #[OA\Get(
-        path: '/api/realestate/developers',
+        path: '/api/v1/tenant/{tenant}/realestate/developers',
         summary: 'List developers',
         tags: ['Developers'],
         parameters: [
@@ -62,7 +62,7 @@ class DeveloperController extends Controller
      * Get featured developers.
      */
     #[OA\Get(
-        path: '/api/realestate/developers/featured',
+        path: '/api/v1/tenant/{tenant}/realestate/developers/featured',
         summary: 'Get featured developers',
         tags: ['Developers'],
         parameters: [
@@ -91,7 +91,7 @@ class DeveloperController extends Controller
      * Show a single developer.
      */
     #[OA\Get(
-        path: '/api/realestate/developers/{id}-{slug}',
+        path: '/api/v1/tenant/{tenant}/realestate/developers/{id}-{slug}',
         summary: 'Get developer details',
         tags: ['Developers'],
         parameters: [
@@ -124,7 +124,7 @@ class DeveloperController extends Controller
      * Get compounds by developer.
      */
     #[OA\Get(
-        path: '/api/realestate/developers/{id}/compounds',
+        path: '/api/v1/tenant/{tenant}/realestate/developers/{id}/compounds',
         summary: 'Get developer compounds',
         tags: ['Developers'],
         parameters: [

@@ -27,7 +27,7 @@ class CompoundController extends Controller
      * List all compounds with filters.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/compounds',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/compounds',
         summary: 'List all compounds',
         tags: ['Admin - Compounds'],
         parameters: [
@@ -51,7 +51,7 @@ class CompoundController extends Controller
      * Store a new compound.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/compounds',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/compounds',
         summary: 'Create a new compound',
         tags: ['Admin - Compounds'],
         requestBody: new OA\RequestBody(
@@ -77,7 +77,7 @@ class CompoundController extends Controller
      * Show a single compound.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/compounds/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}',
         summary: 'Get compound details',
         tags: ['Admin - Compounds'],
         parameters: [
@@ -105,7 +105,7 @@ class CompoundController extends Controller
      * Update a compound.
      */
     #[OA\Put(
-        path: '/api/admin/realestate/compounds/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}',
         summary: 'Update a compound',
         tags: ['Admin - Compounds'],
         parameters: [
@@ -134,7 +134,7 @@ class CompoundController extends Controller
      * Delete a compound.
      */
     #[OA\Delete(
-        path: '/api/admin/realestate/compounds/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}',
         summary: 'Delete a compound',
         tags: ['Admin - Compounds'],
         parameters: [
@@ -158,7 +158,7 @@ class CompoundController extends Controller
      * Bulk action on compounds.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/compounds/bulk',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/bulk',
         summary: 'Perform bulk action on compounds',
         tags: ['Admin - Compounds'],
         requestBody: new OA\RequestBody(
@@ -186,7 +186,7 @@ class CompoundController extends Controller
      * Get compound statistics.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/compounds/statistics',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/statistics',
         summary: 'Get compound statistics',
         tags: ['Admin - Compounds'],
         responses: [
@@ -204,7 +204,7 @@ class CompoundController extends Controller
      * Update compound price stats from properties.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/compounds/{id}/update-prices',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}/update-prices',
         summary: 'Recalculate compound price range from properties',
         tags: ['Admin - Compounds'],
         parameters: [

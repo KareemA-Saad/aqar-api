@@ -23,7 +23,7 @@ class PropertyController extends Controller
      * List active properties with filters.
      */
     #[OA\Get(
-        path: '/api/realestate/properties',
+        path: '/api/v1/tenant/{tenant}/realestate/properties',
         summary: 'List properties',
         description: 'Get paginated list of active properties with advanced filtering options',
         tags: ['Properties'],
@@ -73,7 +73,7 @@ class PropertyController extends Controller
      * Show a single property by ID-slug (Nawy-style URL).
      */
     #[OA\Get(
-        path: '/api/realestate/properties/{property}',
+        path: '/api/v1/tenant/{tenant}/realestate/properties/{property}',
         summary: 'Get property details',
         description: 'Get detailed property information by ID-slug pattern (e.g., 123-modern-villa-in-new-cairo)',
         tags: ['Properties'],
@@ -119,7 +119,7 @@ class PropertyController extends Controller
      * Get featured properties.
      */
     #[OA\Get(
-        path: '/api/realestate/properties/featured',
+        path: '/api/v1/tenant/{tenant}/realestate/properties/featured',
         summary: 'Get featured properties',
         description: 'Get list of featured/highlighted properties for homepage showcase',
         tags: ['Properties'],
@@ -156,7 +156,7 @@ class PropertyController extends Controller
      * Get similar properties.
      */
     #[OA\Get(
-        path: '/api/realestate/properties/{id}/similar',
+        path: '/api/v1/tenant/{tenant}/realestate/properties/{property}/similar',
         summary: 'Get similar properties',
         description: 'Get properties similar to the specified property based on location, type, and price range',
         tags: ['Properties'],
