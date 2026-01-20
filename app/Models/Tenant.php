@@ -32,9 +32,18 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     protected $casts = [
         'instruction_status' => 'boolean',
         'data' => 'array',
+        'suspended_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
+
+    /**
+     * Subscription status constants.
+     */
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_TRIAL = 'trial';
+    public const STATUS_EXPIRED = 'expired';
+    public const STATUS_SUSPENDED = 'suspended';
 
     /**
      * Custom columns to store in the tenants table.
@@ -49,6 +58,9 @@ class Tenant extends BaseTenant implements TenantWithDatabase
             'instruction_status',
             'theme_slug',
             'theme_code',
+            'subscription_status',
+            'suspended_at',
+            'suspension_reason',
         ];
     }
 
@@ -74,6 +86,46 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     public function paymentLogs(): HasMany
     {
         return $this->hasMany(PaymentLog::class, 'tenant_id', 'id')->orderByDesc('id');
+    }
+
+    /**
+     * Check if tenant subscription is active.
+     */
+    public function isSubscriptionActive(): bool
+    {
+        return $this->subscription_status === self::STATUS_ACTIVE;
+    }
+
+    /**
+     * Check if tenant is in trial period.
+     */
+    public function isInTrial(): bool
+    {
+        return $this->subscription_status === self::STATUS_TRIAL;
+    }
+
+    /**
+     * Check if tenant subscription is expired.
+     */
+    public function isSubscriptionExpired(): bool
+    {
+        return $this->subscription_status === self::STATUS_EXPIRED;
+    }
+
+    /**
+     * Check if tenant is suspended.
+     */
+    public function isSuspended(): bool
+    {
+        return $this->subscription_status === self::STATUS_SUSPENDED;
+    }
+
+    /**
+     * Check if tenant can operate (active or trial).
+     */
+    public function canOperate(): bool
+    {
+        return in_array($this->subscription_status, [self::STATUS_ACTIVE, self::STATUS_TRIAL], true);
     }
 
     /**

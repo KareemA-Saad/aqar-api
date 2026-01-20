@@ -5,6 +5,58 @@ declare(strict_types=1);
 return [
     /*
     |--------------------------------------------------------------------------
+    | Module Plan Limits
+    |--------------------------------------------------------------------------
+    |
+    | Maps module names to their corresponding limit columns in the price_plans table.
+    | These limits control how many items a tenant can create per module.
+    |
+    | Values in price_plans table:
+    | - Positive integer: Maximum allowed items
+    | - 0 or null: Unlimited
+    | - -1: Feature disabled (not applicable here, handled by plan features)
+    |
+    */
+    'limits' => [
+        'blog' => 'blog_permission_feature',
+        'product' => 'product_create_permission',
+        'service' => 'service_permission_feature',
+        'portfolio' => 'portfolio_permission_feature',
+        'job' => 'job_permission_feature',
+        'event' => 'event_permission_feature',
+        'donation' => 'donation_permission_feature',
+        'knowledgebase' => 'knowledgebase_permission_feature',
+        'appointment' => 'appointment_permission_feature',
+        'campaign' => 'campaign_create_permission',
+        'page' => 'page_permission_feature',
+        'storage' => 'storage_permission_feature', // in MB
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Module Table Mapping
+    |--------------------------------------------------------------------------
+    |
+    | Maps module names to their database table names for counting current usage.
+    | These tables exist in the tenant database.
+    |
+    */
+    'tables' => [
+        'blog' => 'blogs',
+        'product' => 'products',
+        'service' => 'services',
+        'portfolio' => 'portfolios',
+        'job' => 'jobs',
+        'event' => 'events',
+        'donation' => 'donations',
+        'knowledgebase' => 'knowledgebases',
+        'appointment' => 'appointments',
+        'campaign' => 'campaigns',
+        'page' => 'pages',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Feature to Module Mapping
     |--------------------------------------------------------------------------
     |

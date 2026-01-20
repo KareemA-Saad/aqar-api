@@ -119,8 +119,10 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
                 // List all blog posts
                 Route::get('/', [AdminBlogController::class, 'index'])->name('index');
 
-                // Create a new blog post
-                Route::post('/', [AdminBlogController::class, 'store'])->name('store');
+                // Create a new blog post (with plan limit check)
+                Route::post('/', [AdminBlogController::class, 'store'])
+                    ->middleware('limit:blog')
+                    ->name('store');
 
                 // Get a specific blog post
                 Route::get('{id}', [AdminBlogController::class, 'show'])->name('show');

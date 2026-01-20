@@ -1,0 +1,14 @@
+{
+    "name": "RealEstate",
+    "alias": "realestate",
+    "description": "Real Estate module for property listings, compounds, and CRM",
+    "keywords": ["realestate", "property", "compound", "listings", "crm"],
+    "priority": 0,
+    "providers": [
+        "Modules\\RealEstate\\Providers\\RealEstateServiceProvider",
+        "Modules\\RealEstate\\Providers\\RouteServiceProvider"
+    ],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

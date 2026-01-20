@@ -11,6 +11,7 @@ use App\Models\PricePlan;
 use App\Models\Tenant;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
@@ -19,7 +20,7 @@ use Illuminate\Support\Str;
  * SubscriptionService
  *
  * Handles subscription-related business logic including pricing calculations,
- * subscription initiation, completion, renewal, and cancellation.
+ * subscription initiation, completion, renewal, cancellation, and status management.
  */
 final class SubscriptionService
 {
@@ -35,6 +36,235 @@ final class SubscriptionService
      */
     public const PAYMENT_STATUS_PENDING = 0;
     public const PAYMENT_STATUS_COMPLETE = 1;
+
+    /**
+     * Subscription status constants.
+     */
+    public const STATUS_ACTIVE = 'active';
+    public const STATUS_TRIAL = 'trial';
+    public const STATUS_EXPIRED = 'expired';
+    public const STATUS_SUSPENDED = 'suspended';
+
+    /**
+     * Check if a tenant's subscription is active.
+     */
+    public function isSubscriptionActive(Tenant $tenant): bool
+    {
+        // Check stored status first
+        if ($tenant->subscription_status === self::STATUS_SUSPENDED) {
+            return false;
+        }
+
+        // Get the latest active payment log
+        $paymentLog = $tenant->paymentLog;
+
+        if ($paymentLog === null) {
+            return false;
+        }
+
+        // Check if payment is complete
+        if ($paymentLog->payment_status !== self::PAYMENT_STATUS_COMPLETE) {
+            return false;
+        }
+
+        // Check expiration
+        if ($paymentLog->expire_date !== null && $paymentLog->expire_date->isPast()) {
+            return false;
+        }
+
+        // Check trial expiration
+        if ($paymentLog->status === 'trial' && $paymentLog->trial_expire_date !== null) {
+            return !$paymentLog->trial_expire_date->isPast();
+        }
+
+        return true;
+    }
+
+    /**
+     * Get the subscription status for a tenant.
+     *
+     * @return string One of: active, trial, expired, suspended
+     */
+    public function getSubscriptionStatus(Tenant $tenant): string
+    {
+        // If explicitly suspended, return that
+        if ($tenant->subscription_status === self::STATUS_SUSPENDED) {
+            return self::STATUS_SUSPENDED;
+        }
+
+        $paymentLog = $tenant->paymentLog;
+
+        // No payment log means no subscription
+        if ($paymentLog === null) {
+            return self::STATUS_EXPIRED;
+        }
+
+        // Check if in trial
+        if ($paymentLog->status === 'trial') {
+            if ($paymentLog->trial_expire_date !== null && $paymentLog->trial_expire_date->isPast()) {
+                return self::STATUS_EXPIRED;
+            }
+            return self::STATUS_TRIAL;
+        }
+
+        // Check payment status
+        if ($paymentLog->payment_status !== self::PAYMENT_STATUS_COMPLETE) {
+            return self::STATUS_EXPIRED;
+        }
+
+        // Check expiration
+        if ($paymentLog->expire_date !== null && $paymentLog->expire_date->isPast()) {
+            return self::STATUS_EXPIRED;
+        }
+
+        return self::STATUS_ACTIVE;
+    }
+
+    /**
+     * Get the number of days until subscription expires.
+     *
+     * @return int Days remaining, 0 if expired, -1 if lifetime/no expiration
+     */
+    public function getDaysUntilExpiry(Tenant $tenant): int
+    {
+        $paymentLog = $tenant->paymentLog;
+
+        if ($paymentLog === null) {
+            return 0;
+        }
+
+        // Check trial expiration first
+        if ($paymentLog->status === 'trial' && $paymentLog->trial_expire_date !== null) {
+            if ($paymentLog->trial_expire_date->isPast()) {
+                return 0;
+            }
+            return (int) Carbon::now()->diffInDays($paymentLog->trial_expire_date, false);
+        }
+
+        // Lifetime plan
+        if ($paymentLog->expire_date === null) {
+            return -1;
+        }
+
+        if ($paymentLog->expire_date->isPast()) {
+            return 0;
+        }
+
+        return (int) Carbon::now()->diffInDays($paymentLog->expire_date, false);
+    }
+
+    /**
+     * Suspend a tenant.
+     */
+    public function suspendTenant(Tenant $tenant, string $reason): void
+    {
+        DB::table('tenants')->where('id', $tenant->id)->update([
+            'subscription_status' => self::STATUS_SUSPENDED,
+            'suspended_at' => Carbon::now(),
+            'suspension_reason' => $reason,
+            'updated_at' => Carbon::now(),
+        ]);
+
+        Log::info('Tenant suspended', [
+            'tenant_id' => $tenant->id,
+            'reason' => $reason,
+        ]);
+    }
+
+    /**
+     * Reactivate a suspended tenant.
+     */
+    public function reactivateTenant(Tenant $tenant): void
+    {
+        $status = $this->getSubscriptionStatus($tenant);
+
+        // Only reactivate if the underlying subscription is still valid
+        if ($status === self::STATUS_SUSPENDED) {
+            // Get the actual status based on payment
+            $paymentLog = $tenant->paymentLog;
+            if ($paymentLog !== null && $paymentLog->isActive()) {
+                $status = $paymentLog->status === 'trial' ? self::STATUS_TRIAL : self::STATUS_ACTIVE;
+            } else {
+                $status = self::STATUS_EXPIRED;
+            }
+        }
+
+        DB::table('tenants')->where('id', $tenant->id)->update([
+            'subscription_status' => $status,
+            'suspended_at' => null,
+            'suspension_reason' => null,
+            'updated_at' => Carbon::now(),
+        ]);
+
+        Log::info('Tenant reactivated', [
+            'tenant_id' => $tenant->id,
+            'new_status' => $status,
+        ]);
+    }
+
+    /**
+     * Update tenant subscription status based on payment log.
+     */
+    public function syncTenantStatus(Tenant $tenant): string
+    {
+        $status = $this->getSubscriptionStatus($tenant);
+
+        // Don't override suspended status
+        if ($tenant->subscription_status !== self::STATUS_SUSPENDED) {
+            DB::table('tenants')->where('id', $tenant->id)->update([
+                'subscription_status' => $status,
+                'updated_at' => Carbon::now(),
+            ]);
+        }
+
+        return $status;
+    }
+
+    /**
+     * Get all expired tenants that need to be processed.
+     *
+     * @return Collection<int, Tenant>
+     */
+    public function getExpiredTenants(): Collection
+    {
+        // Get tenants whose subscription has expired but status isn't updated
+        return Tenant::whereIn('subscription_status', [self::STATUS_ACTIVE, self::STATUS_TRIAL])
+            ->whereHas('paymentLog', function ($query) {
+                $query->where(function ($q) {
+                    // Regular subscription expired
+                    $q->where('payment_status', self::PAYMENT_STATUS_COMPLETE)
+                        ->whereNotNull('expire_date')
+                        ->where('expire_date', '<', Carbon::now());
+                })->orWhere(function ($q) {
+                    // Trial expired
+                    $q->where('status', 'trial')
+                        ->whereNotNull('trial_expire_date')
+                        ->where('trial_expire_date', '<', Carbon::now());
+                });
+            })
+            ->get();
+    }
+
+    /**
+     * Get tenants expiring soon (for warning notifications).
+     *
+     * @param int $days Number of days before expiration to warn
+     * @return Collection<int, Tenant>
+     */
+    public function getTenantsExpiringSoon(int $days = 7): Collection
+    {
+        $warningDate = Carbon::now()->addDays($days);
+
+        return Tenant::whereIn('subscription_status', [self::STATUS_ACTIVE, self::STATUS_TRIAL])
+            ->whereHas('paymentLog', function ($query) use ($warningDate) {
+                $query->where('payment_status', self::PAYMENT_STATUS_COMPLETE)
+                    ->whereNotNull('expire_date')
+                    ->where('expire_date', '>', Carbon::now())
+                    ->where('expire_date', '<=', $warningDate);
+            })
+            ->with(['user', 'paymentLog'])
+            ->get();
+    }
 
     /**
      * Calculate the final price for a plan with optional coupon.

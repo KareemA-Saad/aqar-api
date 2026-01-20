@@ -80,6 +80,8 @@ class Kernel extends HttpKernel
         'tenant.context' => \App\Http\Middleware\EnsureTenantContext::class,
         'package.active' => \App\Http\Middleware\CheckPackageExpiry::class,
         'feature' => \App\Http\Middleware\CheckFeaturePermission::class,
+        'subscription.active' => \App\Http\Middleware\CheckTenantSubscription::class,
+        'limit' => \App\Http\Middleware\CheckModuleLimit::class,
 
         // Localization Middleware
         'api.language' => \App\Http\Middleware\SetApiLanguage::class,

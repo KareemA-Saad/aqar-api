@@ -29,6 +29,7 @@ use App\Http\Controllers\Api\V1\Tenant\Admin\DashboardController as TenantAdminD
 use App\Http\Controllers\Api\V1\Tenant\Admin\SettingsController as TenantAdminSettingsController;
 use App\Http\Controllers\Api\V1\Tenant\Admin\ProfileController as TenantAdminProfileController;
 use App\Http\Controllers\Api\V1\Tenant\Admin\CustomerController as TenantAdminCustomerController;
+use App\Http\Controllers\Api\V1\Tenant\Admin\UsageStatsController as TenantAdminUsageStatsController;
 use App\Http\Controllers\Api\V1\Tenant\CustomerDashboardController;
 use Illuminate\Support\Facades\Route;
 
@@ -489,7 +490,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     | Route::middleware('feature:blog')->group(fn() => ...);
     | Route::middleware('feature:eCommerce,inventory')->group(fn() => ...);
     */
-    Route::middleware(['auth:sanctum', 'tenancy.token', 'tenant.context', 'package.active'])
+    Route::middleware(['auth:sanctum', 'tenancy.token', 'tenant.context', 'subscription.active', 'package.active'])
         ->prefix('tenant/{tenant}')
         ->name('tenant.')
         ->group(function () {
@@ -527,6 +528,12 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
                     Route::get('recent-orders', [TenantAdminDashboardController::class, 'recentOrders'])->name('recent-orders');
                     Route::get('low-stock', [TenantAdminDashboardController::class, 'lowStock'])->name('low-stock');
                     Route::get('recent-activity', [TenantAdminDashboardController::class, 'recentActivity'])->name('recent-activity');
+                });
+
+                // Usage Stats Routes (Plan Limits)
+                Route::prefix('usage-stats')->name('usage-stats.')->group(function () {
+                    Route::get('/', [TenantAdminUsageStatsController::class, 'index'])->name('index');
+                    Route::get('{module}', [TenantAdminUsageStatsController::class, 'show'])->name('show');
                 });
 
                 // Settings Routes

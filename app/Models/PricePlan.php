@@ -59,6 +59,7 @@ class PricePlan extends Model
         'knowledgebase_permission_feature',
         'product_create_permission',
         'campaign_create_permission',
+        'max_tenants',
     ];
 
     /**
@@ -91,6 +92,7 @@ class PricePlan extends Model
         'portfolio_permission_feature' => 'integer',
         'storage_permission_feature' => 'integer',
         'appointment_permission_feature' => 'integer',
+        'max_tenants' => 'integer',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

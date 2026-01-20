@@ -106,7 +106,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             // Event Management
             Route::prefix('events')->name('events.')->group(function () {
                 Route::get('/', [AdminEventController::class, 'index'])->name('index');
-                Route::post('/', [AdminEventController::class, 'store'])->name('store');
+                Route::post('/', [AdminEventController::class, 'store'])->middleware('limit:event')->name('store');
                 Route::get('{id}', [AdminEventController::class, 'show'])->where('id', '[0-9]+')->name('show');
                 Route::put('{id}', [AdminEventController::class, 'update'])->where('id', '[0-9]+')->name('update');
                 Route::delete('{id}', [AdminEventController::class, 'destroy'])->where('id', '[0-9]+')->name('destroy');
