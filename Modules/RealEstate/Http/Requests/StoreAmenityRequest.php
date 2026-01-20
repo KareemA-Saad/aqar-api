@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'StoreAmenityRequest',
+    schema: 'RE_StoreAmenityRequest',
     required: ['name'],
     properties: [
         new OA\Property(property: 'name', type: 'string', example: 'Swimming Pool'),

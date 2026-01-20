@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'PropertyResource',
+    schema: 'RE_PropertyResource',
     properties: [
         new OA\Property(property: 'id', type: 'integer'),
         new OA\Property(property: 'title', type: 'string'),
@@ -27,12 +27,12 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'is_featured', type: 'boolean'),
         new OA\Property(property: 'views_count', type: 'integer'),
         new OA\Property(property: 'url', type: 'string'),
-        new OA\Property(property: 'area_location', ref: '#/components/schemas/AreaResource'),
-        new OA\Property(property: 'compound', ref: '#/components/schemas/CompoundResource'),
-        new OA\Property(property: 'property_type', ref: '#/components/schemas/PropertyTypeResource'),
-        new OA\Property(property: 'developer', ref: '#/components/schemas/DeveloperResource'),
-        new OA\Property(property: 'images', type: 'array', items: new OA\Items(ref: '#/components/schemas/PropertyImageResource')),
-        new OA\Property(property: 'amenities', type: 'array', items: new OA\Items(ref: '#/components/schemas/AmenityResource')),
+        new OA\Property(property: 'area_location', ref: '#/components/schemas/RE_AreaResource'),
+        new OA\Property(property: 'compound', ref: '#/components/schemas/RE_CompoundResource'),
+        new OA\Property(property: 'property_type', ref: '#/components/schemas/RE_PropertyTypeResource'),
+        new OA\Property(property: 'developer', ref: '#/components/schemas/RE_DeveloperResource'),
+        new OA\Property(property: 'images', type: 'array', items: new OA\Items(ref: '#/components/schemas/RE_PropertyImageResource')),
+        new OA\Property(property: 'amenities', type: 'array', items: new OA\Items(ref: '#/components/schemas/RE_AmenityResource')),
         new OA\Property(property: 'created_at', type: 'string', format: 'date-time'),
     ]
 )]

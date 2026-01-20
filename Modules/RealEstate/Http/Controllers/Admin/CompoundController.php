@@ -56,7 +56,7 @@ class CompoundController extends Controller
         tags: ['Admin - Compounds'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StoreCompoundRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreCompoundRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Compound created'),
@@ -113,7 +113,7 @@ class CompoundController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/UpdateCompoundRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_UpdateCompoundRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Compound updated'),
@@ -163,7 +163,7 @@ class CompoundController extends Controller
         tags: ['Admin - Compounds'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/BulkActionRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_BulkActionRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Bulk action completed'),

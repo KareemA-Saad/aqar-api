@@ -82,7 +82,7 @@ class AreaController extends Controller
         tags: ['Admin - Areas'],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/StoreAreaRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreAreaRequest')
         ),
         responses: [
             new OA\Response(response: 201, description: 'Area created'),
@@ -139,7 +139,7 @@ class AreaController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/UpdateAreaRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_UpdateAreaRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Area updated'),

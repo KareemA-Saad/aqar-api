@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'BulkActionRequest',
+    schema: 'RE_BulkActionRequest',
     required: ['ids', 'action'],
     properties: [
         new OA\Property(property: 'ids', type: 'array', items: new OA\Items(type: 'integer')),

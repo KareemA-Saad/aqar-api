@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'CompoundResource',
+    schema: 'RE_CompoundResource',
     properties: [
         new OA\Property(property: 'id', type: 'integer'),
         new OA\Property(property: 'name', type: 'string'),
@@ -21,8 +21,8 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'total_units', type: 'integer'),
         new OA\Property(property: 'is_featured', type: 'boolean'),
         new OA\Property(property: 'url', type: 'string'),
-        new OA\Property(property: 'area', ref: '#/components/schemas/AreaResource'),
-        new OA\Property(property: 'developer', ref: '#/components/schemas/DeveloperResource'),
+        new OA\Property(property: 'area', ref: '#/components/schemas/RE_AreaResource'),
+        new OA\Property(property: 'developer', ref: '#/components/schemas/RE_DeveloperResource'),
     ]
 )]
 class CompoundResource extends JsonResource

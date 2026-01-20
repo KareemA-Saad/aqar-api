@@ -10,7 +10,7 @@ use Modules\RealEstate\Entities\PropertyInquiry;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'UpdatePropertyInquiryRequest',
+    schema: 'RE_UpdatePropertyInquiryRequest',
     properties: [
         new OA\Property(property: 'status', type: 'string', enum: ['new', 'contacted', 'qualified', 'converted', 'closed']),
         new OA\Property(property: 'admin_notes', type: 'string', nullable: true),

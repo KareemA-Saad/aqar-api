@@ -9,7 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'PropertyInquiryResource',
+    schema: 'RE_PropertyInquiryResource',
     properties: [
         new OA\Property(property: 'id', type: 'integer'),
         new OA\Property(property: 'name', type: 'string'),
@@ -17,8 +17,8 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'phone', type: 'string'),
         new OA\Property(property: 'message', type: 'string'),
         new OA\Property(property: 'status', type: 'string', enum: ['new', 'contacted', 'qualified', 'converted', 'closed']),
-        new OA\Property(property: 'property', ref: '#/components/schemas/PropertyResource'),
-        new OA\Property(property: 'compound', ref: '#/components/schemas/CompoundResource'),
+        new OA\Property(property: 'property', ref: '#/components/schemas/RE_PropertyResource'),
+        new OA\Property(property: 'compound', ref: '#/components/schemas/RE_CompoundResource'),
     ]
 )]
 class PropertyInquiryResource extends JsonResource

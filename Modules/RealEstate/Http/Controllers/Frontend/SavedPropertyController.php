@@ -11,7 +11,7 @@ use Modules\RealEstate\Entities\Property;
 use Modules\RealEstate\Transformers\PropertyResource;
 use OpenApi\Attributes as OA;
 
-#[OA\Tag(name: 'Saved Properties', description: 'User saved/favorite properties endpoints')]
+#[OA\Tag(name: 'Saved Properties', description: 'User saved/favorite properties management. All endpoints require authentication.')]
 class SavedPropertyController extends Controller
 {
     /**
@@ -20,14 +20,25 @@ class SavedPropertyController extends Controller
     #[OA\Get(
         path: '/api/realestate/saved-properties',
         summary: 'Get saved properties',
+        description: 'Get paginated list of properties saved by the authenticated user',
         security: [['sanctum' => []]],
         tags: ['Saved Properties'],
         parameters: [
-            new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'per_page', in: 'query', description: 'Items per page', schema: new OA\Schema(type: 'integer', default: 15)),
+            new OA\Parameter(name: 'page', in: 'query', description: 'Page number', schema: new OA\Schema(type: 'integer', default: 1)),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Saved properties'),
-            new OA\Response(response: 401, description: 'Unauthorized'),
+            new OA\Response(
+                response: 200,
+                description: 'Saved properties list',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', type: 'array', items: new OA\Items(ref: '#/components/schemas/RE_PropertyResource')),
+                        new OA\Property(property: 'meta', ref: '#/components/schemas/RE_PaginationMeta'),
+                    ]
+                )
+            ),
+            new OA\Response(response: 401, description: 'Unauthenticated'),
         ]
     )]
     public function index(Request $request): JsonResponse
@@ -55,14 +66,24 @@ class SavedPropertyController extends Controller
     #[OA\Post(
         path: '/api/realestate/saved-properties/{property}',
         summary: 'Save property to favorites',
+        description: 'Add a property to the authenticated user\'s favorites list',
         security: [['sanctum' => []]],
         tags: ['Saved Properties'],
         parameters: [
-            new OA\Parameter(name: 'property', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'property', in: 'path', required: true, description: 'Property ID', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Property saved'),
-            new OA\Response(response: 401, description: 'Unauthorized'),
+            new OA\Response(
+                response: 200,
+                description: 'Property saved successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property saved to favorites.'),
+                        new OA\Property(property: 'saved', type: 'boolean', example: true),
+                    ]
+                )
+            ),
+            new OA\Response(response: 401, description: 'Unauthenticated'),
             new OA\Response(response: 404, description: 'Property not found'),
         ]
     )]

@@ -13,6 +13,9 @@ use Modules\RealEstate\Http\Controllers\Admin\PropertyTypeController as AdminPro
 use Modules\RealEstate\Http\Controllers\Admin\AmenityController as AdminAmenityController;
 use Modules\RealEstate\Http\Controllers\Admin\PropertyInquiryController as AdminPropertyInquiryController;
 
+// Agent Controllers
+use Modules\RealEstate\Http\Controllers\Agent\AgentDashboardController;
+
 // Frontend Controllers
 use Modules\RealEstate\Http\Controllers\Frontend\PropertyController as FrontendPropertyController;
 use Modules\RealEstate\Http\Controllers\Frontend\CompoundController as FrontendCompoundController;
@@ -264,5 +267,34 @@ Route::prefix('admin/realestate')
             Route::post('/{inquiry}/assign', [AdminPropertyInquiryController::class, 'assign'])->name('assign');
             Route::post('/{inquiry}/notes', [AdminPropertyInquiryController::class, 'addNote'])->name('notes');
             Route::post('/bulk', [AdminPropertyInquiryController::class, 'bulkAction'])->name('bulk');
+        });
+    });
+
+// ========================================
+// TIER 4: AGENT ROUTES (Authenticated Agents)
+// ========================================
+Route::prefix('agent/realestate')
+    ->name('agent.realestate.')
+    ->middleware(['auth:sanctum'])
+    ->group(function () {
+        
+        // ----------------------------------------
+        // Agent Dashboard
+        // ----------------------------------------
+        Route::get('/dashboard', [AgentDashboardController::class, 'dashboard'])->name('dashboard');
+        Route::get('/statistics', [AgentDashboardController::class, 'statistics'])->name('statistics');
+        
+        // ----------------------------------------
+        // Agent's Properties
+        // ----------------------------------------
+        Route::get('/properties', [AgentDashboardController::class, 'properties'])->name('properties');
+        
+        // ----------------------------------------
+        // Agent's Inquiries
+        // ----------------------------------------
+        Route::prefix('inquiries')->name('inquiries.')->group(function () {
+            Route::get('/', [AgentDashboardController::class, 'inquiries'])->name('index');
+            Route::put('/{inquiry}', [AgentDashboardController::class, 'updateInquiry'])->name('update');
+            Route::post('/{inquiry}/contact', [AgentDashboardController::class, 'markContacted'])->name('contact');
         });
     });

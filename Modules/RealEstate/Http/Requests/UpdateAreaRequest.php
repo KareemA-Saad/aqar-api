@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'UpdateAreaRequest',
+    schema: 'RE_UpdateAreaRequest',
     properties: [
         new OA\Property(property: 'name', type: 'string'),
         new OA\Property(property: 'type', type: 'string', enum: ['super_area', 'area', 'sub_area']),

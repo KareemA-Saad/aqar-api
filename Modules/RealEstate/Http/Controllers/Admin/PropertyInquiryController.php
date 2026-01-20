@@ -94,7 +94,7 @@ class PropertyInquiryController extends Controller
         ],
         requestBody: new OA\RequestBody(
             required: true,
-            content: new OA\JsonContent(ref: '#/components/schemas/UpdatePropertyInquiryRequest')
+            content: new OA\JsonContent(ref: '#/components/schemas/RE_UpdatePropertyInquiryRequest')
         ),
         responses: [
             new OA\Response(response: 200, description: 'Inquiry updated'),

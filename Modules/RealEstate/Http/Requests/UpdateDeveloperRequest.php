@@ -9,7 +9,7 @@ use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 #[OA\Schema(
-    schema: 'UpdateDeveloperRequest',
+    schema: 'RE_UpdateDeveloperRequest',
     properties: [
         new OA\Property(property: 'name', type: 'string'),
         new OA\Property(property: 'is_featured', type: 'boolean'),

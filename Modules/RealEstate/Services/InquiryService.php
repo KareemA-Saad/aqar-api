@@ -4,9 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Services;
 
+use App\Models\User;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 use Modules\RealEstate\Entities\PropertyInquiry;
+use Modules\RealEstate\Mail\InquiryConfirmationMail;
+use Modules\RealEstate\Mail\NewInquiryMail;
+use Modules\RealEstate\Notifications\InquiryAssignedNotification;
+use Modules\RealEstate\Notifications\InquiryStatusUpdatedNotification;
+use Modules\RealEstate\Notifications\NewInquiryNotification;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
 
@@ -14,7 +22,7 @@ use Spatie\QueryBuilder\QueryBuilder;
  * Inquiry Service
  * 
  * Handles all business logic for property inquiry/lead management including
- * CRUD operations, status transitions, and CRM functionality.
+ * CRUD operations, status transitions, notifications, and CRM functionality.
  */
 class InquiryService
 {
@@ -67,8 +75,78 @@ class InquiryService
             }
 
             // Create inquiry
-            return PropertyInquiry::create($data);
+            $inquiry = PropertyInquiry::create($data);
+
+            // Load relationships for notifications
+            $inquiry->load(['property', 'compound']);
+
+            // Send notifications
+            $this->sendNewInquiryNotifications($inquiry);
+
+            return $inquiry;
         });
+    }
+
+    /**
+     * Send notifications for new inquiry.
+     */
+    protected function sendNewInquiryNotifications(PropertyInquiry $inquiry): void
+    {
+        // Send confirmation email to customer
+        if ($inquiry->email) {
+            try {
+                Mail::to($inquiry->email)->queue(new InquiryConfirmationMail($inquiry));
+            } catch (\Exception $e) {
+                \Log::error('Failed to send inquiry confirmation email: ' . $e->getMessage());
+            }
+        }
+
+        // Notify assigned agent if exists
+        if ($inquiry->agent_id && $inquiry->agent) {
+            try {
+                $inquiry->agent->notify(new NewInquiryNotification($inquiry));
+            } catch (\Exception $e) {
+                \Log::error('Failed to notify agent: ' . $e->getMessage());
+            }
+        }
+
+        // Notify property agent if different from inquiry agent
+        if ($inquiry->property && $inquiry->property->agent_id && $inquiry->property->agent_id !== $inquiry->agent_id) {
+            try {
+                $inquiry->property->agent->notify(new NewInquiryNotification($inquiry));
+            } catch (\Exception $e) {
+                \Log::error('Failed to notify property agent: ' . $e->getMessage());
+            }
+        }
+
+        // Notify admins (users with realestate admin role)
+        $this->notifyAdmins($inquiry);
+    }
+
+    /**
+     * Notify admin users about new inquiry.
+     */
+    protected function notifyAdmins(PropertyInquiry $inquiry): void
+    {
+        try {
+            // Get users with admin permissions for real estate
+            $admins = User::permission('inquiry-list')->get();
+            
+            if ($admins->isEmpty()) {
+                // Fallback to users with admin role
+                $admins = User::role(['admin', 'super-admin'])->get();
+            }
+
+            foreach ($admins as $admin) {
+                // Don't double-notify if already notified as agent
+                if ($admin->id !== $inquiry->agent_id && 
+                    (!$inquiry->property || $admin->id !== $inquiry->property->agent_id)) {
+                    $admin->notify(new NewInquiryNotification($inquiry));
+                }
+            }
+        } catch (\Exception $e) {
+            \Log::error('Failed to notify admins: ' . $e->getMessage());
+        }
     }
 
     /**
@@ -80,7 +158,17 @@ class InquiryService
             throw new \InvalidArgumentException("Invalid status: {$status}");
         }
 
+        $previousStatus = $inquiry->status;
         $inquiry->update(['status' => $status]);
+
+        // Notify about status change (for tracking purposes)
+        if ($previousStatus !== $status && $inquiry->agent) {
+            try {
+                $inquiry->agent->notify(new InquiryStatusUpdatedNotification($inquiry, $previousStatus));
+            } catch (\Exception $e) {
+                \Log::error('Failed to notify status change: ' . $e->getMessage());
+            }
+        }
 
         return $inquiry->fresh();
     }
@@ -126,7 +214,21 @@ class InquiryService
      */
     public function assignAgent(PropertyInquiry $inquiry, int $agentId): PropertyInquiry
     {
+        $previousAgentId = $inquiry->agent_id;
         $inquiry->update(['agent_id' => $agentId]);
+
+        // Load the agent relationship
+        $inquiry->load(['agent', 'property', 'compound']);
+
+        // Notify the newly assigned agent (if different from previous)
+        if ($agentId !== $previousAgentId && $inquiry->agent) {
+            try {
+                $inquiry->agent->notify(new InquiryAssignedNotification($inquiry));
+            } catch (\Exception $e) {
+                \Log::error('Failed to notify assigned agent: ' . $e->getMessage());
+            }
+        }
+
         return $inquiry->fresh(['agent']);
     }
 
