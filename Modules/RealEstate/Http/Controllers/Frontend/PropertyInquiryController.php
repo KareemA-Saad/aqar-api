@@ -22,7 +22,7 @@ class PropertyInquiryController extends Controller
      * Submit a property inquiry.
      */
     #[OA\Post(
-        path: '/api/realestate/properties/{property}/inquire',
+        path: '/api/v1/tenant/{tenant}/realestate/properties/{property}/inquire',
         summary: 'Submit property inquiry',
         tags: ['Inquiries'],
         parameters: [
@@ -54,7 +54,7 @@ class PropertyInquiryController extends Controller
      * Submit a compound inquiry.
      */
     #[OA\Post(
-        path: '/api/realestate/compounds/{compound}/inquire',
+        path: '/api/v1/tenant/{tenant}/realestate/compounds/{compound}/inquire',
         summary: 'Submit compound inquiry',
         tags: ['Inquiries'],
         parameters: [
@@ -86,7 +86,7 @@ class PropertyInquiryController extends Controller
      * Submit a general inquiry.
      */
     #[OA\Post(
-        path: '/api/realestate/inquiries',
+        path: '/api/v1/tenant/{tenant}/realestate/inquiries',
         summary: 'Submit general inquiry',
         tags: ['Inquiries'],
         requestBody: new OA\RequestBody(

@@ -28,7 +28,7 @@ class AreaController extends Controller
      * Get areas tree structure.
      */
     #[OA\Get(
-        path: '/api/realestate/areas',
+        path: '/api/v1/tenant/{tenant}/realestate/areas',
         summary: 'Get areas tree',
         tags: ['Areas'],
         responses: [
@@ -48,7 +48,7 @@ class AreaController extends Controller
      * Get root areas (cities).
      */
     #[OA\Get(
-        path: '/api/realestate/areas/cities',
+        path: '/api/v1/tenant/{tenant}/realestate/areas/cities',
         summary: 'Get root areas/cities',
         tags: ['Areas'],
         responses: [
@@ -68,7 +68,7 @@ class AreaController extends Controller
      * Get featured areas.
      */
     #[OA\Get(
-        path: '/api/realestate/areas/featured',
+        path: '/api/v1/tenant/{tenant}/realestate/areas/featured',
         summary: 'Get featured areas',
         tags: ['Areas'],
         parameters: [
@@ -92,7 +92,7 @@ class AreaController extends Controller
      * Show a single area by ID-slug.
      */
     #[OA\Get(
-        path: '/api/realestate/areas/{id}-{slug}',
+        path: '/api/v1/tenant/{tenant}/realestate/areas/{id}-{slug}',
         summary: 'Get area details',
         tags: ['Areas'],
         parameters: [
@@ -125,7 +125,7 @@ class AreaController extends Controller
      * Get child areas.
      */
     #[OA\Get(
-        path: '/api/realestate/areas/{id}/children',
+        path: '/api/v1/tenant/{tenant}/realestate/areas/{id}/children',
         summary: 'Get child areas',
         tags: ['Areas'],
         parameters: [
@@ -148,7 +148,7 @@ class AreaController extends Controller
      * Get compounds in area.
      */
     #[OA\Get(
-        path: '/api/realestate/areas/{id}/compounds',
+        path: '/api/v1/tenant/{tenant}/realestate/areas/{id}/compounds',
         summary: 'Get compounds in area',
         tags: ['Areas'],
         parameters: [
@@ -173,7 +173,7 @@ class AreaController extends Controller
      * Get properties in area.
      */
     #[OA\Get(
-        path: '/api/realestate/areas/{id}/properties',
+        path: '/api/v1/tenant/{tenant}/realestate/areas/{id}/properties',
         summary: 'Get properties in area',
         tags: ['Areas'],
         parameters: [

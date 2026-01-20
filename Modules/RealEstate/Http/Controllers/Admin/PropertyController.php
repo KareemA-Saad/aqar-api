@@ -27,7 +27,7 @@ class PropertyController extends Controller
      * List all properties with filters.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/properties',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/properties',
         summary: 'List all properties',
         tags: ['Admin - Properties'],
         parameters: [
@@ -53,7 +53,7 @@ class PropertyController extends Controller
      * Store a new property.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/properties',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/properties',
         summary: 'Create a new property',
         tags: ['Admin - Properties'],
         requestBody: new OA\RequestBody(
@@ -79,7 +79,7 @@ class PropertyController extends Controller
      * Show a single property.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/properties/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{id}',
         summary: 'Get property details',
         tags: ['Admin - Properties'],
         parameters: [
@@ -107,7 +107,7 @@ class PropertyController extends Controller
      * Update a property.
      */
     #[OA\Put(
-        path: '/api/admin/realestate/properties/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{id}',
         summary: 'Update a property',
         tags: ['Admin - Properties'],
         parameters: [
@@ -136,7 +136,7 @@ class PropertyController extends Controller
      * Delete a property.
      */
     #[OA\Delete(
-        path: '/api/admin/realestate/properties/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{id}',
         summary: 'Delete a property',
         tags: ['Admin - Properties'],
         parameters: [
@@ -160,7 +160,7 @@ class PropertyController extends Controller
      * Bulk action on properties.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/properties/bulk',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/properties/bulk',
         summary: 'Perform bulk action on properties',
         tags: ['Admin - Properties'],
         requestBody: new OA\RequestBody(
@@ -188,7 +188,7 @@ class PropertyController extends Controller
      * Get property statistics.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/properties/statistics',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/properties/statistics',
         summary: 'Get property statistics',
         tags: ['Admin - Properties'],
         responses: [

@@ -26,7 +26,7 @@ class CompoundController extends Controller
      * List active compounds with filters.
      */
     #[OA\Get(
-        path: '/api/realestate/compounds',
+        path: '/api/v1/tenant/{tenant}/realestate/compounds',
         summary: 'List compounds',
         tags: ['Compounds'],
         parameters: [
@@ -50,7 +50,7 @@ class CompoundController extends Controller
      * Show a single compound by ID-slug.
      */
     #[OA\Get(
-        path: '/api/realestate/compounds/{id}-{slug}',
+        path: '/api/v1/tenant/{tenant}/realestate/compounds/{compound}',
         summary: 'Get compound details',
         tags: ['Compounds'],
         parameters: [
@@ -79,7 +79,7 @@ class CompoundController extends Controller
      * Get featured compounds.
      */
     #[OA\Get(
-        path: '/api/realestate/compounds/featured',
+        path: '/api/v1/tenant/{tenant}/realestate/compounds/featured',
         summary: 'Get featured compounds',
         tags: ['Compounds'],
         parameters: [
@@ -103,7 +103,7 @@ class CompoundController extends Controller
      * Get properties in a compound.
      */
     #[OA\Get(
-        path: '/api/realestate/compounds/{id}/properties',
+        path: '/api/v1/tenant/{tenant}/realestate/compounds/{id}/properties',
         summary: 'Get properties in compound',
         tags: ['Compounds'],
         parameters: [

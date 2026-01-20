@@ -11947,14 +11947,14 @@
                 }
             }
         },
-        "/api/admin/realestate/amenities": {
+        "/api/v1/tenant/{tenant}/admin/realestate/amenities": {
             "get": {
                 "tags": [
                     "Admin - Amenities"
                 ],
                 "summary": "List all amenities",
                 "description": "List all amenities.",
-                "operationId": "062f1282a820dd58a231c2894adbcce7",
+                "operationId": "e27f929381f43636e49d96355cf43027",
                 "parameters": [
                     {
                         "name": "filter[category]",
@@ -11995,7 +11995,7 @@
                 ],
                 "summary": "Create a new amenity",
                 "description": "Store a new amenity.",
-                "operationId": "717248df2c8cbb41817a19499aa44d2b",
+                "operationId": "cd160ed53b75e59b5405ea8837f501f2",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12016,14 +12016,14 @@
                 }
             }
         },
-        "/api/admin/realestate/amenities/{id}": {
+        "/api/v1/tenant/{tenant}/admin/realestate/amenities/{id}": {
             "get": {
                 "tags": [
                     "Admin - Amenities"
                 ],
                 "summary": "Get amenity details",
                 "description": "Show a single amenity.",
-                "operationId": "8c01e980ceeea6d460318c58741330e0",
+                "operationId": "65505182d3d88a5e94e508c8bdf64f90",
                 "parameters": [
                     {
                         "name": "id",
@@ -12049,7 +12049,7 @@
                 ],
                 "summary": "Update an amenity",
                 "description": "Update an amenity.",
-                "operationId": "ffd0c234be5c26164527b5a37c4b1312",
+                "operationId": "e7819700ee29c21767be0b9c67225c19",
                 "parameters": [
                     {
                         "name": "id",
@@ -12085,7 +12085,7 @@
                 ],
                 "summary": "Delete an amenity",
                 "description": "Delete an amenity.",
-                "operationId": "c0b2b17d1b343dbbc02e639a543e20d9",
+                "operationId": "710a7db76feffdf697fab96631de32d7",
                 "parameters": [
                     {
                         "name": "id",
@@ -12106,14 +12106,14 @@
                 }
             }
         },
-        "/api/admin/realestate/amenities/reorder": {
+        "/api/v1/tenant/{tenant}/admin/realestate/amenities/reorder": {
             "post": {
                 "tags": [
                     "Admin - Amenities"
                 ],
                 "summary": "Reorder amenities",
                 "description": "Reorder amenities.",
-                "operationId": "7678367b143de31369328358890d797f",
+                "operationId": "7e7f1f4d830dd1a4e3b05fe5482b4cca",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12139,14 +12139,14 @@
                 }
             }
         },
-        "/api/admin/realestate/amenities/for-compounds": {
+        "/api/v1/tenant/{tenant}/admin/realestate/amenities/for-compounds": {
             "get": {
                 "tags": [
                     "Admin - Amenities"
                 ],
                 "summary": "Get amenities available for compounds",
                 "description": "Get amenities for compounds.",
-                "operationId": "476248ac7cbb7799b59c29d7edb945f8",
+                "operationId": "de35c55274116d8f2525fcf997551577",
                 "responses": {
                     "200": {
                         "description": "List of compound amenities"
@@ -12154,14 +12154,14 @@
                 }
             }
         },
-        "/api/admin/realestate/amenities/for-properties": {
+        "/api/v1/tenant/{tenant}/admin/realestate/amenities/for-properties": {
             "get": {
                 "tags": [
                     "Admin - Amenities"
                 ],
                 "summary": "Get amenities available for properties",
                 "description": "Get amenities for properties.",
-                "operationId": "7cb8f5b3667303b75835d02dea9b24af",
+                "operationId": "3a22f1b3a4bbbad636afc676183920ed",
                 "responses": {
                     "200": {
                         "description": "List of property amenities"
@@ -12169,14 +12169,14 @@
                 }
             }
         },
-        "/api/admin/realestate/areas": {
+        "/api/v1/tenant/{tenant}/admin/realestate/areas": {
             "get": {
                 "tags": [
                     "Admin - Areas"
                 ],
                 "summary": "List all areas",
                 "description": "List all areas with filters.",
-                "operationId": "1d562b46b1bd9724729c68a91fb6f5b3",
+                "operationId": "db6d304b2b14e1c1498614b6942f4c26",
                 "parameters": [
                     {
                         "name": "filter[parent_id]",
@@ -12219,7 +12219,7 @@
                 ],
                 "summary": "Create a new area",
                 "description": "Store a new area.",
-                "operationId": "b12ae17cf12ee9c606277423095cad50",
+                "operationId": "b2801730eac7f457aea1b987585c9f73",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12240,14 +12240,14 @@
                 }
             }
         },
-        "/api/admin/realestate/areas/tree": {
+        "/api/v1/tenant/{tenant}/admin/realestate/areas/tree": {
             "get": {
                 "tags": [
                     "Admin - Areas"
                 ],
                 "summary": "Get areas as hierarchical tree",
                 "description": "Get areas tree structure.",
-                "operationId": "4b9f4a91c451d50e138eed7659af53dd",
+                "operationId": "8bf39abfd1154c29bf457751233f95e5",
                 "responses": {
                     "200": {
                         "description": "Areas tree"
@@ -12255,14 +12255,14 @@
                 }
             }
         },
-        "/api/admin/realestate/areas/{id}": {
+        "/api/v1/tenant/{tenant}/admin/realestate/areas/{id}": {
             "get": {
                 "tags": [
                     "Admin - Areas"
                 ],
                 "summary": "Get area details",
                 "description": "Show a single area.",
-                "operationId": "d17c7f7224218b89a395967d620cfe27",
+                "operationId": "6c08af2e8b44efa8dfbaa1ec8c452055",
                 "parameters": [
                     {
                         "name": "id",
@@ -12288,7 +12288,7 @@
                 ],
                 "summary": "Update an area",
                 "description": "Update an area.",
-                "operationId": "f2edfac6328822462b0e4c772571ee34",
+                "operationId": "b0d48313fadf904b2d9319175167e5ca",
                 "parameters": [
                     {
                         "name": "id",
@@ -12324,7 +12324,7 @@
                 ],
                 "summary": "Delete an area",
                 "description": "Delete an area.",
-                "operationId": "7d028b99c68dba78a3a84d7cfbed2d5a",
+                "operationId": "49c064a7dcff5f924d380190271269b8",
                 "parameters": [
                     {
                         "name": "id",
@@ -12348,14 +12348,14 @@
                 }
             }
         },
-        "/api/admin/realestate/areas/reorder": {
+        "/api/v1/tenant/{tenant}/admin/realestate/areas/reorder": {
             "post": {
                 "tags": [
                     "Admin - Areas"
                 ],
                 "summary": "Reorder areas",
                 "description": "Reorder areas.",
-                "operationId": "1d36efe90a06b27c2cbe4fa14f2f4f87",
+                "operationId": "4cb44dfaebab1fdfbd5dedfbf8a94aef",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12381,14 +12381,14 @@
                 }
             }
         },
-        "/api/admin/realestate/areas/statistics": {
+        "/api/v1/tenant/{tenant}/admin/realestate/areas/statistics": {
             "get": {
                 "tags": [
                     "Admin - Areas"
                 ],
                 "summary": "Get area statistics",
                 "description": "Get area statistics.",
-                "operationId": "dd1ec012665f861d6b385adca560f2ee",
+                "operationId": "8cf8b7a53ed303985a4da6c63eba399f",
                 "responses": {
                     "200": {
                         "description": "Area statistics"
@@ -12396,14 +12396,14 @@
                 }
             }
         },
-        "/api/admin/realestate/areas/{id}/children": {
+        "/api/v1/tenant/{tenant}/admin/realestate/areas/{id}/children": {
             "get": {
                 "tags": [
                     "Admin - Areas"
                 ],
                 "summary": "Get child areas",
                 "description": "Get child areas.",
-                "operationId": "42d661455ee42dddc9851f0d70cbae0c",
+                "operationId": "70058847fa92a09b798858243d2e4388",
                 "parameters": [
                     {
                         "name": "id",
@@ -12421,14 +12421,14 @@
                 }
             }
         },
-        "/api/admin/realestate/compounds": {
+        "/api/v1/tenant/{tenant}/admin/realestate/compounds": {
             "get": {
                 "tags": [
                     "Admin - Compounds"
                 ],
                 "summary": "List all compounds",
                 "description": "List all compounds with filters.",
-                "operationId": "c49fe454efe1f8a7829d425293d1c17b",
+                "operationId": "201e2ac8d9582280dbd4a4312a988f39",
                 "parameters": [
                     {
                         "name": "filter[area_id]",
@@ -12471,7 +12471,7 @@
                 ],
                 "summary": "Create a new compound",
                 "description": "Store a new compound.",
-                "operationId": "cb0ac54de365ccfb08610e6b1068ef97",
+                "operationId": "9bccc490eee0a4659f8134b88bfa7483",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12492,14 +12492,14 @@
                 }
             }
         },
-        "/api/admin/realestate/compounds/{id}": {
+        "/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}": {
             "get": {
                 "tags": [
                     "Admin - Compounds"
                 ],
                 "summary": "Get compound details",
                 "description": "Show a single compound.",
-                "operationId": "df5f179bf75eee0e106c03aa4e93d9d9",
+                "operationId": "61bebc29b60359b19b169d41f97382fd",
                 "parameters": [
                     {
                         "name": "id",
@@ -12525,7 +12525,7 @@
                 ],
                 "summary": "Update a compound",
                 "description": "Update a compound.",
-                "operationId": "c221dbbd331ba5bc9766478a08d40297",
+                "operationId": "a7f181ef8bfd6ee4e4cfebf4cf0d03a1",
                 "parameters": [
                     {
                         "name": "id",
@@ -12561,7 +12561,7 @@
                 ],
                 "summary": "Delete a compound",
                 "description": "Delete a compound.",
-                "operationId": "aab5bf092e845701143f5b885907879f",
+                "operationId": "a44c7914d7ed8ae30120cfe5d55a93f9",
                 "parameters": [
                     {
                         "name": "id",
@@ -12582,14 +12582,14 @@
                 }
             }
         },
-        "/api/admin/realestate/compounds/bulk": {
+        "/api/v1/tenant/{tenant}/admin/realestate/compounds/bulk": {
             "post": {
                 "tags": [
                     "Admin - Compounds"
                 ],
                 "summary": "Perform bulk action on compounds",
                 "description": "Bulk action on compounds.",
-                "operationId": "9f3ed41bb348251b6edb0c0cbf5bc928",
+                "operationId": "e1457b07fb0a4f3d42f99c8df8647866",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12607,14 +12607,14 @@
                 }
             }
         },
-        "/api/admin/realestate/compounds/statistics": {
+        "/api/v1/tenant/{tenant}/admin/realestate/compounds/statistics": {
             "get": {
                 "tags": [
                     "Admin - Compounds"
                 ],
                 "summary": "Get compound statistics",
                 "description": "Get compound statistics.",
-                "operationId": "3601c3e20a691168dbf81389bf5c8e64",
+                "operationId": "212924c565e15f4a46ff1e980aae11d4",
                 "responses": {
                     "200": {
                         "description": "Compound statistics"
@@ -12622,14 +12622,14 @@
                 }
             }
         },
-        "/api/admin/realestate/compounds/{id}/update-prices": {
+        "/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}/update-prices": {
             "post": {
                 "tags": [
                     "Admin - Compounds"
                 ],
                 "summary": "Recalculate compound price range from properties",
                 "description": "Update compound price stats from properties.",
-                "operationId": "8fff819db991923298f6296b3c5a440b",
+                "operationId": "111a40ee2fbca966ae35215c77c05848",
                 "parameters": [
                     {
                         "name": "id",
@@ -12647,14 +12647,14 @@
                 }
             }
         },
-        "/api/admin/realestate/developers": {
+        "/api/v1/tenant/{tenant}/admin/realestate/developers": {
             "get": {
                 "tags": [
                     "Admin - Developers"
                 ],
                 "summary": "List all developers",
                 "description": "List all developers with filters.",
-                "operationId": "092d0f96f6d31e54a6cbac497b7598a9",
+                "operationId": "c4c98c65e6fb55bd56ca41b25eb0e6f4",
                 "parameters": [
                     {
                         "name": "filter[is_featured]",
@@ -12697,7 +12697,7 @@
                 ],
                 "summary": "Create a new developer",
                 "description": "Store a new developer.",
-                "operationId": "bf635ab241b00b8a239e7d5ee2213b8d",
+                "operationId": "f05c8d174a7c368fd52cfbee76ecffec",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12718,14 +12718,14 @@
                 }
             }
         },
-        "/api/admin/realestate/developers/{id}": {
+        "/api/v1/tenant/{tenant}/admin/realestate/developers/{id}": {
             "get": {
                 "tags": [
                     "Admin - Developers"
                 ],
                 "summary": "Get developer details",
                 "description": "Show a single developer.",
-                "operationId": "632f1717969a9a5df6cfb78275c83087",
+                "operationId": "41325b8dfd93c69a82ad06c1009e16f2",
                 "parameters": [
                     {
                         "name": "id",
@@ -12751,7 +12751,7 @@
                 ],
                 "summary": "Update a developer",
                 "description": "Update a developer.",
-                "operationId": "65b50f97e448bef20bc552774d68325d",
+                "operationId": "589dd4c0e90bd96f3d7901d9b219d66f",
                 "parameters": [
                     {
                         "name": "id",
@@ -12787,7 +12787,7 @@
                 ],
                 "summary": "Delete a developer",
                 "description": "Delete a developer.",
-                "operationId": "e1374ef90bcdd265257599dce337cfb6",
+                "operationId": "9f451350559f603bad5ae387f98a6388",
                 "parameters": [
                     {
                         "name": "id",
@@ -12811,14 +12811,297 @@
                 }
             }
         },
-        "/api/admin/realestate/properties": {
+        "/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images": {
+            "post": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Upload property images",
+                "description": "Upload multiple images for a property with automatic thumbnail generation",
+                "operationId": "2028dd3357342da6278619631898fa64",
+                "parameters": [
+                    {
+                        "name": "property",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "images"
+                                ],
+                                "properties": {
+                                    "images": {
+                                        "description": "Array of image files",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    },
+                                    "titles": {
+                                        "description": "Optional titles for images",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "set_first_as_primary": {
+                                        "description": "Set first image as primary",
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Images uploaded successfully"
+                    },
+                    "404": {
+                        "description": "Property not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/admin/realestate/compounds/{compound}/images": {
+            "post": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Upload compound images",
+                "description": "Upload multiple images for a compound (gallery, master plan, unit plans)",
+                "operationId": "c1023bf11a8f0374b473e391c4cc3f6d",
+                "parameters": [
+                    {
+                        "name": "compound",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "images"
+                                ],
+                                "properties": {
+                                    "images": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string",
+                                            "format": "binary"
+                                        }
+                                    },
+                                    "type": {
+                                        "description": "Image type",
+                                        "type": "string",
+                                        "enum": [
+                                            "gallery",
+                                            "master_plan",
+                                            "unit_plan"
+                                        ]
+                                    },
+                                    "titles": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "string"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Images uploaded successfully"
+                    },
+                    "404": {
+                        "description": "Compound not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/reorder": {
+            "put": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Reorder property images",
+                "description": "Reorder property images.",
+                "operationId": "8d06cf753145e85fcfd0bab67aac1832",
+                "parameters": [
+                    {
+                        "name": "property",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "order"
+                                ],
+                                "properties": {
+                                    "order": {
+                                        "description": "Array of image IDs in desired order",
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer"
+                                        },
+                                        "example": [
+                                            5,
+                                            3,
+                                            1,
+                                            4,
+                                            2
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Images reordered successfully"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/{image}/primary": {
+            "put": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Set primary property image",
+                "description": "Set primary property image.",
+                "operationId": "0b13b456a3fd0a71cea1fcc7fd3628e2",
+                "parameters": [
+                    {
+                        "name": "property",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "image",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Primary image updated"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/{image}": {
+            "delete": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Delete property image",
+                "description": "Delete property image.",
+                "operationId": "6ee47befcc84df7033d048ce7032443e",
+                "parameters": [
+                    {
+                        "name": "property",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "image",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image deleted"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/admin/realestate/compounds/{compound}/images/{image}": {
+            "delete": {
+                "tags": [
+                    "Admin - Media"
+                ],
+                "summary": "Delete compound image",
+                "description": "Delete compound image.",
+                "operationId": "6ec1fc76eb36e478fe05b383afe6c8c8",
+                "parameters": [
+                    {
+                        "name": "compound",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "image",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Image deleted"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/admin/realestate/properties": {
             "get": {
                 "tags": [
                     "Admin - Properties"
                 ],
                 "summary": "List all properties",
                 "description": "List all properties with filters.",
-                "operationId": "05544428b6027d2c54fa2869020aab2f",
+                "operationId": "ac403f182cc071809d65257604ace9f7",
                 "parameters": [
                     {
                         "name": "filter[area_id]",
@@ -12879,7 +13162,7 @@
                 ],
                 "summary": "Create a new property",
                 "description": "Store a new property.",
-                "operationId": "8c69192d747e26ac0da59fa631621162",
+                "operationId": "88bc4a2abdd279065cf7b88135101d4c",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -12900,14 +13183,14 @@
                 }
             }
         },
-        "/api/admin/realestate/properties/{id}": {
+        "/api/v1/tenant/{tenant}/admin/realestate/properties/{id}": {
             "get": {
                 "tags": [
                     "Admin - Properties"
                 ],
                 "summary": "Get property details",
                 "description": "Show a single property.",
-                "operationId": "10fcd41cabcde369b491c95283cfbecf",
+                "operationId": "089df17379991bd0a883303af75c5ee6",
                 "parameters": [
                     {
                         "name": "id",
@@ -12933,7 +13216,7 @@
                 ],
                 "summary": "Update a property",
                 "description": "Update a property.",
-                "operationId": "153c5f586f8491166c4177c14705abe2",
+                "operationId": "e2899fea34d3dd70d075a2ee6e507fe6",
                 "parameters": [
                     {
                         "name": "id",
@@ -12969,7 +13252,7 @@
                 ],
                 "summary": "Delete a property",
                 "description": "Delete a property.",
-                "operationId": "08362e9c501bdce140030917ccd8e9d7",
+                "operationId": "33fb76ec79de6cc2b3b1680d58d58fd3",
                 "parameters": [
                     {
                         "name": "id",
@@ -12990,14 +13273,14 @@
                 }
             }
         },
-        "/api/admin/realestate/properties/bulk": {
+        "/api/v1/tenant/{tenant}/admin/realestate/properties/bulk": {
             "post": {
                 "tags": [
                     "Admin - Properties"
                 ],
                 "summary": "Perform bulk action on properties",
                 "description": "Bulk action on properties.",
-                "operationId": "8dbfe16c6a9863fd54970811779c4021",
+                "operationId": "8ff40ad3afc4df8602b68eb9281adfe5",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -13015,14 +13298,14 @@
                 }
             }
         },
-        "/api/admin/realestate/properties/statistics": {
+        "/api/v1/tenant/{tenant}/admin/realestate/properties/statistics": {
             "get": {
                 "tags": [
                     "Admin - Properties"
                 ],
                 "summary": "Get property statistics",
                 "description": "Get property statistics.",
-                "operationId": "0d28aa1837fd19bdbec95e2783309924",
+                "operationId": "8a79522f59cbe59873d2a9bda7f7def0",
                 "responses": {
                     "200": {
                         "description": "Property statistics"
@@ -13030,14 +13313,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries": {
             "get": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "List all inquiries",
                 "description": "List all inquiries with filters.",
-                "operationId": "786a32428cdb6f4b9eb8054c3ba204df",
+                "operationId": "1d145b47818e2e412359f1898d3ca031",
                 "parameters": [
                     {
                         "name": "filter[property_id]",
@@ -13089,14 +13372,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries/{id}": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}": {
             "get": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "Get inquiry details",
                 "description": "Show a single inquiry.",
-                "operationId": "afe23e16148a1df1d20aa01aabe3e8d3",
+                "operationId": "b0d2939f37ecce644b233ea3d103151b",
                 "parameters": [
                     {
                         "name": "id",
@@ -13122,7 +13405,7 @@
                 ],
                 "summary": "Update inquiry",
                 "description": "Update inquiry status/agent.",
-                "operationId": "a4ecf920f49def0755a930b950762179",
+                "operationId": "57ec493caf10e8001b9825de0b9d4c75",
                 "parameters": [
                     {
                         "name": "id",
@@ -13158,7 +13441,7 @@
                 ],
                 "summary": "Delete an inquiry",
                 "description": "Delete an inquiry.",
-                "operationId": "e1075110566ed577359f0d5c30a78e82",
+                "operationId": "37c826e17283f3d701c8a30878880aeb",
                 "parameters": [
                     {
                         "name": "id",
@@ -13179,14 +13462,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries/statistics": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries/statistics": {
             "get": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "Get inquiry statistics",
                 "description": "Get inquiry statistics.",
-                "operationId": "fa8f395a68a1d96372ddcd878ea0f640",
+                "operationId": "a8ba1b06cbc4e546fb5e5cc98bc0c000",
                 "responses": {
                     "200": {
                         "description": "Inquiry statistics"
@@ -13194,14 +13477,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries/{id}/contacted": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/contacted": {
             "post": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "Mark inquiry as contacted",
                 "description": "Mark inquiry as contacted.",
-                "operationId": "1907770caa70945c9936ef7e02645060",
+                "operationId": "91b00a64d046f0b4978a2bd19c7c1b34",
                 "parameters": [
                     {
                         "name": "id",
@@ -13219,14 +13502,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries/{id}/qualified": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/qualified": {
             "post": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "Mark inquiry as qualified",
                 "description": "Mark inquiry as qualified.",
-                "operationId": "4e39b321d4c4e85026af9938806ecb7b",
+                "operationId": "729f58b7ae4f8e6d3942f0c48f7a03a1",
                 "parameters": [
                     {
                         "name": "id",
@@ -13244,14 +13527,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries/{id}/converted": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/converted": {
             "post": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "Mark inquiry as converted",
                 "description": "Mark inquiry as converted.",
-                "operationId": "91ed6a5c0d4f0fd5672bb8cfffd2af72",
+                "operationId": "4cbccada235f99c7ce585554b769b531",
                 "parameters": [
                     {
                         "name": "id",
@@ -13269,14 +13552,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries/{id}/assign": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/assign": {
             "post": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "Assign agent to inquiry",
                 "description": "Assign agent to inquiry.",
-                "operationId": "95595c4bbf12759785f332f40a7378b1",
+                "operationId": "d85394a4899174abdee7f55558ac407e",
                 "parameters": [
                     {
                         "name": "id",
@@ -13309,14 +13592,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries/bulk-status": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries/bulk-status": {
             "post": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "Bulk update inquiry status",
                 "description": "Bulk update status.",
-                "operationId": "819dd672b38d2e729dff6cda9097b3a4",
+                "operationId": "f13b50875ffe949499346120ed67bbbf",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -13345,14 +13628,14 @@
                 }
             }
         },
-        "/api/admin/realestate/inquiries/export": {
+        "/api/v1/tenant/{tenant}/admin/realestate/inquiries/export": {
             "get": {
                 "tags": [
                     "Admin - Inquiries"
                 ],
                 "summary": "Export inquiries",
                 "description": "Export inquiries.",
-                "operationId": "980b9e11d5e2abc7afd6e4db39e57033",
+                "operationId": "38672b00bfadeb02d1684845ef1dfd7c",
                 "parameters": [
                     {
                         "name": "status",
@@ -13385,14 +13668,14 @@
                 }
             }
         },
-        "/api/admin/realestate/property-types": {
+        "/api/v1/tenant/{tenant}/admin/realestate/property-types": {
             "get": {
                 "tags": [
                     "Admin - Property Types"
                 ],
                 "summary": "List all property types",
                 "description": "List all property types.",
-                "operationId": "d11fd6dc39a9fb93de7e514a9a2593c6",
+                "operationId": "60868adf2c0ee9e7c36b70906b13a4b1",
                 "parameters": [
                     {
                         "name": "filter[status]",
@@ -13421,7 +13704,7 @@
                 ],
                 "summary": "Create a new property type",
                 "description": "Store a new property type.",
-                "operationId": "a8e167b84b21dab11652bc7bcf87c691",
+                "operationId": "5beb8ce74bf833bf1db11156e503537d",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -13442,14 +13725,14 @@
                 }
             }
         },
-        "/api/admin/realestate/property-types/{id}": {
+        "/api/v1/tenant/{tenant}/admin/realestate/property-types/{id}": {
             "get": {
                 "tags": [
                     "Admin - Property Types"
                 ],
                 "summary": "Get property type details",
                 "description": "Show a single property type.",
-                "operationId": "9bd23f155984df347192a20060bcbba8",
+                "operationId": "91e03ba02287d03d9e80e8dc9dda016d",
                 "parameters": [
                     {
                         "name": "id",
@@ -13475,7 +13758,7 @@
                 ],
                 "summary": "Update a property type",
                 "description": "Update a property type.",
-                "operationId": "7de2074d05ba267c35b9622be5c666a4",
+                "operationId": "96cabb05a73ecaa2abd7024c3a2b173a",
                 "parameters": [
                     {
                         "name": "id",
@@ -13511,7 +13794,7 @@
                 ],
                 "summary": "Delete a property type",
                 "description": "Delete a property type.",
-                "operationId": "52a13c25d2f103d260e58d01ad1df1dd",
+                "operationId": "9c7552236abb0a0a053686904ff1e6e4",
                 "parameters": [
                     {
                         "name": "id",
@@ -13535,14 +13818,14 @@
                 }
             }
         },
-        "/api/admin/realestate/property-types/reorder": {
+        "/api/v1/tenant/{tenant}/admin/realestate/property-types/reorder": {
             "post": {
                 "tags": [
                     "Admin - Property Types"
                 ],
                 "summary": "Reorder property types",
                 "description": "Reorder property types.",
-                "operationId": "2943865155be93ae0ce53346062f7848",
+                "operationId": "454089b842a6686a669f9fec9b35aa4a",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -13568,14 +13851,14 @@
                 }
             }
         },
-        "/api/agent/realestate/dashboard": {
+        "/api/v1/tenant/{tenant}/agent/realestate/dashboard": {
             "get": {
                 "tags": [
                     "Agent Dashboard"
                 ],
                 "summary": "Get agent dashboard overview",
                 "description": "Returns statistics and summary for the authenticated agent",
-                "operationId": "f375960abda8b65e03d1e09c9427f4cc",
+                "operationId": "c063dd0dfc06446d3d44419cf9f68dc2",
                 "responses": {
                     "200": {
                         "description": "Dashboard data",
@@ -13610,14 +13893,14 @@
                 }
             }
         },
-        "/api/agent/realestate/properties": {
+        "/api/v1/tenant/{tenant}/agent/realestate/properties": {
             "get": {
                 "tags": [
                     "Agent Dashboard"
                 ],
                 "summary": "Get agent assigned properties",
                 "description": "Returns paginated list of properties assigned to the authenticated agent",
-                "operationId": "34802a548a1ef8a07180ec28f2234580",
+                "operationId": "9adb2344eac94c3bfe668f041422a463",
                 "parameters": [
                     {
                         "name": "per_page",
@@ -13658,14 +13941,14 @@
                 }
             }
         },
-        "/api/agent/realestate/inquiries": {
+        "/api/v1/tenant/{tenant}/agent/realestate/inquiries": {
             "get": {
                 "tags": [
                     "Agent Dashboard"
                 ],
                 "summary": "Get agent assigned inquiries",
                 "description": "Returns paginated list of inquiries assigned to the authenticated agent",
-                "operationId": "310bc746f695cde4c13f81aa171b505e",
+                "operationId": "0dabe79bf4f13196188d22937286a76b",
                 "parameters": [
                     {
                         "name": "per_page",
@@ -13708,14 +13991,14 @@
                 }
             }
         },
-        "/api/agent/realestate/statistics": {
+        "/api/v1/tenant/{tenant}/agent/realestate/statistics": {
             "get": {
                 "tags": [
                     "Agent Dashboard"
                 ],
                 "summary": "Get agent statistics",
                 "description": "Returns detailed statistics for the authenticated agent",
-                "operationId": "1300ea909a50233476cefc117f488100",
+                "operationId": "3412aa8bc935873253f3c6486fb04615",
                 "responses": {
                     "200": {
                         "description": "Statistics data",
@@ -13744,14 +14027,14 @@
                 }
             }
         },
-        "/api/agent/realestate/inquiries/{id}": {
+        "/api/v1/tenant/{tenant}/agent/realestate/inquiries/{id}": {
             "put": {
                 "tags": [
                     "Agent Dashboard"
                 ],
                 "summary": "Update inquiry status",
                 "description": "Allows agent to update inquiry status and add notes",
-                "operationId": "ed8b1dcb651a19febf63b346184c2124",
+                "operationId": "98273b3a6de8958ce83958f83a54792c",
                 "parameters": [
                     {
                         "name": "id",
@@ -13799,14 +14082,14 @@
                 }
             }
         },
-        "/api/agent/realestate/inquiries/{id}/contact": {
+        "/api/v1/tenant/{tenant}/agent/realestate/inquiries/{id}/contact": {
             "post": {
                 "tags": [
                     "Agent Dashboard"
                 ],
                 "summary": "Mark inquiry as contacted",
                 "description": "Mark inquiry as contacted.",
-                "operationId": "56c21230e4b7d5984ddaaf0b2eb1a379",
+                "operationId": "5ebb57794992a164bd4732d99fd08b26",
                 "parameters": [
                     {
                         "name": "id",
@@ -13827,14 +14110,14 @@
                 }
             }
         },
-        "/api/realestate/amenities": {
+        "/api/v1/tenant/{tenant}/realestate/amenities": {
             "get": {
                 "tags": [
                     "Amenities"
                 ],
                 "summary": "List amenities",
                 "description": "List active amenities.",
-                "operationId": "fe4489787f9513fbfda711ca336113e2",
+                "operationId": "cde9209e613d25e4ea72e586f31284b7",
                 "parameters": [
                     {
                         "name": "category",
@@ -13856,14 +14139,14 @@
                 }
             }
         },
-        "/api/realestate/areas": {
+        "/api/v1/tenant/{tenant}/realestate/areas": {
             "get": {
                 "tags": [
                     "Areas"
                 ],
                 "summary": "Get areas tree",
                 "description": "Get areas tree structure.",
-                "operationId": "08a7daeeb9ab7b75b3ca182f1f854826",
+                "operationId": "181b8197cbd5f5bd6a4ee0d735962467",
                 "responses": {
                     "200": {
                         "description": "Areas tree structure"
@@ -13871,14 +14154,14 @@
                 }
             }
         },
-        "/api/realestate/areas/cities": {
+        "/api/v1/tenant/{tenant}/realestate/areas/cities": {
             "get": {
                 "tags": [
                     "Areas"
                 ],
                 "summary": "Get root areas/cities",
                 "description": "Get root areas (cities).",
-                "operationId": "f0800706721fd1951120a4df57e80b48",
+                "operationId": "3170ee6d5c16a8fd82bfb606b2098833",
                 "responses": {
                     "200": {
                         "description": "Root areas"
@@ -13886,14 +14169,14 @@
                 }
             }
         },
-        "/api/realestate/areas/featured": {
+        "/api/v1/tenant/{tenant}/realestate/areas/featured": {
             "get": {
                 "tags": [
                     "Areas"
                 ],
                 "summary": "Get featured areas",
                 "description": "Get featured areas.",
-                "operationId": "84b2aba46ba0f149b769b8c03ffde683",
+                "operationId": "7c62feb4d8e047a9967dde40f85a6748",
                 "parameters": [
                     {
                         "name": "limit",
@@ -13911,14 +14194,14 @@
                 }
             }
         },
-        "/api/realestate/areas/{id}-{slug}": {
+        "/api/v1/tenant/{tenant}/realestate/areas/{id}-{slug}": {
             "get": {
                 "tags": [
                     "Areas"
                 ],
                 "summary": "Get area details",
                 "description": "Show a single area by ID-slug.",
-                "operationId": "14021ef1cdfee356f86d0f994d03aa4d",
+                "operationId": "0902c2a753dea1cf938accf45c80d137",
                 "parameters": [
                     {
                         "name": "id",
@@ -13947,14 +14230,14 @@
                 }
             }
         },
-        "/api/realestate/areas/{id}/children": {
+        "/api/v1/tenant/{tenant}/realestate/areas/{id}/children": {
             "get": {
                 "tags": [
                     "Areas"
                 ],
                 "summary": "Get child areas",
                 "description": "Get child areas.",
-                "operationId": "429030086b40636bfb39d122beaf4fbc",
+                "operationId": "0486eabb9ed190abd342610cd9f3caf5",
                 "parameters": [
                     {
                         "name": "id",
@@ -13972,14 +14255,14 @@
                 }
             }
         },
-        "/api/realestate/areas/{id}/compounds": {
+        "/api/v1/tenant/{tenant}/realestate/areas/{id}/compounds": {
             "get": {
                 "tags": [
                     "Areas"
                 ],
                 "summary": "Get compounds in area",
                 "description": "Get compounds in area.",
-                "operationId": "c18a0c7045d006ddf73c6527c4fcfc26",
+                "operationId": "d4d522e55febec375bbf43ca4fce723d",
                 "parameters": [
                     {
                         "name": "id",
@@ -14005,14 +14288,14 @@
                 }
             }
         },
-        "/api/realestate/areas/{id}/properties": {
+        "/api/v1/tenant/{tenant}/realestate/areas/{id}/properties": {
             "get": {
                 "tags": [
                     "Areas"
                 ],
                 "summary": "Get properties in area",
                 "description": "Get properties in area.",
-                "operationId": "adf06b006b7c71c6c3ed17849b4ea2da",
+                "operationId": "0e5090142c2a569bc9241fcf5fc9765d",
                 "parameters": [
                     {
                         "name": "id",
@@ -14037,14 +14320,14 @@
                 }
             }
         },
-        "/api/realestate/compounds": {
+        "/api/v1/tenant/{tenant}/realestate/compounds": {
             "get": {
                 "tags": [
                     "Compounds"
                 ],
                 "summary": "List compounds",
                 "description": "List active compounds with filters.",
-                "operationId": "74a1f343d68e2d14d954654228a65c8f",
+                "operationId": "f186bffdd8c38e47dc77e88ae4b40815",
                 "parameters": [
                     {
                         "name": "filter[area_id]",
@@ -14082,14 +14365,14 @@
                 }
             }
         },
-        "/api/realestate/compounds/{id}-{slug}": {
+        "/api/v1/tenant/{tenant}/realestate/compounds/{compound}": {
             "get": {
                 "tags": [
                     "Compounds"
                 ],
                 "summary": "Get compound details",
                 "description": "Show a single compound by ID-slug.",
-                "operationId": "20689e825e206e1e52175d12d269da25",
+                "operationId": "70fd9a62af1ebc4e069dd08c81ee5efe",
                 "parameters": [
                     {
                         "name": "id",
@@ -14118,14 +14401,14 @@
                 }
             }
         },
-        "/api/realestate/compounds/featured": {
+        "/api/v1/tenant/{tenant}/realestate/compounds/featured": {
             "get": {
                 "tags": [
                     "Compounds"
                 ],
                 "summary": "Get featured compounds",
                 "description": "Get featured compounds.",
-                "operationId": "56f5fac52ceda3a6fbb6174564bb5ad9",
+                "operationId": "7f6f8f2c910acc47b11059d92f1e31a7",
                 "parameters": [
                     {
                         "name": "limit",
@@ -14143,14 +14426,14 @@
                 }
             }
         },
-        "/api/realestate/compounds/{id}/properties": {
+        "/api/v1/tenant/{tenant}/realestate/compounds/{id}/properties": {
             "get": {
                 "tags": [
                     "Compounds"
                 ],
                 "summary": "Get properties in compound",
                 "description": "Get properties in a compound.",
-                "operationId": "e14e2868d406ce7307f6d1393d6c2b10",
+                "operationId": "699ecf52c1c1416f16ce83ab2ac1ce29",
                 "parameters": [
                     {
                         "name": "id",
@@ -14175,14 +14458,14 @@
                 }
             }
         },
-        "/api/realestate/developers": {
+        "/api/v1/tenant/{tenant}/realestate/developers": {
             "get": {
                 "tags": [
                     "Developers"
                 ],
                 "summary": "List developers",
                 "description": "List active developers.",
-                "operationId": "997c317b9365a59cfea34e67827cdcf4",
+                "operationId": "741aa01f79865b5868d670222f8e6997",
                 "parameters": [
                     {
                         "name": "featured",
@@ -14206,14 +14489,14 @@
                 }
             }
         },
-        "/api/realestate/developers/featured": {
+        "/api/v1/tenant/{tenant}/realestate/developers/featured": {
             "get": {
                 "tags": [
                     "Developers"
                 ],
                 "summary": "Get featured developers",
                 "description": "Get featured developers.",
-                "operationId": "cff6e6d1f3450f06e891ac93b36b8ccc",
+                "operationId": "e55f24ea2715cb1668165b77a713a825",
                 "parameters": [
                     {
                         "name": "limit",
@@ -14231,14 +14514,14 @@
                 }
             }
         },
-        "/api/realestate/developers/{id}-{slug}": {
+        "/api/v1/tenant/{tenant}/realestate/developers/{id}-{slug}": {
             "get": {
                 "tags": [
                     "Developers"
                 ],
                 "summary": "Get developer details",
                 "description": "Show a single developer.",
-                "operationId": "3ec8dd09ba35ab9c550832ab07a36086",
+                "operationId": "f46707a563bf9ace865f4c12117c9ef2",
                 "parameters": [
                     {
                         "name": "id",
@@ -14267,14 +14550,14 @@
                 }
             }
         },
-        "/api/realestate/developers/{id}/compounds": {
+        "/api/v1/tenant/{tenant}/realestate/developers/{id}/compounds": {
             "get": {
                 "tags": [
                     "Developers"
                 ],
                 "summary": "Get developer compounds",
                 "description": "Get compounds by developer.",
-                "operationId": "3be55a6946350309eef44317208933fd",
+                "operationId": "b0dfd05ae8c18287f79a266e0a34e571",
                 "parameters": [
                     {
                         "name": "id",
@@ -14300,14 +14583,115 @@
                 }
             }
         },
-        "/api/realestate/properties": {
+        "/api/v1/tenant/{tenant}/realestate/gallery/properties/{property}": {
+            "get": {
+                "tags": [
+                    "Frontend - Gallery"
+                ],
+                "summary": "Get property image gallery",
+                "description": "Fetch all images for a property with multiple thumbnail sizes",
+                "operationId": "9ae454788ad92d60c567ba0941dc010a",
+                "parameters": [
+                    {
+                        "name": "property",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Property gallery retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_PropertyImageResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Property not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/realestate/gallery/compounds/{compound}": {
+            "get": {
+                "tags": [
+                    "Frontend - Gallery"
+                ],
+                "summary": "Get compound image gallery",
+                "description": "Fetch all images for a compound (filtered by type if needed)",
+                "operationId": "10f051fad96f4659fb46ce87b7435a35",
+                "parameters": [
+                    {
+                        "name": "compound",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Filter by image type",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "gallery",
+                                "master_plan",
+                                "unit_plan"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Compound gallery retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_CompoundImageResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Compound not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/realestate/properties": {
             "get": {
                 "tags": [
                     "Properties"
                 ],
                 "summary": "List properties",
                 "description": "Get paginated list of active properties with advanced filtering options",
-                "operationId": "4050a087d2ea1d69c9cd4ac1746bd07a",
+                "operationId": "2f32f31862b27c6e2d80c8027bfb5f1f",
                 "parameters": [
                     {
                         "name": "filter[area_id]",
@@ -14477,14 +14861,14 @@
                 }
             }
         },
-        "/api/realestate/properties/{property}": {
+        "/api/v1/tenant/{tenant}/realestate/properties/{property}": {
             "get": {
                 "tags": [
                     "Properties"
                 ],
                 "summary": "Get property details",
                 "description": "Get detailed property information by ID-slug pattern (e.g., 123-modern-villa-in-new-cairo)",
-                "operationId": "cfd629c1a9f2d981bfea77fec8013da1",
+                "operationId": "ed331ef54b679d8e6c4ce4d460abd184",
                 "parameters": [
                     {
                         "name": "property",
@@ -14519,14 +14903,14 @@
                 }
             }
         },
-        "/api/realestate/properties/featured": {
+        "/api/v1/tenant/{tenant}/realestate/properties/featured": {
             "get": {
                 "tags": [
                     "Properties"
                 ],
                 "summary": "Get featured properties",
                 "description": "Get list of featured/highlighted properties for homepage showcase",
-                "operationId": "bc4839304a586c05606c39942821d12d",
+                "operationId": "95640a50cb8b350c15f9585900b1eba2",
                 "parameters": [
                     {
                         "name": "limit",
@@ -14561,14 +14945,14 @@
                 }
             }
         },
-        "/api/realestate/properties/{id}/similar": {
+        "/api/v1/tenant/{tenant}/realestate/properties/{property}/similar": {
             "get": {
                 "tags": [
                     "Properties"
                 ],
                 "summary": "Get similar properties",
                 "description": "Get properties similar to the specified property based on location, type, and price range",
-                "operationId": "d6fd84417ad58012b88d5e65294e8f79",
+                "operationId": "56cc80ef2528237cf9d905c8137180ab",
                 "parameters": [
                     {
                         "name": "id",
@@ -14615,14 +14999,14 @@
                 }
             }
         },
-        "/api/realestate/properties/{property}/inquire": {
+        "/api/v1/tenant/{tenant}/realestate/properties/{property}/inquire": {
             "post": {
                 "tags": [
                     "Inquiries"
                 ],
                 "summary": "Submit property inquiry",
                 "description": "Submit a property inquiry.",
-                "operationId": "426022f3b5eee995716924ef5bc030ea",
+                "operationId": "d5583d323b5c826b2b723531958de2a7",
                 "parameters": [
                     {
                         "name": "property",
@@ -14653,14 +15037,14 @@
                 }
             }
         },
-        "/api/realestate/compounds/{compound}/inquire": {
+        "/api/v1/tenant/{tenant}/realestate/compounds/{compound}/inquire": {
             "post": {
                 "tags": [
                     "Inquiries"
                 ],
                 "summary": "Submit compound inquiry",
                 "description": "Submit a compound inquiry.",
-                "operationId": "a1c7ac77b0577d2498eff9230ab17eef",
+                "operationId": "c54646bf69a62469166c2c041514d0cb",
                 "parameters": [
                     {
                         "name": "compound",
@@ -14691,14 +15075,14 @@
                 }
             }
         },
-        "/api/realestate/inquiries": {
+        "/api/v1/tenant/{tenant}/realestate/inquiries": {
             "post": {
                 "tags": [
                     "Inquiries"
                 ],
                 "summary": "Submit general inquiry",
                 "description": "Submit a general inquiry.",
-                "operationId": "376ea730fd5dc9f2384d80c53c2009d1",
+                "operationId": "026c64c1f23562f7dd268c89d5c6e0c2",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -14719,14 +15103,14 @@
                 }
             }
         },
-        "/api/realestate/property-types": {
+        "/api/v1/tenant/{tenant}/realestate/property-types": {
             "get": {
                 "tags": [
                     "Property Types"
                 ],
                 "summary": "List property types",
                 "description": "List active property types.",
-                "operationId": "99f959fafff0bfb35b964404be574880",
+                "operationId": "dfc591614ff676b5feaa21c17517df19",
                 "responses": {
                     "200": {
                         "description": "List of property types"
@@ -14734,14 +15118,14 @@
                 }
             }
         },
-        "/api/realestate/property-types/{slug}": {
+        "/api/v1/tenant/{tenant}/realestate/property-types/{slug}": {
             "get": {
                 "tags": [
                     "Property Types"
                 ],
                 "summary": "Get property type details",
                 "description": "Show a single property type.",
-                "operationId": "87539d4d5931b8298730a1b27cec0b65",
+                "operationId": "7dbe143069d493fa1983d2259fc860f7",
                 "parameters": [
                     {
                         "name": "slug",
@@ -14762,14 +15146,14 @@
                 }
             }
         },
-        "/api/realestate/saved-properties": {
+        "/api/v1/tenant/{tenant}/realestate/saved-properties": {
             "get": {
                 "tags": [
                     "Saved Properties"
                 ],
                 "summary": "Get saved properties",
                 "description": "Get paginated list of properties saved by the authenticated user",
-                "operationId": "aaffd25a881d5a8e9d0e187919f2cfd5",
+                "operationId": "ed3652c5164e3c7a510cb3e686993b9b",
                 "parameters": [
                     {
                         "name": "per_page",
@@ -14823,14 +15207,14 @@
                 ]
             }
         },
-        "/api/realestate/saved-properties/{property}": {
+        "/api/v1/tenant/{tenant}/realestate/saved-properties/{property}": {
             "post": {
                 "tags": [
                     "Saved Properties"
                 ],
                 "summary": "Save property to favorites",
                 "description": "Add a property to the authenticated user's favorites list",
-                "operationId": "48d1173b13e27be888b325002418a835",
+                "operationId": "3dc8bc84b5289fc1eba68849d28ee773",
                 "parameters": [
                     {
                         "name": "property",
@@ -14882,7 +15266,7 @@
                 ],
                 "summary": "Remove property from favorites",
                 "description": "Remove a property from favorites.",
-                "operationId": "3c320af19d4a0dfd8c2b467a3df68f37",
+                "operationId": "8f5d571785662553fce8887e125d9e74",
                 "parameters": [
                     {
                         "name": "property",
@@ -14908,14 +15292,14 @@
                 ]
             }
         },
-        "/api/realestate/saved-properties/{property}/toggle": {
+        "/api/v1/tenant/{tenant}/realestate/saved-properties/{property}/toggle": {
             "post": {
                 "tags": [
                     "Saved Properties"
                 ],
                 "summary": "Toggle property save status",
                 "description": "Toggle save status.",
-                "operationId": "1f64cd19bb73053212c49937ebe6a946",
+                "operationId": "869f3d524e408b11b526b2ca1daa1ae9",
                 "parameters": [
                     {
                         "name": "property",
@@ -14944,14 +15328,14 @@
                 ]
             }
         },
-        "/api/realestate/saved-properties/{property}/check": {
+        "/api/v1/tenant/{tenant}/realestate/saved-properties/{property}/check": {
             "get": {
                 "tags": [
                     "Saved Properties"
                 ],
                 "summary": "Check if property is saved",
                 "description": "Check if property is saved.",
-                "operationId": "5f0e830ba60ad191117d244e14ba8bcf",
+                "operationId": "add800c445ab3a30c60943c868e28ae5",
                 "parameters": [
                     {
                         "name": "property",
@@ -14977,14 +15361,14 @@
                 ]
             }
         },
-        "/api/realestate/saved-properties/check-multiple": {
+        "/api/v1/tenant/{tenant}/realestate/saved-properties/check-multiple": {
             "post": {
                 "tags": [
                     "Saved Properties"
                 ],
                 "summary": "Check multiple properties save status",
                 "description": "Check multiple properties save status.",
-                "operationId": "99eef96d72dc955f6765127aadc42f8f",
+                "operationId": "084029ed6344d2da1ef979d7a1dda832",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -15018,14 +15402,14 @@
                 ]
             }
         },
-        "/api/realestate/search/properties": {
+        "/api/v1/tenant/{tenant}/realestate/search/properties": {
             "get": {
                 "tags": [
                     "Search"
                 ],
                 "summary": "Search properties",
                 "description": "Advanced property search with comprehensive filtering, sorting, and pagination",
-                "operationId": "23c689ce4ebeb3288d5ec5d5ef8ac17b",
+                "operationId": "addb194526dff7309b6ffeea2134464c",
                 "parameters": [
                     {
                         "name": "q",
@@ -15245,14 +15629,14 @@
                 }
             }
         },
-        "/api/realestate/search/compounds": {
+        "/api/v1/tenant/{tenant}/realestate/search/compounds": {
             "get": {
                 "tags": [
                     "Search"
                 ],
                 "summary": "Search compounds",
                 "description": "Search compounds/projects with filtering options",
-                "operationId": "64a7f47d9d6ca31303e63bbb823fa419",
+                "operationId": "baf5266964f6c7c55ac765a9eafbe99e",
                 "parameters": [
                     {
                         "name": "q",
@@ -15358,14 +15742,14 @@
                 }
             }
         },
-        "/api/realestate/search/autocomplete": {
+        "/api/v1/tenant/{tenant}/realestate/search/autocomplete": {
             "get": {
                 "tags": [
                     "Search"
                 ],
                 "summary": "Get autocomplete suggestions",
                 "description": "Get instant search suggestions for areas, compounds, developers, and properties based on query input. Minimum 2 characters required.",
-                "operationId": "b789ea41e8e33830d188add1a973a264",
+                "operationId": "b2d44126ff9f0f640dddf4febd9b7c53",
                 "parameters": [
                     {
                         "name": "q",
@@ -15414,14 +15798,14 @@
                 }
             }
         },
-        "/api/realestate/search/facets": {
+        "/api/v1/tenant/{tenant}/realestate/search/facets": {
             "get": {
                 "tags": [
                     "Search"
                 ],
                 "summary": "Get search facets",
                 "description": "Get available filter options with property counts for building dynamic filter UI. Returns property types, areas, developers, price ranges, and bedroom counts.",
-                "operationId": "c0bf7c098181f4c0ad5e1d857ccb690f",
+                "operationId": "f6e938165998b73c481d72abf99330b2",
                 "parameters": [
                     {
                         "name": "area_id",
@@ -15463,14 +15847,14 @@
                 }
             }
         },
-        "/api/realestate/search/popular": {
+        "/api/v1/tenant/{tenant}/realestate/search/popular": {
             "get": {
                 "tags": [
                     "Search"
                 ],
                 "summary": "Get popular searches",
                 "description": "Get trending and most popular search terms/queries",
-                "operationId": "460180990c1626d0e182b1dbb2fbadf1",
+                "operationId": "4e3834312311be8d700ea5e72d6499a3",
                 "parameters": [
                     {
                         "name": "limit",
@@ -15515,14 +15899,14 @@
                 }
             }
         },
-        "/api/realestate/search/nearby": {
+        "/api/v1/tenant/{tenant}/realestate/search/nearby": {
             "get": {
                 "tags": [
                     "Search"
                 ],
                 "summary": "Get nearby properties",
                 "description": "Get properties near a geographic location using latitude/longitude coordinates",
-                "operationId": "f983d9545779c4ffc90b5e62254217dc",
+                "operationId": "658516f9a399d355226cd636b146a72b",
                 "parameters": [
                     {
                         "name": "latitude",
@@ -15603,6 +15987,261 @@
                     },
                     "422": {
                         "description": "Invalid coordinates"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/realestate/map/properties": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Get properties within map bounds",
+                "description": "Get all properties visible within a map viewport defined by northeast and southwest corners. Supports filtering by property type, price range, bedrooms, and purpose.",
+                "operationId": "5057cbe8c03953686ff2a7e0979e3e4b",
+                "parameters": [
+                    {
+                        "name": "ne_lat",
+                        "in": "query",
+                        "description": "Northeast corner latitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 30.1
+                        }
+                    },
+                    {
+                        "name": "ne_lng",
+                        "in": "query",
+                        "description": "Northeast corner longitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 31.5
+                        }
+                    },
+                    {
+                        "name": "sw_lat",
+                        "in": "query",
+                        "description": "Southwest corner latitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 29.9
+                        }
+                    },
+                    {
+                        "name": "sw_lng",
+                        "in": "query",
+                        "description": "Southwest corner longitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 31.1
+                        }
+                    },
+                    {
+                        "name": "property_type_id",
+                        "in": "query",
+                        "description": "Filter by property type",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "min_price",
+                        "in": "query",
+                        "description": "Minimum price",
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "max_price",
+                        "in": "query",
+                        "description": "Maximum price",
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "bedrooms",
+                        "in": "query",
+                        "description": "Number of bedrooms",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "purpose",
+                        "in": "query",
+                        "description": "Sale or rent",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "sale",
+                                "rent"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Properties within map bounds",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_PropertyResource"
+                                            }
+                                        },
+                                        "count": {
+                                            "type": "integer",
+                                            "example": 45
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid bounds"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/realestate/map/clusters": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Get property clusters",
+                "description": "Get clustered property markers for map display with zoom-level precision. Returns property counts and average prices for each cluster. Zoom levels: 1-5 (country), 6-10 (city), 11-15 (neighborhood), 16+ (street).",
+                "operationId": "786bba8737befcacff042ffb452d4113",
+                "parameters": [
+                    {
+                        "name": "zoom",
+                        "in": "query",
+                        "description": "Map zoom level (1-20)",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 20,
+                            "minimum": 1,
+                            "example": 12
+                        }
+                    },
+                    {
+                        "name": "ne_lat",
+                        "in": "query",
+                        "description": "Northeast corner latitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 30.1
+                        }
+                    },
+                    {
+                        "name": "ne_lng",
+                        "in": "query",
+                        "description": "Northeast corner longitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 31.5
+                        }
+                    },
+                    {
+                        "name": "sw_lat",
+                        "in": "query",
+                        "description": "Southwest corner latitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 29.9
+                        }
+                    },
+                    {
+                        "name": "sw_lng",
+                        "in": "query",
+                        "description": "Southwest corner longitude",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 31.1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Property clusters with counts and stats",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "latitude": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 30.0444
+                                                    },
+                                                    "longitude": {
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 31.2357
+                                                    },
+                                                    "count": {
+                                                        "description": "Number of properties in cluster",
+                                                        "type": "integer",
+                                                        "example": 15
+                                                    },
+                                                    "avg_price": {
+                                                        "description": "Average price",
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 2500000
+                                                    },
+                                                    "min_price": {
+                                                        "description": "Minimum price",
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 1800000
+                                                    },
+                                                    "max_price": {
+                                                        "description": "Maximum price",
+                                                        "type": "number",
+                                                        "format": "float",
+                                                        "example": 3500000
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Invalid parameters"
                     }
                 }
             }
@@ -38152,10 +38791,16 @@
             "RE_CompoundImageResource": {
                 "properties": {
                     "id": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Master Plan"
                     },
                     "image_path": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "compounds/1/master-plan.jpg"
                     },
                     "type": {
                         "type": "string",
@@ -38166,10 +38811,29 @@
                         ]
                     },
                     "alt_text": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "Compound master plan"
                     },
-                    "is_primary": {
-                        "type": "boolean"
+                    "order": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "urls": {
+                        "properties": {
+                            "original": {
+                                "type": "string"
+                            },
+                            "small": {
+                                "type": "string"
+                            },
+                            "medium": {
+                                "type": "string"
+                            },
+                            "large": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -38244,19 +38908,45 @@
             "RE_PropertyImageResource": {
                 "properties": {
                     "id": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Living Room"
                     },
                     "image_path": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "properties/1/image.jpg"
                     },
                     "alt_text": {
-                        "type": "string"
+                        "type": "string",
+                        "example": "Beautiful living room"
                     },
                     "is_primary": {
-                        "type": "boolean"
+                        "type": "boolean",
+                        "example": true
                     },
                     "order": {
-                        "type": "integer"
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "urls": {
+                        "properties": {
+                            "original": {
+                                "type": "string"
+                            },
+                            "small": {
+                                "type": "string"
+                            },
+                            "medium": {
+                                "type": "string"
+                            },
+                            "large": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
                     }
                 },
                 "type": "object"
@@ -42883,6 +43573,10 @@
             "description": "Admin developer management endpoints"
         },
         {
+            "name": "Admin - Media",
+            "description": "Media management for properties and compounds"
+        },
+        {
             "name": "Admin - Properties",
             "description": "Admin property management endpoints"
         },
@@ -42913,6 +43607,10 @@
         {
             "name": "Developers",
             "description": "Developer/builder listing endpoints"
+        },
+        {
+            "name": "Frontend - Gallery",
+            "description": "Public image gallery endpoints"
         },
         {
             "name": "Properties",

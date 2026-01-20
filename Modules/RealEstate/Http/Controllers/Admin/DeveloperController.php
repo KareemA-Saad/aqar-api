@@ -21,7 +21,7 @@ class DeveloperController extends Controller
      * List all developers with filters.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/developers',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/developers',
         summary: 'List all developers',
         tags: ['Admin - Developers'],
         parameters: [
@@ -57,7 +57,7 @@ class DeveloperController extends Controller
      * Store a new developer.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/developers',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/developers',
         summary: 'Create a new developer',
         tags: ['Admin - Developers'],
         requestBody: new OA\RequestBody(
@@ -89,7 +89,7 @@ class DeveloperController extends Controller
      * Show a single developer.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/developers/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/developers/{id}',
         summary: 'Get developer details',
         tags: ['Admin - Developers'],
         parameters: [
@@ -113,7 +113,7 @@ class DeveloperController extends Controller
      * Update a developer.
      */
     #[OA\Put(
-        path: '/api/admin/realestate/developers/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/developers/{id}',
         summary: 'Update a developer',
         tags: ['Admin - Developers'],
         parameters: [
@@ -142,7 +142,7 @@ class DeveloperController extends Controller
      * Delete a developer.
      */
     #[OA\Delete(
-        path: '/api/admin/realestate/developers/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/developers/{id}',
         summary: 'Delete a developer',
         tags: ['Admin - Developers'],
         parameters: [

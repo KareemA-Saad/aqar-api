@@ -18,7 +18,7 @@ class AmenityController extends Controller
      * List active amenities.
      */
     #[OA\Get(
-        path: '/api/realestate/amenities',
+        path: '/api/v1/tenant/{tenant}/realestate/amenities',
         summary: 'List amenities',
         tags: ['Amenities'],
         parameters: [

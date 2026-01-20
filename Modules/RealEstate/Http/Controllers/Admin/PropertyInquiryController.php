@@ -24,7 +24,7 @@ class PropertyInquiryController extends Controller
      * List all inquiries with filters.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/inquiries',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries',
         summary: 'List all inquiries',
         tags: ['Admin - Inquiries'],
         parameters: [
@@ -58,7 +58,7 @@ class PropertyInquiryController extends Controller
      * Show a single inquiry.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/inquiries/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}',
         summary: 'Get inquiry details',
         tags: ['Admin - Inquiries'],
         parameters: [
@@ -86,7 +86,7 @@ class PropertyInquiryController extends Controller
      * Update inquiry status/agent.
      */
     #[OA\Put(
-        path: '/api/admin/realestate/inquiries/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}',
         summary: 'Update inquiry',
         tags: ['Admin - Inquiries'],
         parameters: [
@@ -127,7 +127,7 @@ class PropertyInquiryController extends Controller
      * Delete an inquiry.
      */
     #[OA\Delete(
-        path: '/api/admin/realestate/inquiries/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}',
         summary: 'Delete an inquiry',
         tags: ['Admin - Inquiries'],
         parameters: [
@@ -151,7 +151,7 @@ class PropertyInquiryController extends Controller
      * Get inquiry statistics.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/inquiries/statistics',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/statistics',
         summary: 'Get inquiry statistics',
         tags: ['Admin - Inquiries'],
         responses: [
@@ -169,7 +169,7 @@ class PropertyInquiryController extends Controller
      * Mark inquiry as contacted.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/inquiries/{id}/contacted',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/contacted',
         summary: 'Mark inquiry as contacted',
         tags: ['Admin - Inquiries'],
         parameters: [
@@ -193,7 +193,7 @@ class PropertyInquiryController extends Controller
      * Mark inquiry as qualified.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/inquiries/{id}/qualified',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/qualified',
         summary: 'Mark inquiry as qualified',
         tags: ['Admin - Inquiries'],
         parameters: [
@@ -217,7 +217,7 @@ class PropertyInquiryController extends Controller
      * Mark inquiry as converted.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/inquiries/{id}/converted',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/converted',
         summary: 'Mark inquiry as converted',
         tags: ['Admin - Inquiries'],
         parameters: [
@@ -241,7 +241,7 @@ class PropertyInquiryController extends Controller
      * Assign agent to inquiry.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/inquiries/{id}/assign',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/assign',
         summary: 'Assign agent to inquiry',
         tags: ['Admin - Inquiries'],
         parameters: [
@@ -277,7 +277,7 @@ class PropertyInquiryController extends Controller
      * Bulk update status.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/inquiries/bulk-status',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/bulk-status',
         summary: 'Bulk update inquiry status',
         tags: ['Admin - Inquiries'],
         requestBody: new OA\RequestBody(
@@ -316,7 +316,7 @@ class PropertyInquiryController extends Controller
      * Export inquiries.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/inquiries/export',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/export',
         summary: 'Export inquiries',
         tags: ['Admin - Inquiries'],
         parameters: [

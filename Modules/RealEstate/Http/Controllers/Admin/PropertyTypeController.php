@@ -20,7 +20,7 @@ class PropertyTypeController extends Controller
      * List all property types.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/property-types',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/property-types',
         summary: 'List all property types',
         tags: ['Admin - Property Types'],
         parameters: [
@@ -49,7 +49,7 @@ class PropertyTypeController extends Controller
      * Store a new property type.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/property-types',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/property-types',
         summary: 'Create a new property type',
         tags: ['Admin - Property Types'],
         requestBody: new OA\RequestBody(
@@ -85,7 +85,7 @@ class PropertyTypeController extends Controller
      * Show a single property type.
      */
     #[OA\Get(
-        path: '/api/admin/realestate/property-types/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/property-types/{id}',
         summary: 'Get property type details',
         tags: ['Admin - Property Types'],
         parameters: [
@@ -109,7 +109,7 @@ class PropertyTypeController extends Controller
      * Update a property type.
      */
     #[OA\Put(
-        path: '/api/admin/realestate/property-types/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/property-types/{id}',
         summary: 'Update a property type',
         tags: ['Admin - Property Types'],
         parameters: [
@@ -138,7 +138,7 @@ class PropertyTypeController extends Controller
      * Delete a property type.
      */
     #[OA\Delete(
-        path: '/api/admin/realestate/property-types/{id}',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/property-types/{id}',
         summary: 'Delete a property type',
         tags: ['Admin - Property Types'],
         parameters: [
@@ -169,7 +169,7 @@ class PropertyTypeController extends Controller
      * Reorder property types.
      */
     #[OA\Post(
-        path: '/api/admin/realestate/property-types/reorder',
+        path: '/api/v1/tenant/{tenant}/admin/realestate/property-types/reorder',
         summary: 'Reorder property types',
         tags: ['Admin - Property Types'],
         requestBody: new OA\RequestBody(

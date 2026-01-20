@@ -460,6 +460,12 @@ class SearchService
 
     /**
      * Get nearby properties based on coordinates.
+     *
+     * @param float $latitude Center latitude
+     * @param float $longitude Center longitude
+     * @param int $radius Radius in kilometers
+     * @param int $limit Maximum results
+     * @return array Properties with distance
      */
     public function getNearbyProperties(float $latitude, float $longitude, int $radius = 5, int $limit = 10): array
     {
@@ -478,5 +484,148 @@ class SearchService
             ->get();
 
         return $properties->toArray();
+    }
+
+    /**
+     * Search properties within bounding box (map viewport).
+     *
+     * @param float $northEastLat Northeast corner latitude
+     * @param float $northEastLng Northeast corner longitude
+     * @param float $southWestLat Southwest corner latitude
+     * @param float $southWestLng Southwest corner longitude
+     * @param array $filters Additional filters
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function searchPropertiesInBounds(
+        float $northEastLat,
+        float $northEastLng,
+        float $southWestLat,
+        float $southWestLng,
+        array $filters = []
+    ) {
+        $query = Property::query()
+            ->whereBetween('latitude', [$southWestLat, $northEastLat])
+            ->whereBetween('longitude', [$southWestLng, $northEastLng])
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->active();
+
+        // Apply additional filters
+        if (!empty($filters['property_type_id'])) {
+            $query->where('property_type_id', $filters['property_type_id']);
+        }
+
+        if (!empty($filters['min_price'])) {
+            $query->where('price', '>=', $filters['min_price']);
+        }
+
+        if (!empty($filters['max_price'])) {
+            $query->where('price', '<=', $filters['max_price']);
+        }
+
+        if (!empty($filters['bedrooms'])) {
+            $query->where('bedrooms', '>=', $filters['bedrooms']);
+        }
+
+        if (!empty($filters['purpose'])) {
+            $query->where('purpose', $filters['purpose']);
+        }
+
+        return $query->with(['area', 'propertyType', 'primaryImage', 'compound'])
+            ->limit(500) // Limit for performance
+            ->get();
+    }
+
+    /**
+     * Get properties clustered for map display.
+     *
+     * @param int $zoom Map zoom level
+     * @param float|null $northEastLat
+     * @param float|null $northEastLng
+     * @param float|null $southWestLat
+     * @param float|null $southWestLng
+     * @return array Cluster data with property counts
+     */
+    public function getPropertyClusters(
+        int $zoom,
+        ?float $northEastLat = null,
+        ?float $northEastLng = null,
+        ?float $southWestLat = null,
+        ?float $southWestLng = null
+    ): array {
+        // Determine clustering precision based on zoom level
+        $precision = match (true) {
+            $zoom >= 15 => 4, // Individual properties
+            $zoom >= 12 => 3, // Small clusters
+            $zoom >= 9 => 2,  // Medium clusters
+            default => 1      // Large clusters
+        };
+
+        $query = Property::selectRaw("
+                ROUND(latitude, ?) as cluster_lat,
+                ROUND(longitude, ?) as cluster_lng,
+                COUNT(*) as property_count,
+                MIN(price) as min_price,
+                MAX(price) as max_price,
+                AVG(price) as avg_price
+            ", [$precision, $precision])
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->active();
+
+        // Apply bounds if provided
+        if ($northEastLat && $northEastLng && $southWestLat && $southWestLng) {
+            $query->whereBetween('latitude', [$southWestLat, $northEastLat])
+                ->whereBetween('longitude', [$southWestLng, $northEastLng]);
+        }
+
+        return $query->groupBy('cluster_lat', 'cluster_lng')
+            ->having('property_count', '>', 0)
+            ->get()
+            ->toArray();
+    }
+
+    /**
+     * Calculate distance between two coordinates in kilometers.
+     *
+     * @param float $lat1 First latitude
+     * @param float $lon1 First longitude
+     * @param float $lat2 Second latitude
+     * @param float $lon2 Second longitude
+     * @return float Distance in kilometers
+     */
+    public function calculateDistance(float $lat1, float $lon1, float $lat2, float $lon2): float
+    {
+        $earthRadius = 6371; // Earth radius in kilometers
+
+        $latDelta = deg2rad($lat2 - $lat1);
+        $lonDelta = deg2rad($lon2 - $lon1);
+
+        $a = sin($latDelta / 2) * sin($latDelta / 2) +
+            cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
+            sin($lonDelta / 2) * sin($lonDelta / 2);
+
+        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
+        return $earthRadius * $c;
+    }
+
+    /**
+     * Get properties near an area center.
+     *
+     * @param int $areaId
+     * @param int $radius Radius in kilometers
+     * @param int $limit
+     * @return array
+     */
+    public function getPropertiesNearArea(int $areaId, int $radius = 10, int $limit = 20): array
+    {
+        $area = Area::find($areaId);
+
+        if (!$area || !$area->latitude || !$area->longitude) {
+            return [];
+        }
+
+        return $this->getNearbyProperties($area->latitude, $area->longitude, $radius, $limit);
     }
 }

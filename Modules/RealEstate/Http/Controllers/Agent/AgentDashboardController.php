@@ -32,7 +32,7 @@ class AgentDashboardController extends Controller
      * Get agent dashboard overview.
      */
     #[OA\Get(
-        path: '/api/agent/realestate/dashboard',
+        path: '/api/v1/tenant/{tenant}/agent/realestate/dashboard',
         summary: 'Get agent dashboard overview',
         description: 'Returns statistics and summary for the authenticated agent',
         tags: ['Agent Dashboard'],
@@ -89,7 +89,7 @@ class AgentDashboardController extends Controller
      * Get agent's assigned properties.
      */
     #[OA\Get(
-        path: '/api/agent/realestate/properties',
+        path: '/api/v1/tenant/{tenant}/agent/realestate/properties',
         summary: 'Get agent assigned properties',
         description: 'Returns paginated list of properties assigned to the authenticated agent',
         tags: ['Agent Dashboard'],
@@ -137,7 +137,7 @@ class AgentDashboardController extends Controller
      * Get agent's assigned inquiries.
      */
     #[OA\Get(
-        path: '/api/agent/realestate/inquiries',
+        path: '/api/v1/tenant/{tenant}/agent/realestate/inquiries',
         summary: 'Get agent assigned inquiries',
         description: 'Returns paginated list of inquiries assigned to the authenticated agent',
         tags: ['Agent Dashboard'],
@@ -184,7 +184,7 @@ class AgentDashboardController extends Controller
      * Get agent inquiry statistics.
      */
     #[OA\Get(
-        path: '/api/agent/realestate/statistics',
+        path: '/api/v1/tenant/{tenant}/agent/realestate/statistics',
         summary: 'Get agent statistics',
         description: 'Returns detailed statistics for the authenticated agent',
         tags: ['Agent Dashboard'],
@@ -218,7 +218,7 @@ class AgentDashboardController extends Controller
      * Update inquiry from agent's perspective.
      */
     #[OA\Put(
-        path: '/api/agent/realestate/inquiries/{id}',
+        path: '/api/v1/tenant/{tenant}/agent/realestate/inquiries/{id}',
         summary: 'Update inquiry status',
         description: 'Allows agent to update inquiry status and add notes',
         tags: ['Agent Dashboard'],
@@ -269,7 +269,7 @@ class AgentDashboardController extends Controller
      * Mark inquiry as contacted.
      */
     #[OA\Post(
-        path: '/api/agent/realestate/inquiries/{id}/contact',
+        path: '/api/v1/tenant/{tenant}/agent/realestate/inquiries/{id}/contact',
         summary: 'Mark inquiry as contacted',
         tags: ['Agent Dashboard'],
         parameters: [

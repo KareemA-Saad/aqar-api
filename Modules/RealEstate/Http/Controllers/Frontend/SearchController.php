@@ -23,7 +23,7 @@ class SearchController extends Controller
      * Search properties with advanced filters.
      */
     #[OA\Get(
-        path: '/api/realestate/search/properties',
+        path: '/api/v1/tenant/{tenant}/realestate/search/properties',
         summary: 'Search properties',
         description: 'Advanced property search with comprehensive filtering, sorting, and pagination',
         tags: ['Search'],
@@ -91,7 +91,7 @@ class SearchController extends Controller
      * Search compounds with filters.
      */
     #[OA\Get(
-        path: '/api/realestate/search/compounds',
+        path: '/api/v1/tenant/{tenant}/realestate/search/compounds',
         summary: 'Search compounds',
         description: 'Search compounds/projects with filtering options',
         tags: ['Search'],
@@ -138,7 +138,7 @@ class SearchController extends Controller
      * Get autocomplete suggestions.
      */
     #[OA\Get(
-        path: '/api/realestate/search/autocomplete',
+        path: '/api/v1/tenant/{tenant}/realestate/search/autocomplete',
         summary: 'Get autocomplete suggestions',
         description: 'Get instant search suggestions for areas, compounds, developers, and properties based on query input. Minimum 2 characters required.',
         tags: ['Search'],
@@ -183,7 +183,7 @@ class SearchController extends Controller
      * Get search facets (filters with counts).
      */
     #[OA\Get(
-        path: '/api/realestate/search/facets',
+        path: '/api/v1/tenant/{tenant}/realestate/search/facets',
         summary: 'Get search facets',
         description: 'Get available filter options with property counts for building dynamic filter UI. Returns property types, areas, developers, price ranges, and bedroom counts.',
         tags: ['Search'],
@@ -216,7 +216,7 @@ class SearchController extends Controller
      * Get popular searches.
      */
     #[OA\Get(
-        path: '/api/realestate/search/popular',
+        path: '/api/v1/tenant/{tenant}/realestate/search/popular',
         summary: 'Get popular searches',
         description: 'Get trending and most popular search terms/queries',
         tags: ['Search'],
@@ -257,7 +257,7 @@ class SearchController extends Controller
      * Get nearby properties.
      */
     #[OA\Get(
-        path: '/api/realestate/search/nearby',
+        path: '/api/v1/tenant/{tenant}/realestate/search/nearby',
         summary: 'Get nearby properties',
         description: 'Get properties near a geographic location using latitude/longitude coordinates',
         tags: ['Search'],
@@ -309,6 +309,137 @@ class SearchController extends Controller
         
         return response()->json([
             'data' => $properties,
+        ]);
+    }
+
+    /**
+     * Get properties within map bounds (viewport).
+     */
+    #[OA\Get(
+        path: '/api/v1/tenant/{tenant}/realestate/map/properties',
+        summary: 'Get properties within map bounds',
+        description: 'Get all properties visible within a map viewport defined by northeast and southwest corners. Supports filtering by property type, price range, bedrooms, and purpose.',
+        tags: ['Search'],
+        parameters: [
+            new OA\Parameter(name: 'ne_lat', in: 'query', required: true, description: 'Northeast corner latitude', schema: new OA\Schema(type: 'number', format: 'float', example: 30.1)),
+            new OA\Parameter(name: 'ne_lng', in: 'query', required: true, description: 'Northeast corner longitude', schema: new OA\Schema(type: 'number', format: 'float', example: 31.5)),
+            new OA\Parameter(name: 'sw_lat', in: 'query', required: true, description: 'Southwest corner latitude', schema: new OA\Schema(type: 'number', format: 'float', example: 29.9)),
+            new OA\Parameter(name: 'sw_lng', in: 'query', required: true, description: 'Southwest corner longitude', schema: new OA\Schema(type: 'number', format: 'float', example: 31.1)),
+            new OA\Parameter(name: 'property_type_id', in: 'query', description: 'Filter by property type', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'min_price', in: 'query', description: 'Minimum price', schema: new OA\Schema(type: 'number', format: 'float')),
+            new OA\Parameter(name: 'max_price', in: 'query', description: 'Maximum price', schema: new OA\Schema(type: 'number', format: 'float')),
+            new OA\Parameter(name: 'bedrooms', in: 'query', description: 'Number of bedrooms', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'purpose', in: 'query', description: 'Sale or rent', schema: new OA\Schema(type: 'string', enum: ['sale', 'rent'])),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Properties within map bounds',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_PropertyResource')
+                        ),
+                        new OA\Property(property: 'count', type: 'integer', example: 45),
+                    ]
+                )
+            ),
+            new OA\Response(response: 422, description: 'Invalid bounds'),
+        ]
+    )]
+    public function mapProperties(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ne_lat' => 'required|numeric|between:-90,90',
+            'ne_lng' => 'required|numeric|between:-180,180',
+            'sw_lat' => 'required|numeric|between:-90,90',
+            'sw_lng' => 'required|numeric|between:-180,180',
+            'property_type_id' => 'nullable|integer|exists:re_property_types,id',
+            'min_price' => 'nullable|numeric|min:0',
+            'max_price' => 'nullable|numeric|min:0',
+            'bedrooms' => 'nullable|integer|min:0',
+            'purpose' => 'nullable|in:sale,rent',
+        ]);
+        
+        $filters = $request->only(['property_type_id', 'min_price', 'max_price', 'bedrooms', 'purpose']);
+        
+        $properties = $this->searchService->searchPropertiesInBounds(
+            (float) $request->input('ne_lat'),
+            (float) $request->input('ne_lng'),
+            (float) $request->input('sw_lat'),
+            (float) $request->input('sw_lng'),
+            $filters
+        );
+        
+        return response()->json([
+            'data' => PropertyResource::collection($properties),
+            'count' => $properties->count(),
+        ]);
+    }
+
+    /**
+     * Get property clusters for map display.
+     */
+    #[OA\Get(
+        path: '/api/v1/tenant/{tenant}/realestate/map/clusters',
+        summary: 'Get property clusters',
+        description: 'Get clustered property markers for map display with zoom-level precision. Returns property counts and average prices for each cluster. Zoom levels: 1-5 (country), 6-10 (city), 11-15 (neighborhood), 16+ (street).',
+        tags: ['Search'],
+        parameters: [
+            new OA\Parameter(name: 'zoom', in: 'query', required: true, description: 'Map zoom level (1-20)', schema: new OA\Schema(type: 'integer', minimum: 1, maximum: 20, example: 12)),
+            new OA\Parameter(name: 'ne_lat', in: 'query', required: true, description: 'Northeast corner latitude', schema: new OA\Schema(type: 'number', format: 'float', example: 30.1)),
+            new OA\Parameter(name: 'ne_lng', in: 'query', required: true, description: 'Northeast corner longitude', schema: new OA\Schema(type: 'number', format: 'float', example: 31.5)),
+            new OA\Parameter(name: 'sw_lat', in: 'query', required: true, description: 'Southwest corner latitude', schema: new OA\Schema(type: 'number', format: 'float', example: 29.9)),
+            new OA\Parameter(name: 'sw_lng', in: 'query', required: true, description: 'Southwest corner longitude', schema: new OA\Schema(type: 'number', format: 'float', example: 31.1)),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Property clusters with counts and stats',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: 'latitude', type: 'number', format: 'float', example: 30.0444),
+                                    new OA\Property(property: 'longitude', type: 'number', format: 'float', example: 31.2357),
+                                    new OA\Property(property: 'count', type: 'integer', example: 15, description: 'Number of properties in cluster'),
+                                    new OA\Property(property: 'avg_price', type: 'number', format: 'float', example: 2500000, description: 'Average price'),
+                                    new OA\Property(property: 'min_price', type: 'number', format: 'float', example: 1800000, description: 'Minimum price'),
+                                    new OA\Property(property: 'max_price', type: 'number', format: 'float', example: 3500000, description: 'Maximum price'),
+                                ]
+                            )
+                        ),
+                    ]
+                )
+            ),
+            new OA\Response(response: 422, description: 'Invalid parameters'),
+        ]
+    )]
+    public function clusters(Request $request): JsonResponse
+    {
+        $request->validate([
+            'zoom' => 'required|integer|min:1|max:20',
+            'ne_lat' => 'required|numeric|between:-90,90',
+            'ne_lng' => 'required|numeric|between:-180,180',
+            'sw_lat' => 'required|numeric|between:-90,90',
+            'sw_lng' => 'required|numeric|between:-180,180',
+        ]);
+        
+        $clusters = $this->searchService->getPropertyClusters(
+            (int) $request->input('zoom'),
+            (float) $request->input('ne_lat'),
+            (float) $request->input('ne_lng'),
+            (float) $request->input('sw_lat'),
+            (float) $request->input('sw_lng')
+        );
+        
+        return response()->json([
+            'data' => $clusters,
         ]);
     }
 }

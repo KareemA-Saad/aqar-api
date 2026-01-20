@@ -18,7 +18,7 @@ class SavedPropertyController extends Controller
      * Get user's saved properties.
      */
     #[OA\Get(
-        path: '/api/realestate/saved-properties',
+        path: '/api/v1/tenant/{tenant}/realestate/saved-properties',
         summary: 'Get saved properties',
         description: 'Get paginated list of properties saved by the authenticated user',
         security: [['sanctum' => []]],
@@ -64,7 +64,7 @@ class SavedPropertyController extends Controller
      * Save a property to favorites.
      */
     #[OA\Post(
-        path: '/api/realestate/saved-properties/{property}',
+        path: '/api/v1/tenant/{tenant}/realestate/saved-properties/{property}',
         summary: 'Save property to favorites',
         description: 'Add a property to the authenticated user\'s favorites list',
         security: [['sanctum' => []]],
@@ -119,7 +119,7 @@ class SavedPropertyController extends Controller
      * Remove a property from favorites.
      */
     #[OA\Delete(
-        path: '/api/realestate/saved-properties/{property}',
+        path: '/api/v1/tenant/{tenant}/realestate/saved-properties/{property}',
         summary: 'Remove property from favorites',
         security: [['sanctum' => []]],
         tags: ['Saved Properties'],
@@ -147,7 +147,7 @@ class SavedPropertyController extends Controller
      * Toggle save status.
      */
     #[OA\Post(
-        path: '/api/realestate/saved-properties/{property}/toggle',
+        path: '/api/v1/tenant/{tenant}/realestate/saved-properties/{property}/toggle',
         summary: 'Toggle property save status',
         security: [['sanctum' => []]],
         tags: ['Saved Properties'],
@@ -192,7 +192,7 @@ class SavedPropertyController extends Controller
      * Check if property is saved.
      */
     #[OA\Get(
-        path: '/api/realestate/saved-properties/{property}/check',
+        path: '/api/v1/tenant/{tenant}/realestate/saved-properties/{property}/check',
         summary: 'Check if property is saved',
         security: [['sanctum' => []]],
         tags: ['Saved Properties'],
@@ -219,7 +219,7 @@ class SavedPropertyController extends Controller
      * Check multiple properties save status.
      */
     #[OA\Post(
-        path: '/api/realestate/saved-properties/check-multiple',
+        path: '/api/v1/tenant/{tenant}/realestate/saved-properties/check-multiple',
         summary: 'Check multiple properties save status',
         security: [['sanctum' => []]],
         tags: ['Saved Properties'],

@@ -106,19 +106,22 @@ class HotelBookingServiceProvider extends ServiceProvider
 
         $this->app->singleton(RefundService::class, function ($app) {
             return new RefundService(
-                $app->make(PricingService::class)
+                $app->make(PricingService::class),
+                $app->make(InventoryService::class)
             );
         });
 
         $this->app->singleton(HotelPaymentService::class, function ($app) {
-            return new HotelPaymentService();
+            return new HotelPaymentService(
+                $app->make(BookingService::class)
+            );
         });
 
         $this->app->singleton(BookingService::class, function ($app) {
             return new BookingService(
                 $app->make(RoomHoldService::class),
-                $app->make(InventoryService::class),
-                $app->make(PricingService::class)
+                $app->make(PricingService::class),
+                $app->make(InventoryService::class)
             );
         });
     }
