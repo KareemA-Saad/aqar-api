@@ -57,6 +57,16 @@ return [
         ],
 
         /**
+         * Tenant administrators guard.
+         * Used for: Tenant admins who manage their tenant's content/settings.
+         * Database: Tenant-specific database (requires tenant initialization).
+         */
+        'api_tenant_admin' => [
+            'driver' => 'sanctum',
+            'provider' => 'tenant_admins',
+        ],
+
+        /**
          * Tenant end-users guard.
          * Used for: End customers within a specific tenant context.
          * Database: Tenant-specific database (requires tenant initialization).
@@ -105,6 +115,15 @@ return [
         ],
 
         /**
+         * Tenant administrators (tenant database).
+         * Model uses tenant connection automatically when tenancy is initialized.
+         */
+        'tenant_admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+
+        /**
          * Tenant end-users (tenant database).
          * Model uses tenant connection automatically when tenancy is initialized.
          */
@@ -135,6 +154,13 @@ return [
         'admins' => [
             'provider' => 'admins',
             'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+
+        'tenant_admins' => [
+            'provider' => 'tenant_admins',
+            'table' => 'password_reset_tokens', // In tenant database
             'expire' => 60,
             'throttle' => 60,
         ],
