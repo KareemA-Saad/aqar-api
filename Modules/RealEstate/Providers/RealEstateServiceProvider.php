@@ -33,7 +33,11 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerTranslations();
         $this->registerViews();
-        $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+
+        // Migrations are handled by TenantService based on plan features.
+        // DO NOT use loadMigrationsFrom() as it would run migrations on central DB.
+        // RealEstate tables belong in tenant databases only.
+        // See: TenantService::runTenantMigrations() and config/modules.php feature_module_map
     }
 
     /**
@@ -44,7 +48,7 @@ class RealEstateServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
-        
+
         // Register module services
         $this->registerServices();
     }
@@ -59,7 +63,7 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->publishes([
             module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
         ], 'config');
-        
+
         $this->mergeConfigFrom(
             module_path($this->moduleName, 'Config/config.php'),
             $this->moduleNameLower

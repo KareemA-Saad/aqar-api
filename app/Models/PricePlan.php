@@ -60,6 +60,12 @@ class PricePlan extends Model
         'product_create_permission',
         'campaign_create_permission',
         'max_tenants',
+
+        // RealEstate Module Limits
+        'property_permission_feature',
+        'compound_permission_feature',
+        'inquiry_permission_feature',
+        'saved_property_permission_feature',
     ];
 
     /**
@@ -93,6 +99,13 @@ class PricePlan extends Model
         'storage_permission_feature' => 'integer',
         'appointment_permission_feature' => 'integer',
         'max_tenants' => 'integer',
+
+        // RealEstate Module Limits
+        'property_permission_feature' => 'integer',
+        'compound_permission_feature' => 'integer',
+        'inquiry_permission_feature' => 'integer',
+        'saved_property_permission_feature' => 'integer',
+
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];

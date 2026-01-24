@@ -22,13 +22,46 @@ class PricePlanSeeder extends Seeder
                 'type' => PricePlan::TYPE_MONTHLY,
                 'subtitle' => 'You can easily create your website by Pica. We will provide all type of digital service for you.',
                 'features_list' => [
-                    'Page 20', 'Blog 20', 'Donation 20', 'Job 20', 'Event 20', 'Article 20',
-                    'Dashboard', 'Admin', 'User', 'Brand', 'Custom domain', 'Testimonial',
-                    'Form builder', 'Own order manage', 'Page', 'Blog', 'Service', 'Donation',
-                    'Job', 'Event', 'Support ticket', 'Knowledgebase', 'Faq', 'Gallery',
-                    'Video', 'Portfolio', 'Storage', 'Appearance settings', 'General settings',
-                    'Language', 'Payment gateways', 'Themes', 'Paypal', 'Stripe',
-                    'Theme-article-listing', 'Theme-hotel-booking', 'Theme-portfolio'
+                    'Page 20',
+                    'Blog 20',
+                    'Donation 20',
+                    'Job 20',
+                    'Event 20',
+                    'Article 20',
+                    'Properties 50',
+                    'Compounds 10', // RealEstate features
+                    'Dashboard',
+                    'Admin',
+                    'User',
+                    'Brand',
+                    'Custom domain',
+                    'Testimonial',
+                    'Form builder',
+                    'Own order manage',
+                    'Page',
+                    'Blog',
+                    'Service',
+                    'Donation',
+                    'Job',
+                    'Event',
+                    'Support ticket',
+                    'Knowledgebase',
+                    'Faq',
+                    'Gallery',
+                    'Video',
+                    'Portfolio',
+                    'Storage',
+                    'Appearance settings',
+                    'General settings',
+                    'Language',
+                    'Payment gateways',
+                    'Themes',
+                    'Paypal',
+                    'Stripe',
+                    'Theme-article-listing',
+                    'Theme-hotel-booking',
+                    'Theme-portfolio',
+                    'RealEstate'
                 ]
             ],
             [
@@ -37,13 +70,48 @@ class PricePlanSeeder extends Seeder
                 'type' => PricePlan::TYPE_MONTHLY,
                 'subtitle' => 'You can easily create your website by Pica. We will provide all type of digital service for you.',
                 'features_list' => [
-                    'Page 20', 'Blog 20', 'Donation 20', 'Job 30', 'Event 14', 'Article 28',
-                    'Dashboard', 'Admin', 'User', 'Brand', 'Custom domain', 'Testimonial',
-                    'Form builder', 'Own order manage', 'Page', 'Blog', 'Service', 'Donation',
-                    'Job', 'Event', 'Support ticket', 'Knowledgebase', 'Faq', 'Gallery',
-                    'Video', 'Portfolio', 'Storage', 'Appearance settings', 'General settings',
-                    'Language', 'Payment gateways', 'Themes', 'Paytm', 'Stripe', 'Mollie',
-                    'Midtrans', 'Cashfree', 'Theme-portfolio', 'Theme-photography'
+                    'Page 20',
+                    'Blog 20',
+                    'Donation 20',
+                    'Job 30',
+                    'Event 14',
+                    'Article 28',
+                    'Properties 25',
+                    'Compounds 5', // RealEstate features
+                    'Dashboard',
+                    'Admin',
+                    'User',
+                    'Brand',
+                    'Custom domain',
+                    'Testimonial',
+                    'Form builder',
+                    'Own order manage',
+                    'Page',
+                    'Blog',
+                    'Service',
+                    'Donation',
+                    'Job',
+                    'Event',
+                    'Support ticket',
+                    'Knowledgebase',
+                    'Faq',
+                    'Gallery',
+                    'Video',
+                    'Portfolio',
+                    'Storage',
+                    'Appearance settings',
+                    'General settings',
+                    'Language',
+                    'Payment gateways',
+                    'Themes',
+                    'Paytm',
+                    'Stripe',
+                    'Mollie',
+                    'Midtrans',
+                    'Cashfree',
+                    'Theme-portfolio',
+                    'Theme-photography',
+                    'RealEstate'
                 ]
             ],
             [
@@ -52,25 +120,84 @@ class PricePlanSeeder extends Seeder
                 'type' => PricePlan::TYPE_MONTHLY,
                 'subtitle' => 'You can easily create your website by Pica. We will provide all type of digital service for you.',
                 'features_list' => [
-                    'Page 20', 'Appointment 20', 'Blog 20', 'Product 50', 'Donation 20',
-                    'Event 20', 'Article 20', 'Portfolio 20', 'Dashboard', 'Admin', 'User',
-                    'Brand', 'Newsletter', 'Custom domain', 'Testimonial', 'Form builder',
-                    'Own order manage', 'Page', 'Blog', 'Service', 'Donation', 'Job',
-                    'Appointment', 'Event', 'Support ticket', 'Knowledgebase', 'Faq',
-                    'Gallery', 'Video', 'Portfolio', 'ECommerce', 'Storage', 'Advertisement',
-                    'Wedding price plan', 'Appearance settings', 'General settings',
-                    'Language', 'Payment gateways', 'Themes', 'Product',
-                    'Product simple search permission', 'Product advance search permission',
-                    'Product duplication permission', 'Product bulk delete permission',
-                    'Inventory', 'Inventory update product permission',
-                    'Inventory simple search permission', 'Inventory advance search permission',
-                    'Campaign', 'Paypal', 'Paytm', 'Stripe', 'Razorpay', 'Paystack',
-                    'Mollie', 'Midtrans', 'Cashfree', 'Instamojo', 'Marcadopago', 'Zitopay',
-                    'Theme-agency', 'Theme-article-listing', 'Theme-barber-shop',
-                    'Theme-construction', 'Theme-consultancy', 'Theme-donation',
-                    'Theme-eCommerce', 'Theme-event', 'Theme-job-find', 'Theme-newspaper',
-                    'Theme-photography', 'Theme-portfolio', 'Theme-software-business',
-                    'Theme-support-ticketing', 'Theme-wedding'
+                    'Page 20',
+                    'Appointment 20',
+                    'Blog 20',
+                    'Product 50',
+                    'Donation 20',
+                    'Event 20',
+                    'Article 20',
+                    'Portfolio 20',
+                    'Properties 100',
+                    'Compounds 20', // RealEstate features - generous limits
+                    'Dashboard',
+                    'Admin',
+                    'User',
+                    'Brand',
+                    'Newsletter',
+                    'Custom domain',
+                    'Testimonial',
+                    'Form builder',
+                    'Own order manage',
+                    'Page',
+                    'Blog',
+                    'Service',
+                    'Donation',
+                    'Job',
+                    'Appointment',
+                    'Event',
+                    'Support ticket',
+                    'Knowledgebase',
+                    'Faq',
+                    'Gallery',
+                    'Video',
+                    'Portfolio',
+                    'ECommerce',
+                    'Storage',
+                    'Advertisement',
+                    'Wedding price plan',
+                    'Appearance settings',
+                    'General settings',
+                    'Language',
+                    'Payment gateways',
+                    'Themes',
+                    'Product',
+                    'Product simple search permission',
+                    'Product advance search permission',
+                    'Product duplication permission',
+                    'Product bulk delete permission',
+                    'Inventory',
+                    'Inventory update product permission',
+                    'Inventory simple search permission',
+                    'Inventory advance search permission',
+                    'Campaign',
+                    'Paypal',
+                    'Paytm',
+                    'Stripe',
+                    'Razorpay',
+                    'Paystack',
+                    'Mollie',
+                    'Midtrans',
+                    'Cashfree',
+                    'Instamojo',
+                    'Marcadopago',
+                    'Zitopay',
+                    'Theme-agency',
+                    'Theme-article-listing',
+                    'Theme-barber-shop',
+                    'Theme-construction',
+                    'Theme-consultancy',
+                    'Theme-donation',
+                    'Theme-eCommerce',
+                    'Theme-event',
+                    'Theme-job-find',
+                    'Theme-newspaper',
+                    'Theme-photography',
+                    'Theme-portfolio',
+                    'Theme-software-business',
+                    'Theme-support-ticketing',
+                    'Theme-wedding',
+                    'RealEstate'
                 ]
             ]
         ];
@@ -78,19 +205,19 @@ class PricePlanSeeder extends Seeder
         foreach ($plans as $planData) {
             $featuresList = $planData['features_list'];
             $mappedFeatures = $this->mapFeatures($featuresList);
-            
+
             $title = json_encode(['en_US' => $planData['title'], 'ar' => $planData['title']]);
             $subtitle = json_encode(['en_US' => $planData['subtitle'], 'ar' => $planData['subtitle']]);
             $features = json_encode([
                 'en_US' => implode("\n", $featuresList),
                 'ar' => implode("\n", $featuresList)
             ]);
-            
+
             $insertData = [
                 'title' => $title,
                 'subtitle' => $subtitle,
-                'price' => (float)$planData['price'],
-                'type' => (int)$planData['type'],
+                'price' => (float) $planData['price'],
+                'type' => (int) $planData['type'],
                 'status' => 1,
                 'zero_price' => $planData['price'] == 0 ? 'on' : 'off',
                 'has_trial' => 0,
@@ -101,10 +228,22 @@ class PricePlanSeeder extends Seeder
 
             // Ensure all permission columns are present
             $permissionColumns = [
-                'blog_permission_feature', 'page_permission_feature', 'service_permission_feature',
-                'donation_permission_feature', 'job_permission_feature', 'event_permission_feature',
-                'knowledgebase_permission_feature', 'product_create_permission', 'campaign_create_permission',
-                'storage_permission_feature', 'appointment_permission_feature'
+                'blog_permission_feature',
+                'page_permission_feature',
+                'service_permission_feature',
+                'donation_permission_feature',
+                'job_permission_feature',
+                'event_permission_feature',
+                'knowledgebase_permission_feature',
+                'product_create_permission',
+                'campaign_create_permission',
+                'storage_permission_feature',
+                'appointment_permission_feature',
+                // RealEstate Module Limits
+                'property_permission_feature',
+                'compound_permission_feature',
+                'inquiry_permission_feature',
+                'saved_property_permission_feature'
             ];
 
             foreach ($permissionColumns as $column) {
@@ -141,13 +280,18 @@ class PricePlanSeeder extends Seeder
             'portfolio_permission_feature' => '/^Portfolio (\d+)$/i',
             'storage_permission_feature' => '/^Storage (\d+)$/i',
             'service_permission_feature' => '/^Service$/i',
+            // RealEstate Module Limits
+            'property_permission_feature' => '/^Properties (\d+)$/i',
+            'compound_permission_feature' => '/^Compounds (\d+)$/i',
+            'inquiry_permission_feature' => '/^Inquiries (\d+)$/i',
+            'saved_property_permission_feature' => '/^Saved Properties (\d+)$/i',
         ];
 
         $result = [];
         foreach ($features as $feature) {
             foreach ($mapping as $column => $pattern) {
                 if (preg_match($pattern, $feature, $matches)) {
-                    $value = isset($matches[1]) ? (int)$matches[1] : 1;
+                    $value = isset($matches[1]) ? (int) $matches[1] : 1;
                     $result[$column] = $value;
                 }
             }
