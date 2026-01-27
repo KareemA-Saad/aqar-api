@@ -1,231 +1,302 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use Database\Seeders\Tenant\AdminSeed;
-use Database\Seeders\Tenant\AllPages\AllAddons;
-use Database\Seeders\Tenant\AllPages\DefaultPages;
-use Database\Seeders\Tenant\GeneralData;
-use Database\Seeders\Tenant\MediaSeed;
-use Database\Seeders\Tenant\ModuleData\Appointment\AppointmentDataSeed;
-use Database\Seeders\Tenant\ModuleData\Blog\AdvertisementSeed;
-use Database\Seeders\Tenant\ModuleData\Blog\BlogCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Blog\BlogSeed;
-use Database\Seeders\Tenant\ModuleData\CommonDescriptionSeed;
-use Database\Seeders\Tenant\ModuleData\Donation\DonationActivityCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Donation\DonationActivitySeed;
-use Database\Seeders\Tenant\ModuleData\Donation\DonationCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Donation\DonationSeed;
-use Database\Seeders\Tenant\ModuleData\eCommerce\eCommerceDataSeed;
-use Database\Seeders\Tenant\ModuleData\Event\EventCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Event\EventSeed;
-use Database\Seeders\Tenant\ModuleData\FormBuilderSeed;
-use Database\Seeders\Tenant\ModuleData\HotelBooking\CurrentHomeSeed;
-use Database\Seeders\Tenant\ModuleData\HotelBooking\footerWidgetSeed;
-use Database\Seeders\Tenant\ModuleData\HotelBooking\hotelBookingLayoutSeed;
-use Database\Seeders\Tenant\ModuleData\Job\JobCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Job\JobSeed;
-use Database\Seeders\Tenant\ModuleData\Knowledgebase\KnowledgebaseCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Knowledgebase\KnowledgebaseSeed;
-use Database\Seeders\Tenant\ModuleData\Others\BrandSeed;
-use Database\Seeders\Tenant\ModuleData\Others\FaqCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Others\FaqSeed;
-use Database\Seeders\Tenant\ModuleData\Others\NewsletterSeed;
-use Database\Seeders\Tenant\ModuleData\Others\TestimonialSeed;
-use Database\Seeders\Tenant\ModuleData\Portfolio\PortfolioCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Portfolio\PortfolioSeed;
-use Database\Seeders\Tenant\ModuleData\Service\ServiceCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Service\ServiceSeed;
-use Database\Seeders\Tenant\ModuleData\WidgetSeed;
-use Database\Seeders\Tenant\PaymentGatewayFieldsSeed;
 use Database\Seeders\Tenant\RolePermissionSeed;
 use Database\Seeders\Tenant\ModuleData\LanguageSeed;
-use Database\Seeders\Tenant\ModuleData\MenuSeed;
-
-use Database\Seeders\Tenant\PaymentLogs\DonationPaymentSeed;
-use Database\Seeders\Tenant\PaymentLogs\EventPaymentSeed;
-use Database\Seeders\Tenant\PaymentLogs\JobPaymentSeed;
-
-use Database\Seeders\Tenant\Comments\DonationCommentSeed;
-use Database\Seeders\Tenant\Comments\EventCommentSeed;
-
-use Database\Seeders\Tenant\TenantDemoDataSeed;
-use Database\Seeders\Tenant\WeddingPricePlanSeed;
+use Database\Seeders\Tenant\PaymentGatewayFieldsSeed;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Artisan;
-
-use Database\Seeders\Tenant\ModuleData\Gallery\GalleryCategorySeed;
-use Database\Seeders\Tenant\ModuleData\Gallery\GallerySeed;
-use Database\Seeders\Tenant\ModuleData\Others\SupportTicketCategorySeed;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 /**
- * TenantDatabaseSeeder - Seeds demo data for tenant databases
- * 
- * TODO: This seeder requires tenant context and various module dependencies.
- * Uncomment when the following are implemented:
- * - Tenant context (tenant() helper with payment_log relationship)
- * - All module entities (Blog, Donation, Event, Job, etc.)
- * - ImageDataSeedingHelper
- * - Static option helpers (get_static_option, update_static_option)
- * - Media uploader tables
+ * TenantDatabaseSeeder - Seeds base data and module-specific data for tenant databases
+ *
+ * Seeding Strategy:
+ * - Core seeders (roles, admin, language) always run for all tenants
+ * - Module seeders only run if the plan enables the corresponding feature
+ * - Only base lookup data is seeded (no demo content/listings)
+ *
+ * @package Database\Seeders
  */
 class TenantDatabaseSeeder extends Seeder
 {
-    public function run()
+    /**
+     * Map of feature prefixes to module seeder classes.
+     * Features like "Properties 25" will match "properties" prefix.
+     */
+    private const MODULE_SEEDER_MAP = [
+        // RealEstate Module
+        'properties' => [
+            \Database\Seeders\Tenant\ModuleData\RealEstate\PropertyTypeSeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\AmenitySeed::class,
+        ],
+        'compounds' => [
+            \Database\Seeders\Tenant\ModuleData\RealEstate\PropertyTypeSeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\AmenitySeed::class,
+        ],
+        'realestate' => [
+            \Database\Seeders\Tenant\ModuleData\RealEstate\PropertyTypeSeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\AmenitySeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\AreaSeed::class,
+        ],
+        // Event Module
+        'event' => [
+            \Database\Seeders\Tenant\ModuleData\Event\EventCategorySeed::class,
+        ],
+        // Blog Module
+        'blog' => [
+            \Database\Seeders\Tenant\ModuleData\Blog\BlogCategorySeed::class,
+        ],
+        // Job Module
+        'job' => [
+            \Database\Seeders\Tenant\ModuleData\Job\JobCategorySeed::class,
+        ],
+        // Knowledgebase Module  
+        'knowledgebase' => [
+            \Database\Seeders\Tenant\ModuleData\Knowledgebase\KnowledgebaseCategorySeed::class,
+        ],
+        'article' => [
+            \Database\Seeders\Tenant\ModuleData\Knowledgebase\KnowledgebaseCategorySeed::class,
+        ],
+        // Portfolio Module
+        'portfolio' => [
+            \Database\Seeders\Tenant\ModuleData\Portfolio\PortfolioCategorySeed::class,
+        ],
+        // Service Module
+        'service' => [
+            \Database\Seeders\Tenant\ModuleData\Service\ServiceCategorySeed::class,
+        ],
+        // Donation Module
+        'donation' => [
+            \Database\Seeders\Tenant\ModuleData\Donation\DonationCategorySeed::class,
+            \Database\Seeders\Tenant\ModuleData\Donation\DonationActivityCategorySeed::class,
+        ],
+        // Gallery Module
+        'gallery' => [
+            \Database\Seeders\Tenant\ModuleData\Gallery\GalleryCategorySeed::class,
+        ],
+        // Appointment Module
+        'appointment' => [
+            \Database\Seeders\Tenant\ModuleData\Appointment\AppointmentDataSeed::class,
+        ],
+    ];
+
+    /**
+     * Run the tenant database seeder.
+     */
+    public function run(): void
     {
-        // TODO: Uncomment entire seeder when tenant context and module entities are ready
-        return; // Early return - seeder disabled until dependencies are implemented
+        $tenant = tenant();
         
-        /*
-        $package = tenant()->payment_log()->first()?->package()->first() ?? [];
-        $all_features = $package->plan_features ?? [];
-
-        $payment_log = tenant()->payment_log()?->first() ?? [];
-
-        if(empty($all_features) && $payment_log->status != 'trial'){
+        if (!$tenant) {
+            Log::warning('TenantDatabaseSeeder: No tenant context found, skipping');
             return;
         }
 
-        $check_feature_name = $all_features->pluck('feature_name')->toArray();
+        Log::info('TenantDatabaseSeeder: Starting seeding', ['tenant_id' => $tenant->id]);
 
-        RolePermissionSeed::process_seeding();
-        AdminSeed::run();
-        LanguageSeed::run();
-        CurrentHomeSeed::run();
-        hotelBookingLayoutSeed::run();
-        footerWidgetSeed::run();
-        GeneralData::excute();
-        DefaultPages::execute(); //Dynamic pages seed with home page layout
-        MediaSeed::run();
-        NewsletterSeed::execute();
+        // Get plan features for this tenant
+        $features = $this->getPlanFeatures($tenant);
+        
+        Log::info('TenantDatabaseSeeder: Plan features', [
+            'tenant_id' => $tenant->id,
+            'features' => $features,
+        ]);
 
-        if (in_array('blog',$check_feature_name)) {
-            BlogCategorySeed::run();
-            BlogSeed::execute();
-        }
+        // 1. Always run core seeders
+        $this->runCoreSeeders();
 
-        if (in_array('advertisement',$check_feature_name)) {
-            AdvertisementSeed::execute();
-        }
+        // 2. Run module seeders based on enabled features
+        $this->runModuleSeeders($features);
 
-        if (in_array('donation',$check_feature_name)) {
-            DonationCategorySeed::execute();
-            DonationSeed::execute();
-            DonationActivityCategorySeed::execute();
-            DonationActivitySeed::execute();
-        }
+        // 3. Run payment gateway seed if any payment gateway features enabled
+        $this->runPaymentGatewaySeed($features);
 
-        if (in_array('faq',$check_feature_name)) {
-            FaqCategorySeed::execute();
-            FaqSeed::execute();
-        }
-
-        // The permission checked of this items in inside
-            EventCategorySeed::execute();
-            EventSeed::execute();
-            JobCategorySeed::execute();
-            JobSeed::execute();
-            KnowledgebaseCategorySeed::execute();
-            KnowledgebaseSeed::execute();
-            PortfolioCategorySeed::execute();
-            PortfolioSeed::execute();
-        // The permission checked of this items in inside
-
-         if (in_array('wedding_price_plan',$check_feature_name)) {
-            WeddingPricePlanSeed::excute();
-         }
-
-        if (in_array('brand',$check_feature_name)) {
-            BrandSeed::execute();
-        }
-
-        if (in_array('service',$check_feature_name)) {
-            ServiceCategorySeed::execute();
-            ServiceSeed::execute();
-        }
-
-        if (in_array('testimonial',$check_feature_name)) {
-            TestimonialSeed::execute();
-        }
-
-        if (in_array('eCommerce',$check_feature_name)) {
-            eCommerceDataSeed::execute();
-        }
-
-        if (in_array('appointment',$check_feature_name)) {
-            AppointmentDataSeed::execute();
-        }
-
-        // The permission checked of this items in inside
-           PaymentGatewayFieldsSeed::execute();
-        // The permission checked of this items in inside
-
-        // tenantDemoDataSeed
-           TenantDemoDataSeed::execute();
-        // end
-
-        AllAddons::execute(); //Other pages seed except home page data
-        WidgetSeed::execute();
-        FormBuilderSeed::execute();
-
-        //Payment log tables only checking table created or not
-        DonationPaymentSeed::execute();
-        EventPaymentSeed::execute();
-        JobPaymentSeed::execute();
-
-        //Comments
-        if (in_array('donation',$check_feature_name)) {
-            DonationCommentSeed::execute();
-        }
-        if (in_array('event',$check_feature_name)) {
-            EventCommentSeed::execute();
-        }
-
-        //Others
-        if (in_array('gallery',$check_feature_name)) {
-            GalleryCategorySeed::execute();
-            GallerySeed::execute();
-        }
-        SupportTicketCategorySeed::execute();
-
-
-        //Directory check or create
-        $css_path = 'assets/tenant/frontend/themes/css/dynamic-styles/';
-        $js_path = 'assets/tenant/frontend/themes/js/dynamic-scripts/';
-        if(!\File::isDirectory($css_path) && !\File::isDirectory($js_path)){
-            \File::makeDirectory($css_path, 0777, true, true);
-            \File::makeDirectory($js_path, 0777, true, true);
-        }
-
-        //Dynamic assets set
-        $dynamic_css_path = 'assets/tenant/frontend/themes/css/dynamic-styles/'.tenant()->id.'-style.css';
-        $dynamic_js_path = 'assets/tenant/frontend/themes/js/dynamic-scripts/'.tenant()->id.'-script.js';
-        $css_comment_string = '/ *Write Css* /';
-        $js_comment_string = '//Write js';
-
-        file_put_contents($dynamic_css_path,$css_comment_string);
-        file_put_contents($dynamic_js_path,$js_comment_string);
-
-        //default theme setting
-        $session_trial_theme_or_default = session()->get('theme') ?? get_static_option_central('landlord_default_theme_set'); //for trial theme
-        $theme = optional(tenant()->payment_log)->theme ? optional(tenant()->payment_log)->theme : $session_trial_theme_or_default;
-        update_static_option('tenant_default_theme',$theme);
-
-        //Some switcher data
-        update_static_option('landlord_frontend_contact_info_show_hide','on');
-        update_static_option('landlord_frontend_social_info_show_hide','on');
-
-        //page setup according theme
-        update_static_option('donation_page',12);
-        update_static_option('job_page',14);
-        update_static_option('event_page',16);
-        update_static_option('knowledgebase_page',17);
-        update_static_option('terms_condition_page',22);
-        update_static_option('privacy_policy_page',24);
-        update_static_option('shop_page',21);
-        */
+        Log::info('TenantDatabaseSeeder: Completed', ['tenant_id' => $tenant->id]);
     }
 
+    /**
+     * Get plan features for the current tenant.
+     *
+     * @param mixed $tenant
+     * @return array<string> Feature names (lowercase)
+     */
+    private function getPlanFeatures($tenant): array
+    {
+        $paymentLog = $tenant->paymentLog()->with(['package.planFeatures'])->first();
 
+        // For trial or pending status with no features, allow all
+        if (!$paymentLog) {
+            Log::warning('TenantDatabaseSeeder: No payment log found', ['tenant_id' => $tenant->id]);
+            return [];
+        }
+
+        // Check if trial - trials get all features
+        if (in_array($paymentLog->status, ['trial', 'pending'])) {
+            Log::info('TenantDatabaseSeeder: Trial/pending status, enabling all features', [
+                'tenant_id' => $tenant->id,
+                'status' => $paymentLog->status,
+            ]);
+            return array_keys(self::MODULE_SEEDER_MAP);
+        }
+
+        if (!$paymentLog->package) {
+            return [];
+        }
+
+        // Get active features from plan
+        $features = $paymentLog->package
+            ->planFeatures()
+            ->where('status', true)
+            ->pluck('feature_name')
+            ->map(fn($f) => strtolower(trim($f)))
+            ->toArray();
+
+        return $features;
+    }
+
+    /**
+     * Run core seeders that apply to all tenants.
+     */
+    private function runCoreSeeders(): void
+    {
+        Log::info('TenantDatabaseSeeder: Running core seeders');
+
+        // Roles and Permissions
+        if (Schema::hasTable('permissions') && Schema::hasTable('roles')) {
+            try {
+                RolePermissionSeed::process_seeding();
+                Log::info('TenantDatabaseSeeder: RolePermissionSeed completed');
+            } catch (\Throwable $e) {
+                Log::error('TenantDatabaseSeeder: RolePermissionSeed failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        // Admin User
+        if (Schema::hasTable('admins')) {
+            try {
+                AdminSeed::run();
+                Log::info('TenantDatabaseSeeder: AdminSeed completed');
+            } catch (\Throwable $e) {
+                Log::error('TenantDatabaseSeeder: AdminSeed failed', ['error' => $e->getMessage()]);
+            }
+        }
+
+        // Language
+        try {
+            LanguageSeed::run();
+            Log::info('TenantDatabaseSeeder: LanguageSeed completed');
+        } catch (\Throwable $e) {
+            Log::error('TenantDatabaseSeeder: LanguageSeed failed', ['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Run module seeders based on enabled features.
+     *
+     * @param array<string> $features
+     */
+    private function runModuleSeeders(array $features): void
+    {
+        $seededClasses = [];
+
+        foreach ($features as $feature) {
+            // Extract feature prefix (e.g., "properties" from "Properties 25")
+            $featurePrefix = $this->extractFeaturePrefix($feature);
+
+            if (!isset(self::MODULE_SEEDER_MAP[$featurePrefix])) {
+                continue;
+            }
+
+            foreach (self::MODULE_SEEDER_MAP[$featurePrefix] as $seederClass) {
+                // Avoid running same seeder twice
+                if (in_array($seederClass, $seededClasses, true)) {
+                    continue;
+                }
+
+                if (!class_exists($seederClass)) {
+                    Log::warning('TenantDatabaseSeeder: Seeder class not found', [
+                        'class' => $seederClass,
+                        'feature' => $feature,
+                    ]);
+                    continue;
+                }
+
+                try {
+                    Log::info('TenantDatabaseSeeder: Running module seeder', [
+                        'class' => $seederClass,
+                        'feature' => $feature,
+                    ]);
+
+                    // Call static execute method if exists, otherwise instantiate and run
+                    if (method_exists($seederClass, 'execute')) {
+                        $seederClass::execute();
+                    } elseif (method_exists($seederClass, 'run')) {
+                        $seederClass::run();
+                    } else {
+                        $seeder = new $seederClass();
+                        $seeder->run();
+                    }
+
+                    $seededClasses[] = $seederClass;
+                    Log::info('TenantDatabaseSeeder: Module seeder completed', ['class' => $seederClass]);
+                } catch (\Throwable $e) {
+                    Log::error('TenantDatabaseSeeder: Module seeder failed', [
+                        'class' => $seederClass,
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Extract feature prefix from feature name.
+     * "Properties 25" -> "properties"
+     * "Blog" -> "blog"
+     *
+     * @param string $feature
+     * @return string
+     */
+    private function extractFeaturePrefix(string $feature): string
+    {
+        // Split by space and take first word
+        $parts = explode(' ', trim($feature));
+        return strtolower($parts[0]);
+    }
+
+    /**
+     * Run payment gateway seeder if needed.
+     *
+     * @param array<string> $features
+     */
+    private function runPaymentGatewaySeed(array $features): void
+    {
+        $paymentFeatures = ['stripe', 'paypal', 'razorpay', 'paystack', 'mollie', 'cashfree', 'payment'];
+
+        $hasPaymentFeature = false;
+        foreach ($features as $feature) {
+            $prefix = $this->extractFeaturePrefix($feature);
+            if (in_array($prefix, $paymentFeatures, true)) {
+                $hasPaymentFeature = true;
+                break;
+            }
+        }
+
+        if ($hasPaymentFeature && Schema::hasTable('payment_gateways')) {
+            try {
+                PaymentGatewayFieldsSeed::execute();
+                Log::info('TenantDatabaseSeeder: PaymentGatewayFieldsSeed completed');
+            } catch (\Throwable $e) {
+                Log::error('TenantDatabaseSeeder: PaymentGatewayFieldsSeed failed', [
+                    'error' => $e->getMessage(),
+                ]);
+            }
+        }
+    }
 }

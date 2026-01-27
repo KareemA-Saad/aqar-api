@@ -272,17 +272,30 @@ final class TenantService
         ]);
 
         // Force connection switch if Tenancy failed to do it
-        if (DB::getDefaultConnection() === 'central') {
-            Log::warning('Tenancy failed to switch default connection. Forcing switch to tenant connection.');
+        $currentConnection = DB::getDefaultConnection();
+        $currentDatabase = DB::connection()->getDatabaseName();
+        $expectedDatabase = config('tenancy.database.prefix') . $tenant->id . config('tenancy.database.suffix');
+        
+        // If not on tenant database, force switch
+        if ($currentDatabase !== $expectedDatabase) {
+            Log::warning('Tenancy failed to switch to tenant database. Forcing switch.', [
+                'current_connection' => $currentConnection,
+                'current_database' => $currentDatabase,
+                'expected_database' => $expectedDatabase,
+            ]);
             
-            // Ensure tenant connection is configured with correct DB name
-            // (Tenancy should have done this, but let's verify/fix)
-            $dbName = config('tenancy.database.prefix') . $tenant->id . config('tenancy.database.suffix');
-            config(['database.connections.tenant.database' => $dbName]);
+            // Configure tenant connection with correct DB name
+            config(['database.connections.tenant.database' => $expectedDatabase]);
             
+            // Clear cached connections and switch
             DB::purge('tenant');
             DB::setDefaultConnection('tenant');
             DB::reconnect('tenant');
+            
+            Log::info('Forced connection switch completed', [
+                'new_connection' => DB::getDefaultConnection(),
+                'new_database' => DB::connection()->getDatabaseName(),
+            ]);
         }
 
         try {
@@ -597,6 +610,9 @@ final class TenantService
     /**
      * Map feature names to module names.
      *
+     * Supports both exact feature matching and prefix matching.
+     * For example, "Properties 25" will match the "properties" feature prefix.
+     *
      * @param array<string> $features
      * @return array<string>
      */
@@ -608,10 +624,22 @@ final class TenantService
         foreach ($features as $feature) {
             $featureLower = strtolower(trim($feature));
 
+            // Try exact match first
             if (isset($featureMap[$featureLower])) {
                 $moduleName = $featureMap[$featureLower];
 
                 // Skip null values (features that use base tables only)
+                if ($moduleName !== null && !in_array($moduleName, $modules, true)) {
+                    $modules[] = $moduleName;
+                }
+                continue;
+            }
+
+            // Try prefix match (e.g., "Properties 25" -> "properties")
+            $featurePrefix = $this->extractFeaturePrefix($featureLower);
+            if ($featurePrefix !== $featureLower && isset($featureMap[$featurePrefix])) {
+                $moduleName = $featureMap[$featurePrefix];
+
                 if ($moduleName !== null && !in_array($moduleName, $modules, true)) {
                     $modules[] = $moduleName;
                 }
@@ -620,6 +648,23 @@ final class TenantService
 
         // Remove duplicates and re-index
         return array_values(array_unique($modules));
+    }
+
+    /**
+     * Extract feature prefix from feature name.
+     *
+     * Examples:
+     * - "Properties 25" -> "properties"
+     * - "Blog" -> "blog"
+     * - "Storage 1000" -> "storage"
+     *
+     * @param string $feature
+     * @return string
+     */
+    private function extractFeaturePrefix(string $feature): string
+    {
+        $parts = explode(' ', trim($feature));
+        return strtolower($parts[0]);
     }
 
     /**

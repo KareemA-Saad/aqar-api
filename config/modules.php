@@ -30,6 +30,12 @@ return [
         'campaign' => 'campaign_create_permission',
         'page' => 'page_permission_feature',
         'storage' => 'storage_permission_feature', // in MB
+
+        // RealEstate Module Limits
+        'property' => 'property_permission_feature',
+        'compound' => 'compound_permission_feature',
+        'inquiry' => 'inquiry_permission_feature',
+        'saved_property' => 'saved_property_permission_feature',
     ],
 
     /*
@@ -53,6 +59,12 @@ return [
         'appointment' => 'appointments',
         'campaign' => 'campaigns',
         'page' => 'pages',
+
+        // RealEstate Module Tables
+        'property' => 're_properties',
+        'compound' => 're_compounds',
+        'inquiry' => 're_property_inquiries',
+        'saved_property' => 're_saved_properties',
     ],
 
     /*
@@ -65,37 +77,46 @@ return [
     | will have their migrations run.
     |
     | - Feature names are case-insensitive (converted to lowercase)
+    | - Feature prefixes are also supported (e.g., "properties" matches "Properties 25")
     | - Module names must match directory names in Modules/
     | - Set to null for features that use only base tables
     |
     */
     'feature_module_map' => [
+        // Real Estate Module
+        'properties' => 'RealEstate',
+        'compounds' => 'RealEstate',
+        'realestate' => 'RealEstate',
+        'property' => 'RealEstate', // Alias
+        'compound' => 'RealEstate', // Alias
+
         // Content Modules
         'blog' => 'Blog',
         'portfolio' => 'Portfolio',
         'service' => 'Service',
         'knowledgebase' => 'Knowledgebase',
-        
+        'article' => 'Knowledgebase', // Alias (Article X maps to Knowledgebase)
+
         // E-Commerce
         'ecommerce' => 'Product',
         'product' => 'Product', // Alias
-        
+
         // Booking & Events
         'appointment' => 'Appointment',
         'event' => 'Event',
         'job' => 'Job',
-        
+
         // Fundraising
         'donation' => 'Donation',
-        
+
         // Hotel Booking
         'hotelbooking' => 'HotelBooking',
         'hotel' => 'HotelBooking', // Alias
-        
+
         // Features that are part of other modules
         'advertisement' => 'Blog', // Advertisement is part of Blog module
         'gallery' => 'Blog', // Gallery often bundled with Blog
-        
+
         // Features that use only base tables (no module)
         'brand' => null, // Uses base tables
         'testimonial' => null, // Uses base tables

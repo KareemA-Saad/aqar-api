@@ -39,7 +39,8 @@ final class SubscriptionController extends BaseApiController
     public function __construct(
         private readonly SubscriptionService $subscriptionService,
         private readonly PricePlanService $pricePlanService,
-    ) {}
+    ) {
+    }
 
     /**
      * Get authenticated user.
@@ -296,7 +297,7 @@ final class SubscriptionController extends BaseApiController
             $gateways = PaymentGateway::where('status', true)
                 ->select('id', 'name')
                 ->get()
-                ->map(fn ($g) => [
+                ->map(fn($g) => [
                     'id' => $g->id,
                     'name' => $g->name,
                     'slug' => strtolower(str_replace(' ', '_', $g->name)),
@@ -304,12 +305,22 @@ final class SubscriptionController extends BaseApiController
 
             $requiresPayment = $pricing['final_price'] > 0 && !$data['is_trial'];
 
-            // If it's a trial or free plan, complete immediately
-            if (!$requiresPayment) {
+            // Auto-complete immediately for:
+            // 1. Trial subscriptions (is_trial = true)
+            // 2. Free plans (final_price = 0)
+            // Manual payment gateway check only applies to PAID subscriptions
+            $isTrial = $data['is_trial'];
+            $isFree = $pricing['final_price'] == 0;
+
+            // Free and trial should ALWAYS auto-complete to create tenant
+            // Manual gateway only blocks auto-complete for paid subscriptions
+            $shouldAutoComplete = $isTrial || $isFree;
+
+            if ($shouldAutoComplete) {
                 $this->subscriptionService->completeSubscription(
                     $paymentLog,
                     'FREE_OR_TRIAL_' . $paymentLog->track,
-                    'free'
+                    $isFree ? 'free' : 'trial'
                 );
                 $paymentLog->refresh();
             }
@@ -601,7 +612,7 @@ final class SubscriptionController extends BaseApiController
             $gateways = PaymentGateway::where('status', true)
                 ->select('id', 'name')
                 ->get()
-                ->map(fn ($g) => [
+                ->map(fn($g) => [
                     'id' => $g->id,
                     'name' => $g->name,
                     'slug' => strtolower(str_replace(' ', '_', $g->name)),
@@ -752,7 +763,7 @@ final class SubscriptionController extends BaseApiController
             $gateways = PaymentGateway::where('status', true)
                 ->select('id', 'name')
                 ->get()
-                ->map(fn ($g) => [
+                ->map(fn($g) => [
                     'id' => $g->id,
                     'name' => $g->name,
                     'slug' => strtolower(str_replace(' ', '_', $g->name)),
