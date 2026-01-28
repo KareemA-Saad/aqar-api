@@ -168,6 +168,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TenancyServiceProvider::class,  // CRITICAL: Enables database switching!
 
         /*
          * Module Service Providers are auto-discovered by nwidart/laravel-modules

@@ -47,13 +47,23 @@ final class TenantService
             // Generate tenant ID (subdomain or UUID)
             $tenantId = $this->generateTenantId($data['subdomain'] ?? null);
 
-            // Create tenant record
+            // Calculate subscription dates
+            $startDate = now();
+            $expireDate = $this->calculateExpireDate($plan, $startDate);
+
+            // Create tenant record with proper data format
+            // Note: Stancl Tenancy expects 'db_name' in the data column for database switching
             $tenant = Tenant::create([
                 'id' => $tenantId,
                 'user_id' => $user->id,
                 'theme_slug' => $data['theme'] ?? null,
                 'theme_code' => $data['theme_code'] ?? null,
                 'instruction_status' => false,
+                'start_date' => $startDate->format('d-m-Y H:i:s'),
+                'expire_date' => $expireDate?->format('d-m-Y H:i:s'),
+                'data' => json_encode([
+                    'db_name' => "aqarsjis_{$tenantId}",
+                ]),
             ]);
 
             // Create domain if subdomain provided
@@ -149,9 +159,13 @@ final class TenantService
         $this->createDatabase($tenant);
         $this->runTenantMigrations($tenant);
 
-        if (config('tenancy.database.auto_seed', false)) {
-            $this->seedTenantData($tenant);
-        }
+        // Always seed tenant data (especially RealEstate module)
+        $this->seedTenantData($tenant);
+
+        Log::info('Tenant database setup completed', [
+            'tenant_id' => $tenant->id,
+            'database' => $tenant->database()->getName(),
+        ]);
     }
 
     /**
@@ -497,8 +511,9 @@ final class TenantService
      */
     private function createPaymentLog(Tenant $tenant, User $user, PricePlan $plan, array $data): PaymentLog
     {
-        $startDate = now();
-        $expireDate = $this->calculateExpireDate($plan, $startDate);
+        // Use tenant's subscription dates
+        $startDate = \Carbon\Carbon::createFromFormat('d-m-Y H:i:s', $tenant->start_date);
+        $expireDate = $tenant->expire_date ? \Carbon\Carbon::createFromFormat('d-m-Y H:i:s', $tenant->expire_date) : null;
 
         return PaymentLog::create([
             'tenant_id' => $tenant->id,
@@ -554,13 +569,18 @@ final class TenantService
             Log::warning('No payment log or package found for tenant', [
                 'tenant_id' => $tenant->id,
             ]);
-            // Return only core modules if no plan
-            return config('modules.core_modules', []);
+            // Return core modules + RealEstate as default
+            return array_merge(config('modules.core_modules', []), ['RealEstate']);
         }
 
         // Handle trial plans
         if (in_array($paymentLog->status, ['trial', 'pending'])) {
-            return $this->getTrialModules();
+            $trialModules = $this->getTrialModules();
+            // Ensure RealEstate is always included
+            if (!in_array('RealEstate', $trialModules, true)) {
+                $trialModules[] = 'RealEstate';
+            }
+            return $trialModules;
         }
 
         // Get feature names from plan (only active features)
@@ -572,6 +592,14 @@ final class TenantService
 
         // Map features to modules
         $modules = $this->mapFeaturesToModules($features);
+
+        // ALWAYS ensure RealEstate module is included for all tenants
+        if (!in_array('RealEstate', $modules, true)) {
+            $modules[] = 'RealEstate';
+            Log::info('RealEstate module automatically added to tenant', [
+                'tenant_id' => $tenant->id,
+            ]);
+        }
 
         if (config('modules.log_enabled_modules', true)) {
             Log::info('Enabled modules determined for tenant', [

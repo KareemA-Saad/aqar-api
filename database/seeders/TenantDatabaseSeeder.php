@@ -33,15 +33,18 @@ class TenantDatabaseSeeder extends Seeder
         'properties' => [
             \Database\Seeders\Tenant\ModuleData\RealEstate\PropertyTypeSeed::class,
             \Database\Seeders\Tenant\ModuleData\RealEstate\AmenitySeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\DeveloperSeed::class,
         ],
         'compounds' => [
             \Database\Seeders\Tenant\ModuleData\RealEstate\PropertyTypeSeed::class,
             \Database\Seeders\Tenant\ModuleData\RealEstate\AmenitySeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\DeveloperSeed::class,
         ],
         'realestate' => [
             \Database\Seeders\Tenant\ModuleData\RealEstate\PropertyTypeSeed::class,
             \Database\Seeders\Tenant\ModuleData\RealEstate\AmenitySeed::class,
             \Database\Seeders\Tenant\ModuleData\RealEstate\AreaSeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\DeveloperSeed::class,
         ],
         // Event Module
         'event' => [

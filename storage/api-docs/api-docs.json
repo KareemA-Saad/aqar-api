@@ -15,7 +15,7 @@
             "description": "Local Development Server"
         },
         {
-            "url": "https://api.aqar.com",
+            "url": "https://api.aqar.ink",
             "description": "Production Server"
         }
     ],

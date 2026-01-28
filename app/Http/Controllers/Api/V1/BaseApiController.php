@@ -30,7 +30,7 @@ use OpenApi\Attributes as OA;
     description: 'Local Development Server'
 )]
 #[OA\Server(
-    url: 'https://api.aqar.com',
+    url: 'https://api.aqar.ink',
     description: 'Production Server'
 )]
 #[OA\SecurityScheme(

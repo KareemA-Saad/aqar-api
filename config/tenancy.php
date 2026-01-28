@@ -76,11 +76,14 @@ return [
     /**
      * Tenancy bootstrappers are executed when tenancy is initialized.
      * Their responsibility is making Laravel features tenant-aware.
+     *
+     * For API-only apps, we only need DatabaseTenancyBootstrapper.
+     * FilesystemTenancyBootstrapper requires routes that we don't have.
      */
     'bootstrappers' => [
         Stancl\Tenancy\Bootstrappers\DatabaseTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper::class,
-        Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,
+        // Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class, // Requires asset routes
         Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper::class,
         // Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class, // Requires phpredis
     ],
@@ -101,15 +104,18 @@ return [
 
         /**
          * Template connection for tenant databases.
+         * IMPORTANT: This must be a DIFFERENT connection than 'tenant'
+         * because 'tenant' gets purged during the switching process.
+         * Using the same name causes a bug where the driver becomes empty.
          */
-        'template_tenant_connection' => 'tenant',
+        'template_tenant_connection' => 'tenant_template',
 
         /**
          * Tenant database naming pattern.
          * Final name: prefix + tenant_id + suffix
-         * Example: tenant_abc123def456
+         * Example: aqarsjis_abc123def456
          */
-        'prefix' => env('TENANT_DB_PREFIX', 'tenant_'),
+        'prefix' => env('TENANT_DB_PREFIX', 'aqarsjis_'),
         'suffix' => '',
 
         /**

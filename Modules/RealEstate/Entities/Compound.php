@@ -191,6 +191,14 @@ class Compound extends Model
     }
 
     /**
+     * Scope to active compounds (published).
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_published', true);
+    }
+
+    /**
      * Scope to only featured compounds.
      */
     public function scopeFeatured($query)

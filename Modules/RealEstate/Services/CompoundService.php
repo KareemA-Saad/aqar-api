@@ -197,7 +197,7 @@ class CompoundService
      */
     public function getFeaturedCompounds(int $limit = 10): Collection
     {
-        return Cache::tags(['compounds'])->remember(
+        return Cache::remember(
             'featured_compounds_' . $limit,
             $this->cacheTtl,
             fn () => Compound::with(['area', 'developer', 'primaryImage'])
@@ -241,7 +241,7 @@ class CompoundService
      */
     public function getStatistics(): array
     {
-        return Cache::tags(['compounds'])->remember(
+        return Cache::remember(
             'compound_statistics',
             $this->cacheTtl,
             function () {
@@ -324,6 +324,7 @@ class CompoundService
      */
     protected function clearCompoundCache(): void
     {
-        Cache::tags(['compounds'])->flush();
+        Cache::forget('featured_compounds_*');
+        Cache::forget('compound_statistics');
     }
 }

@@ -193,7 +193,7 @@ class PropertyService
         }
 
         // Clear cache
-        Cache::tags(['properties'])->flush();
+        Cache::forget('featured_properties_*');
 
         return $count;
     }
@@ -203,7 +203,7 @@ class PropertyService
      */
     public function getFeaturedProperties(int $limit = 10): Collection
     {
-        return Cache::tags(['properties'])->remember(
+        return Cache::remember(
             'featured_properties_' . $limit,
             $this->cacheTtl,
             fn () => Property::with(['area', 'propertyType', 'primaryImage'])
@@ -245,7 +245,7 @@ class PropertyService
      */
     public function getStatistics(): array
     {
-        return Cache::tags(['properties'])->remember(
+        return Cache::remember(
             'property_statistics',
             $this->cacheTtl,
             function () {
@@ -312,14 +312,15 @@ class PropertyService
      */
     protected function clearPropertyCache(Property $property): void
     {
-        Cache::tags(['properties'])->flush();
+        Cache::forget('featured_properties_*');
+        Cache::forget('property_statistics');
         
         if ($property->compound_id) {
-            Cache::tags(['compounds'])->forget('compound_' . $property->compound_id);
+            Cache::forget('compound_' . $property->compound_id);
         }
         
         if ($property->area_id) {
-            Cache::tags(['areas'])->forget('area_' . $property->area_id);
+            Cache::forget('area_' . $property->area_id);
         }
     }
 }
