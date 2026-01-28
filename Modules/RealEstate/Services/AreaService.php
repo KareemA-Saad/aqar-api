@@ -57,7 +57,7 @@ class AreaService
      */
     public function getAreasTree(): Collection
     {
-        return Cache::tags(['areas'])->remember(
+        return Cache::remember(
             'areas_tree',
             $this->cacheTtl,
             fn () => Area::with(['children' => function ($query) {
@@ -76,7 +76,7 @@ class AreaService
      */
     public function getRootAreas(): Collection
     {
-        return Cache::tags(['areas'])->remember(
+        return Cache::remember(
             'root_areas',
             $this->cacheTtl,
             fn () => Area::whereNull('parent_id')
@@ -221,7 +221,7 @@ class AreaService
      */
     public function getFeaturedAreas(int $limit = 10): Collection
     {
-        return Cache::tags(['areas'])->remember(
+        return Cache::remember(
             'featured_areas_' . $limit,
             $this->cacheTtl,
             fn () => Area::with(['parent'])
@@ -239,7 +239,7 @@ class AreaService
      */
     public function getStatistics(): array
     {
-        return Cache::tags(['areas'])->remember(
+        return Cache::remember(
             'area_statistics',
             $this->cacheTtl,
             function () {
@@ -343,6 +343,9 @@ class AreaService
      */
     protected function clearAreaCache(): void
     {
-        Cache::tags(['areas'])->flush();
+        Cache::forget('areas_tree');
+        Cache::forget('root_areas');
+        Cache::forget('featured_areas_*');
+        Cache::forget('area_statistics');
     }
 }

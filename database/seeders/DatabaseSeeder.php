@@ -32,6 +32,11 @@ class DatabaseSeeder extends Seeder
             LanguageSeeder::class,
             PricePlanSeeder::class,
             ThemeSeeder::class,
+            CountrySeeder::class,
+            BlogCategorySeeder::class,
+            TestimonialSeeder::class,
+            BrandSeeder::class,
+            FormBuilderSeeder::class,
         ]);
 
         // TODO: Uncomment when Themes model and related assets are implemented

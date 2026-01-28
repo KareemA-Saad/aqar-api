@@ -63,6 +63,35 @@ return [
             ]) : [],
         ],
 
+        /*
+         * Template connection for tenant databases.
+         * This is used as a template to create the actual 'tenant' connection.
+         * IMPORTANT: Do NOT name this 'tenant' as that gets purged during switching.
+         */
+        'tenant_template' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => null,  // Set dynamically for each tenant
+            'username' => env('DB_USERNAME', 'forge'),
+            'password' => env('DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
+        /*
+         * Runtime tenant connection - created dynamically from tenant_template.
+         * This connection gets purged and recreated during tenant switching.
+         */
         'tenant' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),

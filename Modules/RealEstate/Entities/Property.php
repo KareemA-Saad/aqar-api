@@ -240,6 +240,14 @@ class Property extends Model
     }
 
     /**
+     * Scope to active properties (published and available).
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_published', true)->where('is_available', true);
+    }
+
+    /**
      * Scope to only featured properties.
      */
     public function scopeFeatured($query)

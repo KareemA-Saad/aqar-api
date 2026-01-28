@@ -4,5 +4,6 @@
     "Attributes": true,
     "ShippingModule": true,
     "CouponManage": true,
-    "HotelBooking": true
+    "HotelBooking": true,
+    "RealEstate": true
 }

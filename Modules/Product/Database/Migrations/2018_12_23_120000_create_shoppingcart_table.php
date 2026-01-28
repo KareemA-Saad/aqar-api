@@ -14,8 +14,8 @@ class CreateShoppingcartTable extends Migration
          if(!Schema::hasTable(config('cart.database.table') ?? 'shoppingcart')){  
              
             Schema::create(config('cart.database.table') ?? 'shoppingcart', function (Blueprint $table) {
-                $table->string('identifier');
-                $table->string('instance');
+                $table->string('identifier', 100); // Reduced from 191 to avoid key length issues
+                $table->string('instance', 100);   // Total: 100*4*2 = 800 bytes < 1000 limit
                 $table->longText('content');
                 $table->nullableTimestamps();
     

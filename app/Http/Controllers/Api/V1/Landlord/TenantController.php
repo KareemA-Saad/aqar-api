@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\BaseApiController;
 use App\Http\Requests\Tenant\CreateTenantRequest;
 use App\Http\Requests\Tenant\UpdateTenantRequest;
 use App\Http\Resources\TenantResource;
+use App\Models\PaymentLog;
 use App\Models\PricePlan;
 use App\Models\Tenant;
 use App\Models\User;
@@ -209,6 +210,30 @@ final class TenantController extends BaseApiController
         // Get the price plan
         $plan = PricePlan::findOrFail($data['plan_id']);
 
+        // Check if user has active subscription (payment required for paid plans)
+        if ($plan->price > 0) {
+            $hasActiveSubscription = PaymentLog::where('user_id', $user->id)
+                ->whereIn('status', ['complete', 'trial'])
+                ->whereIn('payment_status', ['complete'])
+                ->where(function($query) {
+                    $query->where('expire_date', '>=', now()->format('d-m-Y H:i:s'))
+                          ->orWhereNull('expire_date'); // Lifetime plans
+                })
+                ->exists();
+
+            if (!$hasActiveSubscription) {
+                return $this->error(
+                    'You must have an active subscription to create a tenant. Please purchase a plan first.',
+                    403,
+                    [
+                        'error_code' => 'NO_ACTIVE_SUBSCRIPTION',
+                        'plan_price' => $plan->price,
+                        'payment_url' => config('app.frontend_url') . '/subscription/plans',
+                    ]
+                );
+            }
+        }
+
         // Check tenant creation limit based on plan
         $maxTenants = $plan->max_tenants ?? 1;
         $activeTenants = Tenant::where('user_id', $user->id)
@@ -241,13 +266,16 @@ final class TenantController extends BaseApiController
                 user: $user,
                 plan: $plan,
                 data: $data,
-                async: true // Use queued job for database creation
+                async: false // Create synchronously since subscription is validated
             );
+
+            // Refresh to get payment log relationship
+            $tenant->refresh();
 
             return $this->created([
                 'tenant' => new TenantResource($tenant->load(['domains', 'paymentLog'])),
-                'message' => 'Tenant created. Database setup is in progress.',
-                'database_status' => 'pending',
+                'message' => 'Tenant created successfully. Database is ready.',
+                'database_status' => 'ready',
             ], 'Tenant created successfully');
         } catch (\Exception $e) {
             return $this->error('Failed to create tenant: ' . $e->getMessage(), 500);
