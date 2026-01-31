@@ -37,7 +37,23 @@ class CompoundController extends Controller
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'List of compounds'),
+            new OA\Response(
+                response: 200,
+                description: 'List of compounds',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_CompoundResource')
+                        ),
+                        new OA\Property(
+                            property: 'meta',
+                            ref: '#/components/schemas/RE_PaginationMeta'
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function index(Request $request): CompoundCollection
@@ -59,8 +75,21 @@ class CompoundController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreCompoundRequest')
         ),
         responses: [
-            new OA\Response(response: 201, description: 'Compound created'),
-            new OA\Response(response: 422, description: 'Validation error'),
+            new OA\Response(
+                response: 201,
+                description: 'Compound created successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Compound created successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_CompoundResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error',
+                content: new OA\JsonContent(ref: '#/components/schemas/RE_ValidationErrorResponse')
+            ),
         ]
     )]
     public function store(StoreCompoundRequest $request): JsonResponse
@@ -84,8 +113,24 @@ class CompoundController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Compound details'),
-            new OA\Response(response: 404, description: 'Compound not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Compound details',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_CompoundResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Compound not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Compound not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function show(int $id): JsonResponse
@@ -116,8 +161,25 @@ class CompoundController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_UpdateCompoundRequest')
         ),
         responses: [
-            new OA\Response(response: 200, description: 'Compound updated'),
-            new OA\Response(response: 404, description: 'Compound not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Compound updated successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Compound updated successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_CompoundResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Compound not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Compound not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function update(UpdateCompoundRequest $request, Compound $compound): JsonResponse
@@ -141,8 +203,24 @@ class CompoundController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Compound deleted'),
-            new OA\Response(response: 404, description: 'Compound not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Compound deleted successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Compound deleted successfully.'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Compound not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Compound not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function destroy(Compound $compound): JsonResponse

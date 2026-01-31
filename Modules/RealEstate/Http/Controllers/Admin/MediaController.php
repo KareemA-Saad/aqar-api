@@ -73,9 +73,43 @@ class MediaController extends Controller
             )
         ),
         responses: [
-            new OA\Response(response: 201, description: 'Images uploaded successfully'),
-            new OA\Response(response: 404, description: 'Property not found'),
-            new OA\Response(response: 422, description: 'Validation error'),
+            new OA\Response(
+                response: 201,
+                description: 'Images uploaded successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: '3 image(s) uploaded successfully.'),
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 1),
+                                    new OA\Property(property: 'url', type: 'string', example: '/storage/properties/1/image.jpg'),
+                                    new OA\Property(property: 'title', type: 'string', example: 'Living Room'),
+                                    new OA\Property(property: 'order', type: 'integer', example: 1),
+                                    new OA\Property(property: 'is_primary', type: 'boolean', example: true),
+                                ],
+                                type: 'object'
+                            )
+                        ),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Property not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property not found.'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error',
+                content: new OA\JsonContent(ref: '#/components/schemas/RE_ValidationErrorResponse')
+            ),
         ]
     )]
     public function uploadPropertyImages(Request $request, int $property): JsonResponse
@@ -163,8 +197,38 @@ class MediaController extends Controller
             )
         ),
         responses: [
-            new OA\Response(response: 201, description: 'Images uploaded successfully'),
-            new OA\Response(response: 404, description: 'Compound not found'),
+            new OA\Response(
+                response: 201,
+                description: 'Images uploaded successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: '3 image(s) uploaded successfully.'),
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(
+                                properties: [
+                                    new OA\Property(property: 'id', type: 'integer', example: 1),
+                                    new OA\Property(property: 'url', type: 'string', example: '/storage/compounds/1/image.jpg'),
+                                    new OA\Property(property: 'title', type: 'string', example: 'Master Plan'),
+                                    new OA\Property(property: 'type', type: 'string', example: 'gallery'),
+                                    new OA\Property(property: 'order', type: 'integer', example: 1),
+                                ],
+                                type: 'object'
+                            )
+                        ),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Compound not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Compound not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function uploadCompoundImages(Request $request, int $compound): JsonResponse

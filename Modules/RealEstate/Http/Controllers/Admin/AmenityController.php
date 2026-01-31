@@ -29,7 +29,19 @@ class AmenityController extends Controller
             new OA\Parameter(name: 'sort', in: 'query', schema: new OA\Schema(type: 'string')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'List of amenities'),
+            new OA\Response(
+                response: 200,
+                description: 'List of amenities',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_AmenityResource')
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function index(Request $request): JsonResponse
@@ -57,8 +69,21 @@ class AmenityController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreAmenityRequest')
         ),
         responses: [
-            new OA\Response(response: 201, description: 'Amenity created'),
-            new OA\Response(response: 422, description: 'Validation error'),
+            new OA\Response(
+                response: 201,
+                description: 'Amenity created successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Amenity created successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_AmenityResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error',
+                content: new OA\JsonContent(ref: '#/components/schemas/RE_ValidationErrorResponse')
+            ),
         ]
     )]
     public function store(StoreAmenityRequest $request): JsonResponse
@@ -92,8 +117,24 @@ class AmenityController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Amenity details'),
-            new OA\Response(response: 404, description: 'Amenity not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Amenity details',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_AmenityResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Amenity not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Amenity not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function show(Amenity $amenity): JsonResponse
@@ -118,8 +159,25 @@ class AmenityController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreAmenityRequest')
         ),
         responses: [
-            new OA\Response(response: 200, description: 'Amenity updated'),
-            new OA\Response(response: 404, description: 'Amenity not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Amenity updated successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Amenity updated successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_AmenityResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Amenity not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Amenity not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function update(StoreAmenityRequest $request, Amenity $amenity): JsonResponse
@@ -143,8 +201,24 @@ class AmenityController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Amenity deleted'),
-            new OA\Response(response: 404, description: 'Amenity not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Amenity deleted successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Amenity deleted successfully.'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Amenity not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Amenity not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function destroy(Amenity $amenity): JsonResponse

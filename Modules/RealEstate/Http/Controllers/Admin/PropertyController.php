@@ -39,7 +39,23 @@ class PropertyController extends Controller
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'List of properties'),
+            new OA\Response(
+                response: 200,
+                description: 'List of properties',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_PropertyResource')
+                        ),
+                        new OA\Property(
+                            property: 'meta',
+                            ref: '#/components/schemas/RE_PaginationMeta'
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function index(Request $request): PropertyCollection
@@ -61,8 +77,21 @@ class PropertyController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_StorePropertyRequest')
         ),
         responses: [
-            new OA\Response(response: 201, description: 'Property created'),
-            new OA\Response(response: 422, description: 'Validation error'),
+            new OA\Response(
+                response: 201,
+                description: 'Property created successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property created successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error',
+                content: new OA\JsonContent(ref: '#/components/schemas/RE_ValidationErrorResponse')
+            ),
         ]
     )]
     public function store(StorePropertyRequest $request): JsonResponse
@@ -86,8 +115,24 @@ class PropertyController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Property details'),
-            new OA\Response(response: 404, description: 'Property not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Property details',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Property not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function show(int $id): JsonResponse
@@ -118,8 +163,25 @@ class PropertyController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_UpdatePropertyRequest')
         ),
         responses: [
-            new OA\Response(response: 200, description: 'Property updated'),
-            new OA\Response(response: 404, description: 'Property not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Property updated successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property updated successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Property not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function update(UpdatePropertyRequest $request, Property $property): JsonResponse
@@ -143,8 +205,24 @@ class PropertyController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Property deleted'),
-            new OA\Response(response: 404, description: 'Property not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Property deleted successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property deleted successfully.'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Property not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function destroy(Property $property): JsonResponse

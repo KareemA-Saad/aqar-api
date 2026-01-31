@@ -35,7 +35,23 @@ class AreaController extends Controller
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'List of areas'),
+            new OA\Response(
+                response: 200,
+                description: 'List of areas',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_AreaResource')
+                        ),
+                        new OA\Property(
+                            property: 'meta',
+                            ref: '#/components/schemas/RE_PaginationMeta'
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function index(Request $request): JsonResponse
@@ -61,7 +77,19 @@ class AreaController extends Controller
         summary: 'Get areas as hierarchical tree',
         tags: ['Admin - Areas'],
         responses: [
-            new OA\Response(response: 200, description: 'Areas tree'),
+            new OA\Response(
+                response: 200,
+                description: 'Areas tree structure',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_AreaResource')
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function tree(): JsonResponse
@@ -85,8 +113,21 @@ class AreaController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreAreaRequest')
         ),
         responses: [
-            new OA\Response(response: 201, description: 'Area created'),
-            new OA\Response(response: 422, description: 'Validation error'),
+            new OA\Response(
+                response: 201,
+                description: 'Area created successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Area created successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_AreaResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error',
+                content: new OA\JsonContent(ref: '#/components/schemas/RE_ValidationErrorResponse')
+            ),
         ]
     )]
     public function store(StoreAreaRequest $request): JsonResponse
@@ -110,8 +151,24 @@ class AreaController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Area details'),
-            new OA\Response(response: 404, description: 'Area not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Area details',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_AreaResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Area not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Area not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function show(int $id): JsonResponse
