@@ -11985,7 +11985,22 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of amenities"
+                        "description": "List of amenities",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_AmenityResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12008,10 +12023,33 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Amenity created"
+                        "description": "Amenity created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Amenity created successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_AmenityResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RE_ValidationErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -12036,10 +12074,35 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Amenity details"
+                        "description": "Amenity details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_AmenityResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Amenity not found"
+                        "description": "Amenity not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Amenity not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12072,10 +12135,39 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Amenity updated"
+                        "description": "Amenity updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Amenity updated successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_AmenityResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Amenity not found"
+                        "description": "Amenity not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Amenity not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12098,10 +12190,36 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Amenity deleted"
+                        "description": "Amenity deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Amenity deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Amenity not found"
+                        "description": "Amenity not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Amenity not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -12209,7 +12327,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of areas"
+                        "description": "List of areas",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_AreaResource"
+                                            }
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/RE_PaginationMeta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12232,10 +12368,33 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Area created"
+                        "description": "Area created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Area created successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_AreaResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RE_ValidationErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -12250,7 +12409,22 @@
                 "operationId": "8bf39abfd1154c29bf457751233f95e5",
                 "responses": {
                     "200": {
-                        "description": "Areas tree"
+                        "description": "Areas tree structure",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_AreaResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -12275,10 +12449,35 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Area details"
+                        "description": "Area details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_AreaResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Area not found"
+                        "description": "Area not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Area not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12461,7 +12660,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of compounds"
+                        "description": "List of compounds",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_CompoundResource"
+                                            }
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/RE_PaginationMeta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12484,10 +12701,33 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Compound created"
+                        "description": "Compound created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compound created successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_CompoundResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RE_ValidationErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -12512,10 +12752,35 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Compound details"
+                        "description": "Compound details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_CompoundResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Compound not found"
+                        "description": "Compound not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compound not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12548,10 +12813,39 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Compound updated"
+                        "description": "Compound updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compound updated successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_CompoundResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Compound not found"
+                        "description": "Compound not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compound not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12574,10 +12868,36 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Compound deleted"
+                        "description": "Compound deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compound deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Compound not found"
+                        "description": "Compound not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compound not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -12687,7 +13007,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of developers"
+                        "description": "List of developers",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_DeveloperResource"
+                                            }
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/RE_PaginationMeta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12710,10 +13048,33 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Developer created"
+                        "description": "Developer created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Developer created successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_DeveloperResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RE_ValidationErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -12738,10 +13099,35 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Developer details"
+                        "description": "Developer details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_DeveloperResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Developer not found"
+                        "description": "Developer not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Developer not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -12865,13 +13251,74 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Images uploaded successfully"
+                        "description": "Images uploaded successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "3 image(s) uploaded successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "url": {
+                                                        "type": "string",
+                                                        "example": "/storage/properties/1/image.jpg"
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Living Room"
+                                                    },
+                                                    "order": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "is_primary": {
+                                                        "type": "boolean",
+                                                        "example": true
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Property not found"
+                        "description": "Property not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RE_ValidationErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -12933,10 +13380,64 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Images uploaded successfully"
+                        "description": "Images uploaded successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "3 image(s) uploaded successfully."
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    },
+                                                    "url": {
+                                                        "type": "string",
+                                                        "example": "/storage/compounds/1/image.jpg"
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "Master Plan"
+                                                    },
+                                                    "type": {
+                                                        "type": "string",
+                                                        "example": "gallery"
+                                                    },
+                                                    "order": {
+                                                        "type": "integer",
+                                                        "example": 1
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Compound not found"
+                        "description": "Compound not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compound not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13152,7 +13653,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of properties"
+                        "description": "List of properties",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_PropertyResource"
+                                            }
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/RE_PaginationMeta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -13175,10 +13694,33 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Property created"
+                        "description": "Property created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property created successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RE_ValidationErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13203,10 +13745,35 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Property details"
+                        "description": "Property details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Property not found"
+                        "description": "Property not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -13239,10 +13806,39 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Property updated"
+                        "description": "Property updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property updated successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Property not found"
+                        "description": "Property not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -13265,10 +13861,36 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Property deleted"
+                        "description": "Property deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Property not found"
+                        "description": "Property not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13367,7 +13989,25 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of inquiries"
+                        "description": "List of inquiries",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_PropertyInquiryResource"
+                                            }
+                                        },
+                                        "meta": {
+                                            "$ref": "#/components/schemas/RE_PaginationMeta"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13392,10 +14032,35 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Inquiry details"
+                        "description": "Inquiry details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyInquiryResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Inquiry not found"
+                        "description": "Inquiry not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -13428,10 +14093,39 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Inquiry updated"
+                        "description": "Inquiry updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry updated successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyInquiryResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Inquiry not found"
+                        "description": "Inquiry not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -13454,10 +14148,36 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Inquiry deleted"
+                        "description": "Inquiry deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry deleted successfully."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Inquiry not found"
+                        "description": "Inquiry not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13472,7 +14192,19 @@
                 "operationId": "a8ba1b06cbc4e546fb5e5cc98bc0c000",
                 "responses": {
                     "200": {
-                        "description": "Inquiry statistics"
+                        "description": "Inquiry statistics",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_InquiryStatistics"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13497,7 +14229,23 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Inquiry marked as contacted"
+                        "description": "Inquiry marked as contacted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry marked as contacted."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyInquiryResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13522,7 +14270,23 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Inquiry marked as qualified"
+                        "description": "Inquiry marked as qualified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry marked as qualified."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyInquiryResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13547,7 +14311,23 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Inquiry marked as converted"
+                        "description": "Inquiry marked as converted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Inquiry marked as converted."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyInquiryResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13587,7 +14367,23 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Agent assigned"
+                        "description": "Agent assigned successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Agent assigned successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyInquiryResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13623,7 +14419,24 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Bulk status update completed"
+                        "description": "Bulk status update completed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Bulk status update completed."
+                                        },
+                                        "updated_count": {
+                                            "type": "integer",
+                                            "example": 5
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13694,7 +14507,22 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "List of property types"
+                        "description": "List of property types",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/RE_PropertyTypeResource"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -13717,10 +14545,33 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Property type created"
+                        "description": "Property type created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property type created successfully."
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyTypeResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "422": {
-                        "description": "Validation error"
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RE_ValidationErrorResponse"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -13745,10 +14596,35 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Property type details"
+                        "description": "Property type details",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/RE_PropertyTypeResource"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
-                        "description": "Property type not found"
+                        "description": "Property type not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Property type not found."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },

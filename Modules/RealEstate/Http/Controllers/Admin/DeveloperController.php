@@ -31,7 +31,23 @@ class DeveloperController extends Controller
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'List of developers'),
+            new OA\Response(
+                response: 200,
+                description: 'List of developers',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_DeveloperResource')
+                        ),
+                        new OA\Property(
+                            property: 'meta',
+                            ref: '#/components/schemas/RE_PaginationMeta'
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function index(Request $request): JsonResponse
@@ -65,8 +81,21 @@ class DeveloperController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_StoreDeveloperRequest')
         ),
         responses: [
-            new OA\Response(response: 201, description: 'Developer created'),
-            new OA\Response(response: 422, description: 'Validation error'),
+            new OA\Response(
+                response: 201,
+                description: 'Developer created successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Developer created successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_DeveloperResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error',
+                content: new OA\JsonContent(ref: '#/components/schemas/RE_ValidationErrorResponse')
+            ),
         ]
     )]
     public function store(StoreDeveloperRequest $request): JsonResponse
@@ -96,8 +125,24 @@ class DeveloperController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Developer details'),
-            new OA\Response(response: 404, description: 'Developer not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Developer details',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_DeveloperResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Developer not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Developer not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function show(Developer $developer): JsonResponse

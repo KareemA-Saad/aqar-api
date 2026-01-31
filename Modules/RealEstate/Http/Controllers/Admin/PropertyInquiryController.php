@@ -36,7 +36,23 @@ class PropertyInquiryController extends Controller
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'List of inquiries'),
+            new OA\Response(
+                response: 200,
+                description: 'List of inquiries',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_PropertyInquiryResource')
+                        ),
+                        new OA\Property(
+                            property: 'meta',
+                            ref: '#/components/schemas/RE_PaginationMeta'
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function index(Request $request): JsonResponse
@@ -65,8 +81,24 @@ class PropertyInquiryController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Inquiry details'),
-            new OA\Response(response: 404, description: 'Inquiry not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Inquiry details',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyInquiryResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Inquiry not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Inquiry not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function show(int $id): JsonResponse
@@ -97,8 +129,25 @@ class PropertyInquiryController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_UpdatePropertyInquiryRequest')
         ),
         responses: [
-            new OA\Response(response: 200, description: 'Inquiry updated'),
-            new OA\Response(response: 404, description: 'Inquiry not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Inquiry updated successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Inquiry updated successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyInquiryResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Inquiry not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Inquiry not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function update(UpdatePropertyInquiryRequest $request, PropertyInquiry $inquiry): JsonResponse
@@ -134,8 +183,24 @@ class PropertyInquiryController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Inquiry deleted'),
-            new OA\Response(response: 404, description: 'Inquiry not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Inquiry deleted successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Inquiry deleted successfully.'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Inquiry not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Inquiry not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function destroy(PropertyInquiry $inquiry): JsonResponse
@@ -155,7 +220,15 @@ class PropertyInquiryController extends Controller
         summary: 'Get inquiry statistics',
         tags: ['Admin - Inquiries'],
         responses: [
-            new OA\Response(response: 200, description: 'Inquiry statistics'),
+            new OA\Response(
+                response: 200,
+                description: 'Inquiry statistics',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_InquiryStatistics'),
+                    ]
+                )
+            ),
         ]
     )]
     public function statistics(): JsonResponse
@@ -176,7 +249,16 @@ class PropertyInquiryController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Inquiry marked as contacted'),
+            new OA\Response(
+                response: 200,
+                description: 'Inquiry marked as contacted',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Inquiry marked as contacted.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyInquiryResource'),
+                    ]
+                )
+            ),
         ]
     )]
     public function markContacted(PropertyInquiry $inquiry): JsonResponse
@@ -200,7 +282,16 @@ class PropertyInquiryController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Inquiry marked as qualified'),
+            new OA\Response(
+                response: 200,
+                description: 'Inquiry marked as qualified',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Inquiry marked as qualified.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyInquiryResource'),
+                    ]
+                )
+            ),
         ]
     )]
     public function markQualified(PropertyInquiry $inquiry): JsonResponse
@@ -224,7 +315,16 @@ class PropertyInquiryController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Inquiry marked as converted'),
+            new OA\Response(
+                response: 200,
+                description: 'Inquiry marked as converted',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Inquiry marked as converted.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyInquiryResource'),
+                    ]
+                )
+            ),
         ]
     )]
     public function markConverted(PropertyInquiry $inquiry): JsonResponse
@@ -256,7 +356,16 @@ class PropertyInquiryController extends Controller
             )
         ),
         responses: [
-            new OA\Response(response: 200, description: 'Agent assigned'),
+            new OA\Response(
+                response: 200,
+                description: 'Agent assigned successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Agent assigned successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyInquiryResource'),
+                    ]
+                )
+            ),
         ]
     )]
     public function assignAgent(Request $request, PropertyInquiry $inquiry): JsonResponse
@@ -290,7 +399,16 @@ class PropertyInquiryController extends Controller
             )
         ),
         responses: [
-            new OA\Response(response: 200, description: 'Bulk status update completed'),
+            new OA\Response(
+                response: 200,
+                description: 'Bulk status update completed',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Bulk status update completed.'),
+                        new OA\Property(property: 'updated_count', type: 'integer', example: 5),
+                    ]
+                )
+            ),
         ]
     )]
     public function bulkUpdateStatus(Request $request): JsonResponse

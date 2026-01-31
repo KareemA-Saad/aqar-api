@@ -28,7 +28,19 @@ class PropertyTypeController extends Controller
             new OA\Parameter(name: 'sort', in: 'query', schema: new OA\Schema(type: 'string')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'List of property types'),
+            new OA\Response(
+                response: 200,
+                description: 'List of property types',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/RE_PropertyTypeResource')
+                        ),
+                    ]
+                )
+            ),
         ]
     )]
     public function index(Request $request): JsonResponse
@@ -57,8 +69,21 @@ class PropertyTypeController extends Controller
             content: new OA\JsonContent(ref: '#/components/schemas/RE_StorePropertyTypeRequest')
         ),
         responses: [
-            new OA\Response(response: 201, description: 'Property type created'),
-            new OA\Response(response: 422, description: 'Validation error'),
+            new OA\Response(
+                response: 201,
+                description: 'Property type created successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property type created successfully.'),
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyTypeResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error',
+                content: new OA\JsonContent(ref: '#/components/schemas/RE_ValidationErrorResponse')
+            ),
         ]
     )]
     public function store(StorePropertyTypeRequest $request): JsonResponse
@@ -92,8 +117,24 @@ class PropertyTypeController extends Controller
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
-            new OA\Response(response: 200, description: 'Property type details'),
-            new OA\Response(response: 404, description: 'Property type not found'),
+            new OA\Response(
+                response: 200,
+                description: 'Property type details',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'data', ref: '#/components/schemas/RE_PropertyTypeResource'),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 404,
+                description: 'Property type not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Property type not found.'),
+                    ]
+                )
+            ),
         ]
     )]
     public function show(PropertyType $propertyType): JsonResponse
