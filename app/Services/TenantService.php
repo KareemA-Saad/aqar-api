@@ -448,21 +448,40 @@ final class TenantService
             throw new \InvalidArgumentException('User does not own this tenant');
         }
 
+        // Initialize tenant context to work with tenant database
+        tenancy()->initialize($tenant);
+
+        // Find or create admin record in tenant database
+        $admin = \App\Models\Admin::firstOrCreate(
+            ['email' => $user->email],
+            [
+                'name' => $user->name,
+                'username' => $user->username ?? explode('@', $user->email)[0],
+                'password' => $user->password, // Same password as central user
+                'email_verified' => true,
+                'mobile' => $user->mobile ?? null,
+            ]
+        );
+
         $expiresAt = now()->addDays(7);
 
         $abilities = [
-            'user:read',
-            'user:write',
+            'admin:read',
+            'admin:write',
             'tenants:read',
             'tenants:write',
             "tenant:{$tenant->id}",
         ];
 
-        $token = $user->createToken(
-            name: "tenant-{$tenant->id}-token",
+        // Create token on Admin model with api_tenant_admin guard
+        $token = $admin->createToken(
+            name: "tenant-{$tenant->id}-admin-token",
             abilities: $abilities,
             expiresAt: $expiresAt
         );
+
+        // End tenant context
+        tenancy()->end();
 
         return [
             'token' => $token->plainTextToken,
