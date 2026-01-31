@@ -22,6 +22,7 @@ class AmenityController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/amenities',
         summary: 'List all amenities',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Amenities'],
         parameters: [
             new OA\Parameter(name: 'filter[category]', in: 'query', schema: new OA\Schema(type: 'string', enum: ['compound', 'property', 'both'])),
@@ -63,6 +64,7 @@ class AmenityController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/amenities',
         summary: 'Create a new amenity',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Amenities'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -112,6 +114,7 @@ class AmenityController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/{id}',
         summary: 'Get amenity details',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Amenities'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -150,6 +153,7 @@ class AmenityController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/{id}',
         summary: 'Update an amenity',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Amenities'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -196,6 +200,7 @@ class AmenityController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/{id}',
         summary: 'Delete an amenity',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Amenities'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -240,6 +245,7 @@ class AmenityController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/reorder',
         summary: 'Reorder amenities',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Amenities'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -275,6 +281,7 @@ class AmenityController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/for-compounds',
         summary: 'Get amenities available for compounds',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Amenities'],
         responses: [
             new OA\Response(response: 200, description: 'List of compound amenities'),
@@ -295,6 +302,7 @@ class AmenityController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/amenities/for-properties',
         summary: 'Get amenities available for properties',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Amenities'],
         responses: [
             new OA\Response(response: 200, description: 'List of property amenities'),

@@ -29,6 +29,7 @@ class PropertyController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties',
         summary: 'List all properties',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Properties'],
         parameters: [
             new OA\Parameter(name: 'filter[area_id]', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -71,6 +72,7 @@ class PropertyController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties',
         summary: 'Create a new property',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Properties'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -110,6 +112,7 @@ class PropertyController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{id}',
         summary: 'Get property details',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Properties'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -154,6 +157,7 @@ class PropertyController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{id}',
         summary: 'Update a property',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Properties'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -200,6 +204,7 @@ class PropertyController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{id}',
         summary: 'Delete a property',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Properties'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -240,6 +245,7 @@ class PropertyController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/bulk',
         summary: 'Perform bulk action on properties',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Properties'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -268,6 +274,7 @@ class PropertyController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/statistics',
         summary: 'Get property statistics',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Properties'],
         responses: [
             new OA\Response(response: 200, description: 'Property statistics'),

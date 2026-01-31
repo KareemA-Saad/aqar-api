@@ -40,7 +40,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments',
         summary: 'List appointments',
         description: 'Get paginated list of appointments with optional filters',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(
@@ -153,7 +153,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments',
         summary: 'Create appointment',
         description: 'Create a new appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(
@@ -203,7 +203,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/{id}',
         summary: 'Get appointment',
         description: 'Get a single appointment by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(
@@ -254,7 +254,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/{id}',
         summary: 'Update appointment',
         description: 'Update an existing appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(
@@ -312,7 +312,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/{id}',
         summary: 'Delete appointment',
         description: 'Delete an appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(
@@ -361,7 +361,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/{id}/toggle-status',
         summary: 'Toggle appointment status',
         description: 'Toggle the active/inactive status of an appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(
@@ -414,7 +414,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/{id}/clone',
         summary: 'Clone appointment',
         description: 'Create a copy of an existing appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(
@@ -473,7 +473,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bulk-delete',
         summary: 'Bulk delete appointments',
         description: 'Delete multiple appointments at once',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(
@@ -528,7 +528,7 @@ final class AppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/package-limit',
         summary: 'Check package limit',
         description: 'Check if more appointments can be created based on package limits',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointments']
     )]
     #[OA\Parameter(

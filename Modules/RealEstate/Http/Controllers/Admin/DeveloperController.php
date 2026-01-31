@@ -23,6 +23,7 @@ class DeveloperController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/developers',
         summary: 'List all developers',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Developers'],
         parameters: [
             new OA\Parameter(name: 'filter[is_featured]', in: 'query', schema: new OA\Schema(type: 'boolean')),
@@ -75,6 +76,7 @@ class DeveloperController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/developers',
         summary: 'Create a new developer',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Developers'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -120,6 +122,7 @@ class DeveloperController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/developers/{id}',
         summary: 'Get developer details',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Developers'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -160,6 +163,7 @@ class DeveloperController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/developers/{id}',
         summary: 'Update a developer',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Developers'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -189,6 +193,7 @@ class DeveloperController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/developers/{id}',
         summary: 'Delete a developer',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Developers'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

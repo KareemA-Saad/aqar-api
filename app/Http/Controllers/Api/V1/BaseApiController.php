@@ -54,6 +54,13 @@ use OpenApi\Attributes as OA;
     bearerFormat: 'JWT',
     description: 'Tenant user authentication token. Login via /api/v1/tenant/{tenant}/auth/login to obtain token.'
 )]
+#[OA\SecurityScheme(
+    securityScheme: 'sanctum_tenant_admin',
+    type: 'http',
+    scheme: 'bearer',
+    bearerFormat: 'JWT',
+    description: 'Tenant admin authentication token. Obtained via /api/v1/tenants/{tenant}/switch endpoint for tenant owners to access admin panel features (Guard: api_tenant_admin).'
+)]
 #[OA\Tag(
     name: 'Admin Authentication',
     description: 'Authentication endpoints for platform administrators (Guard: api_admin)'

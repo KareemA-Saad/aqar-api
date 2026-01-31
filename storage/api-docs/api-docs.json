@@ -12002,7 +12002,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -12051,7 +12056,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/amenities/{id}": {
@@ -12104,7 +12114,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -12169,7 +12184,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -12221,7 +12241,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/amenities/reorder": {
@@ -12254,7 +12279,12 @@
                     "200": {
                         "description": "Amenities reordered"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/amenities/for-compounds": {
@@ -12269,7 +12299,12 @@
                     "200": {
                         "description": "List of compound amenities"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/amenities/for-properties": {
@@ -12284,7 +12319,12 @@
                     "200": {
                         "description": "List of property amenities"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/areas": {
@@ -12347,7 +12387,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -12396,7 +12441,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/areas/tree": {
@@ -12426,7 +12476,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/areas/{id}": {
@@ -12479,7 +12534,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -12515,7 +12575,12 @@
                     "404": {
                         "description": "Area not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -12544,7 +12609,12 @@
                     "422": {
                         "description": "Cannot delete area with children"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/areas/reorder": {
@@ -12577,7 +12647,12 @@
                     "200": {
                         "description": "Areas reordered"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/areas/statistics": {
@@ -12592,7 +12667,12 @@
                     "200": {
                         "description": "Area statistics"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/areas/{id}/children": {
@@ -12617,7 +12697,12 @@
                     "200": {
                         "description": "Child areas"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/compounds": {
@@ -12680,7 +12765,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -12729,7 +12819,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}": {
@@ -12782,7 +12877,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -12847,7 +12947,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -12899,7 +13004,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/compounds/bulk": {
@@ -12924,7 +13034,12 @@
                     "200": {
                         "description": "Bulk action completed"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/compounds/statistics": {
@@ -12939,7 +13054,12 @@
                     "200": {
                         "description": "Compound statistics"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}/update-prices": {
@@ -12964,7 +13084,12 @@
                     "200": {
                         "description": "Prices updated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/developers": {
@@ -13027,7 +13152,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -13076,7 +13206,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/developers/{id}": {
@@ -13129,7 +13264,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -13165,7 +13305,12 @@
                     "404": {
                         "description": "Developer not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -13194,7 +13339,12 @@
                     "422": {
                         "description": "Cannot delete developer with compounds"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images": {
@@ -13320,7 +13470,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/compounds/{compound}/images": {
@@ -13439,7 +13594,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/reorder": {
@@ -13493,7 +13653,12 @@
                     "200": {
                         "description": "Images reordered successfully"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/{image}/primary": {
@@ -13526,7 +13691,12 @@
                     "200": {
                         "description": "Primary image updated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/{image}": {
@@ -13559,7 +13729,12 @@
                     "200": {
                         "description": "Image deleted"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/compounds/{compound}/images/{image}": {
@@ -13592,7 +13767,12 @@
                     "200": {
                         "description": "Image deleted"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/properties": {
@@ -13673,7 +13853,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -13722,7 +13907,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/properties/{id}": {
@@ -13775,7 +13965,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -13840,7 +14035,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -13892,7 +14092,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/properties/bulk": {
@@ -13917,7 +14122,12 @@
                     "200": {
                         "description": "Bulk action completed"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/properties/statistics": {
@@ -13932,7 +14142,12 @@
                     "200": {
                         "description": "Property statistics"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries": {
@@ -14009,7 +14224,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}": {
@@ -14062,7 +14282,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -14127,7 +14352,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -14179,7 +14409,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries/statistics": {
@@ -14206,7 +14441,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/contacted": {
@@ -14247,7 +14487,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/qualified": {
@@ -14288,7 +14533,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/converted": {
@@ -14329,7 +14579,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/assign": {
@@ -14385,7 +14640,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries/bulk-status": {
@@ -14438,7 +14698,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/inquiries/export": {
@@ -14478,7 +14743,12 @@
                     "200": {
                         "description": "Exported inquiries data"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/property-types": {
@@ -14524,7 +14794,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "post": {
                 "tags": [
@@ -14573,7 +14848,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/property-types/{id}": {
@@ -14626,7 +14906,12 @@
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -14662,7 +14947,12 @@
                     "404": {
                         "description": "Property type not found"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             },
             "delete": {
                 "tags": [
@@ -14691,7 +14981,12 @@
                     "422": {
                         "description": "Cannot delete property type with properties"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/admin/realestate/property-types/reorder": {
@@ -14724,7 +15019,12 @@
                     "200": {
                         "description": "Property types reordered"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "sanctum_tenant_admin": []
+                    }
+                ]
             }
         },
         "/api/v1/tenant/{tenant}/agent/realestate/dashboard": {
@@ -28038,8 +28338,8 @@
                 "tags": [
                     "Tenant Management"
                 ],
-                "summary": "Switch tenant context (new token)",
-                "description": "Switch to a specific tenant context and receive a new token scoped to that tenant. Use this token to access tenant-specific resources.",
+                "summary": "Switch tenant context (admin token)",
+                "description": "Switch to a specific tenant context and receive a tenant admin token (api_tenant_admin guard). Use this token to access tenant admin panel features like RealEstate admin endpoints. The token is created on the Admin model in the tenant database.",
                 "operationId": "67fc6f3bf015dc77f37443d0efb509e0",
                 "parameters": [
                     {
@@ -28055,7 +28355,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Tenant context switched successfully - use the new token for tenant-specific requests",
+                        "description": "Tenant admin token generated successfully - use this token for admin endpoints (RealEstate admin, etc.)",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -28074,7 +28374,7 @@
                                                     "$ref": "#/components/schemas/TenantResource"
                                                 },
                                                 "token": {
-                                                    "description": "New tenant-scoped token",
+                                                    "description": "Tenant admin token (sanctum_tenant_admin) - use for admin endpoints",
                                                     "type": "string",
                                                     "example": "3|abcdef123456..."
                                                 },
@@ -44308,6 +44608,12 @@
                 "scheme": "bearer",
                 "bearerFormat": "JWT",
                 "description": "Tenant user authentication token (Guard: api_tenant_user). Use login endpoint to get token."
+            },
+            "sanctum_tenant_admin": {
+                "type": "http",
+                "description": "Tenant admin authentication token. Obtained via /api/v1/tenants/{tenant}/switch endpoint for tenant owners to access admin panel features (Guard: api_tenant_admin).",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     },

@@ -49,6 +49,7 @@ class MediaController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images',
         summary: 'Upload property images',
         description: 'Upload multiple images for a property with automatic thumbnail generation',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Media'],
         parameters: [
             new OA\Parameter(name: 'property', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -174,6 +175,7 @@ class MediaController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{compound}/images',
         summary: 'Upload compound images',
         description: 'Upload multiple images for a compound (gallery, master plan, unit plans)',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Media'],
         parameters: [
             new OA\Parameter(name: 'compound', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -292,6 +294,7 @@ class MediaController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/reorder',
         summary: 'Reorder property images',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Media'],
         parameters: [
             new OA\Parameter(name: 'property', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -341,6 +344,7 @@ class MediaController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/{image}/primary',
         summary: 'Set primary property image',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Media'],
         parameters: [
             new OA\Parameter(name: 'property', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -378,6 +382,7 @@ class MediaController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/properties/{property}/images/{image}',
         summary: 'Delete property image',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Media'],
         parameters: [
             new OA\Parameter(name: 'property', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -409,6 +414,7 @@ class MediaController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{compound}/images/{image}',
         summary: 'Delete compound image',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Media'],
         parameters: [
             new OA\Parameter(name: 'compound', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

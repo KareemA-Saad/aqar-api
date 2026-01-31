@@ -39,7 +39,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings',
         summary: 'List bookings',
         description: 'Get paginated list of appointment bookings with optional filters',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -159,7 +159,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/{id}',
         summary: 'Get booking',
         description: 'Get a single booking by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -210,7 +210,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/{id}/status',
         summary: 'Update booking status',
         description: 'Update the status of a booking',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -278,7 +278,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/{id}/confirm',
         summary: 'Confirm booking',
         description: 'Confirm a pending booking',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -324,7 +324,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/{id}/complete',
         summary: 'Complete booking',
         description: 'Mark a booking as completed',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -370,7 +370,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/{id}/cancel',
         summary: 'Cancel booking',
         description: 'Cancel a booking',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -424,7 +424,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/{id}/reschedule',
         summary: 'Reschedule booking',
         description: 'Reschedule a booking to a new date/time',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -484,7 +484,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/{id}/approve-payment',
         summary: 'Approve manual payment',
         description: 'Approve a manual payment and confirm the booking',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -530,7 +530,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/{id}',
         summary: 'Delete booking',
         description: 'Delete a booking record',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -573,7 +573,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/stats',
         summary: 'Get booking statistics',
         description: 'Get booking statistics and analytics',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
@@ -642,7 +642,7 @@ final class BookingController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/bookings/bulk-status',
         summary: 'Bulk update status',
         description: 'Update status for multiple bookings at once',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Bookings']
     )]
     #[OA\Parameter(
