@@ -575,15 +575,15 @@ final class TenantController extends BaseApiController
     /**
      * Switch tenant context and get new token.
      *
-     * Issues a new token scoped to the specified tenant.
+     * Issues a new tenant admin token for accessing admin panel features.
      *
      * @param string $id
      * @return JsonResponse
      */
     #[OA\Post(
         path: '/api/v1/tenants/{id}/switch',
-        summary: 'Switch tenant context (new token)',
-        description: 'Switch to a specific tenant context and receive a new token scoped to that tenant. Use this token to access tenant-specific resources.',
+        summary: 'Switch tenant context (admin token)',
+        description: 'Switch to a specific tenant context and receive a tenant admin token (api_tenant_admin guard). Use this token to access tenant admin panel features like RealEstate admin endpoints. The token is created on the Admin model in the tenant database.',
         security: [['sanctum_user' => []]],
         tags: ['Tenant Management']
     )]
@@ -596,7 +596,7 @@ final class TenantController extends BaseApiController
     )]
     #[OA\Response(
         response: 200,
-        description: 'Tenant context switched successfully - use the new token for tenant-specific requests',
+        description: 'Tenant admin token generated successfully - use this token for admin endpoints (RealEstate admin, etc.)',
         content: new OA\JsonContent(
             properties: [
                 new OA\Property(property: 'success', type: 'boolean', example: true),
@@ -605,7 +605,7 @@ final class TenantController extends BaseApiController
                     property: 'data',
                     properties: [
                         new OA\Property(property: 'tenant', ref: '#/components/schemas/TenantResource'),
-                        new OA\Property(property: 'token', type: 'string', example: '3|abcdef123456...', description: 'New tenant-scoped token'),
+                        new OA\Property(property: 'token', type: 'string', example: '3|abcdef123456...', description: 'Tenant admin token (sanctum_tenant_admin) - use for admin endpoints'),
                         new OA\Property(property: 'token_type', type: 'string', example: 'Bearer'),
                         new OA\Property(property: 'expires_at', type: 'string', format: 'date-time', example: '2024-12-31T23:59:59.000000Z'),
                     ],

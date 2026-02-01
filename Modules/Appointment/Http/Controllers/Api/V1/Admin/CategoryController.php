@@ -35,7 +35,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/categories',
         summary: 'List categories',
         description: 'Get all appointment categories with their subcategories',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -96,7 +96,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/categories',
         summary: 'Create category',
         description: 'Create a new appointment category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -144,7 +144,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/categories/{id}',
         summary: 'Get category',
         description: 'Get a single category by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -195,7 +195,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/categories/{id}',
         summary: 'Update category',
         description: 'Update an existing category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -256,7 +256,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/categories/{id}',
         summary: 'Delete category',
         description: 'Delete a category and optionally its subcategories',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -307,7 +307,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/categories/{id}/toggle-status',
         summary: 'Toggle category status',
         description: 'Toggle the active/inactive status of a category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -359,7 +359,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/categories/{categoryId}/subcategories',
         summary: 'List subcategories',
         description: 'Get all subcategories for a category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -404,7 +404,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/categories/{categoryId}/subcategories',
         summary: 'Create subcategory',
         description: 'Create a new subcategory under a category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -467,7 +467,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/subcategories/{id}',
         summary: 'Update subcategory',
         description: 'Update an existing subcategory',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(
@@ -530,7 +530,7 @@ final class CategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/subcategories/{id}',
         summary: 'Delete subcategory',
         description: 'Delete a subcategory',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Categories']
     )]
     #[OA\Parameter(

@@ -26,6 +26,7 @@ class PropertyInquiryController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries',
         summary: 'List all inquiries',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'filter[property_id]', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -76,6 +77,7 @@ class PropertyInquiryController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}',
         summary: 'Get inquiry details',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -120,6 +122,7 @@ class PropertyInquiryController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}',
         summary: 'Update inquiry',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -178,6 +181,7 @@ class PropertyInquiryController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}',
         summary: 'Delete an inquiry',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -218,6 +222,7 @@ class PropertyInquiryController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/statistics',
         summary: 'Get inquiry statistics',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         responses: [
             new OA\Response(
@@ -244,6 +249,7 @@ class PropertyInquiryController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/contacted',
         summary: 'Mark inquiry as contacted',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -277,6 +283,7 @@ class PropertyInquiryController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/qualified',
         summary: 'Mark inquiry as qualified',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -310,6 +317,7 @@ class PropertyInquiryController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/converted',
         summary: 'Mark inquiry as converted',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -343,6 +351,7 @@ class PropertyInquiryController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/{id}/assign',
         summary: 'Assign agent to inquiry',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -388,6 +397,7 @@ class PropertyInquiryController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/bulk-status',
         summary: 'Bulk update inquiry status',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -436,6 +446,7 @@ class PropertyInquiryController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/inquiries/export',
         summary: 'Export inquiries',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Inquiries'],
         parameters: [
             new OA\Parameter(name: 'status', in: 'query', schema: new OA\Schema(type: 'string')),

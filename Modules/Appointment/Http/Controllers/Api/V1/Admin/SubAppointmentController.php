@@ -36,7 +36,7 @@ final class SubAppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/sub-appointments',
         summary: 'List sub-appointments',
         description: 'Get paginated list of sub-appointments with optional filters',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Sub Appointments']
     )]
     #[OA\Parameter(
@@ -161,7 +161,7 @@ final class SubAppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/sub-appointments',
         summary: 'Create sub-appointment',
         description: 'Create a new sub-appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Sub Appointments']
     )]
     #[OA\Parameter(
@@ -234,7 +234,7 @@ final class SubAppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/sub-appointments/{id}',
         summary: 'Get sub-appointment',
         description: 'Get a single sub-appointment by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Sub Appointments']
     )]
     #[OA\Parameter(
@@ -285,7 +285,7 @@ final class SubAppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/sub-appointments/{id}',
         summary: 'Update sub-appointment',
         description: 'Update an existing sub-appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Sub Appointments']
     )]
     #[OA\Parameter(
@@ -377,7 +377,7 @@ final class SubAppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/sub-appointments/{id}',
         summary: 'Delete sub-appointment',
         description: 'Delete a sub-appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Sub Appointments']
     )]
     #[OA\Parameter(
@@ -436,7 +436,7 @@ final class SubAppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/sub-appointments/{id}/toggle-status',
         summary: 'Toggle sub-appointment status',
         description: 'Toggle the active/inactive status of a sub-appointment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Sub Appointments']
     )]
     #[OA\Parameter(
@@ -489,7 +489,7 @@ final class SubAppointmentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/sub-appointments/bulk-delete',
         summary: 'Bulk delete sub-appointments',
         description: 'Delete multiple sub-appointments at once',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Sub Appointments']
     )]
     #[OA\Parameter(

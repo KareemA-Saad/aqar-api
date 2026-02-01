@@ -40,7 +40,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules',
         summary: 'List all schedules',
         description: 'Get all appointment days with their time slots',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -87,7 +87,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/availability',
         summary: 'Get availability for date',
         description: 'Get available and booked slots for a specific date',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -156,7 +156,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/availability-range',
         summary: 'Get availability for date range',
         description: 'Get availability summary for a range of dates',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -221,7 +221,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/days',
         summary: 'Create day',
         description: 'Create a new appointment day (max 7 days)',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -272,7 +272,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/days/{id}',
         summary: 'Update day',
         description: 'Update an appointment day',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -329,7 +329,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/days/{id}',
         summary: 'Delete day',
         description: 'Delete a day and all its schedules',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -372,7 +372,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/days/{id}/toggle-status',
         summary: 'Toggle day status',
         description: 'Toggle the active/inactive status of a day',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -421,7 +421,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/slots',
         summary: 'Create time slot',
         description: 'Create a new time slot for a day',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -476,7 +476,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/slots/{id}',
         summary: 'Update time slot',
         description: 'Update an existing time slot',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -539,7 +539,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/slots/{id}',
         summary: 'Delete time slot',
         description: 'Delete a time slot',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -582,7 +582,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/slots/{id}/block',
         summary: 'Block time slot',
         description: 'Block a time slot (set status to inactive)',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -622,7 +622,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/slots/{id}/unblock',
         summary: 'Unblock time slot',
         description: 'Unblock a time slot (set status to active)',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -668,7 +668,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/day-types',
         summary: 'List day types',
         description: 'Get all day types (Morning, Afternoon, Evening, etc.)',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -696,7 +696,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/day-types',
         summary: 'Create day type',
         description: 'Create a new day type',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -741,7 +741,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/day-types/{id}',
         summary: 'Update day type',
         description: 'Update an existing day type',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(
@@ -798,7 +798,7 @@ final class ScheduleController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/appointments/schedules/day-types/{id}',
         summary: 'Delete day type',
         description: 'Delete a day type',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Appointment Schedules']
     )]
     #[OA\Parameter(

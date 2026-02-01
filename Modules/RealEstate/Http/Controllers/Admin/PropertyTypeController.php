@@ -22,6 +22,7 @@ class PropertyTypeController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/property-types',
         summary: 'List all property types',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Property Types'],
         parameters: [
             new OA\Parameter(name: 'filter[status]', in: 'query', schema: new OA\Schema(type: 'boolean')),
@@ -63,6 +64,7 @@ class PropertyTypeController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/property-types',
         summary: 'Create a new property type',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Property Types'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -112,6 +114,7 @@ class PropertyTypeController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/property-types/{id}',
         summary: 'Get property type details',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Property Types'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -152,6 +155,7 @@ class PropertyTypeController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/property-types/{id}',
         summary: 'Update a property type',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Property Types'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -181,6 +185,7 @@ class PropertyTypeController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/property-types/{id}',
         summary: 'Delete a property type',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Property Types'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -212,6 +217,7 @@ class PropertyTypeController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/property-types/reorder',
         summary: 'Reorder property types',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Property Types'],
         requestBody: new OA\RequestBody(
             required: true,

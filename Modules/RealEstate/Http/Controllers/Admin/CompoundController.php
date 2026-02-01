@@ -29,6 +29,7 @@ class CompoundController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds',
         summary: 'List all compounds',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Compounds'],
         parameters: [
             new OA\Parameter(name: 'filter[area_id]', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -69,6 +70,7 @@ class CompoundController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds',
         summary: 'Create a new compound',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Compounds'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -108,6 +110,7 @@ class CompoundController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}',
         summary: 'Get compound details',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Compounds'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -152,6 +155,7 @@ class CompoundController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}',
         summary: 'Update a compound',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Compounds'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -198,6 +202,7 @@ class CompoundController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}',
         summary: 'Delete a compound',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Compounds'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -238,6 +243,7 @@ class CompoundController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/bulk',
         summary: 'Perform bulk action on compounds',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Compounds'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -266,6 +272,7 @@ class CompoundController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/statistics',
         summary: 'Get compound statistics',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Compounds'],
         responses: [
             new OA\Response(response: 200, description: 'Compound statistics'),
@@ -284,6 +291,7 @@ class CompoundController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/compounds/{id}/update-prices',
         summary: 'Recalculate compound price range from properties',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Compounds'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

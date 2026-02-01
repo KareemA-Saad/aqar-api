@@ -27,6 +27,7 @@ class AreaController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas',
         summary: 'List all areas',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         parameters: [
             new OA\Parameter(name: 'filter[parent_id]', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -75,6 +76,7 @@ class AreaController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas/tree',
         summary: 'Get areas as hierarchical tree',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         responses: [
             new OA\Response(
@@ -107,6 +109,7 @@ class AreaController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas',
         summary: 'Create a new area',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -146,6 +149,7 @@ class AreaController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas/{id}',
         summary: 'Get area details',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -190,6 +194,7 @@ class AreaController extends Controller
     #[OA\Put(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas/{id}',
         summary: 'Update an area',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -223,6 +228,7 @@ class AreaController extends Controller
     #[OA\Delete(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas/{id}',
         summary: 'Delete an area',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -252,6 +258,7 @@ class AreaController extends Controller
     #[OA\Post(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas/reorder',
         summary: 'Reorder areas',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         requestBody: new OA\RequestBody(
             required: true,
@@ -285,6 +292,7 @@ class AreaController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas/statistics',
         summary: 'Get area statistics',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         responses: [
             new OA\Response(response: 200, description: 'Area statistics'),
@@ -303,6 +311,7 @@ class AreaController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/admin/realestate/areas/{id}/children',
         summary: 'Get child areas',
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Admin - Areas'],
         parameters: [
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
