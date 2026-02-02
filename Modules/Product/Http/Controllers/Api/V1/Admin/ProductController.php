@@ -40,7 +40,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products',
         summary: 'List all products',
         description: 'Get paginated list of all products with filters',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -143,7 +143,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products',
         summary: 'Create a new product',
         description: 'Create a new product with inventory, variants, and related data',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -219,7 +219,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/{id}',
         summary: 'Get a single product',
         description: 'Get detailed information about a product',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -272,7 +272,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/{id}',
         summary: 'Update a product',
         description: 'Update an existing product',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -325,7 +325,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/{id}',
         summary: 'Delete a product',
         description: 'Soft delete a product',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -364,7 +364,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/bulk-delete',
         summary: 'Bulk delete products',
         description: 'Delete multiple products at once',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\RequestBody(
@@ -408,7 +408,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/{id}/toggle-status',
         summary: 'Toggle product status',
         description: 'Toggle product between active and inactive status',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -443,7 +443,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/{id}/variants',
         summary: 'Add product variant',
         description: 'Add a new color/size variant to a product',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -494,7 +494,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/{id}/variants/{variantId}',
         summary: 'Update product variant',
         description: 'Update an existing product variant',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -536,7 +536,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/{id}/variants/{variantId}',
         summary: 'Delete product variant',
         description: 'Delete a product variant',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(
@@ -575,7 +575,7 @@ final class ProductController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/products/{id}/stock',
         summary: 'Update product stock',
         description: 'Update stock count for a product or variant',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Products']
     )]
     #[OA\Parameter(

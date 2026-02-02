@@ -98,7 +98,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin endpoints for managing events, categories, comments, and bookings.
     | Requires authentication, active subscription, and event feature enabled.
     */
-    Route::middleware(['auth:sanctum', 'tenancy.token', 'tenant.context', 'package.active', 'feature:event'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:event'])
         ->prefix('admin')
         ->name('admin.')
         ->group(function () {

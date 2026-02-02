@@ -21,7 +21,7 @@ class TagController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/tags',
         summary: 'List all tags',
         tags: ['Admin - Tags'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -55,7 +55,7 @@ class TagController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/tags',
         summary: 'Create a new tag',
         tags: ['Admin - Tags'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -90,7 +90,7 @@ class TagController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/tags/{id}',
         summary: 'Get a specific tag',
         tags: ['Admin - Tags'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -113,7 +113,7 @@ class TagController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/tags/{id}',
         summary: 'Update a tag',
         tags: ['Admin - Tags'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -142,7 +142,7 @@ class TagController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/tags/{id}',
         summary: 'Delete a tag',
         tags: ['Admin - Tags'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

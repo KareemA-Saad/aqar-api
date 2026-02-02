@@ -44,7 +44,7 @@ final class BlogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/posts',
         summary: 'List blog posts',
         description: 'Get paginated list of blog posts with optional filters',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog']
     )]
     #[OA\Parameter(
@@ -160,7 +160,7 @@ final class BlogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/posts',
         summary: 'Create blog post',
         description: 'Create a new blog post',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog']
     )]
     #[OA\Parameter(
@@ -208,7 +208,7 @@ final class BlogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/posts/{id}',
         summary: 'Get blog post',
         description: 'Get a specific blog post by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog']
     )]
     #[OA\Parameter(
@@ -263,7 +263,7 @@ final class BlogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/posts/{id}',
         summary: 'Update blog post',
         description: 'Update an existing blog post',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog']
     )]
     #[OA\Parameter(
@@ -324,7 +324,7 @@ final class BlogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/posts/{id}',
         summary: 'Delete blog post',
         description: 'Delete a blog post',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog']
     )]
     #[OA\Parameter(
@@ -376,7 +376,7 @@ final class BlogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/posts/{id}/toggle-status',
         summary: 'Toggle blog post status',
         description: 'Toggle the publish status of a blog post',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog']
     )]
     #[OA\Parameter(
@@ -434,7 +434,7 @@ final class BlogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/posts/bulk-action',
         summary: 'Bulk action on blog posts',
         description: 'Perform bulk action (delete, publish, unpublish) on multiple blog posts',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog']
     )]
     #[OA\Parameter(

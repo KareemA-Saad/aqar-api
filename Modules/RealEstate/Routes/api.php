@@ -51,7 +51,7 @@ use Modules\RealEstate\Http\Controllers\Frontend\GalleryController;
 | - tenant.context - Ensures valid tenant context exists
 |
 | For admin routes, add:
-| - auth:api_tenant_admin - Requires admin authentication
+| - auth.tenant_admin - Requires admin authentication
 | - package.active - Checks subscription is not expired
 | - feature:realestate - Checks if real estate feature is allowed by plan
 */
@@ -191,7 +191,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     // ========================================
     // TIER 3: ADMIN ROUTES (Auth + Package + Feature)
     // ========================================
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:realestate'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:realestate'])
         ->prefix('admin/realestate')
         ->name('admin.realestate.')
         ->group(function () {

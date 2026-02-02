@@ -22,7 +22,7 @@ class BrandController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/brands',
         summary: 'List all brands',
         tags: ['Admin - Brands'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string')),
@@ -57,7 +57,7 @@ class BrandController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/brands',
         summary: 'Create a new brand',
         tags: ['Admin - Brands'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -106,7 +106,7 @@ class BrandController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/brands/{id}',
         summary: 'Get a specific brand',
         tags: ['Admin - Brands'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -129,7 +129,7 @@ class BrandController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/brands/{id}',
         summary: 'Update a brand',
         tags: ['Admin - Brands'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -169,7 +169,7 @@ class BrandController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/brands/{id}',
         summary: 'Delete a brand',
         tags: ['Admin - Brands'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

@@ -28,7 +28,7 @@ class InventoryController extends Controller
         summary: 'Get inventory for room type',
         description: 'Get inventory data for a room type within a date range',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -64,7 +64,7 @@ class InventoryController extends Controller
         summary: 'Update inventory for a date',
         description: 'Update inventory (price, availability) for a specific date',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -96,7 +96,7 @@ class InventoryController extends Controller
         summary: 'Bulk update inventory',
         description: 'Update inventory for a date range',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -131,7 +131,7 @@ class InventoryController extends Controller
         summary: 'Initialize inventory',
         description: 'Initialize inventory for a room type for the next N days',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -178,7 +178,7 @@ class InventoryController extends Controller
         summary: 'Block dates',
         description: 'Block room type for specific dates',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -224,7 +224,7 @@ class InventoryController extends Controller
         summary: 'Unblock dates',
         description: 'Unblock room type for specific dates',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -267,7 +267,7 @@ class InventoryController extends Controller
         summary: 'Set seasonal pricing',
         description: 'Set special pricing for a date range (optionally specific days of week)',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -317,7 +317,7 @@ class InventoryController extends Controller
         summary: 'Get calendar view',
         description: 'Get monthly calendar view of inventory',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -347,7 +347,7 @@ class InventoryController extends Controller
         summary: 'Get occupancy statistics',
         description: 'Get occupancy and revenue statistics for a date range',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -383,7 +383,7 @@ class InventoryController extends Controller
         summary: 'Sync inventory with room count',
         description: 'Sync inventory total rooms with actual room count',
         tags: ['Admin Inventory Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

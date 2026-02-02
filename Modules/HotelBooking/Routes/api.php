@@ -253,7 +253,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Protected routes for hotel booking management.
     | Requires authentication, tenant context, active package, and hotel-booking feature.
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:hotel-booking'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:hotel-booking'])
         ->prefix('admin')
         ->name('admin.')
         ->group(function () {

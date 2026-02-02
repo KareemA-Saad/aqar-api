@@ -188,6 +188,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         // Tenant switching - get new token with tenant context
         Route::post('{tenant}/switch', [TenantController::class, 'switchTenant'])->name('switch');
 
+        // Exit tenant context - revoke tenant admin token
+        Route::delete('{tenant}/exit', [TenantController::class, 'exitTenant'])->name('exit');
+
         // Database status and management
         Route::get('{tenant}/database-status', [TenantController::class, 'databaseStatus'])->name('database-status');
         Route::post('{tenant}/setup-database', [TenantController::class, 'setupDatabase'])->name('setup-database');

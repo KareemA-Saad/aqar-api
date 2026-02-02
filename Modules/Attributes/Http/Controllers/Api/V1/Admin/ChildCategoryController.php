@@ -22,7 +22,7 @@ class ChildCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/child-categories',
         summary: 'List all child-categories',
         tags: ['Admin - Child-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string')),
@@ -60,7 +60,7 @@ class ChildCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/child-categories',
         summary: 'Create a new child-category',
         tags: ['Admin - Child-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -109,7 +109,7 @@ class ChildCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/child-categories/{id}',
         summary: 'Get a specific child-category',
         tags: ['Admin - Child-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -132,7 +132,7 @@ class ChildCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/child-categories/{id}',
         summary: 'Update a child-category',
         tags: ['Admin - Child-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -172,7 +172,7 @@ class ChildCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/child-categories/{id}',
         summary: 'Delete a child-category',
         tags: ['Admin - Child-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

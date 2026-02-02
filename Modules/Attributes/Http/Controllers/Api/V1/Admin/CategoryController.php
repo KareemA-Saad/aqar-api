@@ -32,7 +32,7 @@ class CategoryController extends Controller
         summary: 'List all categories',
         description: 'Returns paginated list of categories',
         tags: ['Admin - Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string')),
@@ -88,7 +88,7 @@ class CategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/categories',
         summary: 'Create a new category',
         tags: ['Admin - Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -133,7 +133,7 @@ class CategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/categories/{id}',
         summary: 'Get a specific category',
         tags: ['Admin - Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -162,7 +162,7 @@ class CategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/categories/{id}',
         summary: 'Update a category',
         tags: ['Admin - Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -211,7 +211,7 @@ class CategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/categories/{id}',
         summary: 'Delete a category',
         tags: ['Admin - Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -240,7 +240,7 @@ class CategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/categories/bulk-delete',
         summary: 'Bulk delete categories',
         tags: ['Admin - Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))

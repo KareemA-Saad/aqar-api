@@ -56,7 +56,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     |--------------------------------------------------------------------------
     | Protected routes for category management.
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:ecommerce'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:ecommerce'])
         ->prefix('admin/categories')
         ->name('admin.categories.')
         ->group(function () {
@@ -73,7 +73,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin Sub-Category Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:ecommerce'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:ecommerce'])
         ->prefix('admin/sub-categories')
         ->name('admin.sub-categories.')
         ->group(function () {
@@ -89,7 +89,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin Child-Category Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:ecommerce'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:ecommerce'])
         ->prefix('admin/child-categories')
         ->name('admin.child-categories.')
         ->group(function () {
@@ -105,7 +105,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin Brand Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:ecommerce'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:ecommerce'])
         ->prefix('admin/brands')
         ->name('admin.brands.')
         ->group(function () {
@@ -121,7 +121,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin Color Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:ecommerce'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:ecommerce'])
         ->prefix('admin/colors')
         ->name('admin.colors.')
         ->group(function () {
@@ -137,7 +137,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin Size Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:ecommerce'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:ecommerce'])
         ->prefix('admin/sizes')
         ->name('admin.sizes.')
         ->group(function () {
@@ -153,7 +153,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin Tag Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:ecommerce'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:ecommerce'])
         ->prefix('admin/tags')
         ->name('admin.tags.')
         ->group(function () {

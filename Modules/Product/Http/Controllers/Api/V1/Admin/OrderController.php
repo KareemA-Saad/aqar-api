@@ -36,7 +36,7 @@ final class OrderController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/orders',
         summary: 'List all orders',
         description: 'Get paginated list of all orders with filters',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Orders']
     )]
     #[OA\Parameter(
@@ -123,7 +123,7 @@ final class OrderController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/orders/{id}',
         summary: 'Get a single order',
         description: 'Get detailed information about an order',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Orders']
     )]
     #[OA\Parameter(
@@ -176,7 +176,7 @@ final class OrderController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/orders/{id}/status',
         summary: 'Update order status',
         description: 'Update the status of an order',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Orders']
     )]
     #[OA\Parameter(
@@ -238,7 +238,7 @@ final class OrderController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/orders/{id}/payment-status',
         summary: 'Update payment status',
         description: 'Update the payment status of an order',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Orders']
     )]
     #[OA\Parameter(
@@ -306,7 +306,7 @@ final class OrderController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/orders/{id}/cancel',
         summary: 'Cancel an order',
         description: 'Cancel an order and restore inventory',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Orders']
     )]
     #[OA\Parameter(
@@ -361,7 +361,7 @@ final class OrderController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/orders/statistics',
         summary: 'Get order statistics',
         description: 'Get order and revenue statistics',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Orders']
     )]
     #[OA\Parameter(

@@ -33,7 +33,7 @@ class BookingController extends Controller
         summary: 'List all bookings',
         description: 'Get paginated list of all bookings with optional filters',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'page', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -61,7 +61,7 @@ class BookingController extends Controller
         summary: 'Get booking details',
         description: 'Get detailed information about a specific booking',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -94,7 +94,7 @@ class BookingController extends Controller
         summary: 'Update booking status',
         description: 'Update the status of a booking',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -130,7 +130,7 @@ class BookingController extends Controller
         summary: 'Confirm booking',
         description: 'Confirm a pending booking',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -157,7 +157,7 @@ class BookingController extends Controller
         summary: 'Check-in guest',
         description: 'Process check-in for a confirmed booking',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -192,7 +192,7 @@ class BookingController extends Controller
         summary: 'Check-out guest',
         description: 'Process check-out for a checked-in booking',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -227,7 +227,7 @@ class BookingController extends Controller
         summary: 'Cancel booking',
         description: 'Cancel a booking and optionally process refund',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -273,7 +273,7 @@ class BookingController extends Controller
         summary: 'Mark as no-show',
         description: 'Mark a confirmed booking as no-show',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -308,7 +308,7 @@ class BookingController extends Controller
         summary: 'Process refund',
         description: 'Process refund for a cancelled booking',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -351,7 +351,7 @@ class BookingController extends Controller
         summary: 'Check refund eligibility',
         description: 'Check if a booking is eligible for refund and calculate amount',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -377,7 +377,7 @@ class BookingController extends Controller
         summary: 'Get today\'s arrivals',
         description: 'Get all bookings with check-in today',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -402,7 +402,7 @@ class BookingController extends Controller
         summary: 'Get today\'s departures',
         description: 'Get all bookings with check-out today',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -427,7 +427,7 @@ class BookingController extends Controller
         summary: 'Get in-house guests',
         description: 'Get all currently checked-in guests',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -452,7 +452,7 @@ class BookingController extends Controller
         summary: 'Get booking statistics',
         description: 'Get booking statistics for a period',
         tags: ['Admin Booking Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotel_id', in: 'query', schema: new OA\Schema(type: 'integer')),

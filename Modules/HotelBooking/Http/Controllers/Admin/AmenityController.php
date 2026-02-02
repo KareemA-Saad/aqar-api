@@ -27,7 +27,7 @@ class AmenityController extends Controller
         summary: 'List all amenities',
         description: 'Get paginated list of all amenities',
         tags: ['Admin Amenity Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'page', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -59,7 +59,7 @@ class AmenityController extends Controller
         summary: 'Create amenity',
         description: 'Create a new amenity',
         tags: ['Admin Amenity Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
         ],
@@ -89,7 +89,7 @@ class AmenityController extends Controller
         summary: 'Get amenity details',
         description: 'Get detailed information about a specific amenity',
         tags: ['Admin Amenity Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -122,7 +122,7 @@ class AmenityController extends Controller
         summary: 'Update amenity',
         description: 'Update an existing amenity',
         tags: ['Admin Amenity Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -154,7 +154,7 @@ class AmenityController extends Controller
         summary: 'Delete amenity',
         description: 'Delete an amenity',
         tags: ['Admin Amenity Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -180,7 +180,7 @@ class AmenityController extends Controller
         summary: 'Toggle amenity status',
         description: 'Toggle the active/inactive status of an amenity',
         tags: ['Admin Amenity Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
