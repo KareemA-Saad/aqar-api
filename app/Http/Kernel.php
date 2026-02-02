@@ -74,6 +74,7 @@ class Kernel extends HttpKernel
         'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
         'auth.user' => \App\Http\Middleware\AuthenticateUser::class,
         'auth.tenant_user' => \App\Http\Middleware\AuthenticateTenantUser::class,
+        'auth.tenant_admin' => \App\Http\Middleware\AuthenticateTenantAdmin::class,
 
         // Tenancy Middleware
         'tenancy.token' => \App\Http\Middleware\InitializeTenancyByToken::class,

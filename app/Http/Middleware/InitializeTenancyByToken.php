@@ -40,7 +40,18 @@ final class InitializeTenancyByToken
      */
     public function handle(Request $request, Closure $next, bool $optional = false): Response
     {
+        \Illuminate\Support\Facades\Log::debug('InitializeTenancyByToken: Starting', [
+            'path' => $request->path(),
+            'has_bearer' => $request->bearerToken() ? 'yes' : 'no',
+            'header_tenant' => $request->header('X-Tenant-ID'),
+            'route_tenant' => $request->route('tenant'),
+        ]);
+
         $tenantId = $this->resolveTenantId($request);
+
+        \Illuminate\Support\Facades\Log::debug('InitializeTenancyByToken: Resolved tenant', [
+            'tenant_id' => $tenantId,
+        ]);
 
         if (!$tenantId) {
             if ($optional) {
@@ -67,6 +78,12 @@ final class InitializeTenancyByToken
 
         // Initialize tenancy
         $this->initializeTenancy($tenant);
+
+        \Illuminate\Support\Facades\Log::debug('InitializeTenancyByToken: Tenancy initialized', [
+            'tenant_id' => $tenant->id,
+            'current_connection' => \Illuminate\Support\Facades\DB::getDefaultConnection(),
+            'current_database' => \Illuminate\Support\Facades\DB::connection()->getDatabaseName(),
+        ]);
 
         // Store tenant in request attributes for easy access
         $request->attributes->set('tenant', $tenant);

@@ -38,7 +38,7 @@ final class EventController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events',
         summary: 'List events',
         description: 'Get paginated list of events with optional filters',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Events']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -74,7 +74,7 @@ final class EventController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events',
         summary: 'Create event',
         description: 'Create a new event',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Events']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -100,7 +100,7 @@ final class EventController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events/{id}',
         summary: 'Get event',
         description: 'Get a specific event by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Events']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -128,7 +128,7 @@ final class EventController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events/{id}',
         summary: 'Update event',
         description: 'Update an existing event',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Events']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -160,7 +160,7 @@ final class EventController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events/{id}',
         summary: 'Delete event',
         description: 'Delete an event',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Events']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -187,7 +187,7 @@ final class EventController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events/{id}/clone',
         summary: 'Clone event',
         description: 'Clone an existing event',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Events']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -218,7 +218,7 @@ final class EventController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events/bulk',
         summary: 'Bulk event actions',
         description: 'Perform bulk actions on events (delete, publish, unpublish)',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Events']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -269,7 +269,7 @@ final class EventController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events/{id}/statistics',
         summary: 'Get event statistics',
         description: 'Get statistics for a specific event',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Events']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]

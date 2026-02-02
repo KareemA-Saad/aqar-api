@@ -59,7 +59,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -131,7 +131,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -176,7 +176,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -226,7 +226,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -269,7 +269,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -344,7 +344,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -416,7 +416,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -465,7 +465,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -539,7 +539,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -586,7 +586,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -645,7 +645,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -689,7 +689,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -762,7 +762,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -807,7 +807,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -857,7 +857,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -900,7 +900,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -937,7 +937,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -999,7 +999,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -1044,7 +1044,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1094,7 +1094,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1137,7 +1137,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -1174,7 +1174,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1236,7 +1236,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -1281,7 +1281,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1331,7 +1331,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1374,7 +1374,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -1425,7 +1425,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1494,7 +1494,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -1539,7 +1539,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1589,7 +1589,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1632,7 +1632,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -1669,7 +1669,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1723,7 +1723,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -1768,7 +1768,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1818,7 +1818,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -1861,7 +1861,7 @@
                 },
                 "security": [
                     {
-                        "bearerAuth": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -2202,7 +2202,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -2268,7 +2268,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -2336,7 +2336,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -2415,7 +2415,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -2481,7 +2481,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -2549,7 +2549,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -2705,7 +2705,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -2771,7 +2771,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -2839,7 +2839,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -2918,7 +2918,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -2981,7 +2981,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -3049,7 +3049,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -3123,7 +3123,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4429,7 +4429,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -4474,7 +4474,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4519,7 +4519,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -4575,7 +4575,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -4618,7 +4618,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4663,7 +4663,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4755,7 +4755,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4800,7 +4800,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4858,7 +4858,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4903,7 +4903,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4951,7 +4951,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -4999,7 +4999,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5057,7 +5057,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5105,7 +5105,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5163,7 +5163,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5208,7 +5208,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5249,7 +5249,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5290,7 +5290,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5331,7 +5331,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5385,7 +5385,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5447,7 +5447,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -5492,7 +5492,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5537,7 +5537,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -5593,7 +5593,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -5639,7 +5639,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5684,7 +5684,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5744,7 +5744,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5789,7 +5789,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5823,7 +5823,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5903,7 +5903,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -5948,7 +5948,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -5993,7 +5993,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -6049,7 +6049,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -6092,7 +6092,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6137,7 +6137,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6200,7 +6200,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6260,7 +6260,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6324,7 +6324,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6379,7 +6379,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6446,7 +6446,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6511,7 +6511,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6573,7 +6573,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6644,7 +6644,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6695,7 +6695,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6755,7 +6755,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6797,7 +6797,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6839,7 +6839,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6886,7 +6886,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -6931,7 +6931,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -6987,7 +6987,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -7030,7 +7030,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -7075,7 +7075,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -7133,7 +7133,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -7198,7 +7198,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -7261,7 +7261,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -7303,7 +7303,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -7350,7 +7350,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -7395,7 +7395,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -7451,7 +7451,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -7494,7 +7494,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -8825,7 +8825,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -8890,7 +8890,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -8959,7 +8959,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9030,7 +9030,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9090,7 +9090,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9168,7 +9168,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9295,7 +9295,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -9432,7 +9432,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9497,7 +9497,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -9561,7 +9561,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -9601,7 +9601,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9664,7 +9664,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9696,7 +9696,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9760,7 +9760,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9802,7 +9802,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             },
@@ -9842,7 +9842,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -9906,7 +9906,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "sanctum_tenant_admin": []
                     }
                 ]
             }
@@ -28703,6 +28703,108 @@
                                         "message": {
                                             "type": "string",
                                             "example": "Database setup failed: Error details"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum_user": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/tenants/{id}/exit": {
+            "delete": {
+                "tags": [
+                    "Tenant Management"
+                ],
+                "summary": "Exit tenant context",
+                "description": "Exit the tenant admin context and revoke the tenant admin token. Use this to cleanly end your tenant admin session. Your central user token remains valid.",
+                "operationId": "bbf37bbe14780b36e37df8420448a86c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tenant ID (subdomain)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "acme-corp"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Tenant context exited successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant context exited successfully"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "tenant_id": {
+                                                    "type": "string",
+                                                    "example": "acme-corp"
+                                                },
+                                                "tokens_revoked": {
+                                                    "type": "boolean",
+                                                    "example": true
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Tenant not found or access denied",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Tenant not found or access denied"
                                         }
                                     },
                                     "type": "object"

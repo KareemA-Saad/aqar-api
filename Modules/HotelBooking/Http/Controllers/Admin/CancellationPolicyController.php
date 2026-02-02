@@ -27,7 +27,7 @@ class CancellationPolicyController extends Controller
         summary: 'List all cancellation policies',
         description: 'Get paginated list of all cancellation policies',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'page', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -61,7 +61,7 @@ class CancellationPolicyController extends Controller
         summary: 'Create cancellation policy',
         description: 'Create a new cancellation policy with tiers',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
         ],
@@ -91,7 +91,7 @@ class CancellationPolicyController extends Controller
         summary: 'Get policy details',
         description: 'Get detailed information about a specific cancellation policy',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -124,7 +124,7 @@ class CancellationPolicyController extends Controller
         summary: 'Update policy',
         description: 'Update an existing cancellation policy',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -156,7 +156,7 @@ class CancellationPolicyController extends Controller
         summary: 'Delete policy',
         description: 'Delete a cancellation policy (if not in use)',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -190,7 +190,7 @@ class CancellationPolicyController extends Controller
         summary: 'Toggle policy status',
         description: 'Toggle the active/inactive status of a policy',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -220,7 +220,7 @@ class CancellationPolicyController extends Controller
         summary: 'Clone policy',
         description: 'Create a copy of an existing policy',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -259,7 +259,7 @@ class CancellationPolicyController extends Controller
         summary: 'Get policy usage',
         description: 'Get usage statistics for a policy',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -285,7 +285,7 @@ class CancellationPolicyController extends Controller
         summary: 'Get active policies',
         description: 'Get all active cancellation policies',
         tags: ['Admin Cancellation Policy Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
         ],

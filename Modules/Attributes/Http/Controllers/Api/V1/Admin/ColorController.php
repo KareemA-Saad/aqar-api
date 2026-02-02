@@ -22,7 +22,7 @@ class ColorController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/colors',
         summary: 'List all colors',
         tags: ['Admin - Colors'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -56,7 +56,7 @@ class ColorController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/colors',
         summary: 'Create a new color',
         tags: ['Admin - Colors'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -96,7 +96,7 @@ class ColorController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/colors/{id}',
         summary: 'Get a specific color',
         tags: ['Admin - Colors'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -119,7 +119,7 @@ class ColorController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/colors/{id}',
         summary: 'Update a color',
         tags: ['Admin - Colors'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -154,7 +154,7 @@ class ColorController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/colors/{id}',
         summary: 'Delete a color',
         tags: ['Admin - Colors'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

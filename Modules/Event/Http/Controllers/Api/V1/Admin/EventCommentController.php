@@ -27,7 +27,7 @@ final class EventCommentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events/{eventId}/comments',
         summary: 'List event comments',
         description: 'Get paginated list of comments for a specific event',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Comments']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -53,7 +53,7 @@ final class EventCommentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-comments/{id}',
         summary: 'Delete comment',
         description: 'Delete an event comment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Comments']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -80,7 +80,7 @@ final class EventCommentController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/events/{eventId}/comments',
         summary: 'Bulk delete event comments',
         description: 'Delete all comments for a specific event',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Comments']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]

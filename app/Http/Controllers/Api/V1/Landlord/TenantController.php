@@ -878,5 +878,90 @@ final class TenantController extends BaseApiController
             return $this->error('Database setup failed: ' . $e->getMessage(), 500);
         }
     }
+
+    /**
+     * Exit tenant context and revoke admin token.
+     *
+     * @param string $id
+     * @return JsonResponse
+     */
+    #[OA\Delete(
+        path: '/api/v1/tenants/{id}/exit',
+        summary: 'Exit tenant context',
+        description: 'Exit the tenant admin context and revoke the tenant admin token. Use this to cleanly end your tenant admin session. Your central user token remains valid.',
+        security: [['sanctum_user' => []]],
+        tags: ['Tenant Management']
+    )]
+    #[OA\Parameter(
+        name: 'id',
+        in: 'path',
+        required: true,
+        description: 'Tenant ID (subdomain)',
+        schema: new OA\Schema(type: 'string', example: 'acme-corp')
+    )]
+    #[OA\Response(
+        response: 200,
+        description: 'Tenant context exited successfully',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: true),
+                new OA\Property(property: 'message', type: 'string', example: 'Tenant context exited successfully'),
+                new OA\Property(
+                    property: 'data',
+                    properties: [
+                        new OA\Property(property: 'tenant_id', type: 'string', example: 'acme-corp'),
+                        new OA\Property(property: 'tokens_revoked', type: 'boolean', example: true),
+                    ],
+                    type: 'object'
+                ),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 401,
+        description: 'Unauthenticated',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: false),
+                new OA\Property(property: 'message', type: 'string', example: 'Unauthenticated'),
+            ]
+        )
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Tenant not found or access denied',
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(property: 'success', type: 'boolean', example: false),
+                new OA\Property(property: 'message', type: 'string', example: 'Tenant not found or access denied'),
+            ]
+        )
+    )]
+    public function exitTenant(string $id): JsonResponse
+    {
+        /** @var User $user */
+        $user = auth('api_user')->user();
+
+        if (!$user) {
+            return $this->unauthorized();
+        }
+
+        $tenant = $this->tenantService->getTenant($id, $user);
+
+        if (!$tenant) {
+            return $this->notFound('Tenant not found or access denied');
+        }
+
+        try {
+            $revoked = $this->tenantService->exitTenant($user, $tenant);
+
+            return $this->success([
+                'tenant_id' => $tenant->id,
+                'tokens_revoked' => $revoked,
+            ], 'Tenant context exited successfully');
+        } catch (\Exception $e) {
+            return $this->error('Failed to exit tenant: ' . $e->getMessage(), 500);
+        }
+    }
 }
 

@@ -29,7 +29,7 @@ class HotelController extends Controller
         summary: 'List all hotels',
         description: 'Get paginated list of all hotels with optional filters',
         tags: ['Admin Hotel Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'page', in: 'query', schema: new OA\Schema(type: 'integer')),
@@ -55,7 +55,7 @@ class HotelController extends Controller
         summary: 'Create a new hotel',
         description: 'Create a new hotel with the provided details',
         tags: ['Admin Hotel Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
         ],
@@ -85,7 +85,7 @@ class HotelController extends Controller
         summary: 'Get hotel details',
         description: 'Get detailed information about a specific hotel',
         tags: ['Admin Hotel Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -118,7 +118,7 @@ class HotelController extends Controller
         summary: 'Update hotel',
         description: 'Update an existing hotel',
         tags: ['Admin Hotel Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -150,7 +150,7 @@ class HotelController extends Controller
         summary: 'Delete hotel',
         description: 'Delete a hotel (soft delete)',
         tags: ['Admin Hotel Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -176,7 +176,7 @@ class HotelController extends Controller
         summary: 'Toggle hotel status',
         description: 'Toggle the active/inactive status of a hotel',
         tags: ['Admin Hotel Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -206,7 +206,7 @@ class HotelController extends Controller
         summary: 'Sync hotel images',
         description: 'Add or update hotel images',
         tags: ['Admin Hotel Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

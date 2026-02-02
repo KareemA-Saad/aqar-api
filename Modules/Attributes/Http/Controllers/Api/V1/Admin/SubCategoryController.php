@@ -22,7 +22,7 @@ class SubCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sub-categories',
         summary: 'List all sub-categories',
         tags: ['Admin - Sub-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string')),
@@ -61,7 +61,7 @@ class SubCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sub-categories',
         summary: 'Create a new sub-category',
         tags: ['Admin - Sub-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -108,7 +108,7 @@ class SubCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sub-categories/{id}',
         summary: 'Get a specific sub-category',
         tags: ['Admin - Sub-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -131,7 +131,7 @@ class SubCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sub-categories/{id}',
         summary: 'Update a sub-category',
         tags: ['Admin - Sub-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -170,7 +170,7 @@ class SubCategoryController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sub-categories/{id}',
         summary: 'Delete a sub-category',
         tags: ['Admin - Sub-Categories'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

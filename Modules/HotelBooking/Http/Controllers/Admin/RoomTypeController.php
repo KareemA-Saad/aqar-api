@@ -27,7 +27,7 @@ class RoomTypeController extends Controller
         summary: 'List room types for a hotel',
         description: 'Get all room types for a specific hotel',
         tags: ['Admin Room Type Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'hotelId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -52,7 +52,7 @@ class RoomTypeController extends Controller
         summary: 'Create a new room type',
         description: 'Create a new room type for a hotel',
         tags: ['Admin Room Type Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
         ],
@@ -82,7 +82,7 @@ class RoomTypeController extends Controller
         summary: 'Get room type details',
         description: 'Get detailed information about a specific room type',
         tags: ['Admin Room Type Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -115,7 +115,7 @@ class RoomTypeController extends Controller
         summary: 'Update room type',
         description: 'Update an existing room type',
         tags: ['Admin Room Type Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -147,7 +147,7 @@ class RoomTypeController extends Controller
         summary: 'Delete room type',
         description: 'Delete a room type',
         tags: ['Admin Room Type Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

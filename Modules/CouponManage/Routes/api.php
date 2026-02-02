@@ -31,7 +31,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin Coupon Routes
     |--------------------------------------------------------------------------
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:ecommerce'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:ecommerce'])
         ->prefix('admin/coupons')
         ->name('admin.coupons.')
         ->group(function () {

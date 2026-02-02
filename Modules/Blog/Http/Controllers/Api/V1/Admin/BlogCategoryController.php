@@ -37,7 +37,7 @@ final class BlogCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/categories',
         summary: 'List blog categories',
         description: 'Get list of all blog categories with post counts',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog Categories']
     )]
     #[OA\Parameter(
@@ -95,7 +95,7 @@ final class BlogCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/categories',
         summary: 'Create blog category',
         description: 'Create a new blog category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog Categories']
     )]
     #[OA\Parameter(
@@ -148,7 +148,7 @@ final class BlogCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/categories/{id}',
         summary: 'Get blog category',
         description: 'Get a specific blog category by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog Categories']
     )]
     #[OA\Parameter(
@@ -203,7 +203,7 @@ final class BlogCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/categories/{id}',
         summary: 'Update blog category',
         description: 'Update an existing blog category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog Categories']
     )]
     #[OA\Parameter(
@@ -269,7 +269,7 @@ final class BlogCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/categories/{id}',
         summary: 'Delete blog category',
         description: 'Delete a blog category. Cannot delete if category has associated posts.',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog Categories']
     )]
     #[OA\Parameter(
@@ -330,7 +330,7 @@ final class BlogCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/blog/categories/{id}/toggle-status',
         summary: 'Toggle category status',
         description: 'Toggle the active status of a blog category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Blog Categories']
     )]
     #[OA\Parameter(

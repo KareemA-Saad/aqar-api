@@ -22,7 +22,7 @@ class SizeController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sizes',
         summary: 'List all sizes',
         tags: ['Admin - Sizes'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -56,7 +56,7 @@ class SizeController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sizes',
         summary: 'Create a new size',
         tags: ['Admin - Sizes'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'X-Tenant-Token', in: 'header', required: true, schema: new OA\Schema(type: 'string'))
@@ -96,7 +96,7 @@ class SizeController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sizes/{id}',
         summary: 'Get a specific size',
         tags: ['Admin - Sizes'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -119,7 +119,7 @@ class SizeController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sizes/{id}',
         summary: 'Update a size',
         tags: ['Admin - Sizes'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -154,7 +154,7 @@ class SizeController extends Controller
         path: '/api/v1/tenant/{tenant}/admin/sizes/{id}',
         summary: 'Delete a size',
         tags: ['Admin - Sizes'],
-        security: [['bearerAuth' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

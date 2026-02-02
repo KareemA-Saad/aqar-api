@@ -100,9 +100,9 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Admin Blog Routes
     |--------------------------------------------------------------------------
     | Protected routes for blog management.
-    | Requires authentication, tenant context, active package, and blog feature.
+    | Requires tenant admin authentication, tenant context, active package, and blog feature.
     */
-    Route::middleware(['auth:sanctum', 'tenancy.token', 'tenant.context', 'package.active', 'feature:blog'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:blog'])
         ->prefix('admin/blog')
         ->name('admin.blog.')
         ->group(function () {

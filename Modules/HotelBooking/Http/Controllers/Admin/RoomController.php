@@ -29,7 +29,7 @@ class RoomController extends Controller
         summary: 'List rooms for a room type',
         description: 'Get all rooms for a specific room type',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'roomTypeId', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -54,7 +54,7 @@ class RoomController extends Controller
         summary: 'Create a new room',
         description: 'Create a new room for a room type',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
         ],
@@ -84,7 +84,7 @@ class RoomController extends Controller
         summary: 'Get room details',
         description: 'Get detailed information about a specific room',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -117,7 +117,7 @@ class RoomController extends Controller
         summary: 'Update room',
         description: 'Update an existing room',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -149,7 +149,7 @@ class RoomController extends Controller
         summary: 'Delete room',
         description: 'Delete a room',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -175,7 +175,7 @@ class RoomController extends Controller
         summary: 'Toggle room status',
         description: 'Toggle the active/inactive status of a room',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -205,7 +205,7 @@ class RoomController extends Controller
         summary: 'Block room for dates',
         description: 'Block a room for specific dates (maintenance, renovation, etc.)',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -241,7 +241,7 @@ class RoomController extends Controller
         summary: 'Unblock room for dates',
         description: 'Remove block on a room for specific dates',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
@@ -281,7 +281,7 @@ class RoomController extends Controller
         summary: 'Get booked dates',
         description: 'Get all booked dates for a room within a date range',
         tags: ['Admin Room Management'],
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         parameters: [
             new OA\Parameter(name: 'tenant', in: 'path', required: true, description: 'Tenant identifier', schema: new OA\Schema(type: 'string')),
             new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),

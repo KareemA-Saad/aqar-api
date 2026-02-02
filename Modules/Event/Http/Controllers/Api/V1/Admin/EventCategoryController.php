@@ -33,7 +33,7 @@ final class EventCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-categories',
         summary: 'List event categories',
         description: 'Get paginated list of event categories',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Categories']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -58,7 +58,7 @@ final class EventCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-categories/active',
         summary: 'Get active categories',
         description: 'Get all active event categories without pagination',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Categories']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -80,7 +80,7 @@ final class EventCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-categories',
         summary: 'Create event category',
         description: 'Create a new event category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Categories']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -105,7 +105,7 @@ final class EventCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-categories/{id}',
         summary: 'Get event category',
         description: 'Get a specific event category by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Categories']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -133,7 +133,7 @@ final class EventCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-categories/{id}',
         summary: 'Update event category',
         description: 'Update an existing event category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Categories']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -165,7 +165,7 @@ final class EventCategoryController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-categories/{id}',
         summary: 'Delete event category',
         description: 'Delete an event category',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Categories']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]

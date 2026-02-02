@@ -32,7 +32,7 @@ final class EventPaymentLogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-bookings',
         summary: 'List event bookings',
         description: 'Get paginated list of event bookings/payments',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Bookings']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -67,7 +67,7 @@ final class EventPaymentLogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-bookings/{id}',
         summary: 'Get booking details',
         description: 'Get a specific event booking by ID',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Bookings']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -95,7 +95,7 @@ final class EventPaymentLogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-bookings/{id}/status',
         summary: 'Update payment status',
         description: 'Approve or reject a booking payment',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Bookings']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -136,7 +136,7 @@ final class EventPaymentLogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-bookings/{id}/check-in',
         summary: 'Check-in attendee',
         description: 'Mark attendee as checked-in at the event',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Bookings']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -171,7 +171,7 @@ final class EventPaymentLogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-bookings/{id}/check-in',
         summary: 'Undo check-in',
         description: 'Undo attendee check-in',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Bookings']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -201,7 +201,7 @@ final class EventPaymentLogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-bookings/ticket/{code}',
         summary: 'Get booking by ticket code',
         description: 'Find booking by ticket code for check-in',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Bookings']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -229,7 +229,7 @@ final class EventPaymentLogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-bookings/report',
         summary: 'Get revenue report',
         description: 'Generate revenue report for bookings',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Bookings']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]
@@ -252,7 +252,7 @@ final class EventPaymentLogController extends BaseApiController
         path: '/api/v1/tenant/{tenant}/admin/event-bookings/{id}',
         summary: 'Delete booking',
         description: 'Delete an event booking',
-        security: [['sanctum' => []]],
+        security: [['sanctum_tenant_admin' => []]],
         tags: ['Tenant Admin - Event Bookings']
     )]
     #[OA\Parameter(name: 'tenant', in: 'path', required: true, schema: new OA\Schema(type: 'string'))]

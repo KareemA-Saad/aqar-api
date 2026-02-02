@@ -149,7 +149,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
     | Protected routes for appointment management.
     | Requires tenant admin authentication, tenant context, active package, and appointment feature.
     */
-    Route::middleware(['auth:api_tenant_admin', 'tenancy.token', 'tenant.context', 'package.active', 'feature:appointment'])
+    Route::middleware(['tenancy.token', 'tenant.context', 'auth.tenant_admin', 'package.active', 'feature:appointment'])
         ->prefix('admin/appointments')
         ->name('admin.appointments.')
         ->group(function () {

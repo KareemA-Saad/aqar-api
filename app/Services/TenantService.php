@@ -437,9 +437,18 @@ final class TenantService
     /**
      * Generate new token with tenant context.
      *
+     * Creates a token on the Admin model in the TENANT database.
+     * This ensures proper authentication with api_tenant_admin guard.
+     *
+     * Design decisions:
+     * - Token stored in tenant's personal_access_tokens table
+     * - Admin password synced with User's current password on every switch
+     * - Existing tokens for this Admin are revoked before creating new one
+     * - Token expires in 1 day
+     *
      * @param User $user
      * @param Tenant $tenant
-     * @return array{token: string, expires_at: string}
+     * @return array{token: string, expires_at: string, admin_id: int}
      */
     public function generateTenantToken(User $user, Tenant $tenant): array
     {
@@ -448,45 +457,110 @@ final class TenantService
             throw new \InvalidArgumentException('User does not own this tenant');
         }
 
-        // Initialize tenant context to work with tenant database
+        // Initialize tenant context - KEEP ACTIVE for token creation
         tenancy()->initialize($tenant);
 
-        // Find or create admin record in tenant database
-        $admin = \App\Models\Admin::firstOrCreate(
-            ['email' => $user->email],
-            [
-                'name' => $user->name,
-                'username' => $user->username ?? explode('@', $user->email)[0],
-                'password' => $user->password, // Same password as central user
-                'email_verified' => true,
-                'mobile' => $user->mobile ?? null,
-            ]
-        );
+        try {
+            // Create or update Admin record in TENANT database
+            // Always sync password with User's current password (Decision #1)
+            $admin = \App\Models\Admin::updateOrCreate(
+                ['email' => $user->email],
+                [
+                    'name' => $user->name,
+                    'username' => $user->username ?? explode('@', $user->email)[0],
+                    'password' => $user->password, // Synced from User
+                    'email_verified' => true,
+                    'mobile' => $user->mobile ?? null,
+                ]
+            );
 
-        $expiresAt = now()->addDays(7);
+            // Revoke existing tokens for this Admin in this tenant (Decision #4)
+            // This ensures only one active token per tenant
+            $admin->tokens()
+                ->where('name', 'like', "tenant-{$tenant->id}-%")
+                ->delete();
 
-        $abilities = [
-            'admin:read',
-            'admin:write',
-            'tenants:read',
-            'tenants:write',
-            "tenant:{$tenant->id}",
-        ];
+            // Token expires in 1 day (Decision #2)
+            $expiresAt = now()->addDay();
 
-        // Create token on Admin model with api_tenant_admin guard
-        $token = $admin->createToken(
-            name: "tenant-{$tenant->id}-admin-token",
-            abilities: $abilities,
-            expiresAt: $expiresAt
-        );
+            $abilities = [
+                'tenant:admin',
+                "tenant:{$tenant->id}",
+            ];
 
-        // End tenant context
-        tenancy()->end();
+            // Create token on ADMIN model in TENANT database
+            // This token is stored in tenant's personal_access_tokens table
+            $token = $admin->createToken(
+                name: "tenant-{$tenant->id}-admin-token",
+                abilities: $abilities,
+                expiresAt: $expiresAt
+            );
 
-        return [
-            'token' => $token->plainTextToken,
-            'expires_at' => $expiresAt->toISOString(),
-        ];
+            Log::info('Tenant admin token created', [
+                'tenant_id' => $tenant->id,
+                'admin_id' => $admin->id,
+                'user_id' => $user->id,
+                'expires_at' => $expiresAt->toISOString(),
+            ]);
+
+            return [
+                'token' => $token->plainTextToken,
+                'expires_at' => $expiresAt->toISOString(),
+                'admin_id' => $admin->id,
+            ];
+        } finally {
+            // End tenant context after token creation
+            tenancy()->end();
+        }
+    }
+
+    /**
+     * Exit tenant context and revoke admin tokens.
+     *
+     * Revokes all tenant admin tokens for the given user in the specified tenant.
+     *
+     * @param User $user
+     * @param Tenant $tenant
+     * @return bool
+     */
+    public function exitTenant(User $user, Tenant $tenant): bool
+    {
+        // Verify user owns tenant
+        if ($tenant->user_id !== $user->id) {
+            throw new \InvalidArgumentException('User does not own this tenant');
+        }
+
+        // Initialize tenant context
+        tenancy()->initialize($tenant);
+
+        try {
+            // Find Admin in tenant database by user's email
+            $admin = \App\Models\Admin::where('email', $user->email)->first();
+
+            if (!$admin) {
+                Log::warning('Exit tenant: Admin not found', [
+                    'tenant_id' => $tenant->id,
+                    'user_email' => $user->email,
+                ]);
+                return false;
+            }
+
+            // Revoke all tokens for this Admin in this tenant (Decision #3)
+            $deletedCount = $admin->tokens()
+                ->where('name', 'like', "tenant-{$tenant->id}-%")
+                ->delete();
+
+            Log::info('Tenant admin tokens revoked', [
+                'tenant_id' => $tenant->id,
+                'admin_id' => $admin->id,
+                'tokens_revoked' => $deletedCount,
+            ]);
+
+            return true;
+        } finally {
+            // End tenant context
+            tenancy()->end();
+        }
     }
 
     /**
