@@ -30,6 +30,10 @@ use Spatie\Translatable\HasTranslations;
  * @property string $type (super_area, area, sub_area)
  * @property int $order
  * @property bool $status
+ * @property bool $is_featured
+ * @property float|null $latitude
+ * @property float|null $longitude
+ * @property string|null $image
  * @property string|null $meta_title
  * @property string|null $meta_description
  * @property string|null $meta_keywords
@@ -56,6 +60,10 @@ class Area extends Model
         'type',
         'order',
         'status',
+        'is_featured',
+        'latitude',
+        'longitude',
+        'image',
         'meta_title',
         'meta_description',
         'meta_keywords',
@@ -73,6 +81,9 @@ class Area extends Model
      */
     protected $casts = [
         'status' => 'boolean',
+        'is_featured' => 'boolean',
+        'latitude' => 'float',
+        'longitude' => 'float',
         'order' => 'integer',
         'compounds_count' => 'integer',
         'properties_count' => 'integer',
@@ -150,6 +161,14 @@ class Area extends Model
     public function scopeActive($query)
     {
         return $query->where('status', true);
+    }
+
+    /**
+     * Scope to only featured areas.
+     */
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true);
     }
 
     /**
