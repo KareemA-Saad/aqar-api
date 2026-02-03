@@ -29,15 +29,17 @@ class TenantDatabaseSeeder extends Seeder
      * Features like "Properties 25" will match "properties" prefix.
      */
     private const MODULE_SEEDER_MAP = [
-        // RealEstate Module
+        // RealEstate Module - Lookup Data
         'properties' => [
             \Database\Seeders\Tenant\ModuleData\RealEstate\PropertyTypeSeed::class,
             \Database\Seeders\Tenant\ModuleData\RealEstate\AmenitySeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\AreaSeed::class,
             \Database\Seeders\Tenant\ModuleData\RealEstate\DeveloperSeed::class,
         ],
         'compounds' => [
             \Database\Seeders\Tenant\ModuleData\RealEstate\PropertyTypeSeed::class,
             \Database\Seeders\Tenant\ModuleData\RealEstate\AmenitySeed::class,
+            \Database\Seeders\Tenant\ModuleData\RealEstate\AreaSeed::class,
             \Database\Seeders\Tenant\ModuleData\RealEstate\DeveloperSeed::class,
         ],
         'realestate' => [
@@ -89,6 +91,33 @@ class TenantDatabaseSeeder extends Seeder
     ];
 
     /**
+     * Map of feature prefixes to module CONTENT seeders.
+     * These seed demo/sample content data (compounds, properties, etc.)
+     * Run after lookup data seeders.
+     */
+    private const MODULE_CONTENT_SEEDER_MAP = [
+        // RealEstate Module - Content/Demo Data
+        'properties' => [
+            \Modules\RealEstate\Database\Seeders\CompoundSeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertySeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertyImageSeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertyInquirySeeder::class,
+        ],
+        'compounds' => [
+            \Modules\RealEstate\Database\Seeders\CompoundSeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertySeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertyImageSeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertyInquirySeeder::class,
+        ],
+        'realestate' => [
+            \Modules\RealEstate\Database\Seeders\CompoundSeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertySeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertyImageSeeder::class,
+            \Modules\RealEstate\Database\Seeders\PropertyInquirySeeder::class,
+        ],
+    ];
+
+    /**
      * Run the tenant database seeder.
      */
     public function run(): void
@@ -113,10 +142,13 @@ class TenantDatabaseSeeder extends Seeder
         // 1. Always run core seeders
         $this->runCoreSeeders();
 
-        // 2. Run module seeders based on enabled features
+        // 2. Run module seeders based on enabled features (lookup data)
         $this->runModuleSeeders($features);
 
-        // 3. Run payment gateway seed if any payment gateway features enabled
+        // 3. Run module content seeders (demo data: compounds, properties, etc.)
+        $this->runModuleContentSeeders($features);
+
+        // 4. Run payment gateway seed if any payment gateway features enabled
         $this->runPaymentGatewaySeed($features);
 
         Log::info('TenantDatabaseSeeder: Completed', ['tenant_id' => $tenant->id]);
@@ -271,6 +303,68 @@ class TenantDatabaseSeeder extends Seeder
         // Split by space and take first word
         $parts = explode(' ', trim($feature));
         return strtolower($parts[0]);
+    }
+
+    /**
+     * Run module content seeders based on enabled features.
+     * These seed demo/sample data (compounds, properties, etc.)
+     *
+     * @param array<string> $features
+     */
+    private function runModuleContentSeeders(array $features): void
+    {
+        $seededClasses = [];
+
+        foreach ($features as $feature) {
+            $featurePrefix = $this->extractFeaturePrefix($feature);
+
+            if (!isset(self::MODULE_CONTENT_SEEDER_MAP[$featurePrefix])) {
+                continue;
+            }
+
+            foreach (self::MODULE_CONTENT_SEEDER_MAP[$featurePrefix] as $seederClass) {
+                // Avoid running same seeder twice
+                if (in_array($seederClass, $seededClasses, true)) {
+                    continue;
+                }
+
+                if (!class_exists($seederClass)) {
+                    Log::warning('TenantDatabaseSeeder: Content seeder class not found', [
+                        'class' => $seederClass,
+                        'feature' => $feature,
+                    ]);
+                    continue;
+                }
+
+                try {
+                    Log::info('TenantDatabaseSeeder: Running content seeder', [
+                        'class' => $seederClass,
+                        'feature' => $feature,
+                    ]);
+
+                    // Content seeders extend Illuminate\Database\Seeder
+                    // They need $this->command for output, so we call them properly
+                    $seeder = new $seederClass();
+                    
+                    // Pass command instance if this seeder has it
+                    if (method_exists($seeder, 'setCommand') && $this->command) {
+                        $seeder->setCommand($this->command);
+                    }
+                    
+                    $seeder->run();
+
+                    $seededClasses[] = $seederClass;
+                    Log::info('TenantDatabaseSeeder: Content seeder completed', ['class' => $seederClass]);
+                } catch (\Throwable $e) {
+                    // Content seeders should not crash the whole seeding process
+                    Log::error('TenantDatabaseSeeder: Content seeder failed (continuing)', [
+                        'class' => $seederClass,
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString(),
+                    ]);
+                }
+            }
+        }
     }
 
     /**

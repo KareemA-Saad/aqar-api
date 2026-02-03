@@ -1,0 +1,76 @@
+2026-02-02 | Kareem Saad | Delete OLDARCHIVE directory
+2026-02-02 | Kareem Saad | Merge pull request #34 from KareemA-Saad/Minorfix
+2026-02-02 | KareemA-Saad | Fixing the token context of tenant admin and adding exit endpoint to switch back to central app usage
+2026-02-01 | Kareem Saad | Merge pull request #33 from KareemA-Saad/Minorfix
+2026-01-31 | KareemA-Saad | Adjusting the apidocs for the tenant admin
+2026-01-31 | Kareem Saad | Merge pull request #32 from KareemA-Saad/Minorfix
+2026-01-31 | KareemA-Saad | Changing the token of switch context endpoint to api_tenant_owner guard to grant the switch context admin privileges
+2026-01-31 | Kareem Saad | Merge pull request #31 from KareemA-Saad/Minorfix
+2026-01-31 | KareemA-Saad | Adding proper industry API docs
+2026-01-28 | Kareem Saad | Merge pull request #30 from KareemA-Saad/Majorfix2
+2026-01-28 | Kareem Saad |  Fix major problems in the tenancy DB and some of the realestate endpoints
+2026-01-27 | Kareem Saad | Merge pull request #29 from KareemA-Saad/MajorFix
+2026-01-27 | KareemA-Saad | envexample
+2026-01-27 | Kareem Saad | Merge pull request #28 from KareemA-Saad/MajorFix
+2026-01-27 | KareemA-Saad |  Fixing sub plan bug and tenant DB creation
+2026-01-24 | KareemA-Saad | fix/TenantDB creation and adding realstate module, completing the test for this case
+2026-01-20 | Kareem Saad | Merge pull request #27 from KareemA-Saad/feat/RealEstateModule_fix/PricePlans_Tenant
+2026-01-20 | KareemA-Saad | fix: Add missing api_tenant_admin guard and fix service provider dependencies
+2026-01-20 | Kareem Saad | Merge pull request #26 from KareemA-Saad/feat/RealEstateModule_fix/PricePlans_Tenant
+2026-01-20 | KareemA-Saad | fix by adding a safety migration for any missing price_plans columns and reran the seeder on the central DB.
+2026-01-20 | Kareem Saad | Merge pull request #25 from KareemA-Saad/feat/RealEstateModule_fix/PricePlans_Tenant
+2026-01-20 | KareemA-Saad |  The final phase of realE module and fixing the routes
+2026-01-20 | Kareem Saad | Merge pull request #24 from KareemA-Saad/feat/RealEstateModule_fix/PricePlans_Tenant
+2026-01-20 | KareemA-Saad | add api-docs for postman
+2026-01-20 | Kareem Saad | Merge pull request #23 from KareemA-Saad/feat/RealEstateModule_fix/PricePlans_Tenant
+2026-01-20 | KareemA-Saad | New feature of real-Estate module with complete analysis and phases, and fixing price plan business logic and limiting the tenants creation per plan, Seeding themes and adding usage stat endpoint
+2026-01-18 | Kareem Saad | Merge pull request #22 from KareemA-Saad/fix/SwaggDoc
+2026-01-18 | KareemA-Saad | Fix some of modules endpoints documentation
+2026-01-14 | Kareem Saad | Merge pull request #21 from KareemA-Saad/feat/phase-7-business-logic-validation
+2026-01-14 | KareemA-Saad | docs: reframe technical debt with OLDARCHIVE as business logic reference
+2026-01-14 | KareemA-Saad | reverting a mistake in naming
+2026-01-14 | KareemA-Saad | feat(phase-7): complete business logic validation for EmailTemplate, Portfolio, and Knowledgebase modules
+2026-01-13 | Kareem Saad | Merge pull request #20 from KareemA-Saad/feature/phase-7-modules-structure-pending-validation
+2026-01-13 | Kareem Saad | Merge pull request #19 from KareemA-Saad/feature/event_and_service_portfolio
+2026-01-13 | KareemA-Saad | feat: Phase 7 modules initial structure (87 files)
+2026-01-12 | KareemA-Saad | Adding the new modules, and assigning the technical debt
+2026-01-12 | Kareem Saad | Merge pull request #18 from KareemA-Saad/feature/appointmentModule-fix/dbConflicts
+2026-01-12 | Kareem Saad | Merge branch 'main' into feature/appointmentModule-fix/dbConflicts
+2026-01-12 | KareemA-Saad | Intializing the appointement module and Major fixes after testing tenant creation
+2026-01-12 | Kareem Saad | Merge pull request #17 from KareemA-Saad/fix/plans
+2026-01-12 | K-nass | add fixes
+2026-01-11 | Kareem Saad | Merge pull request #16 from KareemA-Saad/fix/plans
+2026-01-11 | K-nass | checked db migragtion
+2026-01-11 | Kareem Saad | Merge pull request #15 from KareemA-Saad/BypassPayment
+2026-01-11 | KareemA-Saad |  Bypassing payment for testing purpose
+2026-01-11 | Kareem Saad | Merge pull request #14 from KareemA-Saad/feature/phase-7.3-hotel-booking-api
+2026-01-11 | KareemA-Saad | feat(tenancy): implement dynamic feature-based module migrations
+2026-01-05 | Kareem Saad | Merge pull request #13 from KareemA-Saad/feature/phase-7.3-hotel-booking-api
+2026-01-05 | KareemA-Saad | feat(hotel-booking): implement complete hotel reservation API
+2026-01-05 | Kareem Saad | Merge pull request #12 from KareemA-Saad/fix/plans
+2026-01-05 | K-nass | added new cols in price plan model,added price plan seeder and docs.json and added conf for lang to config/app.php
+2026-01-05 | Kareem Saad | Merge pull request #11 from KareemA-Saad/fix/plans
+2026-01-05 | K-nass | added new branch plans
+2026-01-05 | Kareem Saad | Merge pull request #10 from KareemA-Saad/feature/phase-7-blog-and-ecommerce-modules
+2026-01-05 | Kareem Saad | Merge pull request #9 from KareemA-Saad/feature/tenant-dashboard-settings-customer-apis
+2026-01-05 | Kareem Saad | Merge pull request #8 from KareemA-Saad/feature/language-localization-api-complete
+2026-01-05 | Kareem Saad | Merge pull request #7 from KareemA-Saad/feature/settings-management-api
+2026-01-05 | Kareem Saad | Merge pull request #6 from KareemA-Saad/Feat_Media_Upload
+2025-12-28 | KareemA-Saad | feat(phase-7): add Blog and E-Commerce modules with supporting APIs
+2025-12-24 | KareemA-Saad | feat(tenant): add dashboard, settings, profile & customer management APIs
+2025-12-23 | KareemA-Saad |  fix: add missing successResponse/errorResponse aliases to ApiResponse trait
+2025-12-23 | KareemA-Saad |  adding admin seeder for testing
+2025-12-23 | KareemA-Saad | feat(language): Complete Language & Localization API implementation
+2025-12-22 | KareemA-Saad | feat(settings): add Settings Management API for application configuration
+2025-12-22 | KareemA-Saad | Intializing Media_Upload feature for future testing
+2025-12-20 | Kareem Saad | Merge pull request #5 from KareemA-Saad/2FA_G_Auth_app
+2025-12-17 | KareemA-Saad | Developing the 2fa using google authenticator QR scanner
+2025-12-14 | Kareem Saad | feature/support-ticket-system-api
+2025-12-14 | KareemA-Saad | feat: implement support ticket system API
+2025-12-14 | Kareem Saad | feature/price-plan-subscription-api: Price Plan & Subscription Management
+2025-12-14 | KareemA-Saad | feat(subscriptions): add price plan and subscription management API
+2025-12-14 | Kareem Saad | feature/landlord-tenant-management-system
+2025-12-14 | KareemA-Saad | feat(api): implement complete landlord/tenant management system with RBAC
+2025-12-10 | Kareem Saad | feature/tenant-context-and-auth-docs
+2025-12-10 | KareemA-Saad | feat(api): add tenant context management and auth documentation
+2025-12-09 | KareemA-Saad | feat(core): Initialize multi-tenant SaaS API

@@ -74,10 +74,9 @@ final class CreateTenantDatabase implements ShouldQueue
             // Run migrations
             $tenantService->runTenantMigrations($this->tenant);
 
-            // Seed data if configured
-            if (config('tenancy.database.auto_seed', false)) {
-                $tenantService->seedTenantData($this->tenant);
-            }
+            // Always seed tenant data (includes RealEstate demo data)
+            // This ensures tenants have usable content immediately
+            $tenantService->seedTenantData($this->tenant);
 
             Log::info('Tenant database created successfully', [
                 'tenant_id' => $this->tenant->id,

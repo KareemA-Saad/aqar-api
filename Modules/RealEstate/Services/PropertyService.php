@@ -193,7 +193,7 @@ class PropertyService
         }
 
         // Clear cache
-        Cache::forget('featured_properties_*');
+        $this->clearPropertyCacheIfSupported();
 
         return $count;
     }
@@ -203,16 +203,18 @@ class PropertyService
      */
     public function getFeaturedProperties(int $limit = 10): Collection
     {
-        return Cache::remember(
-            'featured_properties_' . $limit,
-            $this->cacheTtl,
-            fn () => Property::with(['area', 'propertyType', 'primaryImage'])
-                ->featured()
-                ->active()
-                ->latest()
-                ->limit($limit)
-                ->get()
-        );
+        $callback = fn () => Property::with(['area', 'propertyType', 'primaryImage'])
+            ->featured()
+            ->active()
+            ->latest()
+            ->limit($limit)
+            ->get();
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('featured_properties_' . $limit, $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -245,22 +247,24 @@ class PropertyService
      */
     public function getStatistics(): array
     {
-        return Cache::remember(
-            'property_statistics',
-            $this->cacheTtl,
-            function () {
-                return [
-                    'total' => Property::count(),
-                    'active' => Property::active()->count(),
-                    'featured' => Property::featured()->active()->count(),
-                    'for_sale' => Property::forSale()->active()->count(),
-                    'for_rent' => Property::forRent()->active()->count(),
-                    'avg_price' => Property::active()->avg('price'),
-                    'total_inquiries' => Property::withCount('inquiries')->get()->sum('inquiries_count'),
-                    'total_views' => Property::sum('views_count'),
-                ];
-            }
-        );
+        $callback = function () {
+            return [
+                'total' => Property::count(),
+                'active' => Property::active()->count(),
+                'featured' => Property::featured()->active()->count(),
+                'for_sale' => Property::forSale()->active()->count(),
+                'for_rent' => Property::forRent()->active()->count(),
+                'avg_price' => Property::active()->avg('price'),
+                'total_inquiries' => Property::withCount('inquiries')->get()->sum('inquiries_count'),
+                'total_views' => Property::sum('views_count'),
+            ];
+        };
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('property_statistics', $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -312,6 +316,10 @@ class PropertyService
      */
     protected function clearPropertyCache(Property $property): void
     {
+        if (!$this->cacheSupportsTagging()) {
+            return;
+        }
+
         Cache::forget('featured_properties_*');
         Cache::forget('property_statistics');
         
@@ -321,6 +329,31 @@ class PropertyService
         
         if ($property->area_id) {
             Cache::forget('area_' . $property->area_id);
+        }
+    }
+
+    /**
+     * Clear property cache if supported (for bulk operations).
+     */
+    protected function clearPropertyCacheIfSupported(): void
+    {
+        if (!$this->cacheSupportsTagging()) {
+            return;
+        }
+
+        Cache::forget('featured_properties_*');
+    }
+
+    /**
+     * Check if the cache store supports tagging.
+     */
+    protected function cacheSupportsTagging(): bool
+    {
+        try {
+            $driver = config('cache.default');
+            return in_array($driver, ['redis', 'memcached', 'array']);
+        } catch (\Exception $e) {
+            return false;
         }
     }
 }
