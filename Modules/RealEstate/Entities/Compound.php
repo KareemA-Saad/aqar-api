@@ -268,14 +268,14 @@ class Compound extends Model
     /**
      * Get formatted price range.
      */
-    public function getPriceRangeFormattedAttribute(): ?string
+    public function getPriceRangeFormattedAttribute(): ?float
     {
         if (!$this->min_price && !$this->max_price) {
             return null;
         }
 
-        $min = number_format($this->min_price ?? 0);
-        $max = number_format($this->max_price ?? 0);
+        $min = number_format((float)($this->min_price ?? 0));
+        $max = number_format((float)($this->max_price ?? 0));
 
         return "{$this->price_currency} {$min} - {$max}";
     }

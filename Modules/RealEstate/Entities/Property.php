@@ -399,7 +399,7 @@ class Property extends Model
      */
     public function getPriceFormattedAttribute(): string
     {
-        return number_format($this->price, 0) . ' ' . $this->currency;
+        return number_format((float)($this->price), 0) . ' ' . $this->currency;
     }
 
     /**
@@ -437,7 +437,7 @@ class Property extends Model
             return null;
         }
 
-        return number_format($this->area, 0) . ' ' . $this->area_unit;
+        return number_format((float)($this->area), 0) . ' ' . $this->area_unit;
     }
 
     /**
