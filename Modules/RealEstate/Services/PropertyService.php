@@ -63,21 +63,21 @@ class PropertyService
     /**
      * Get a single property by ID.
      */
-    public function getProperty(int $id, array $relations = []): ?Property
+    public function getProperty(int|string $id, array $relations = []): ?Property
     {
         $defaultRelations = ['area', 'compound', 'propertyType', 'developer', 'images', 'amenities'];
         $relations = array_merge($defaultRelations, $relations);
 
-        return Property::with($relations)->find($id);
+        return Property::with($relations)->find((int) $id);
     }
 
     /**
      * Get property by ID and slug for public URL.
      */
-    public function getPropertyByIdAndSlug(int $id, string $slug): ?Property
+    public function getPropertyByIdAndSlug(int|string $id, string $slug): ?Property
     {
         return Property::with(['compound.area', 'compound', 'propertyType', 'developer', 'images', 'amenities'])
-            ->where('id', $id)
+            ->where('id', (int) $id)
             ->where('slug', $slug)
             ->active()
             ->first();

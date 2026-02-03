@@ -56,22 +56,22 @@ class CompoundService
     /**
      * Get a single compound by ID.
      */
-    public function getCompound(int $id, array $relations = []): ?Compound
+    public function getCompound(int|string $id, array $relations = []): ?Compound
     {
         $defaultRelations = ['area', 'developer', 'amenities', 'images'];
         $relations = array_merge($defaultRelations, $relations);
 
-        return Compound::with($relations)->withCount('properties')->find($id);
+        return Compound::with($relations)->withCount('properties')->find((int) $id);
     }
 
     /**
      * Get compound by ID and slug for public URL.
      */
-    public function getCompoundByIdAndSlug(int $id, string $slug): ?Compound
+    public function getCompoundByIdAndSlug(int|string $id, string $slug): ?Compound
     {
         return Compound::with(['area', 'developer', 'amenities', 'images'])
             ->withCount('properties')
-            ->where('id', $id)
+            ->where('id', (int) $id)
             ->where('slug', $slug)
             ->active()
             ->first();
