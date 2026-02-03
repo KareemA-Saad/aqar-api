@@ -203,9 +203,7 @@ class SearchService
      */
     public function getAutocompleteSuggestions(string $query, int $limit = 10): array
     {
-        $cacheKey = 'autocomplete_' . md5($query . '_' . $limit);
-
-        return Cache::remember($cacheKey, 60, function () use ($query, $limit) {
+        $callback = function () use ($query, $limit) {
             $suggestions = [];
 
             // Properties
@@ -271,7 +269,14 @@ class SearchService
             });
 
             return array_slice($suggestions, 0, $limit);
-        });
+        };
+
+        if ($this->cacheSupportsTagging()) {
+            $cacheKey = 'autocomplete_' . md5($query . '_' . $limit);
+            return Cache::remember($cacheKey, 60, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -279,9 +284,7 @@ class SearchService
      */
     public function getSearchFacets(array $params = []): array
     {
-        $cacheKey = 'search_facets_' . md5(json_encode($params));
-
-        return Cache::remember($cacheKey, $this->cacheTtl, function () use ($params) {
+        $callback = function () use ($params) {
             $baseQuery = Property::active();
 
             // Apply base filters if any
@@ -298,7 +301,14 @@ class SearchService
                 'finishing' => $this->getFinishingFacets($baseQuery->clone()),
                 'purposes' => $this->getPurposeFacets($baseQuery->clone()),
             ];
-        });
+        };
+
+        if ($this->cacheSupportsTagging()) {
+            $cacheKey = 'search_facets_' . md5(json_encode($params));
+            return Cache::remember($cacheKey, $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -426,20 +436,37 @@ class SearchService
      */
     protected function getAreaIdsWithChildren(int $areaId): array
     {
-        return Cache::remember(
-            "area_ids_with_children_{$areaId}",
-            $this->cacheTtl,
-            function () use ($areaId) {
-                $ids = [$areaId];
-                $children = Area::where('parent_id', $areaId)->pluck('id');
+        $callback = function () use ($areaId) {
+            $ids = [$areaId];
+            $children = Area::where('parent_id', $areaId)->pluck('id');
 
-                foreach ($children as $childId) {
-                    $ids = array_merge($ids, $this->getAreaIdsWithChildren($childId));
-                }
-
-                return array_unique($ids);
+            foreach ($children as $childId) {
+                $ids = array_merge($ids, $this->getAreaIdsWithChildrenDirect($childId));
             }
-        );
+
+            return array_unique($ids);
+        };
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember("area_ids_with_children_{$areaId}", $this->cacheTtl, $callback);
+        }
+
+        return $callback();
+    }
+
+    /**
+     * Get area IDs including all children (without cache for recursive calls).
+     */
+    protected function getAreaIdsWithChildrenDirect(int $areaId): array
+    {
+        $ids = [$areaId];
+        $children = Area::where('parent_id', $areaId)->pluck('id');
+
+        foreach ($children as $childId) {
+            $ids = array_merge($ids, $this->getAreaIdsWithChildrenDirect($childId));
+        }
+
+        return array_unique($ids);
     }
 
     /**
@@ -447,7 +474,7 @@ class SearchService
      */
     public function getPopularSearches(int $limit = 10): array
     {
-        return Cache::remember('popular_searches', 3600, function () use ($limit) {
+        $callback = function () use ($limit) {
             // This could be populated from a search_logs table in a real implementation
             return [
                 ['term' => 'apartment new cairo', 'count' => 150],
@@ -455,7 +482,13 @@ class SearchService
                 ['term' => 'studio 6th october', 'count' => 100],
                 ['term' => 'duplex maadi', 'count' => 80],
             ];
-        });
+        };
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('popular_searches', 3600, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -627,5 +660,18 @@ class SearchService
         }
 
         return $this->getNearbyProperties($area->latitude, $area->longitude, $radius, $limit);
+    }
+
+    /**
+     * Check if the cache store supports tagging.
+     */
+    protected function cacheSupportsTagging(): bool
+    {
+        try {
+            $driver = config('cache.default');
+            return in_array($driver, ['redis', 'memcached', 'array']);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

@@ -57,18 +57,20 @@ class AreaService
      */
     public function getAreasTree(): Collection
     {
-        return Cache::remember(
-            'areas_tree',
-            $this->cacheTtl,
-            fn () => Area::with(['children' => function ($query) {
-                $query->active()->withCount(['compounds', 'properties'])->orderBy('order');
-            }])
-                ->whereNull('parent_id')
-                ->active()
-                ->withCount(['compounds', 'properties'])
-                ->orderBy('order')
-                ->get()
-        );
+        $callback = fn () => Area::with(['children' => function ($query) {
+            $query->active()->withCount(['compounds', 'properties'])->orderBy('order');
+        }])
+            ->whereNull('parent_id')
+            ->active()
+            ->withCount(['compounds', 'properties'])
+            ->orderBy('order')
+            ->get();
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('areas_tree', $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -76,15 +78,17 @@ class AreaService
      */
     public function getRootAreas(): Collection
     {
-        return Cache::remember(
-            'root_areas',
-            $this->cacheTtl,
-            fn () => Area::whereNull('parent_id')
-                ->active()
-                ->withCount(['compounds', 'properties', 'children'])
-                ->orderBy('order')
-                ->get()
-        );
+        $callback = fn () => Area::whereNull('parent_id')
+            ->active()
+            ->withCount(['compounds', 'properties', 'children'])
+            ->orderBy('order')
+            ->get();
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('root_areas', $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -221,17 +225,19 @@ class AreaService
      */
     public function getFeaturedAreas(int $limit = 10): Collection
     {
-        return Cache::remember(
-            'featured_areas_' . $limit,
-            $this->cacheTtl,
-            fn () => Area::with(['parent'])
-                ->withCount(['compounds', 'properties'])
-                ->featured()
-                ->active()
-                ->orderBy('order')
-                ->limit($limit)
-                ->get()
-        );
+        $callback = fn () => Area::with(['parent'])
+            ->withCount(['compounds', 'properties'])
+            ->featured()
+            ->active()
+            ->orderBy('order')
+            ->limit($limit)
+            ->get();
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('featured_areas_' . $limit, $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -239,20 +245,22 @@ class AreaService
      */
     public function getStatistics(): array
     {
-        return Cache::remember(
-            'area_statistics',
-            $this->cacheTtl,
-            function () {
-                return [
-                    'total' => Area::count(),
-                    'active' => Area::active()->count(),
-                    'featured' => Area::featured()->active()->count(),
-                    'root_areas' => Area::whereNull('parent_id')->active()->count(),
-                    'with_compounds' => Area::has('compounds')->count(),
-                    'with_properties' => Area::has('properties')->count(),
-                ];
-            }
-        );
+        $callback = function () {
+            return [
+                'total' => Area::count(),
+                'active' => Area::active()->count(),
+                'featured' => Area::featured()->active()->count(),
+                'root_areas' => Area::whereNull('parent_id')->active()->count(),
+                'with_compounds' => Area::has('compounds')->count(),
+                'with_properties' => Area::has('properties')->count(),
+            ];
+        };
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('area_statistics', $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -343,9 +351,27 @@ class AreaService
      */
     protected function clearAreaCache(): void
     {
+        if (!$this->cacheSupportsTagging()) {
+            return;
+        }
+
         Cache::forget('areas_tree');
         Cache::forget('root_areas');
         Cache::forget('featured_areas_*');
         Cache::forget('area_statistics');
+    }
+
+    /**
+     * Check if the cache store supports tagging.
+     */
+    protected function cacheSupportsTagging(): bool
+    {
+        try {
+            // Check if the cache driver supports tags
+            $driver = config('cache.default');
+            return in_array($driver, ['redis', 'memcached', 'array']);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }

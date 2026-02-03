@@ -197,17 +197,19 @@ class CompoundService
      */
     public function getFeaturedCompounds(int $limit = 10): Collection
     {
-        return Cache::remember(
-            'featured_compounds_' . $limit,
-            $this->cacheTtl,
-            fn () => Compound::with(['area', 'developer', 'primaryImage'])
-                ->withCount('properties')
-                ->featured()
-                ->active()
-                ->latest()
-                ->limit($limit)
-                ->get()
-        );
+        $callback = fn () => Compound::with(['area', 'developer', 'primaryImage'])
+            ->withCount('properties')
+            ->featured()
+            ->active()
+            ->latest()
+            ->limit($limit)
+            ->get();
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('featured_compounds_' . $limit, $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -241,21 +243,23 @@ class CompoundService
      */
     public function getStatistics(): array
     {
-        return Cache::remember(
-            'compound_statistics',
-            $this->cacheTtl,
-            function () {
-                $compounds = Compound::with('properties')->get();
-                
-                return [
-                    'total' => $compounds->count(),
-                    'active' => $compounds->where('status', true)->count(),
-                    'featured' => $compounds->where('is_featured', true)->where('status', true)->count(),
-                    'total_properties' => $compounds->sum(fn ($c) => $c->properties->count()),
-                    'avg_properties_per_compound' => $compounds->avg(fn ($c) => $c->properties->count()),
-                ];
-            }
-        );
+        $callback = function () {
+            $compounds = Compound::with('properties')->get();
+            
+            return [
+                'total' => $compounds->count(),
+                'active' => $compounds->where('status', true)->count(),
+                'featured' => $compounds->where('is_featured', true)->where('status', true)->count(),
+                'total_properties' => $compounds->sum(fn ($c) => $c->properties->count()),
+                'avg_properties_per_compound' => $compounds->avg(fn ($c) => $c->properties->count()),
+            ];
+        };
+
+        if ($this->cacheSupportsTagging()) {
+            return Cache::remember('compound_statistics', $this->cacheTtl, $callback);
+        }
+
+        return $callback();
     }
 
     /**
@@ -324,7 +328,24 @@ class CompoundService
      */
     protected function clearCompoundCache(): void
     {
+        if (!$this->cacheSupportsTagging()) {
+            return;
+        }
+
         Cache::forget('featured_compounds_*');
         Cache::forget('compound_statistics');
+    }
+
+    /**
+     * Check if the cache store supports tagging.
+     */
+    protected function cacheSupportsTagging(): bool
+    {
+        try {
+            $driver = config('cache.default');
+            return in_array($driver, ['redis', 'memcached', 'array']);
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 }
