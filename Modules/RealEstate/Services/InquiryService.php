@@ -49,9 +49,9 @@ class InquiryService
     /**
      * Get a single inquiry by ID.
      */
-    public function getInquiry(int $id): ?PropertyInquiry
+    public function getInquiry(int|string $id): ?PropertyInquiry
     {
-        return PropertyInquiry::with(['property.compound', 'agent'])->find($id);
+        return PropertyInquiry::with(['property.compound', 'agent'])->find((int) $id);
     }
 
     /**

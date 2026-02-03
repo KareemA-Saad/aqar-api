@@ -138,7 +138,7 @@ class PropertyController extends Controller
             ),
         ]
     )]
-    public function show(int $id): JsonResponse
+    public function show(int|string $id): JsonResponse
     {
         $property = $this->propertyService->getProperty($id);
         

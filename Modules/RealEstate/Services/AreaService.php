@@ -106,22 +106,22 @@ class AreaService
     /**
      * Get a single area by ID.
      */
-    public function getArea(int $id, array $relations = []): ?Area
+    public function getArea(int|string $id, array $relations = []): ?Area
     {
         $defaultRelations = ['parent', 'children'];
         $relations = array_merge($defaultRelations, $relations);
 
-        return Area::with($relations)->withCount(['compounds', 'properties'])->find($id);
+        return Area::with($relations)->withCount(['compounds', 'properties'])->find((int) $id);
     }
 
     /**
      * Get area by ID and slug for public URL.
      */
-    public function getAreaByIdAndSlug(int $id, string $slug): ?Area
+    public function getAreaByIdAndSlug(int|string $id, string $slug): ?Area
     {
         return Area::with(['parent', 'children'])
             ->withCount(['compounds', 'properties'])
-            ->where('id', $id)
+            ->where('id', (int) $id)
             ->where('slug', $slug)
             ->active()
             ->first();

@@ -104,7 +104,7 @@ class AreaController extends Controller
             new OA\Response(response: 404, description: 'Area not found'),
         ]
     )]
-    public function show(int $id, string $slug): JsonResponse
+    public function show(int|string $id, string $slug): JsonResponse
     {
         $area = $this->areaService->getAreaByIdAndSlug($id, $slug);
         

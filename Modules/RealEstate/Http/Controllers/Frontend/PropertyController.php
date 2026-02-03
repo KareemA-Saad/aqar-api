@@ -99,7 +99,7 @@ class PropertyController extends Controller
             new OA\Response(response: 404, description: 'Property not found'),
         ]
     )]
-    public function show(int $id, string $slug): JsonResponse
+    public function show(int|string $id, string $slug): JsonResponse
     {
         $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
         

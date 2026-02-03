@@ -103,9 +103,9 @@ class DeveloperController extends Controller
             new OA\Response(response: 404, description: 'Developer not found'),
         ]
     )]
-    public function show(int $id, string $slug): JsonResponse
+    public function show(int|string $id, string $slug): JsonResponse
     {
-        $developer = Developer::where('id', $id)
+        $developer = Developer::where('id', (int) $id)
             ->where('slug', $slug)
             ->active()
             ->withCount(['compounds', 'properties'])

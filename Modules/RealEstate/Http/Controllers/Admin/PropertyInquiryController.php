@@ -103,7 +103,7 @@ class PropertyInquiryController extends Controller
             ),
         ]
     )]
-    public function show(int $id): JsonResponse
+    public function show(int|string $id): JsonResponse
     {
         $inquiry = $this->inquiryService->getInquiry($id);
         

@@ -136,7 +136,7 @@ class CompoundController extends Controller
             ),
         ]
     )]
-    public function show(int $id): JsonResponse
+    public function show(int|string $id): JsonResponse
     {
         $compound = $this->compoundService->getCompound($id);
         

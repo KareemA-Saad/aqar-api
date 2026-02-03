@@ -175,7 +175,7 @@ class AreaController extends Controller
             ),
         ]
     )]
-    public function show(int $id): JsonResponse
+    public function show(int|string $id): JsonResponse
     {
         $area = $this->areaService->getArea($id);
         

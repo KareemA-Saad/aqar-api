@@ -62,7 +62,7 @@ class CompoundController extends Controller
             new OA\Response(response: 404, description: 'Compound not found'),
         ]
     )]
-    public function show(int $id, string $slug): JsonResponse
+    public function show(int|string $id, string $slug): JsonResponse
     {
         $compound = $this->compoundService->getCompoundByIdAndSlug($id, $slug);
         
