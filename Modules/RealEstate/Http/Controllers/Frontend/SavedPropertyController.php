@@ -46,7 +46,7 @@ class SavedPropertyController extends Controller
         $user = $request->user();
         
         $savedProperties = $user->savedProperties()
-            ->with(['area', 'propertyType', 'primaryImage'])
+            ->with(['compound.area', 'propertyType', 'primaryImage'])
             ->paginate($request->input('per_page', 15));
         
         return response()->json([
