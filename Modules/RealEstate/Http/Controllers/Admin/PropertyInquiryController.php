@@ -171,7 +171,7 @@ class PropertyInquiryController extends Controller
         
         return response()->json([
             'message' => 'Inquiry updated successfully.',
-            'data' => new PropertyInquiryResource($inquiry->fresh(['property', 'compound', 'user', 'agent'])),
+            'data' => new PropertyInquiryResource($inquiry->fresh(['property.compound', 'agent'])),
         ]);
     }
 

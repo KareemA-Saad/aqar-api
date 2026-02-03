@@ -63,7 +63,7 @@ class AgentDashboardController extends Controller
 
         // Get recent inquiries
         $recentInquiries = PropertyInquiry::where('agent_id', $agentId)
-            ->with(['property', 'compound'])
+            ->with(['property.compound'])
             ->latest()
             ->take(5)
             ->get();
@@ -156,7 +156,7 @@ class AgentDashboardController extends Controller
         $agentId = auth()->id();
 
         $query = PropertyInquiry::where('agent_id', $agentId)
-            ->with(['property', 'compound', 'user']);
+            ->with(['property.compound', 'agent']);
 
         // Apply filters
         if ($request->filled('status')) {

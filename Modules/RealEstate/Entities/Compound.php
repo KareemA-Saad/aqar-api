@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
@@ -170,6 +171,14 @@ class Compound extends Model
     public function images(): HasMany
     {
         return $this->hasMany(CompoundImage::class, 'compound_id')->orderBy('order');
+    }
+
+    /**
+     * Get the primary image.
+     */
+    public function primaryImage(): HasOne
+    {
+        return $this->hasOne(CompoundImage::class, 'compound_id')->orderBy('order')->limit(1);
     }
 
     /**

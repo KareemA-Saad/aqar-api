@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -215,6 +216,14 @@ class Property extends Model
     public function images(): HasMany
     {
         return $this->hasMany(PropertyImage::class, 'property_id')->orderBy('order');
+    }
+
+    /**
+     * Get the primary image.
+     */
+    public function primaryImage(): HasOne
+    {
+        return $this->hasOne(PropertyImage::class, 'property_id')->where('is_primary', true);
     }
 
     /**

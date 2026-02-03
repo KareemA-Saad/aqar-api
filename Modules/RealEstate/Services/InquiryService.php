@@ -40,8 +40,8 @@ class InquiryService
                 AllowedFilter::scope('date_range', 'dateRange'),
             ])
             ->allowedSorts(['created_at', 'status', 'name'])
-            ->allowedIncludes(['property', 'compound', 'user', 'agent'])
-            ->with(['property', 'compound']);
+            ->allowedIncludes(['property', 'agent'])
+            ->with(['property', 'agent']);
 
         return $query->paginate($filters['per_page'] ?? 15);
     }
@@ -51,7 +51,7 @@ class InquiryService
      */
     public function getInquiry(int $id): ?PropertyInquiry
     {
-        return PropertyInquiry::with(['property', 'compound', 'user', 'agent'])->find($id);
+        return PropertyInquiry::with(['property.compound', 'agent'])->find($id);
     }
 
     /**
@@ -78,7 +78,7 @@ class InquiryService
             $inquiry = PropertyInquiry::create($data);
 
             // Load relationships for notifications
-            $inquiry->load(['property', 'compound']);
+            $inquiry->load(['property.compound', 'agent']);
 
             // Send notifications
             $this->sendNewInquiryNotifications($inquiry);
@@ -218,7 +218,7 @@ class InquiryService
         $inquiry->update(['agent_id' => $agentId]);
 
         // Load the agent relationship
-        $inquiry->load(['agent', 'property', 'compound']);
+        $inquiry->load(['agent', 'property.compound']);
 
         // Notify the newly assigned agent (if different from previous)
         if ($agentId !== $previousAgentId && $inquiry->agent) {
@@ -285,7 +285,7 @@ class InquiryService
     public function getInquiriesByProperty(int $propertyId): LengthAwarePaginator
     {
         return PropertyInquiry::where('property_id', $propertyId)
-            ->with(['user', 'agent'])
+            ->with(['agent'])
             ->latest()
             ->paginate(15);
     }
@@ -296,7 +296,7 @@ class InquiryService
     public function getInquiriesByCompound(int $compoundId): LengthAwarePaginator
     {
         return PropertyInquiry::where('compound_id', $compoundId)
-            ->with(['property', 'user', 'agent'])
+            ->with(['property.compound', 'agent'])
             ->latest()
             ->paginate(15);
     }
@@ -307,7 +307,7 @@ class InquiryService
     public function getAgentInquiries(int $agentId): LengthAwarePaginator
     {
         return PropertyInquiry::where('agent_id', $agentId)
-            ->with(['property', 'compound', 'user'])
+            ->with(['property.compound'])
             ->latest()
             ->paginate(15);
     }
