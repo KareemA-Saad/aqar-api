@@ -38,7 +38,7 @@ class PropertyService
     {
         $query = QueryBuilder::for(Property::class)
             ->allowedFilters([
-                AllowedFilter::exact('area_id'),
+                AllowedFilter::exact('compound.area_id'),
                 AllowedFilter::exact('compound_id'),
                 AllowedFilter::exact('property_type_id'),
                 AllowedFilter::exact('developer_id'),
@@ -54,7 +54,7 @@ class PropertyService
             ])
             ->allowedSorts(['created_at', 'price', 'area', 'bedrooms', 'views_count'])
             ->allowedIncludes(['area', 'compound', 'propertyType', 'developer', 'images', 'amenities'])
-            ->with(['area', 'propertyType', 'primaryImage'])
+            ->with(['compound.area', 'propertyType', 'primaryImage'])
             ->active();
 
         return $query->paginate($filters['per_page'] ?? 15);
@@ -76,7 +76,7 @@ class PropertyService
      */
     public function getPropertyByIdAndSlug(int $id, string $slug): ?Property
     {
-        return Property::with(['area', 'compound', 'propertyType', 'developer', 'images', 'amenities'])
+        return Property::with(['compound.area', 'compound', 'propertyType', 'developer', 'images', 'amenities'])
             ->where('id', $id)
             ->where('slug', $slug)
             ->active()
@@ -203,7 +203,7 @@ class PropertyService
      */
     public function getFeaturedProperties(int $limit = 10): Collection
     {
-        $callback = fn () => Property::with(['area', 'propertyType', 'primaryImage'])
+        $callback = fn () => Property::with(['compound.area', 'propertyType', 'primaryImage'])
             ->featured()
             ->active()
             ->latest()
@@ -222,12 +222,12 @@ class PropertyService
      */
     public function getSimilarProperties(Property $property, int $limit = 6): Collection
     {
-        return Property::with(['area', 'propertyType', 'primaryImage'])
+        return Property::with(['compound.area', 'propertyType', 'primaryImage'])
             ->where('id', '!=', $property->id)
             ->where(function ($query) use ($property) {
-                $query->where('area_id', $property->area_id)
-                    ->orWhere('property_type_id', $property->property_type_id)
-                    ->orWhere('compound_id', $property->compound_id);
+                // Match by compound (same area) or property type
+                $query->where('compound_id', $property->compound_id)
+                    ->orWhere('property_type_id', $property->property_type_id);
             })
             ->active()
             ->limit($limit)
@@ -325,10 +325,12 @@ class PropertyService
         
         if ($property->compound_id) {
             Cache::forget('compound_' . $property->compound_id);
-        }
-        
-        if ($property->area_id) {
-            Cache::forget('area_' . $property->area_id);
+            
+            // Clear area cache through compound
+            $compound = $property->compound;
+            if ($compound && $compound->area_id) {
+                Cache::forget('area_' . $compound->area_id);
+            }
         }
     }
 

@@ -108,7 +108,7 @@ class AgentDashboardController extends Controller
         $agentId = auth()->id();
 
         $query = Property::where('agent_id', $agentId)
-            ->with(['compound', 'propertyType', 'area'])
+            ->with(['compound.area', 'compound', 'propertyType'])
             ->withCount('inquiries');
 
         // Apply filters

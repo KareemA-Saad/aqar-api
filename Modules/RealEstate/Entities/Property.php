@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
@@ -57,6 +58,11 @@ use Spatie\Translatable\HasTranslations;
  * @property int $priority
  * @property int $views_count
  * @property int $inquiry_count
+ * @property int $favorites_count
+ *
+ * @property-read Compound $compound
+ * @property-read Area $area (through compound)
+ * @property-read PropertyType $propertyType
  * @property int $favorites_count
  */
 class Property extends Model
@@ -162,6 +168,21 @@ class Property extends Model
     public function compound(): BelongsTo
     {
         return $this->belongsTo(Compound::class, 'compound_id');
+    }
+
+    /**
+     * Get the area through compound.
+     */
+    public function area(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Area::class,
+            Compound::class,
+            'id',           // Foreign key on compounds table
+            'id',           // Foreign key on areas table
+            'compound_id',  // Local key on properties table
+            'area_id'       // Local key on compounds table
+        );
     }
 
     /**
