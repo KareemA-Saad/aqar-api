@@ -715,7 +715,7 @@ final class TenantService
     {
         $behavior = config('modules.trial_modules', 'all');
 
-        return match ($behavior) {
+        $modules = match ($behavior) {
             'all' => array_merge(
                 config('modules.core_modules', []),
                 array_values(array_filter(
@@ -726,6 +726,14 @@ final class TenantService
             'core' => config('modules.core_modules', []),
             default => config('modules.core_modules', []),
         };
+
+        // ALWAYS ensure RealEstate is included in trial modules
+        if (!in_array('RealEstate', $modules, true)) {
+            $modules[] = 'RealEstate';
+        }
+
+        // Remove duplicates
+        return array_unique($modules);
     }
 
     /**

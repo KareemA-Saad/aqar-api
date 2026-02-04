@@ -43,7 +43,9 @@ class PropertyService
                 AllowedFilter::exact('property_type_id'),
                 AllowedFilter::exact('developer_id'),
                 AllowedFilter::exact('listing_type'),  // Database column
-                AllowedFilter::exact('purpose'),        // Alias for listing_type via accessor
+                AllowedFilter::callback('purpose', function ($query, $value) {
+                    $query->where('listing_type', $value);
+                }),
                 AllowedFilter::exact('finishing'),
                 AllowedFilter::scope('price_range', 'priceRange'),
                 AllowedFilter::scope('area_range', 'areaRange'),
