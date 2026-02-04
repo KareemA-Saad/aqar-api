@@ -54,9 +54,14 @@ class PropertyService
                 AllowedFilter::scope('status'),
             ])
             ->allowedSorts(['created_at', 'price', 'area', 'bedrooms', 'views_count'])
-            ->allowedIncludes(['area', 'compound', 'compound.developer', 'propertyType', 'images', 'amenities'])
-            ->with(['compound.area', 'compound.developer', 'propertyType', 'primaryImage'])
-            ->active();
+            ->allowedIncludes(['compound.area', 'compound', 'compound.developer', 'propertyType', 'images', 'amenities'])
+            ->with(['compound.area', 'compound.developer', 'propertyType', 'primaryImage']);
+
+        // Don't apply active() filter for admin requests - they need to see all properties
+        // Frontend controllers should apply active() separately
+        if (!isset($filters['admin']) || !$filters['admin']) {
+            $query->active();
+        }
 
         return $query->paginate($filters['per_page'] ?? 15);
     }
@@ -66,7 +71,7 @@ class PropertyService
      */
     public function getProperty(int|string $id, array $relations = []): ?Property
     {
-        $defaultRelations = ['area', 'compound.developer', 'compound', 'propertyType', 'images', 'amenities'];
+        $defaultRelations = ['compound.area', 'compound.developer', 'compound', 'propertyType', 'images', 'amenities'];
         $relations = array_merge($defaultRelations, $relations);
 
         return Property::with($relations)->find((int) $id);
@@ -119,7 +124,7 @@ class PropertyService
             // Clear cache
             $this->clearPropertyCache($property);
 
-            return $property->fresh(['area', 'compound', 'propertyType', 'developer', 'images', 'amenities']);
+            return $property->fresh(['compound.area', 'compound', 'propertyType', 'compound.developer', 'images', 'amenities']);
         });
     }
 
@@ -155,7 +160,7 @@ class PropertyService
             // Clear cache
             $this->clearPropertyCache($property);
 
-            return $property->fresh(['area', 'compound', 'propertyType', 'developer', 'images', 'amenities']);
+            return $property->fresh(['compound.area', 'compound', 'propertyType', 'compound.developer', 'images', 'amenities']);
         });
     }
 

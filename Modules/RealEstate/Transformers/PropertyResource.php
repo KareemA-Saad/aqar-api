@@ -112,7 +112,10 @@ class PropertyResource extends JsonResource
             'id_slug' => $this->id_slug,
             
             // Relations
-            'area' => new AreaResource($this->whenLoaded('area')),
+            'area' => new AreaResource($this->when(
+                $this->relationLoaded('compound') && $this->compound && $this->compound->relationLoaded('area'),
+                fn() => $this->compound->area
+            )),
             'compound' => new CompoundResource($this->whenLoaded('compound')),
             'property_type' => new PropertyTypeResource($this->whenLoaded('propertyType')),
             'developer' => new DeveloperResource($this->when(

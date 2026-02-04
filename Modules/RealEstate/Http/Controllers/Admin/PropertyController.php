@@ -61,7 +61,8 @@ class PropertyController extends Controller
     )]
     public function index(Request $request): PropertyCollection
     {
-        $properties = $this->propertyService->getPaginatedProperties($request->all());
+        $filters = array_merge($request->all(), ['admin' => true]);
+        $properties = $this->propertyService->getPaginatedProperties($filters);
         
         return new PropertyCollection($properties);
     }

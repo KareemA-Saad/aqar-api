@@ -35,7 +35,7 @@ class SearchService
     public function searchProperties(array $params): LengthAwarePaginator
     {
         $query = Property::query()
-            ->with(['area', 'compound.developer', 'compound', 'propertyType', 'primaryImage'])
+            ->with(['compound.area', 'compound.developer', 'compound', 'propertyType', 'primaryImage'])
             ->active();
 
         // Full-text search on title and description
@@ -517,7 +517,7 @@ class SearchService
             ->orderBy('distance')
             ->limit($limit)
             ->active()
-            ->with(['area', 'propertyType', 'primaryImage'])
+            ->with(['compound.area', 'propertyType', 'primaryImage'])
             ->get();
 
         return $properties->toArray();
@@ -568,7 +568,7 @@ class SearchService
             $query->where('listing_type', $filters['purpose']);
         }
 
-        return $query->with(['area', 'compound.developer', 'propertyType', 'primaryImage', 'compound'])
+        return $query->with(['compound.area', 'compound.developer', 'propertyType', 'primaryImage', 'compound'])
             ->limit(500) // Limit for performance
             ->get();
     }
