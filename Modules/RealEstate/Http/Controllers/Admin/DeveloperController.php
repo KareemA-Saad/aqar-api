@@ -148,9 +148,9 @@ class DeveloperController extends Controller
             ),
         ]
     )]
-    public function show(Developer $developer): JsonResponse
+    public function show(int|string $id): JsonResponse
     {
-        $developer->loadCount(['compounds', 'properties']);
+        $developer = Developer::withCount(['compounds', 'properties'])->findOrFail((int) $id);
         
         return response()->json([
             'data' => new DeveloperResource($developer),
@@ -177,8 +177,9 @@ class DeveloperController extends Controller
             new OA\Response(response: 404, description: 'Developer not found'),
         ]
     )]
-    public function update(UpdateDeveloperRequest $request, Developer $developer): JsonResponse
+    public function update(UpdateDeveloperRequest $request, int|string $id): JsonResponse
     {
+        $developer = Developer::findOrFail((int) $id);
         $developer->update($request->validated());
         
         return response()->json([
@@ -204,8 +205,10 @@ class DeveloperController extends Controller
             new OA\Response(response: 422, description: 'Cannot delete developer with compounds'),
         ]
     )]
-    public function destroy(Developer $developer): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $developer = Developer::findOrFail((int) $id);
+        
         if ($developer->compounds()->exists()) {
             return response()->json([
                 'message' => 'Cannot delete developer with associated compounds.',

@@ -189,8 +189,9 @@ class PropertyController extends Controller
             ),
         ]
     )]
-    public function update(UpdatePropertyRequest $request, Property $property): JsonResponse
+    public function update(UpdatePropertyRequest $request, int|string $id): JsonResponse
     {
+        $property = Property::findOrFail((int) $id);
         $property = $this->propertyService->updateProperty($property, $request->validated());
         
         return response()->json([
@@ -231,8 +232,9 @@ class PropertyController extends Controller
             ),
         ]
     )]
-    public function destroy(Property $property): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $property = Property::findOrFail((int) $id);
         $this->propertyService->deleteProperty($property);
         
         return response()->json([

@@ -186,8 +186,9 @@ class CompoundController extends Controller
             ),
         ]
     )]
-    public function update(UpdateCompoundRequest $request, Compound $compound): JsonResponse
+    public function update(UpdateCompoundRequest $request, int|string $id): JsonResponse
     {
+        $compound = Compound::findOrFail((int) $id);
         $compound = $this->compoundService->updateCompound($compound, $request->validated());
         
         return response()->json([
@@ -228,8 +229,9 @@ class CompoundController extends Controller
             ),
         ]
     )]
-    public function destroy(Compound $compound): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $compound = Compound::findOrFail((int) $id);
         $this->compoundService->deleteCompound($compound);
         
         return response()->json([
@@ -300,8 +302,9 @@ class CompoundController extends Controller
             new OA\Response(response: 200, description: 'Prices updated'),
         ]
     )]
-    public function updatePrices(Compound $compound): JsonResponse
+    public function updatePrices(int|string $id): JsonResponse
     {
+        $compound = Compound::findOrFail((int) $id);
         $this->compoundService->updatePriceStats($compound);
         
         return response()->json([

@@ -208,8 +208,10 @@ class AreaController extends Controller
             new OA\Response(response: 404, description: 'Area not found'),
         ]
     )]
-    public function update(UpdateAreaRequest $request, Area $area): JsonResponse
+    public function update(UpdateAreaRequest $request, int|string $id): JsonResponse
     {
+        $area = Area::findOrFail((int) $id);
+        
         try {
             $area = $this->areaService->updateArea($area, $request->validated());
             
@@ -239,8 +241,10 @@ class AreaController extends Controller
             new OA\Response(response: 422, description: 'Cannot delete area with children'),
         ]
     )]
-    public function destroy(Area $area): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $area = Area::findOrFail((int) $id);
+        
         try {
             $this->areaService->deleteArea($area);
             
