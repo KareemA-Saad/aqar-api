@@ -18,8 +18,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @package Modules\RealEstate\Entities
  *
  * @property int $id
- * @property int $property_id
+ * @property int|null $property_id
+ * @property int|null $compound_id
  * @property int|null $agent_id
+ * @property int|null $user_id
  * @property string $name
  * @property string $email
  * @property string $phone
@@ -49,7 +51,9 @@ class PropertyInquiry extends Model
      */
     protected $fillable = [
         'property_id',
+        'compound_id',
         'agent_id',
+        'user_id',
         'name',
         'email',
         'phone',
@@ -104,6 +108,22 @@ class PropertyInquiry extends Model
     public function property(): BelongsTo
     {
         return $this->belongsTo(Property::class, 'property_id');
+    }
+
+    /**
+     * Get the compound this inquiry is for (for direct compound inquiries).
+     */
+    public function compound(): BelongsTo
+    {
+        return $this->belongsTo(Compound::class, 'compound_id');
+    }
+
+    /**
+     * Get the user who submitted this inquiry (if authenticated).
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
@@ -170,6 +190,14 @@ class PropertyInquiry extends Model
     public function scopeForProperty($query, int $propertyId)
     {
         return $query->where('property_id', $propertyId);
+    }
+
+    /**
+     * Scope by compound.
+     */
+    public function scopeForCompound($query, int $compoundId)
+    {
+        return $query->where('compound_id', $compoundId);
     }
 
     /**

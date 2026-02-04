@@ -187,6 +187,21 @@ class Property extends Model
     }
 
     /**
+     * Get the developer through compound.
+     */
+    public function developer(): HasOneThrough
+    {
+        return $this->hasOneThrough(
+            Developer::class,
+            Compound::class,
+            'id',           // Foreign key on compounds table
+            'id',           // Foreign key on developers table
+            'compound_id',  // Local key on properties table
+            'developer_id'  // Local key on compounds table
+        );
+    }
+
+    /**
      * Get the property type.
      */
     public function propertyType(): BelongsTo
@@ -392,6 +407,43 @@ class Property extends Model
         };
     }
 
+    /**
+     * Scope by delivery year.
+     */
+    public function scopeDeliveryYear($query, int $year)
+    {
+        return $query->whereYear('delivery_date', $year);
+    }
+
+    /**
+     * Scope by date range (created_at).
+     */
+    public function scopeDateRange($query, ?string $startDate = null, ?string $endDate = null)
+    {
+        if ($startDate) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+        if ($endDate) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+        return $query;
+    }
+
+    /**
+     * Scope by status (for backward compatibility - maps to is_published/is_available).
+     */
+    public function scopeStatus($query, string $status)
+    {
+        return match ($status) {
+            'published' => $query->where('is_published', true),
+            'draft' => $query->where('is_published', false),
+            'available' => $query->where('is_available', true),
+            'unavailable' => $query->where('is_available', false),
+            'active' => $query->where('is_published', true)->where('is_available', true),
+            default => $query,
+        };
+    }
+
     // ==================== ACCESSORS ====================
 
     /**
@@ -454,6 +506,43 @@ class Property extends Model
             'finishing' => $this->finishing,
             'view' => $this->view,
         ];
+    }
+
+    /**
+     * Alias for listing_type (for backward compatibility with API).
+     * Maps database field 'listing_type' to API field 'purpose'.
+     */
+    public function getPurposeAttribute(): ?string
+    {
+        return $this->listing_type;
+    }
+
+    /**
+     * Set purpose (maps to listing_type).
+     */
+    public function setPurposeAttribute(?string $value): void
+    {
+        $this->attributes['listing_type'] = $value;
+    }
+
+    /**
+     * Get price per square meter.
+     */
+    public function getPricePerMeterAttribute(): ?float
+    {
+        if (!$this->price || !$this->area || $this->area <= 0) {
+            return null;
+        }
+        
+        return round($this->price / $this->area, 2);
+    }
+
+    /**
+     * Get URL accessor for frontend routing.
+     */
+    public function getUrlAttribute(): string
+    {
+        return "/properties/{$this->id_slug}";
     }
 
     // ==================== METHODS ====================

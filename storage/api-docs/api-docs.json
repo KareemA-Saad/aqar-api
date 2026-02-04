@@ -15547,23 +15547,17 @@
                     "Compounds"
                 ],
                 "summary": "Get compound details",
-                "description": "Show a single compound by ID-slug.",
+                "description": "Get detailed information about a specific compound using ID-slug format",
                 "operationId": "70fd9a62af1ebc4e069dd08c81ee5efe",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "compound",
                         "in": "path",
+                        "description": "Compound in ID-slug format (e.g., 123-compound-name)",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "slug",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "[0-9]+-.*"
                         }
                     }
                 ],
@@ -15602,21 +15596,23 @@
                 }
             }
         },
-        "/api/v1/tenant/{tenant}/realestate/compounds/{id}/properties": {
+        "/api/v1/tenant/{tenant}/realestate/compounds/{compound}/properties": {
             "get": {
                 "tags": [
                     "Compounds"
                 ],
                 "summary": "Get properties in compound",
-                "description": "Get properties in a compound.",
-                "operationId": "699ecf52c1c1416f16ce83ab2ac1ce29",
+                "description": "Get all properties within a specific compound",
+                "operationId": "e644b7eca55913166a30334ca5eb5c7d",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "compound",
                         "in": "path",
+                        "description": "Compound in ID-slug format",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "pattern": "[0-9]+-.*"
                         }
                     },
                     {
@@ -15690,29 +15686,23 @@
                 }
             }
         },
-        "/api/v1/tenant/{tenant}/realestate/developers/{id}-{slug}": {
+        "/api/v1/tenant/{tenant}/realestate/developers/{developer}": {
             "get": {
                 "tags": [
                     "Developers"
                 ],
                 "summary": "Get developer details",
-                "description": "Show a single developer.",
-                "operationId": "f46707a563bf9ace865f4c12117c9ef2",
+                "description": "Get detailed information about a specific developer using ID-slug format",
+                "operationId": "5112c51ca9e2044e224e0a1cc112deaa",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "developer",
                         "in": "path",
+                        "description": "Developer in ID-slug format",
                         "required": true,
                         "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "slug",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "[0-9]+-.*"
                         }
                     }
                 ],
@@ -15726,21 +15716,23 @@
                 }
             }
         },
-        "/api/v1/tenant/{tenant}/realestate/developers/{id}/compounds": {
+        "/api/v1/tenant/{tenant}/realestate/developers/{developer}/compounds": {
             "get": {
                 "tags": [
                     "Developers"
                 ],
                 "summary": "Get developer compounds",
-                "description": "Get compounds by developer.",
-                "operationId": "b0dfd05ae8c18287f79a266e0a34e571",
+                "description": "Get all compounds developed by a specific developer",
+                "operationId": "18dbd66c2eea7f4f549a1f1edc582c1c",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "developer",
                         "in": "path",
+                        "description": "Developer in ID-slug format",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "pattern": "[0-9]+-.*"
                         }
                     },
                     {
@@ -16131,12 +16123,13 @@
                 "operationId": "56cc80ef2528237cf9d905c8137180ab",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "property",
                         "in": "path",
-                        "description": "Property ID",
+                        "description": "Property in ID-slug format (e.g., 123-property-name)",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "pattern": "[0-9]+-.*"
                         }
                     },
                     {
@@ -40244,7 +40237,8 @@
                         "type": "string"
                     },
                     "message": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
                     },
                     "status": {
                         "type": "string",
@@ -40256,11 +40250,65 @@
                             "closed"
                         ]
                     },
+                    "status_label": {
+                        "type": "string"
+                    },
                     "property": {
-                        "$ref": "#/components/schemas/RE_PropertyResource"
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/RE_PropertyResource"
+                            }
+                        ],
+                        "nullable": true
                     },
                     "compound": {
-                        "$ref": "#/components/schemas/RE_CompoundResource"
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/RE_CompoundResource"
+                            }
+                        ],
+                        "nullable": true,
+                        "description": "For direct compound inquiries"
+                    },
+                    "user": {
+                        "description": "Authenticated user who submitted inquiry",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "agent": {
+                        "description": "Assigned agent",
+                        "properties": {
+                            "id": {
+                                "type": "integer"
+                            },
+                            "name": {
+                                "type": "string"
+                            },
+                            "email": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
                     }
                 },
                 "type": "object"
@@ -40279,7 +40327,12 @@
                     "description": {
                         "type": "string"
                     },
+                    "reference_no": {
+                        "description": "Property reference number",
+                        "type": "string"
+                    },
                     "purpose": {
+                        "description": "Listing type (alias for listing_type)",
                         "type": "string",
                         "enum": [
                             "sale",
@@ -40292,7 +40345,16 @@
                     "price_formatted": {
                         "type": "string"
                     },
+                    "price_per_meter": {
+                        "description": "Calculated price per square meter",
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
                     "area": {
+                        "description": "Property size in square meters",
                         "type": "number"
                     },
                     "area_formatted": {
@@ -40304,19 +40366,78 @@
                     "bathrooms": {
                         "type": "integer"
                     },
+                    "floor": {
+                        "description": "Floor number",
+                        "type": "integer",
+                        "nullable": true
+                    },
                     "finishing": {
-                        "type": "string"
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "view": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "delivery_date": {
+                        "type": "string",
+                        "format": "date",
+                        "nullable": true
                     },
                     "delivery_year": {
-                        "type": "integer"
+                        "description": "Extracted from delivery_date",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "installment_details": {
+                        "description": "JSON payment plan details",
+                        "type": "object",
+                        "nullable": true
+                    },
+                    "down_payment": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "monthly_installment": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "installment_years": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "compound_address": {
+                        "description": "Address from compound relation",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "latitude": {
+                        "description": "Coordinates from compound relation",
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "longitude": {
+                        "description": "Coordinates from compound relation",
+                        "type": "number",
+                        "nullable": true
                     },
                     "is_featured": {
+                        "type": "boolean"
+                    },
+                    "is_published": {
+                        "type": "boolean"
+                    },
+                    "is_available": {
                         "type": "boolean"
                     },
                     "views_count": {
                         "type": "integer"
                     },
                     "url": {
+                        "type": "string"
+                    },
+                    "id_slug": {
+                        "description": "URL-friendly ID-slug format",
                         "type": "string"
                     },
                     "area_location": {
@@ -40337,6 +40458,14 @@
                             "$ref": "#/components/schemas/RE_PropertyImageResource"
                         }
                     },
+                    "primary_image": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/RE_PropertyImageResource"
+                            }
+                        ],
+                        "nullable": true
+                    },
                     "amenities": {
                         "type": "array",
                         "items": {
@@ -40344,6 +40473,10 @@
                         }
                     },
                     "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
                         "type": "string",
                         "format": "date-time"
                     }

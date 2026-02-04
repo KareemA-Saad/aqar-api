@@ -52,19 +52,22 @@ class CompoundController extends Controller
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/realestate/compounds/{compound}',
         summary: 'Get compound details',
+        description: 'Get detailed information about a specific compound using ID-slug format',
         tags: ['Compounds'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'slug', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+            new OA\Parameter(name: 'compound', in: 'path', required: true, description: 'Compound in ID-slug format (e.g., 123-compound-name)', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
         ],
         responses: [
             new OA\Response(response: 200, description: 'Compound details'),
             new OA\Response(response: 404, description: 'Compound not found'),
         ]
     )]
-    public function show(int|string $id, string $slug): JsonResponse
+    public function show(string $compound): JsonResponse
     {
-        $compound = $this->compoundService->getCompoundByIdAndSlug($id, $slug);
+        // Parse ID from Nawy-style route: {id}-{slug}
+        $id = (int) explode('-', $compound)[0];
+        
+        $compound = $this->compoundService->getCompound($id);
         
         if (!$compound) {
             return response()->json(['message' => 'Compound not found.'], 404);
@@ -103,19 +106,23 @@ class CompoundController extends Controller
      * Get properties in a compound.
      */
     #[OA\Get(
-        path: '/api/v1/tenant/{tenant}/realestate/compounds/{id}/properties',
+        path: '/api/v1/tenant/{tenant}/realestate/compounds/{compound}/properties',
         summary: 'Get properties in compound',
+        description: 'Get all properties within a specific compound',
         tags: ['Compounds'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'compound', in: 'path', required: true, description: 'Compound in ID-slug format', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
             new OA\Response(response: 200, description: 'Compound properties'),
         ]
     )]
-    public function properties(int $id, Request $request): JsonResponse
+    public function properties(string $compound, Request $request): JsonResponse
     {
+        // Parse ID from Nawy-style route: {id}-{slug}
+        $id = (int) explode('-', $compound)[0];
+        
         $compound = $this->compoundService->getCompound($id);
         
         if (!$compound) {

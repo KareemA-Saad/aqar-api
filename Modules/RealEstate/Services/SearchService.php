@@ -49,10 +49,12 @@ class SearchService
             });
         }
 
-        // Location filters
+        // Location filters - Properties don't have direct area_id, must join through compound
         if (!empty($params['area_id'])) {
             $areaIds = $this->getAreaIdsWithChildren($params['area_id']);
-            $query->whereIn('area_id', $areaIds);
+            $query->whereHas('compound', function ($q) use ($areaIds) {
+                $q->whereIn('area_id', $areaIds);
+            });
         }
 
         if (!empty($params['compound_id'])) {
@@ -64,14 +66,16 @@ class SearchService
             $query->where('property_type_id', $params['property_type_id']);
         }
 
-        // Developer filter
+        // Developer filter - Properties don't have developer_id, must join through compound
         if (!empty($params['developer_id'])) {
-            $query->where('developer_id', $params['developer_id']);
+            $query->whereHas('compound', function ($q) use ($params) {
+                $q->where('developer_id', $params['developer_id']);
+            });
         }
 
-        // Purpose filter (sale/rent)
+        // Listing type filter (sale/rent) - mapped to 'purpose' in API via accessor
         if (!empty($params['purpose'])) {
-            $query->where('purpose', $params['purpose']);
+            $query->where('listing_type', $params['purpose']);
         }
 
         // Price range
@@ -108,9 +112,9 @@ class SearchService
             $query->where('finishing', $params['finishing']);
         }
 
-        // Delivery year
+        // Delivery year filter - database has delivery_date, so extract year
         if (!empty($params['delivery_year'])) {
-            $query->where('delivery_year', $params['delivery_year']);
+            $query->whereYear('delivery_date', $params['delivery_year']);
         }
 
         if (!empty($params['ready_to_move'])) {
@@ -420,12 +424,12 @@ class SearchService
      */
     protected function getPurposeFacets(Builder $query): array
     {
-        return $query->selectRaw('purpose, COUNT(*) as count')
-            ->groupBy('purpose')
+        return $query->selectRaw('listing_type, COUNT(*) as count')
+            ->groupBy('listing_type')
             ->get()
             ->map(fn ($item) => [
-                'value' => $item->purpose,
-                'label' => ucfirst($item->purpose),
+                'value' => $item->listing_type,
+                'label' => ucfirst($item->listing_type),
                 'count' => $item->count,
             ])
             ->toArray();
@@ -561,7 +565,7 @@ class SearchService
         }
 
         if (!empty($filters['purpose'])) {
-            $query->where('purpose', $filters['purpose']);
+            $query->where('listing_type', $filters['purpose']);
         }
 
         return $query->with(['area', 'propertyType', 'primaryImage', 'compound'])

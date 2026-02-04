@@ -206,9 +206,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/{property}', [AdminPropertyController::class, 'show'])->name('show');
             Route::put('/{property}', [AdminPropertyController::class, 'update'])->name('update');
             Route::delete('/{property}', [AdminPropertyController::class, 'destroy'])->name('destroy');
-            Route::post('/bulk', [AdminPropertyController::class, 'bulkAction'])->name('bulk');
-            Route::patch('/{property}/feature', [AdminPropertyController::class, 'toggleFeatured'])->name('feature');
-            Route::patch('/{property}/status', [AdminPropertyController::class, 'updateStatus'])->name('status');
+            Route::post('/bulk', [AdminPropertyController::class, 'bulk'])->name('bulk');
             
             // Property Images
             Route::post('/{property}/images', [AdminMediaController::class, 'uploadPropertyImages'])->name('images.upload');
@@ -227,9 +225,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/{compound}', [AdminCompoundController::class, 'show'])->name('show');
             Route::put('/{compound}', [AdminCompoundController::class, 'update'])->name('update');
             Route::delete('/{compound}', [AdminCompoundController::class, 'destroy'])->name('destroy');
-            Route::post('/bulk', [AdminCompoundController::class, 'bulkAction'])->name('bulk');
-            Route::patch('/{compound}/feature', [AdminCompoundController::class, 'toggleFeatured'])->name('feature');
-            Route::patch('/{compound}/status', [AdminCompoundController::class, 'updateStatus'])->name('status');
+            Route::post('/bulk', [AdminCompoundController::class, 'bulk'])->name('bulk');
             Route::patch('/{compound}/prices', [AdminCompoundController::class, 'updatePrices'])->name('prices');
             
             // Compound Images
@@ -300,10 +296,13 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/{inquiry}', [AdminPropertyInquiryController::class, 'show'])->name('show');
             Route::put('/{inquiry}', [AdminPropertyInquiryController::class, 'update'])->name('update');
             Route::delete('/{inquiry}', [AdminPropertyInquiryController::class, 'destroy'])->name('destroy');
-            Route::patch('/{inquiry}/status', [AdminPropertyInquiryController::class, 'updateStatus'])->name('status');
-            Route::post('/{inquiry}/assign', [AdminPropertyInquiryController::class, 'assign'])->name('assign');
-            Route::post('/{inquiry}/notes', [AdminPropertyInquiryController::class, 'addNote'])->name('notes');
-            Route::post('/bulk', [AdminPropertyInquiryController::class, 'bulkAction'])->name('bulk');
+            Route::post('/{inquiry}/assign', [AdminPropertyInquiryController::class, 'assignAgent'])->name('assign');
+            Route::post('/bulk/status', [AdminPropertyInquiryController::class, 'bulkUpdateStatus'])->name('bulk-status');
+            
+            // Status transitions
+            Route::post('/{inquiry}/contacted', [AdminPropertyInquiryController::class, 'markContacted'])->name('contacted');
+            Route::post('/{inquiry}/qualified', [AdminPropertyInquiryController::class, 'markQualified'])->name('qualified');
+            Route::post('/{inquiry}/converted', [AdminPropertyInquiryController::class, 'markConverted'])->name('converted');
         });
     });
 

@@ -42,7 +42,8 @@ class PropertyService
                 AllowedFilter::exact('compound_id'),
                 AllowedFilter::exact('property_type_id'),
                 AllowedFilter::exact('developer_id'),
-                AllowedFilter::exact('purpose'),
+                AllowedFilter::exact('listing_type'),  // Database column
+                AllowedFilter::exact('purpose'),        // Alias for listing_type via accessor
                 AllowedFilter::exact('finishing'),
                 AllowedFilter::scope('price_range', 'priceRange'),
                 AllowedFilter::scope('area_range', 'areaRange'),

@@ -326,8 +326,8 @@ class AgentDashboardController extends Controller
             'total' => (clone $properties)->count(),
             'published' => (clone $properties)->where('is_published', true)->count(),
             'draft' => (clone $properties)->where('is_published', false)->count(),
-            'for_sale' => (clone $properties)->where('purpose', 'sale')->count(),
-            'for_rent' => (clone $properties)->where('purpose', 'rent')->count(),
+            'for_sale' => (clone $properties)->where('listing_type', 'sale')->count(),
+            'for_rent' => (clone $properties)->where('listing_type', 'rent')->count(),
             'featured' => (clone $properties)->where('is_featured', true)->count(),
             'total_views' => (clone $properties)->sum('views_count'),
         ];
