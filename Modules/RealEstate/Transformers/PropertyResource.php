@@ -115,7 +115,10 @@ class PropertyResource extends JsonResource
             'area' => new AreaResource($this->whenLoaded('area')),
             'compound' => new CompoundResource($this->whenLoaded('compound')),
             'property_type' => new PropertyTypeResource($this->whenLoaded('propertyType')),
-            'developer' => new DeveloperResource($this->whenLoaded('developer')),
+            'developer' => new DeveloperResource($this->when(
+                $this->relationLoaded('compound') && $this->compound && $this->compound->relationLoaded('developer'),
+                fn() => $this->compound->developer
+            )),
             'images' => PropertyImageResource::collection($this->whenLoaded('images')),
             'primary_image' => new PropertyImageResource($this->whenLoaded('primaryImage')),
             'amenities' => AmenityResource::collection($this->whenLoaded('amenities')),
