@@ -145,21 +145,23 @@ class SetApiLanguage
         // Sort by quality (highest first)
         arsort($languages);
 
-        // Return the first valid language
+        // Return the first valid language.
+        // Base language (e.g. "en") is checked BEFORE regional variants (e.g. "en_GB")
+        // so that translatable JSON keys stay consistent across seeded and user-created data.
         foreach (array_keys($languages) as $lang) {
-            // Convert to our format (e.g., en-US -> en_US or just extract base language)
-            $normalized = $this->normalizeLanguageCode($lang);
-            
-            if ($this->isValidLanguage($normalized)) {
-                return $normalized;
-            }
-
-            // Try just the base language (e.g., en from en-US)
+            // Try the base language first (e.g., en from en-GB)
             $baseLang = explode('-', $lang)[0];
             $baseLang = explode('_', $baseLang)[0];
-            
+
             if ($this->isValidLanguage($baseLang)) {
                 return $baseLang;
+            }
+
+            // Fall back to the full regional code (e.g., en_GB)
+            $normalized = $this->normalizeLanguageCode($lang);
+
+            if ($this->isValidLanguage($normalized)) {
+                return $normalized;
             }
         }
 
