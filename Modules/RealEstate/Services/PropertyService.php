@@ -38,7 +38,7 @@ class PropertyService
     {
         $query = QueryBuilder::for(Property::class)
             ->allowedFilters([
-                AllowedFilter::exact('compound.area_id'),
+                AllowedFilter::exact('area_id', 'compound.area_id'),  // alias so filter[area_id] works
                 AllowedFilter::exact('compound_id'),
                 AllowedFilter::exact('property_type_id'),
                 AllowedFilter::exact('developer_id'),

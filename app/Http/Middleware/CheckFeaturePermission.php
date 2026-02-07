@@ -59,7 +59,21 @@ final class CheckFeaturePermission
         $package = $paymentLog->package;
 
         if (!$package) {
-            return $this->noPackageResponse();
+            // Attempt to auto-resolve: assign the first active plan so the tenant isn't stuck
+            $fallbackPlan = \App\Models\PricePlan::where('status', true)->orderBy('id')->first();
+
+            if ($fallbackPlan) {
+                $paymentLog->update(['package_id' => $fallbackPlan->id]);
+                $package = $fallbackPlan;
+
+                \Illuminate\Support\Facades\Log::warning('CheckFeaturePermission: auto-assigned fallback plan', [
+                    'tenant_id' => $tenant->id,
+                    'payment_log_id' => $paymentLog->id,
+                    'fallback_plan_id' => $fallbackPlan->id,
+                ]);
+            } else {
+                return $this->noPackageResponse();
+            }
         }
 
         // Get allowed features from the package
