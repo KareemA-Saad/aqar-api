@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\Developer;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Modules\RealEstate\Http\Requests\StoreDeveloperRequest;
 use Modules\RealEstate\Http\Requests\UpdateDeveloperRequest;
 use Modules\RealEstate\Transformers\DeveloperResource;
@@ -15,7 +15,7 @@ use Spatie\QueryBuilder\QueryBuilder;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Developers', description: 'Developer management endpoints')]
-class DeveloperController extends Controller
+class DeveloperController extends BaseController
 {
     /**
      * List all developers with filters.

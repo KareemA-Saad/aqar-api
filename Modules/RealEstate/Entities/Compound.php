@@ -56,11 +56,6 @@ class Compound extends Model
     use HasFactory, HasTranslations, SoftDeletes;
 
     /**
-     * The database connection that should be used by the model.
-     */
-    protected $connection = 'tenant';
-
-    /**
      * The table associated with the model.
      */
     protected $table = 're_compounds';

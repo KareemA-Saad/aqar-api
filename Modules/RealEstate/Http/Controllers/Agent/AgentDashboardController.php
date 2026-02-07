@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Agent;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +22,7 @@ use OpenApi\Attributes as OA;
  * and inquiries.
  */
 #[OA\Tag(name: 'Agent Dashboard', description: 'Agent-specific endpoints for managing properties and inquiries')]
-class AgentDashboardController extends Controller
+class AgentDashboardController extends BaseController
 {
     public function __construct(
         protected InquiryService $inquiryService

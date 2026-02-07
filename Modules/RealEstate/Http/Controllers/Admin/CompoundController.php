@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\Compound;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Modules\RealEstate\Http\Requests\BulkActionRequest;
 use Modules\RealEstate\Http\Requests\StoreCompoundRequest;
 use Modules\RealEstate\Http\Requests\UpdateCompoundRequest;
@@ -17,7 +17,7 @@ use Modules\RealEstate\Transformers\CompoundResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Compounds', description: 'Compound/Project management endpoints')]
-class CompoundController extends Controller
+class CompoundController extends BaseController
 {
     public function __construct(
         protected CompoundService $compoundService

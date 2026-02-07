@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\Developer;
@@ -14,7 +14,7 @@ use Modules\RealEstate\Transformers\DeveloperResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Developers', description: 'Public developer listing endpoints')]
-class DeveloperController extends Controller
+class DeveloperController extends BaseController
 {
     public function __construct(
         protected CompoundService $compoundService

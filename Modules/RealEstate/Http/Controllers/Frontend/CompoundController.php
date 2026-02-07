@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Services\CompoundService;
@@ -15,7 +15,7 @@ use Modules\RealEstate\Transformers\PropertyResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Compounds', description: 'Public compound/project listing endpoints')]
-class CompoundController extends Controller
+class CompoundController extends BaseController
 {
     public function __construct(
         protected CompoundService $compoundService,

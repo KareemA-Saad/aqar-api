@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Modules\RealEstate\Http\Requests\StorePropertyInquiryRequest;
 use Modules\RealEstate\Services\InquiryService;
@@ -12,7 +12,7 @@ use Modules\RealEstate\Transformers\PropertyInquiryResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Inquiries', description: 'Property inquiry submission endpoints')]
-class PropertyInquiryController extends Controller
+class PropertyInquiryController extends BaseController
 {
     public function __construct(
         protected InquiryService $inquiryService

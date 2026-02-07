@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\PropertyType;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Modules\RealEstate\Http\Requests\StorePropertyTypeRequest;
 use Modules\RealEstate\Transformers\PropertyTypeResource;
 use Spatie\QueryBuilder\QueryBuilder;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Property Types', description: 'Property type management endpoints')]
-class PropertyTypeController extends Controller
+class PropertyTypeController extends BaseController
 {
     /**
      * List all property types.
