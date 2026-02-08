@@ -15,10 +15,23 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'name', type: 'string'),
         new OA\Property(property: 'email', type: 'string'),
         new OA\Property(property: 'phone', type: 'string'),
-        new OA\Property(property: 'message', type: 'string'),
+        new OA\Property(property: 'message', type: 'string', nullable: true),
         new OA\Property(property: 'status', type: 'string', enum: ['new', 'contacted', 'qualified', 'converted', 'closed']),
-        new OA\Property(property: 'property', ref: '#/components/schemas/RE_PropertyResource'),
-        new OA\Property(property: 'compound', ref: '#/components/schemas/RE_CompoundResource'),
+        new OA\Property(property: 'status_label', type: 'string'),
+        new OA\Property(property: 'property', ref: '#/components/schemas/RE_PropertyResource', nullable: true),
+        new OA\Property(property: 'compound', ref: '#/components/schemas/RE_CompoundResource', nullable: true, description: 'For direct compound inquiries'),
+        new OA\Property(property: 'user', type: 'object', nullable: true, description: 'Authenticated user who submitted inquiry', properties: [
+            new OA\Property(property: 'id', type: 'integer'),
+            new OA\Property(property: 'name', type: 'string'),
+            new OA\Property(property: 'email', type: 'string'),
+        ]),
+        new OA\Property(property: 'agent', type: 'object', nullable: true, description: 'Assigned agent', properties: [
+            new OA\Property(property: 'id', type: 'integer'),
+            new OA\Property(property: 'name', type: 'string'),
+            new OA\Property(property: 'email', type: 'string'),
+        ]),
+        new OA\Property(property: 'created_at', type: 'string', format: 'date-time'),
+        new OA\Property(property: 'updated_at', type: 'string', format: 'date-time'),
     ]
 )]
 class PropertyInquiryResource extends JsonResource

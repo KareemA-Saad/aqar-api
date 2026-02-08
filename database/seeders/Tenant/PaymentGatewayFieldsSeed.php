@@ -10,9 +10,20 @@ class PaymentGatewayFieldsSeed extends Seeder
 {
     public static function execute()
     {
-        $data = file_get_contents('assets/tenant/page-layout/payment-gateway.json');
+        $filePath = base_path('assets/tenant/page-layout/payment-gateway.json');
+        if (!file_exists($filePath)) {
+            \Illuminate\Support\Facades\Log::warning('PaymentGatewayFieldsSeed: payment-gateway.json not found, skipping');
+            return;
+        }
+
+        $data = file_get_contents($filePath);
         $all_data_decoded = json_decode($data);
-        $package = tenant()->payment_log()->first()?->package()->first() ?? [];
+
+        if (empty($all_data_decoded)) {
+            return;
+        }
+
+        $package = tenant()->paymentLog?->package ?? [];
         $all_features = $package->plan_features ?? [];
         $check_feature_name = $all_features->pluck('feature_name')->toArray();
 

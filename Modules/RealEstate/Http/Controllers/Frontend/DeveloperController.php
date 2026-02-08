@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\Developer;
@@ -14,7 +14,7 @@ use Modules\RealEstate\Transformers\DeveloperResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Developers', description: 'Public developer listing endpoints')]
-class DeveloperController extends Controller
+class DeveloperController extends BaseController
 {
     public function __construct(
         protected CompoundService $compoundService
@@ -91,22 +91,24 @@ class DeveloperController extends Controller
      * Show a single developer.
      */
     #[OA\Get(
-        path: '/api/v1/tenant/{tenant}/realestate/developers/{id}-{slug}',
+        path: '/api/v1/tenant/{tenant}/realestate/developers/{developer}',
         summary: 'Get developer details',
+        description: 'Get detailed information about a specific developer using ID-slug format',
         tags: ['Developers'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'slug', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+            new OA\Parameter(name: 'developer', in: 'path', required: true, description: 'Developer in ID-slug format', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
         ],
         responses: [
             new OA\Response(response: 200, description: 'Developer details'),
             new OA\Response(response: 404, description: 'Developer not found'),
         ]
     )]
-    public function show(int|string $id, string $slug): JsonResponse
+    public function show(string $developer): JsonResponse
     {
-        $developer = Developer::where('id', (int) $id)
-            ->where('slug', $slug)
+        // Parse ID from Nawy-style route: {id}-{slug}
+        $id = (int) explode('-', $developer)[0];
+        
+        $developer = Developer::where('id', $id)
             ->active()
             ->withCount(['compounds', 'properties'])
             ->first();
@@ -124,19 +126,23 @@ class DeveloperController extends Controller
      * Get compounds by developer.
      */
     #[OA\Get(
-        path: '/api/v1/tenant/{tenant}/realestate/developers/{id}/compounds',
+        path: '/api/v1/tenant/{tenant}/realestate/developers/{developer}/compounds',
         summary: 'Get developer compounds',
+        description: 'Get all compounds developed by a specific developer',
         tags: ['Developers'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'developer', in: 'path', required: true, description: 'Developer in ID-slug format', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
             new OA\Parameter(name: 'limit', in: 'query', schema: new OA\Schema(type: 'integer', default: 10)),
         ],
         responses: [
             new OA\Response(response: 200, description: 'Developer compounds'),
         ]
     )]
-    public function compounds(int $id, Request $request): JsonResponse
+    public function compounds(string $developer, Request $request): JsonResponse
     {
+        // Parse ID from Nawy-style route: {id}-{slug}
+        $id = (int) explode('-', $developer)[0];
+        
         $limit = $request->input('limit', 10);
         $compounds = $this->compoundService->getCompoundsByDeveloper($id, $limit);
         

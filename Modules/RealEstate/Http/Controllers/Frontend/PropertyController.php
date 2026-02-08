@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Services\PropertyService;
@@ -13,7 +13,7 @@ use Modules\RealEstate\Transformers\PropertyResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Properties', description: 'Public property listing and detail endpoints')]
-class PropertyController extends Controller
+class PropertyController extends BaseController
 {
     public function __construct(
         protected PropertyService $propertyService
@@ -99,9 +99,12 @@ class PropertyController extends Controller
             new OA\Response(response: 404, description: 'Property not found'),
         ]
     )]
-    public function show(int|string $id, string $slug): JsonResponse
+    public function show(string $property): JsonResponse
     {
-        $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
+        // Parse ID from Nawy-style route: {id}-{slug}
+        $id = (int) explode('-', $property)[0];
+        
+        $property = $this->propertyService->getProperty($id);
         
         if (!$property) {
             return response()->json(['message' => 'Property not found.'], 404);
@@ -161,7 +164,7 @@ class PropertyController extends Controller
         description: 'Get properties similar to the specified property based on location, type, and price range',
         tags: ['Properties'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, description: 'Property ID', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'property', in: 'path', required: true, description: 'Property in ID-slug format (e.g., 123-property-name)', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
             new OA\Parameter(name: 'limit', in: 'query', description: 'Number of similar properties', schema: new OA\Schema(type: 'integer', default: 6, maximum: 20)),
         ],
         responses: [
@@ -181,8 +184,11 @@ class PropertyController extends Controller
             new OA\Response(response: 404, description: 'Property not found'),
         ]
     )]
-    public function similar(int $id, Request $request): JsonResponse
+    public function similar(string $property, Request $request): JsonResponse
     {
+        // Parse ID from Nawy-style route: {id}-{slug}
+        $id = (int) explode('-', $property)[0];
+        
         $property = $this->propertyService->getProperty($id);
         
         if (!$property) {

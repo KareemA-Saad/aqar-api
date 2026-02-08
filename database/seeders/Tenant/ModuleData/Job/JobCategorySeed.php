@@ -29,10 +29,10 @@ class JobCategorySeed
 
         }
 
-        $package = tenant()->user()->first()?->payment_log()->first()?->package()->first() ?? [];
+        $package = tenant()->paymentLog?->package ?? [];
         $all_features = $package->plan_features ?? [];
 
-        $payment_log = tenant()->user()->first()?->payment_log()?->first() ?? [];
+        $payment_log = tenant()->paymentLog ?? [];
         if(empty($all_features) && $payment_log->status != 'trial'){
             return;
         }

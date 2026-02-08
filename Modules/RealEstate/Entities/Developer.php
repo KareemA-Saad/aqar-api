@@ -8,6 +8,7 @@ use App\Models\MetaInfo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Translatable\HasTranslations;
@@ -56,6 +57,7 @@ class Developer extends Model
         'phone',
         'email',
         'address',
+        'established_year',
         'is_featured',
         'status',
         'meta_title',
@@ -77,6 +79,7 @@ class Developer extends Model
         'status' => 'boolean',
         'compounds_count' => 'integer',
         'properties_count' => 'integer',
+        'established_year' => 'integer',
     ];
 
     /**
@@ -106,9 +109,16 @@ class Developer extends Model
     /**
      * Get all properties by this developer (through compounds).
      */
-    public function properties()
+    public function properties(): HasManyThrough
     {
-        return Property::whereIn('compound_id', $this->compounds()->pluck('id'));
+        return $this->hasManyThrough(
+            Property::class,
+            Compound::class,
+            'developer_id', // FK on compounds table
+            'compound_id',  // FK on properties table
+            'id',           // Local key on developers table
+            'id'            // Local key on compounds table
+        );
     }
 
     /**

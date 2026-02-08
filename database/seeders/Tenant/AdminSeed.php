@@ -9,6 +9,7 @@ use App\Models\Admin;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -37,6 +38,12 @@ class AdminSeed extends Seeder
         // TODO: Uncomment when get_static_option_central() helper is implemented
         // $password_condition = !empty(get_static_option_central('tenant_seeding_password_status')) ? $random_pass : $raw_pass;
         $password_condition = $raw_pass;
+
+        // Check if admin already exists to avoid duplicate entry
+        if (Admin::where('email', 'test@test.com')->exists()) {
+            Log::info('AdminSeed: Super admin already exists, skipping');
+            return;
+        }
 
         $admin = Admin::create([
             'name' => 'Test User',

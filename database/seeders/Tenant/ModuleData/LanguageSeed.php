@@ -6,6 +6,7 @@ use App\Helpers\SeederHelpers\JsonDataModifier;
 use App\Models\Language;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 
 class LanguageSeed extends Seeder
@@ -24,11 +25,15 @@ class LanguageSeed extends Seeder
             });
         }
 
+        // Check if languages already exist to avoid duplicate primary key
+        if (Language::count() > 0) {
+            Log::info('LanguageSeed: Languages already exist, skipping');
+            return;
+        }
 
         //todo insert data from seeder json file
         $event_cat = new JsonDataModifier('', 'language');
         $data = $event_cat->getColumnData([
-            "id",
             "name",
             "slug",
             "direction",

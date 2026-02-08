@@ -247,6 +247,34 @@ class Compound extends Model
         return $query->orderBy('priority', 'desc')->orderBy('created_at', 'desc');
     }
 
+    /**
+     * Scope by price range (for properties within compound).
+     */
+    public function scopePriceRange($query, ?float $min = null, ?float $max = null)
+    {
+        if ($min !== null) {
+            $query->where('min_price', '>=', $min);
+        }
+        if ($max !== null) {
+            $query->where('max_price', '<=', $max);
+        }
+        return $query;
+    }
+
+    /**
+     * Scope by date range (created_at).
+     */
+    public function scopeDateRange($query, ?string $startDate = null, ?string $endDate = null)
+    {
+        if ($startDate) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+        if ($endDate) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+        return $query;
+    }
+
     // ==================== ACCESSORS ====================
 
     /**

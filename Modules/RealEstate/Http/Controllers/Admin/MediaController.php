@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use App\Models\MediaUploader;
 use App\Services\MediaService;
 use Illuminate\Http\JsonResponse;
@@ -27,7 +27,7 @@ use OpenApi\Attributes as OA;
  * - Floor plans and master plans
  */
 #[OA\Tag(name: 'Admin - Media', description: 'Media management for properties and compounds')]
-class MediaController extends Controller
+class MediaController extends BaseController
 {
     /**
      * Thumbnail sizes for property/compound images.

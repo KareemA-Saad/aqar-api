@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Modules\RealEstate\Entities\PropertyType;
 use Modules\RealEstate\Transformers\PropertyTypeResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Property Types', description: 'Public property type listing endpoints')]
-class PropertyTypeController extends Controller
+class PropertyTypeController extends BaseController
 {
     /**
      * List active property types.

@@ -24,8 +24,8 @@ class LanguageSeeder extends Seeder
         $languages = [
             // Primary Languages
             [
-                'name' => 'English (British)',
-                'slug' => 'en_GB',
+                'name' => 'English',
+                'slug' => 'en',
                 'direction' => 0, // LTR
                 'status' => true,
                 'default' => true,
@@ -37,12 +37,19 @@ class LanguageSeeder extends Seeder
                 'status' => true,
                 'default' => false,
             ],
-            // English Variants
+            // English Variants (regional — middleware resolves these to base "en")
+            [
+                'name' => 'English (British)',
+                'slug' => 'en_GB',
+                'direction' => 0,
+                'status' => false, // Disabled — use base "en" instead
+                'default' => false,
+            ],
             [
                 'name' => 'English (US)',
                 'slug' => 'en_US',
                 'direction' => 0,
-                'status' => true,
+                'status' => false, // Disabled — use base "en" instead
                 'default' => false,
             ],
             [

@@ -1,0 +1,37 @@
+[
+    {
+        "day": "Saturday",
+        "key": "sat",
+        "status": 1
+    },
+    {
+        "day": "Sunday",
+        "key": "sun",
+        "status": 1
+    },
+    {
+        "day": "Monday",
+        "key": "mon",
+        "status": 1
+    },
+    {
+        "day": "Tuesday",
+        "key": "tue",
+        "status": 1
+    },
+    {
+        "day": "Wednesday",
+        "key": "wed",
+        "status": 1
+    },
+    {
+        "day": "Thursday",
+        "key": "thu",
+        "status": 1
+    },
+    {
+        "day": "Friday",
+        "key": "fri",
+        "status": 1
+    }
+]

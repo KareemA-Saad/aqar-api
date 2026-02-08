@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Modules\RealEstate\Entities\Property;
 use Modules\RealEstate\Entities\Compound;
@@ -18,7 +18,7 @@ use OpenApi\Attributes as OA;
  * Frontend controller for fetching property and compound image galleries.
  */
 #[OA\Tag(name: 'Frontend - Gallery', description: 'Public image gallery endpoints')]
-class GalleryController extends Controller
+class GalleryController extends BaseController
 {
     /**
      * Get property image gallery.

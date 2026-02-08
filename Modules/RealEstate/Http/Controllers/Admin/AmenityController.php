@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\Amenity;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Modules\RealEstate\Http\Requests\StoreAmenityRequest;
 use Modules\RealEstate\Transformers\AmenityResource;
 use Spatie\QueryBuilder\QueryBuilder;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Amenities', description: 'Amenity management endpoints')]
-class AmenityController extends Controller
+class AmenityController extends BaseController
 {
     /**
      * List all amenities.
@@ -140,8 +140,10 @@ class AmenityController extends Controller
             ),
         ]
     )]
-    public function show(Amenity $amenity): JsonResponse
+    public function show(int|string $id): JsonResponse
     {
+        $amenity = Amenity::findOrFail((int) $id);
+        
         return response()->json([
             'data' => new AmenityResource($amenity),
         ]);
@@ -184,8 +186,9 @@ class AmenityController extends Controller
             ),
         ]
     )]
-    public function update(StoreAmenityRequest $request, Amenity $amenity): JsonResponse
+    public function update(StoreAmenityRequest $request, int|string $id): JsonResponse
     {
+        $amenity = Amenity::findOrFail((int) $id);
         $amenity->update($request->validated());
         
         return response()->json([
@@ -226,8 +229,10 @@ class AmenityController extends Controller
             ),
         ]
     )]
-    public function destroy(Amenity $amenity): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $amenity = Amenity::findOrFail((int) $id);
+        
         // Detach from properties and compounds first
         $amenity->properties()->detach();
         $amenity->compounds()->detach();

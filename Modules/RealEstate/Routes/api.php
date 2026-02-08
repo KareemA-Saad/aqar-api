@@ -203,12 +203,10 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/', [AdminPropertyController::class, 'index'])->name('index');
             Route::post('/', [AdminPropertyController::class, 'store'])->name('store');
             Route::get('/statistics', [AdminPropertyController::class, 'statistics'])->name('statistics');
-            Route::get('/{property}', [AdminPropertyController::class, 'show'])->name('show');
-            Route::put('/{property}', [AdminPropertyController::class, 'update'])->name('update');
-            Route::delete('/{property}', [AdminPropertyController::class, 'destroy'])->name('destroy');
-            Route::post('/bulk', [AdminPropertyController::class, 'bulkAction'])->name('bulk');
-            Route::patch('/{property}/feature', [AdminPropertyController::class, 'toggleFeatured'])->name('feature');
-            Route::patch('/{property}/status', [AdminPropertyController::class, 'updateStatus'])->name('status');
+            Route::post('/bulk', [AdminPropertyController::class, 'bulk'])->name('bulk');
+            Route::get('/{id}', [AdminPropertyController::class, 'show'])->name('show');
+            Route::put('/{id}', [AdminPropertyController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminPropertyController::class, 'destroy'])->name('destroy');
             
             // Property Images
             Route::post('/{property}/images', [AdminMediaController::class, 'uploadPropertyImages'])->name('images.upload');
@@ -224,18 +222,16 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/', [AdminCompoundController::class, 'index'])->name('index');
             Route::post('/', [AdminCompoundController::class, 'store'])->name('store');
             Route::get('/statistics', [AdminCompoundController::class, 'statistics'])->name('statistics');
-            Route::get('/{compound}', [AdminCompoundController::class, 'show'])->name('show');
-            Route::put('/{compound}', [AdminCompoundController::class, 'update'])->name('update');
-            Route::delete('/{compound}', [AdminCompoundController::class, 'destroy'])->name('destroy');
-            Route::post('/bulk', [AdminCompoundController::class, 'bulkAction'])->name('bulk');
-            Route::patch('/{compound}/feature', [AdminCompoundController::class, 'toggleFeatured'])->name('feature');
-            Route::patch('/{compound}/status', [AdminCompoundController::class, 'updateStatus'])->name('status');
-            Route::patch('/{compound}/prices', [AdminCompoundController::class, 'updatePrices'])->name('prices');
+            Route::get('/{id}', [AdminCompoundController::class, 'show'])->name('show');
+            Route::put('/{id}', [AdminCompoundController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminCompoundController::class, 'destroy'])->name('destroy');
+            Route::post('/bulk', [AdminCompoundController::class, 'bulk'])->name('bulk');
+            Route::patch('/{id}/prices', [AdminCompoundController::class, 'updatePrices'])->name('prices');
             
             // Compound Images
-            Route::post('/{compound}/images', [AdminMediaController::class, 'uploadCompoundImages'])->name('images.upload');
-            Route::delete('/{compound}/images/{image}', [AdminMediaController::class, 'deleteCompoundImage'])->name('images.delete');
-            Route::put('/{compound}/images/reorder', [AdminMediaController::class, 'reorderPropertyImages'])->name('images.reorder');
+            Route::post('/{id}/images', [AdminMediaController::class, 'uploadCompoundImages'])->name('images.upload');
+            Route::delete('/{id}/images/{imageId}', [AdminMediaController::class, 'deleteCompoundImage'])->name('images.delete');
+            Route::put('/{id}/images/reorder', [AdminMediaController::class, 'reorderPropertyImages'])->name('images.reorder');
         });
         
         // ----------------------------------------
@@ -246,10 +242,10 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::post('/', [AdminAreaController::class, 'store'])->name('store');
             Route::get('/tree', [AdminAreaController::class, 'tree'])->name('tree');
             Route::get('/statistics', [AdminAreaController::class, 'statistics'])->name('statistics');
-            Route::get('/{area}', [AdminAreaController::class, 'show'])->name('show');
-            Route::put('/{area}', [AdminAreaController::class, 'update'])->name('update');
-            Route::delete('/{area}', [AdminAreaController::class, 'destroy'])->name('destroy');
-            Route::get('/{area}/children', [AdminAreaController::class, 'children'])->name('children');
+            Route::get('/{id}', [AdminAreaController::class, 'show'])->name('show');
+            Route::put('/{id}', [AdminAreaController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminAreaController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}/children', [AdminAreaController::class, 'children'])->name('children');
             Route::put('/reorder', [AdminAreaController::class, 'reorder'])->name('reorder');
         });
         
@@ -259,9 +255,9 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         Route::prefix('developers')->name('developers.')->group(function () {
             Route::get('/', [AdminDeveloperController::class, 'index'])->name('index');
             Route::post('/', [AdminDeveloperController::class, 'store'])->name('store');
-            Route::get('/{developer}', [AdminDeveloperController::class, 'show'])->name('show');
-            Route::put('/{developer}', [AdminDeveloperController::class, 'update'])->name('update');
-            Route::delete('/{developer}', [AdminDeveloperController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}', [AdminDeveloperController::class, 'show'])->name('show');
+            Route::put('/{id}', [AdminDeveloperController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminDeveloperController::class, 'destroy'])->name('destroy');
         });
         
         // ----------------------------------------
@@ -270,9 +266,9 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         Route::prefix('property-types')->name('property-types.')->group(function () {
             Route::get('/', [AdminPropertyTypeController::class, 'index'])->name('index');
             Route::post('/', [AdminPropertyTypeController::class, 'store'])->name('store');
-            Route::get('/{propertyType}', [AdminPropertyTypeController::class, 'show'])->name('show');
-            Route::put('/{propertyType}', [AdminPropertyTypeController::class, 'update'])->name('update');
-            Route::delete('/{propertyType}', [AdminPropertyTypeController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}', [AdminPropertyTypeController::class, 'show'])->name('show');
+            Route::put('/{id}', [AdminPropertyTypeController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminPropertyTypeController::class, 'destroy'])->name('destroy');
             Route::put('/reorder', [AdminPropertyTypeController::class, 'reorder'])->name('reorder');
         });
         
@@ -284,9 +280,9 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::post('/', [AdminAmenityController::class, 'store'])->name('store');
             Route::get('/for-properties', [AdminAmenityController::class, 'forProperties'])->name('for-properties');
             Route::get('/for-compounds', [AdminAmenityController::class, 'forCompounds'])->name('for-compounds');
-            Route::get('/{amenity}', [AdminAmenityController::class, 'show'])->name('show');
-            Route::put('/{amenity}', [AdminAmenityController::class, 'update'])->name('update');
-            Route::delete('/{amenity}', [AdminAmenityController::class, 'destroy'])->name('destroy');
+            Route::get('/{id}', [AdminAmenityController::class, 'show'])->name('show');
+            Route::put('/{id}', [AdminAmenityController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminAmenityController::class, 'destroy'])->name('destroy');
             Route::put('/reorder', [AdminAmenityController::class, 'reorder'])->name('reorder');
         });
         
@@ -297,13 +293,16 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/', [AdminPropertyInquiryController::class, 'index'])->name('index');
             Route::get('/statistics', [AdminPropertyInquiryController::class, 'statistics'])->name('statistics');
             Route::get('/export', [AdminPropertyInquiryController::class, 'export'])->name('export');
-            Route::get('/{inquiry}', [AdminPropertyInquiryController::class, 'show'])->name('show');
-            Route::put('/{inquiry}', [AdminPropertyInquiryController::class, 'update'])->name('update');
-            Route::delete('/{inquiry}', [AdminPropertyInquiryController::class, 'destroy'])->name('destroy');
-            Route::patch('/{inquiry}/status', [AdminPropertyInquiryController::class, 'updateStatus'])->name('status');
-            Route::post('/{inquiry}/assign', [AdminPropertyInquiryController::class, 'assign'])->name('assign');
-            Route::post('/{inquiry}/notes', [AdminPropertyInquiryController::class, 'addNote'])->name('notes');
-            Route::post('/bulk', [AdminPropertyInquiryController::class, 'bulkAction'])->name('bulk');
+            Route::get('/{id}', [AdminPropertyInquiryController::class, 'show'])->name('show');
+            Route::put('/{id}', [AdminPropertyInquiryController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminPropertyInquiryController::class, 'destroy'])->name('destroy');
+            Route::post('/{id}/assign', [AdminPropertyInquiryController::class, 'assignAgent'])->name('assign');
+            Route::post('/bulk/status', [AdminPropertyInquiryController::class, 'bulkUpdateStatus'])->name('bulk-status');
+            
+            // Status transitions
+            Route::post('/{id}/contacted', [AdminPropertyInquiryController::class, 'markContacted'])->name('contacted');
+            Route::post('/{id}/qualified', [AdminPropertyInquiryController::class, 'markQualified'])->name('qualified');
+            Route::post('/{id}/converted', [AdminPropertyInquiryController::class, 'markConverted'])->name('converted');
         });
     });
 
@@ -331,8 +330,8 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         // ----------------------------------------
         Route::prefix('inquiries')->name('inquiries.')->group(function () {
             Route::get('/', [AgentDashboardController::class, 'inquiries'])->name('index');
-            Route::put('/{inquiry}', [AgentDashboardController::class, 'updateInquiry'])->name('update');
-            Route::post('/{inquiry}/contact', [AgentDashboardController::class, 'markContacted'])->name('contact');
+            Route::put('/{id}', [AgentDashboardController::class, 'updateInquiry'])->name('update');
+            Route::post('/{id}/contact', [AgentDashboardController::class, 'markContacted'])->name('contact');
         });
     });
 });

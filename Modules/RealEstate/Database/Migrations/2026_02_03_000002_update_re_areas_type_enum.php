@@ -22,11 +22,11 @@ return new class extends Migration
         $driver = DB::connection()->getDriverName();
         
         if ($driver === 'mysql') {
-            DB::statement("ALTER TABLE re_areas MODIFY COLUMN type ENUM('governorate', 'city', 'district', 'super_area', 'area', 'sub_area') DEFAULT 'area'");
+            DB::statement("ALTER TABLE re_areas MODIFY COLUMN type ENUM('governorate', 'region', 'city', 'district', 'super_area', 'area', 'sub_area') DEFAULT 'area'");
         } elseif ($driver === 'pgsql') {
             // For PostgreSQL, we need a more complex approach
             DB::statement("ALTER TABLE re_areas ALTER COLUMN type TYPE VARCHAR(20)");
-            DB::statement("ALTER TABLE re_areas ADD CONSTRAINT re_areas_type_check CHECK (type IN ('governorate', 'city', 'district', 'super_area', 'area', 'sub_area'))");
+            DB::statement("ALTER TABLE re_areas ADD CONSTRAINT re_areas_type_check CHECK (type IN ('governorate', 'region', 'city', 'district', 'super_area', 'area', 'sub_area'))");
         } else {
             // For SQLite, drop and recreate (but preserve data)
             Schema::table('re_areas', function (Blueprint $table) {
@@ -40,7 +40,7 @@ return new class extends Migration
             });
             
             Schema::table('re_areas', function (Blueprint $table) {
-                $table->enum('type', ['governorate', 'city', 'district', 'super_area', 'area', 'sub_area'])->default('area');
+                $table->enum('type', ['governorate', 'region', 'city', 'district', 'super_area', 'area', 'sub_area'])->default('area');
             });
             
             DB::statement("UPDATE re_areas SET type = type_temp");

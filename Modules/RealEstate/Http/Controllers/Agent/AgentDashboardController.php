@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Agent;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,7 +22,7 @@ use OpenApi\Attributes as OA;
  * and inquiries.
  */
 #[OA\Tag(name: 'Agent Dashboard', description: 'Agent-specific endpoints for managing properties and inquiries')]
-class AgentDashboardController extends Controller
+class AgentDashboardController extends BaseController
 {
     public function __construct(
         protected InquiryService $inquiryService
@@ -326,8 +326,8 @@ class AgentDashboardController extends Controller
             'total' => (clone $properties)->count(),
             'published' => (clone $properties)->where('is_published', true)->count(),
             'draft' => (clone $properties)->where('is_published', false)->count(),
-            'for_sale' => (clone $properties)->where('purpose', 'sale')->count(),
-            'for_rent' => (clone $properties)->where('purpose', 'rent')->count(),
+            'for_sale' => (clone $properties)->where('listing_type', 'sale')->count(),
+            'for_rent' => (clone $properties)->where('listing_type', 'rent')->count(),
             'featured' => (clone $properties)->where('is_featured', true)->count(),
             'total_views' => (clone $properties)->sum('views_count'),
         ];

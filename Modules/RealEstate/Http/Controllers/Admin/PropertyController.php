@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\Property;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Modules\RealEstate\Http\Requests\BulkActionRequest;
 use Modules\RealEstate\Http\Requests\StorePropertyRequest;
 use Modules\RealEstate\Http\Requests\UpdatePropertyRequest;
@@ -17,7 +17,7 @@ use Modules\RealEstate\Transformers\PropertyResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Properties', description: 'Property management endpoints')]
-class PropertyController extends Controller
+class PropertyController extends BaseController
 {
     public function __construct(
         protected PropertyService $propertyService
@@ -61,7 +61,8 @@ class PropertyController extends Controller
     )]
     public function index(Request $request): PropertyCollection
     {
-        $properties = $this->propertyService->getPaginatedProperties($request->all());
+        $filters = array_merge($request->all(), ['admin' => true]);
+        $properties = $this->propertyService->getPaginatedProperties($filters);
         
         return new PropertyCollection($properties);
     }
@@ -188,8 +189,9 @@ class PropertyController extends Controller
             ),
         ]
     )]
-    public function update(UpdatePropertyRequest $request, Property $property): JsonResponse
+    public function update(UpdatePropertyRequest $request, int|string $id): JsonResponse
     {
+        $property = Property::findOrFail((int) $id);
         $property = $this->propertyService->updateProperty($property, $request->validated());
         
         return response()->json([
@@ -230,8 +232,9 @@ class PropertyController extends Controller
             ),
         ]
     )]
-    public function destroy(Property $property): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $property = Property::findOrFail((int) $id);
         $this->propertyService->deleteProperty($property);
         
         return response()->json([

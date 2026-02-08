@@ -38,11 +38,14 @@ class PropertyService
     {
         $query = QueryBuilder::for(Property::class)
             ->allowedFilters([
-                AllowedFilter::exact('compound.area_id'),
+                AllowedFilter::exact('area_id', 'compound.area_id'),  // alias so filter[area_id] works
                 AllowedFilter::exact('compound_id'),
                 AllowedFilter::exact('property_type_id'),
                 AllowedFilter::exact('developer_id'),
-                AllowedFilter::exact('purpose'),
+                AllowedFilter::exact('listing_type'),  // Database column
+                AllowedFilter::callback('purpose', function ($query, $value) {
+                    $query->where('listing_type', $value);
+                }),
                 AllowedFilter::exact('finishing'),
                 AllowedFilter::scope('price_range', 'priceRange'),
                 AllowedFilter::scope('area_range', 'areaRange'),
@@ -53,9 +56,14 @@ class PropertyService
                 AllowedFilter::scope('status'),
             ])
             ->allowedSorts(['created_at', 'price', 'area', 'bedrooms', 'views_count'])
-            ->allowedIncludes(['area', 'compound', 'propertyType', 'developer', 'images', 'amenities'])
-            ->with(['compound.area', 'propertyType', 'primaryImage'])
-            ->active();
+            ->allowedIncludes(['compound.area', 'compound', 'compound.developer', 'propertyType', 'images', 'amenities'])
+            ->with(['compound.area', 'compound.developer', 'propertyType', 'primaryImage']);
+
+        // Don't apply active() filter for admin requests - they need to see all properties
+        // Frontend controllers should apply active() separately
+        if (!isset($filters['admin']) || !$filters['admin']) {
+            $query->active();
+        }
 
         return $query->paginate($filters['per_page'] ?? 15);
     }
@@ -65,7 +73,7 @@ class PropertyService
      */
     public function getProperty(int|string $id, array $relations = []): ?Property
     {
-        $defaultRelations = ['area', 'compound', 'propertyType', 'developer', 'images', 'amenities'];
+        $defaultRelations = ['compound.area', 'compound.developer', 'compound', 'propertyType', 'images', 'amenities'];
         $relations = array_merge($defaultRelations, $relations);
 
         return Property::with($relations)->find((int) $id);
@@ -76,7 +84,7 @@ class PropertyService
      */
     public function getPropertyByIdAndSlug(int|string $id, string $slug): ?Property
     {
-        return Property::with(['compound.area', 'compound', 'propertyType', 'developer', 'images', 'amenities'])
+        return Property::with(['compound.area', 'compound.developer', 'compound', 'propertyType', 'images', 'amenities'])
             ->where('id', (int) $id)
             ->where('slug', $slug)
             ->active()
@@ -118,7 +126,7 @@ class PropertyService
             // Clear cache
             $this->clearPropertyCache($property);
 
-            return $property->fresh(['area', 'compound', 'propertyType', 'developer', 'images', 'amenities']);
+            return $property->fresh(['compound.area', 'compound', 'propertyType', 'compound.developer', 'images', 'amenities']);
         });
     }
 
@@ -154,7 +162,7 @@ class PropertyService
             // Clear cache
             $this->clearPropertyCache($property);
 
-            return $property->fresh(['area', 'compound', 'propertyType', 'developer', 'images', 'amenities']);
+            return $property->fresh(['compound.area', 'compound', 'propertyType', 'compound.developer', 'images', 'amenities']);
         });
     }
 
@@ -203,7 +211,7 @@ class PropertyService
      */
     public function getFeaturedProperties(int $limit = 10): Collection
     {
-        $callback = fn () => Property::with(['compound.area', 'propertyType', 'primaryImage'])
+        $callback = fn () => Property::with(['compound.area', 'compound.developer', 'propertyType', 'primaryImage'])
             ->featured()
             ->active()
             ->latest()
@@ -222,7 +230,7 @@ class PropertyService
      */
     public function getSimilarProperties(Property $property, int $limit = 6): Collection
     {
-        return Property::with(['compound.area', 'propertyType', 'primaryImage'])
+        return Property::with(['compound.area', 'compound.developer', 'propertyType', 'primaryImage'])
             ->where('id', '!=', $property->id)
             ->where(function ($query) use ($property) {
                 // Match by compound (same area) or property type

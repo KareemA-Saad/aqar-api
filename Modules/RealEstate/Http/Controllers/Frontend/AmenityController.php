@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\Amenity;
@@ -12,7 +12,7 @@ use Modules\RealEstate\Transformers\AmenityResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Amenities', description: 'Public amenity listing endpoints')]
-class AmenityController extends Controller
+class AmenityController extends BaseController
 {
     /**
      * List active amenities.

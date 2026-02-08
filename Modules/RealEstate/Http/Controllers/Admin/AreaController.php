@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\Area;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Modules\RealEstate\Http\Requests\StoreAreaRequest;
 use Modules\RealEstate\Http\Requests\UpdateAreaRequest;
 use Modules\RealEstate\Services\AreaService;
@@ -15,7 +15,7 @@ use Modules\RealEstate\Transformers\AreaResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Areas', description: 'Area/Location management endpoints')]
-class AreaController extends Controller
+class AreaController extends BaseController
 {
     public function __construct(
         protected AreaService $areaService
@@ -208,8 +208,10 @@ class AreaController extends Controller
             new OA\Response(response: 404, description: 'Area not found'),
         ]
     )]
-    public function update(UpdateAreaRequest $request, Area $area): JsonResponse
+    public function update(UpdateAreaRequest $request, int|string $id): JsonResponse
     {
+        $area = Area::findOrFail((int) $id);
+        
         try {
             $area = $this->areaService->updateArea($area, $request->validated());
             
@@ -239,8 +241,10 @@ class AreaController extends Controller
             new OA\Response(response: 422, description: 'Cannot delete area with children'),
         ]
     )]
-    public function destroy(Area $area): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $area = Area::findOrFail((int) $id);
+        
         try {
             $this->areaService->deleteArea($area);
             

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Services\AreaService;
@@ -16,7 +16,7 @@ use Modules\RealEstate\Transformers\PropertyResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Areas', description: 'Public area/location listing endpoints')]
-class AreaController extends Controller
+class AreaController extends BaseController
 {
     public function __construct(
         protected AreaService $areaService,

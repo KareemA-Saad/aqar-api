@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Services\SearchService;
@@ -13,7 +13,7 @@ use Modules\RealEstate\Transformers\CompoundResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Search', description: 'Advanced search, autocomplete, and faceted search endpoints')]
-class SearchController extends Controller
+class SearchController extends BaseController
 {
     public function __construct(
         protected SearchService $searchService

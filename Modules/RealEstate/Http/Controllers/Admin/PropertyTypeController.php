@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\PropertyType;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Modules\RealEstate\Http\Requests\StorePropertyTypeRequest;
 use Modules\RealEstate\Transformers\PropertyTypeResource;
 use Spatie\QueryBuilder\QueryBuilder;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Property Types', description: 'Property type management endpoints')]
-class PropertyTypeController extends Controller
+class PropertyTypeController extends BaseController
 {
     /**
      * List all property types.
@@ -140,9 +140,9 @@ class PropertyTypeController extends Controller
             ),
         ]
     )]
-    public function show(PropertyType $propertyType): JsonResponse
+    public function show(int|string $id): JsonResponse
     {
-        $propertyType->loadCount('properties');
+        $propertyType = PropertyType::withCount('properties')->findOrFail((int) $id);
         
         return response()->json([
             'data' => new PropertyTypeResource($propertyType),
@@ -169,8 +169,9 @@ class PropertyTypeController extends Controller
             new OA\Response(response: 404, description: 'Property type not found'),
         ]
     )]
-    public function update(StorePropertyTypeRequest $request, PropertyType $propertyType): JsonResponse
+    public function update(StorePropertyTypeRequest $request, int|string $id): JsonResponse
     {
+        $propertyType = PropertyType::findOrFail((int) $id);
         $propertyType->update($request->validated());
         
         return response()->json([
@@ -196,8 +197,10 @@ class PropertyTypeController extends Controller
             new OA\Response(response: 422, description: 'Cannot delete property type with properties'),
         ]
     )]
-    public function destroy(PropertyType $propertyType): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $propertyType = PropertyType::findOrFail((int) $id);
+        
         if ($propertyType->properties()->exists()) {
             return response()->json([
                 'message' => 'Cannot delete property type with associated properties.',

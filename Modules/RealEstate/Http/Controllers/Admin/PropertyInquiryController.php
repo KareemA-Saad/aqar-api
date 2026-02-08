@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\RealEstate\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Modules\RealEstate\Entities\PropertyInquiry;
@@ -14,7 +14,7 @@ use Modules\RealEstate\Transformers\PropertyInquiryResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Admin - Inquiries', description: 'Property inquiry/CRM management endpoints')]
-class PropertyInquiryController extends Controller
+class PropertyInquiryController extends BaseController
 {
     public function __construct(
         protected InquiryService $inquiryService
@@ -153,8 +153,9 @@ class PropertyInquiryController extends Controller
             ),
         ]
     )]
-    public function update(UpdatePropertyInquiryRequest $request, PropertyInquiry $inquiry): JsonResponse
+    public function update(UpdatePropertyInquiryRequest $request, int|string $id): JsonResponse
     {
+        $inquiry = PropertyInquiry::findOrFail((int) $id);
         $data = $request->validated();
         
         if (isset($data['status'])) {
@@ -207,8 +208,9 @@ class PropertyInquiryController extends Controller
             ),
         ]
     )]
-    public function destroy(PropertyInquiry $inquiry): JsonResponse
+    public function destroy(int|string $id): JsonResponse
     {
+        $inquiry = PropertyInquiry::findOrFail((int) $id);
         $this->inquiryService->deleteInquiry($inquiry);
         
         return response()->json([
@@ -267,8 +269,9 @@ class PropertyInquiryController extends Controller
             ),
         ]
     )]
-    public function markContacted(PropertyInquiry $inquiry): JsonResponse
+    public function markContacted(int|string $id): JsonResponse
     {
+        $inquiry = PropertyInquiry::findOrFail((int) $id);
         $inquiry = $this->inquiryService->markAsContacted($inquiry);
         
         return response()->json([
@@ -301,8 +304,9 @@ class PropertyInquiryController extends Controller
             ),
         ]
     )]
-    public function markQualified(PropertyInquiry $inquiry): JsonResponse
+    public function markQualified(int|string $id): JsonResponse
     {
+        $inquiry = PropertyInquiry::findOrFail((int) $id);
         $inquiry = $this->inquiryService->markAsQualified($inquiry);
         
         return response()->json([
@@ -335,8 +339,9 @@ class PropertyInquiryController extends Controller
             ),
         ]
     )]
-    public function markConverted(PropertyInquiry $inquiry): JsonResponse
+    public function markConverted(int|string $id): JsonResponse
     {
+        $inquiry = PropertyInquiry::findOrFail((int) $id);
         $inquiry = $this->inquiryService->markAsConverted($inquiry);
         
         return response()->json([
@@ -377,8 +382,9 @@ class PropertyInquiryController extends Controller
             ),
         ]
     )]
-    public function assignAgent(Request $request, PropertyInquiry $inquiry): JsonResponse
+    public function assignAgent(Request $request, int|string $id): JsonResponse
     {
+        $inquiry = PropertyInquiry::findOrFail((int) $id);
         $request->validate([
             'agent_id' => 'required|integer|exists:users,id',
         ]);
