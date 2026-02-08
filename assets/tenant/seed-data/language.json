@@ -1,0 +1,16 @@
+[
+    {
+        "name": "English",
+        "slug": "en",
+        "direction": 0,
+        "status": 1,
+        "default": 1
+    },
+    {
+        "name": "العربية",
+        "slug": "ar",
+        "direction": 1,
+        "status": 1,
+        "default": 0
+    }
+]

@@ -75,14 +75,14 @@ class DeveloperSeed
         foreach ($developers as $developerData) {
             try {
                 Developer::create([
-                    'name' => json_encode($developerData['name']),
+                    'name' => $developerData['name'],
                     'slug' => $developerData['slug'],
-                    'description' => json_encode($developerData['description']),
+                    'description' => $developerData['description'],
                     'logo' => $developerData['logo'],
                     'phone' => $developerData['phone'],
                     'email' => $developerData['email'],
                     'website' => $developerData['website'],
-                    'address' => json_encode($developerData['address']),
+                    'address' => $developerData['address'],
                     'established_year' => $developerData['established_year'],
                     'status' => $developerData['status'],
                     'created_at' => now(),

@@ -13,7 +13,7 @@ class DefaultPages
     public static function execute()
     {
 
-            $payment_log = tenant()->payment_log()?->first() ?? [];
+            $payment_log = tenant()->paymentLog ?? [];
             $current_theme = $payment_log->theme;
 
             $object = new JsonDataModifier('', 'dynamic-pages');

@@ -27,7 +27,7 @@ use Spatie\Translatable\HasTranslations;
  * @property string $name
  * @property string $slug
  * @property string|null $description
- * @property string $type (super_area, area, sub_area)
+ * @property string $type (governorate, region, city, district, super_area, area, sub_area)
  * @property int $order
  * @property bool $status
  * @property bool $is_featured

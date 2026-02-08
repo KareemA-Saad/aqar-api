@@ -57,6 +57,7 @@ class Developer extends Model
         'phone',
         'email',
         'address',
+        'established_year',
         'is_featured',
         'status',
         'meta_title',
@@ -78,6 +79,7 @@ class Developer extends Model
         'status' => 'boolean',
         'compounds_count' => 'integer',
         'properties_count' => 'integer',
+        'established_year' => 'integer',
     ];
 
     /**
