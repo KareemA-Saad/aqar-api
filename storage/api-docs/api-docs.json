@@ -13806,6 +13806,13 @@
                         }
                     },
                     {
+                        "name": "filter[developer_id]",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
                         "name": "filter[purpose]",
                         "in": "query",
                         "schema": {
@@ -13814,6 +13821,51 @@
                                 "sale",
                                 "rent"
                             ]
+                        }
+                    },
+                    {
+                        "name": "filter[listing_type]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "sale",
+                                "rent"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "filter[finishing]",
+                        "in": "query",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "finished",
+                                "semi_finished",
+                                "unfinished",
+                                "furnished"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "filter[is_featured]",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "filter[is_published]",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "filter[is_available]",
+                        "in": "query",
+                        "schema": {
+                            "type": "boolean"
                         }
                     },
                     {
@@ -15370,29 +15422,54 @@
                 }
             }
         },
-        "/api/v1/tenant/{tenant}/realestate/areas/{id}-{slug}": {
+        "/api/v1/tenant/{tenant}/realestate/areas/{area}": {
             "get": {
                 "tags": [
                     "Areas"
                 ],
                 "summary": "Get area details",
                 "description": "Show a single area by ID-slug.",
-                "operationId": "0902c2a753dea1cf938accf45c80d137",
+                "operationId": "fe5a05e37fced81ed7d73fcf0022c9ce",
                 "parameters": [
                     {
-                        "name": "id",
+                        "name": "area",
                         "in": "path",
+                        "description": "Area in ID-slug format",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "string",
+                            "pattern": "[0-9]+-.*",
+                            "example": "1-new-cairo"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Area details"
                     },
+                    "404": {
+                        "description": "Area not found"
+                    }
+                }
+            }
+        },
+        "/api/v1/tenant/{tenant}/realestate/areas/by-slug/{slug}": {
+            "get": {
+                "tags": [
+                    "Areas"
+                ],
+                "summary": "Get area details by slug",
+                "description": "Get area details when you only have the slug (without the ID)",
+                "operationId": "819d7b3b0c026a5dac701ad7ec57ae50",
+                "parameters": [
                     {
                         "name": "slug",
                         "in": "path",
+                        "description": "Area slug (e.g., new-cairo, downtown-cairo)",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "new-cairo"
                         }
                     }
                 ],
