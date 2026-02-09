@@ -41,7 +41,12 @@ class PropertyService
                 AllowedFilter::exact('area_id', 'compound.area_id'),  // alias so filter[area_id] works
                 AllowedFilter::exact('compound_id'),
                 AllowedFilter::exact('property_type_id'),
-                AllowedFilter::exact('developer_id'),
+                AllowedFilter::callback('developer_id', function ($query, $value) {
+                    // Properties don't have developer_id directly - must filter through compound relationship
+                    $query->whereHas('compound', function ($q) use ($value) {
+                        $q->where('developer_id', $value);
+                    });
+                }),
                 AllowedFilter::exact('listing_type'),  // Database column
                 AllowedFilter::callback('purpose', function ($query, $value) {
                     $query->where('listing_type', $value);
@@ -52,7 +57,10 @@ class PropertyService
                 AllowedFilter::scope('bedrooms'),
                 AllowedFilter::scope('bathrooms'),
                 AllowedFilter::scope('delivery_year', 'deliveryYear'),
-                AllowedFilter::scope('featured'),
+                AllowedFilter::exact('is_featured'),  // Database column name
+                AllowedFilter::scope('featured'),     // Scope alias (also accepts filter[featured])
+                AllowedFilter::exact('is_published'),
+                AllowedFilter::exact('is_available'),
                 AllowedFilter::scope('status'),
             ])
             ->allowedSorts(['created_at', 'price', 'area', 'bedrooms', 'views_count'])

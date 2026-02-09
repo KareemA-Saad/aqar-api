@@ -92,21 +92,56 @@ class AreaController extends BaseController
      * Show a single area by ID-slug.
      */
     #[OA\Get(
-        path: '/api/v1/tenant/{tenant}/realestate/areas/{id}-{slug}',
+        path: '/api/v1/tenant/{tenant}/realestate/areas/{area}',
         summary: 'Get area details',
         tags: ['Areas'],
         parameters: [
-            new OA\Parameter(name: 'id', in: 'path', required: true, schema: new OA\Schema(type: 'integer')),
-            new OA\Parameter(name: 'slug', in: 'path', required: true, schema: new OA\Schema(type: 'string')),
+            new OA\Parameter(name: 'area', in: 'path', required: true, description: 'Area in ID-slug format', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*', example: '1-new-cairo')),
         ],
         responses: [
             new OA\Response(response: 200, description: 'Area details'),
             new OA\Response(response: 404, description: 'Area not found'),
         ]
     )]
-    public function show(int|string $id, string $slug): JsonResponse
+    public function show(string $area): JsonResponse
     {
-        $area = $this->areaService->getAreaByIdAndSlug($id, $slug);
+        // Parse ID from Nawy-style route: {id}-{slug}
+        $id = (int) explode('-', $area)[0];
+        
+        $area = $this->areaService->getArea($id);
+        
+        if (!$area) {
+            return response()->json(['message' => 'Area not found.'], 404);
+        }
+        
+        // Get breadcrumbs
+        $breadcrumbs = $this->areaService->getBreadcrumbs($area);
+        
+        return response()->json([
+            'data' => new AreaResource($area),
+            'breadcrumbs' => $breadcrumbs,
+        ]);
+    }
+
+    /**
+     * Show a single area by slug only (fallback endpoint).
+     */
+    #[OA\Get(
+        path: '/api/v1/tenant/{tenant}/realestate/areas/by-slug/{slug}',
+        summary: 'Get area details by slug',
+        description: 'Get area details when you only have the slug (without the ID)',
+        tags: ['Areas'],
+        parameters: [
+            new OA\Parameter(name: 'slug', in: 'path', required: true, description: 'Area slug (e.g., new-cairo, downtown-cairo)', schema: new OA\Schema(type: 'string', example: 'new-cairo')),
+        ],
+        responses: [
+            new OA\Response(response: 200, description: 'Area details'),
+            new OA\Response(response: 404, description: 'Area not found'),
+        ]
+    )]
+    public function showBySlug(string $slug): JsonResponse
+    {
+        $area = $this->areaService->getAreaBySlug($slug);
         
         if (!$area) {
             return response()->json(['message' => 'Area not found.'], 404);

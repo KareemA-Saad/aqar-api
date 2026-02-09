@@ -128,6 +128,18 @@ class AreaService
     }
 
     /**
+     * Get area by slug only (fallback endpoint).
+     */
+    public function getAreaBySlug(string $slug): ?Area
+    {
+        return Area::with(['parent', 'children'])
+            ->withCount(['compounds', 'properties'])
+            ->where('slug', $slug)
+            ->active()
+            ->first();
+    }
+
+    /**
      * Create a new area.
      */
     public function createArea(array $data): Area

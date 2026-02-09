@@ -98,10 +98,14 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         // Areas/Locations (Hierarchical)
         // ----------------------------------------
         Route::prefix('areas')->name('areas.')->group(function () {
+            Route::get('/', [FrontendAreaController::class, 'index'])->name('index');
             Route::get('/tree', [FrontendAreaController::class, 'tree'])->name('tree');
             Route::get('/cities', [FrontendAreaController::class, 'cities'])->name('cities');
             Route::get('/featured', [FrontendAreaController::class, 'featured'])->name('featured');
-            Route::get('/{slug}', [FrontendAreaController::class, 'show'])->name('show');
+            Route::get('/by-slug/{slug}', [FrontendAreaController::class, 'showBySlug'])->name('show-by-slug');
+            Route::get('/{area}', [FrontendAreaController::class, 'show'])
+                ->name('show')
+                ->where('area', '[0-9]+-.*');
             Route::get('/{area}/children', [FrontendAreaController::class, 'children'])->name('children');
             Route::get('/{area}/compounds', [FrontendAreaController::class, 'compounds'])->name('compounds');
             Route::get('/{area}/properties', [FrontendAreaController::class, 'properties'])->name('properties');
