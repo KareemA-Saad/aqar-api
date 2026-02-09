@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Modules\RealEstate\Services\SearchService;
 use Modules\RealEstate\Transformers\PropertyResource;
 use Modules\RealEstate\Transformers\CompoundResource;
+use Modules\RealEstate\Transformers\UnifiedSearchResultResource;
 use OpenApi\Attributes as OA;
 
 #[OA\Tag(name: 'Search', description: 'Advanced search, autocomplete, and faceted search endpoints')]
@@ -131,6 +132,132 @@ class SearchController extends BaseController
                 'current_page' => $compounds->currentPage(),
                 'last_page' => $compounds->lastPage(),
             ],
+        ]);
+    }
+
+    /**
+     * Global search across all entities (Properties, Compounds, Areas, Developers).
+     */
+    #[OA\Get(
+        path: '/api/v1/tenant/{tenant}/realestate/search',
+        summary: 'Global unified search',
+        description: 'Universal search endpoint that searches across Properties, Compounds, Areas, and Developers in a single request. Returns unified results with relevance scoring and type indicators.',
+        tags: ['Search'],
+        parameters: [
+            new OA\Parameter(name: 'q', in: 'query', required: true, description: 'Search query (min 2 chars, max 100)', schema: new OA\Schema(type: 'string', minLength: 2, maxLength: 100, example: 'palm hills')),
+            new OA\Parameter(name: 'entity_type', in: 'query', description: 'Filter by entity type', schema: new OA\Schema(type: 'string', enum: ['all', 'properties', 'compounds', 'areas', 'developers'], default: 'all')),
+            new OA\Parameter(name: 'purpose', in: 'query', description: 'Listing type (applies to properties only)', schema: new OA\Schema(type: 'string', enum: ['sale', 'rent'])),
+            new OA\Parameter(name: 'property_type_id', in: 'query', description: 'Property type filter', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'min_price', in: 'query', description: 'Minimum price', schema: new OA\Schema(type: 'number', format: 'float')),
+            new OA\Parameter(name: 'max_price', in: 'query', description: 'Maximum price', schema: new OA\Schema(type: 'number', format: 'float')),
+            new OA\Parameter(name: 'bedrooms', in: 'query', description: 'Number of bedrooms (applies to properties)', schema: new OA\Schema(type: 'integer', minimum: 0, maximum: 10)),
+            new OA\Parameter(name: 'bathrooms', in: 'query', description: 'Number of bathrooms (applies to properties)', schema: new OA\Schema(type: 'integer', minimum: 0, maximum: 10)),
+            new OA\Parameter(name: 'area_id', in: 'query', description: 'Location/area filter', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'developer_id', in: 'query', description: 'Developer filter', schema: new OA\Schema(type: 'integer')),
+            new OA\Parameter(name: 'amenities', in: 'query', description: 'Comma-separated amenity IDs', schema: new OA\Schema(type: 'string', example: '1,2,5')),
+            new OA\Parameter(name: 'finishing', in: 'query', description: 'Finishing level (properties only)', schema: new OA\Schema(type: 'string', enum: ['unfinished', 'semi_finished', 'fully_finished', 'furnished'])),
+            new OA\Parameter(name: 'sort', in: 'query', description: 'Sort field', schema: new OA\Schema(type: 'string', enum: ['relevance', 'created_at', 'price'], default: 'relevance')),
+            new OA\Parameter(name: 'per_page', in: 'query', description: 'Results per page', schema: new OA\Schema(type: 'integer', default: 15, minimum: 1, maximum: 100)),
+            new OA\Parameter(name: 'page', in: 'query', description: 'Page number', schema: new OA\Schema(type: 'integer', default: 1, minimum: 1)),
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: 'Unified search results with mixed entity types',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(
+                            property: 'data',
+                            type: 'array',
+                            items: new OA\Items(ref: '#/components/schemas/UnifiedSearchResult')
+                        ),
+                        new OA\Property(
+                            property: 'meta',
+                            properties: [
+                                new OA\Property(property: 'total', type: 'integer', example: 245),
+                                new OA\Property(property: 'per_page', type: 'integer', example: 15),
+                                new OA\Property(property: 'current_page', type: 'integer', example: 1),
+                                new OA\Property(property: 'last_page', type: 'integer', example: 17),
+                                new OA\Property(
+                                    property: 'counts_by_type',
+                                    properties: [
+                                        new OA\Property(property: 'properties', type: 'integer', example: 150),
+                                        new OA\Property(property: 'compounds', type: 'integer', example: 45),
+                                        new OA\Property(property: 'areas', type: 'integer', example: 25),
+                                        new OA\Property(property: 'developers', type: 'integer', example: 25),
+                                    ]
+                                ),
+                            ]
+                        ),
+                        new OA\Property(
+                            property: 'filters_applied',
+                            properties: [
+                                new OA\Property(property: 'q', type: 'string', example: 'palm hills'),
+                                new OA\Property(property: 'purpose', type: 'string', nullable: true),
+                                new OA\Property(property: 'entity_type', type: 'string', example: 'all'),
+                            ]
+                        ),
+                    ]
+                )
+            ),
+            new OA\Response(
+                response: 422,
+                description: 'Validation error',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'The given data was invalid.'),
+                        new OA\Property(
+                            property: 'errors',
+                            properties: [
+                                new OA\Property(
+                                    property: 'q',
+                                    type: 'array',
+                                    items: new OA\Items(type: 'string', example: 'The q field is required.')
+                                ),
+                            ]
+                        ),
+                    ]
+                )
+            ),
+        ]
+    )]
+    public function global(Request $request): JsonResponse
+    {
+        // Validate request parameters
+        $validated = $request->validate([
+            'q' => 'required|string|min:2|max:100',
+            'entity_type' => 'nullable|in:all,properties,compounds,areas,developers',
+            'purpose' => 'nullable|in:sale,rent',
+            'property_type_id' => 'nullable|integer|exists:re_property_types,id',
+            'min_price' => 'nullable|numeric|min:0',
+            'max_price' => 'nullable|numeric|min:0|gte:min_price',
+            'bedrooms' => 'nullable|integer|min:0|max:10',
+            'bathrooms' => 'nullable|integer|min:0|max:10',
+            'area_id' => 'nullable|integer|exists:re_areas,id',
+            'developer_id' => 'nullable|integer|exists:re_developers,id',
+            'amenities' => 'nullable|string',
+            'finishing' => 'nullable|in:unfinished,semi_finished,fully_finished,furnished',
+            'sort' => 'nullable|in:relevance,created_at,price',
+            'per_page' => 'nullable|integer|min:1|max:100',
+            'page' => 'nullable|integer|min:1',
+        ]);
+
+        // Parse amenities if comma-separated
+        if (isset($validated['amenities']) && is_string($validated['amenities'])) {
+            $validated['amenities'] = array_map('intval', explode(',', $validated['amenities']));
+        }
+
+        // Call search service
+        $results = $this->searchService->globalSearch($validated);
+
+        // Transform results using UnifiedSearchResultResource
+        $transformedData = UnifiedSearchResultResource::collection($results['data']);
+
+        // Return response with metadata
+        return response()->json([
+            'data' => $transformedData,
+            'meta' => $results['meta'],
+            'filters_applied' => $results['filters_applied'],
         ]);
     }
 

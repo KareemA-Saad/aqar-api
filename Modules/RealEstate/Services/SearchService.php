@@ -678,4 +678,378 @@ class SearchService
             return false;
         }
     }
+
+    /**
+     * Perform global search across all entities (Properties, Compounds, Areas, Developers).
+     * 
+     * @param array $params Search parameters including:
+     *   - q (string, required): Search query term (min 2 chars)
+     *   - purpose (string, optional): Listing type (sale/rent) - applies to properties only
+     *   - property_type_id (int, optional): Property type filter
+     *   - min_price/max_price (numeric, optional): Price range filter
+     *   - bedrooms/bathrooms (int, optional): Room filters
+     *   - area_id (int, optional): Location filter
+     *   - developer_id (int, optional): Developer filter
+     *   - amenities (string/array, optional): Amenity filters
+     *   - finishing (string, optional): Finishing level
+     *   - entity_type (string, optional): Filter by entity type (all|properties|compounds|areas|developers)
+     *   - per_page (int, optional): Results per page (default: 15)
+     *   - page (int, optional): Page number (default: 1)
+     *   - sort (string, optional): Sort field (relevance|created_at|price)
+     * 
+     * @return array Array containing:
+     *   - data: Collection of unified search results with relevance scores
+     *   - meta: Pagination and statistics metadata
+     *   - filters_applied: Applied filters for transparency
+     */
+    public function globalSearch(array $params): array
+    {
+        // Validate required parameters
+        if (empty($params['q']) || strlen($params['q']) < 2) {
+            throw new \InvalidArgumentException('Search query (q) is required and must be at least 2 characters.');
+        }
+
+        // Generate cache key from query parameters
+        $cacheKey = $this->generateGlobalSearchCacheKey($params);
+
+        // Check cache if supported
+        if ($this->cacheSupportsTagging()) {
+            $cachedResult = Cache::get($cacheKey);
+            if ($cachedResult !== null) {
+                return $cachedResult;
+            }
+        }
+
+        // Determine which entity types to search
+        $entityType = $params['entity_type'] ?? 'all';
+        $searchProperties = in_array($entityType, ['all', 'properties']);
+        $searchCompounds = in_array($entityType, ['all', 'compounds']);
+        $searchAreas = in_array($entityType, ['all', 'areas']);
+        $searchDevelopers = in_array($entityType, ['all', 'developers']);
+
+        // Execute searches for enabled entity types
+        $results = [];
+
+        if ($searchProperties) {
+            $results['properties'] = $this->searchPropertiesForGlobal($params);
+        }
+
+        if ($searchCompounds) {
+            $results['compounds'] = $this->searchCompoundsForGlobal($params);
+        }
+
+        if ($searchAreas) {
+            $results['areas'] = $this->searchAreasForGlobal($params);
+        }
+
+        if ($searchDevelopers) {
+            $results['developers'] = $this->searchDevelopersForGlobal($params);
+        }
+
+        // Merge all results into a single collection
+        $mergedResults = collect([]);
+        $counts = [
+            'properties' => 0,
+            'compounds' => 0,
+            'areas' => 0,
+            'developers' => 0,
+        ];
+
+        foreach ($results as $entityType => $collection) {
+            $mergedResults = $mergedResults->concat($collection);
+            $counts[$entityType] = $collection->count();
+        }
+
+        // Total count before pagination
+        $totalCount = $mergedResults->count();
+
+        // Paginate results
+        $perPage = $params['per_page'] ?? 15;
+        $page = $params['page'] ?? 1;
+        $lastPage = $totalCount > 0 ? (int) ceil($totalCount / $perPage) : 1;
+        
+        // Slice results for current page
+        $offset = ($page - 1) * $perPage;
+        $paginatedResults = $mergedResults->slice($offset, $perPage)->values();
+
+        // Prepare response structure
+        $response = [
+            'data' => $paginatedResults,
+            'meta' => [
+                'total' => $totalCount,
+                'per_page' => $perPage,
+                'current_page' => $page,
+                'last_page' => $lastPage,
+                'counts_by_type' => $counts,
+            ],
+            'filters_applied' => array_filter([
+                'q' => $params['q'] ?? null,
+                'purpose' => $params['purpose'] ?? null,
+                'property_type_id' => $params['property_type_id'] ?? null,
+                'min_price' => $params['min_price'] ?? null,
+                'max_price' => $params['max_price'] ?? null,
+                'bedrooms' => $params['bedrooms'] ?? null,
+                'bathrooms' => $params['bathrooms'] ?? null,
+                'area_id' => $params['area_id'] ?? null,
+                'developer_id' => $params['developer_id'] ?? null,
+                'amenities' => $params['amenities'] ?? null,
+                'finishing' => $params['finishing'] ?? null,
+                'entity_type' => $entityType,
+            ]),
+        ];
+
+        // Cache the result for 5 minutes (300 seconds)
+        if ($this->cacheSupportsTagging()) {
+            Cache::put($cacheKey, $response, 300);
+        }
+
+        return $response;
+    }
+
+    /**
+     * Search properties for global search with relevance data.
+     * 
+     * @param array $params Search parameters
+     * @return \Illuminate\Database\Eloquent\Collection Collection of properties with type indicator
+     */
+    protected function searchPropertiesForGlobal(array $params): \Illuminate\Database\Eloquent\Collection
+    {
+        $searchTerm = $params['q'];
+        
+        $query = Property::query()
+            ->with(['compound.area', 'compound.developer', 'propertyType', 'primaryImage'])
+            ->active();
+
+        // Full-text search on title and description
+        $query->where(function (Builder $q) use ($searchTerm) {
+            $q->where('title', 'like', "%{$searchTerm}%")
+                ->orWhere('description', 'like', "%{$searchTerm}%")
+                ->orWhereJsonContains('title', $searchTerm)
+                ->orWhereJsonContains('description', $searchTerm);
+        });
+
+        // Apply purpose filter (sale/rent)
+        if (!empty($params['purpose'])) {
+            $query->where('listing_type', $params['purpose']);
+        }
+
+        // Property type filter
+        if (!empty($params['property_type_id'])) {
+            $query->where('property_type_id', $params['property_type_id']);
+        }
+
+        // Price range
+        if (!empty($params['min_price'])) {
+            $query->where('price', '>=', $params['min_price']);
+        }
+        if (!empty($params['max_price'])) {
+            $query->where('price', '<=', $params['max_price']);
+        }
+
+        // Bedrooms filter
+        if (!empty($params['bedrooms'])) {
+            if (is_array($params['bedrooms'])) {
+                $query->whereIn('bedrooms', $params['bedrooms']);
+            } else {
+                $query->where('bedrooms', '>=', $params['bedrooms']);
+            }
+        }
+
+        // Bathrooms filter
+        if (!empty($params['bathrooms'])) {
+            $query->where('bathrooms', '>=', $params['bathrooms']);
+        }
+
+        // Area filter - Properties don't have direct area_id, must join through compound
+        if (!empty($params['area_id'])) {
+            $areaIds = $this->getAreaIdsWithChildren($params['area_id']);
+            $query->whereHas('compound', function ($q) use ($areaIds) {
+                $q->whereIn('area_id', $areaIds);
+            });
+        }
+
+        // Developer filter - Properties don't have developer_id, must join through compound
+        if (!empty($params['developer_id'])) {
+            $query->whereHas('compound', function ($q) use ($params) {
+                $q->where('developer_id', $params['developer_id']);
+            });
+        }
+
+        // Amenities filter
+        if (!empty($params['amenities'])) {
+            $amenityIds = is_array($params['amenities']) ? $params['amenities'] : explode(',', $params['amenities']);
+            $query->whereHas('amenities', function ($q) use ($amenityIds) {
+                $q->whereIn('re_amenities.id', $amenityIds);
+            });
+        }
+
+        // Finishing filter
+        if (!empty($params['finishing'])) {
+            $query->where('finishing', $params['finishing']);
+        }
+
+        // Limit results to 50 for performance
+        $properties = $query->limit(50)->get();
+
+        // Add type indicator and relevance score placeholder to each result
+        return $properties->map(function ($property) use ($searchTerm) {
+            $property->entity_type = 'property';
+            $property->search_term = $searchTerm;
+            // Relevance score will be calculated later in Phase 2.4
+            $property->relevance_score = 0;
+            return $property;
+        });
+    }
+
+    /**
+     * Search compounds for global search with relevance data.
+     * 
+     * @param array $params Search parameters
+     * @return \Illuminate\Database\Eloquent\Collection Collection of compounds with type indicator
+     */
+    protected function searchCompoundsForGlobal(array $params): \Illuminate\Database\Eloquent\Collection
+    {
+        $searchTerm = $params['q'];
+        
+        $query = Compound::query()
+            ->with(['area', 'developer', 'primaryImage'])
+            ->withCount('properties')
+            ->active();
+
+        // Full-text search on title (note: compounds use 'title' not 'name') and description
+        $query->where(function (Builder $q) use ($searchTerm) {
+            $q->where('title', 'like', "%{$searchTerm}%")
+                ->orWhere('description', 'like', "%{$searchTerm}%")
+                ->orWhereJsonContains('title', $searchTerm);
+        });
+
+        // Area filter
+        if (!empty($params['area_id'])) {
+            $areaIds = $this->getAreaIdsWithChildren($params['area_id']);
+            $query->whereIn('area_id', $areaIds);
+        }
+
+        // Developer filter
+        if (!empty($params['developer_id'])) {
+            $query->where('developer_id', $params['developer_id']);
+        }
+
+        // Price range (compound has min_price and max_price)
+        if (!empty($params['min_price'])) {
+            $query->where('max_price', '>=', $params['min_price']);
+        }
+        if (!empty($params['max_price'])) {
+            $query->where('min_price', '<=', $params['max_price']);
+        }
+
+        // Amenities filter (compounds also have amenities relation)
+        if (!empty($params['amenities'])) {
+            $amenityIds = is_array($params['amenities']) ? $params['amenities'] : explode(',', $params['amenities']);
+            $query->whereHas('amenities', function ($q) use ($amenityIds) {
+                $q->whereIn('re_amenities.id', $amenityIds);
+            });
+        }
+
+        // Limit results to 50 for performance
+        $compounds = $query->limit(50)->get();
+
+        // Add type indicator and relevance score placeholder to each result
+        return $compounds->map(function ($compound) use ($searchTerm) {
+            $compound->entity_type = 'compound';
+            $compound->search_term = $searchTerm;
+            // Relevance score will be calculated later in Phase 2.4
+            $compound->relevance_score = 0;
+            return $compound;
+        });
+    }
+
+    /**
+     * Search areas for global search with relevance data.
+     * 
+     * @param array $params Search parameters
+     * @return \Illuminate\Database\Eloquent\Collection Collection of areas with type indicator
+     */
+    protected function searchAreasForGlobal(array $params): \Illuminate\Database\Eloquent\Collection
+    {
+        $searchTerm = $params['q'];
+        
+        $query = Area::query()
+            ->withCount(['properties', 'compounds'])
+            ->where('status', true);
+
+        // Full-text search on name
+        $query->where('name', 'like', "%{$searchTerm}%");
+
+        // Area filter - if searching in a specific area, include it and its children
+        if (!empty($params['area_id'])) {
+            $areaIds = $this->getAreaIdsWithChildren($params['area_id']);
+            $query->whereIn('id', $areaIds);
+        }
+
+        // Limit results to 20 (areas are usually fewer)
+        $areas = $query->limit(20)->get();
+
+        // Add type indicator and relevance score placeholder to each result
+        return $areas->map(function ($area) use ($searchTerm) {
+            $area->entity_type = 'area';
+            $area->search_term = $searchTerm;
+            // Relevance score will be calculated later in Phase 2.4
+            $area->relevance_score = 0;
+            return $area;
+        });
+    }
+
+    /**
+     * Search developers for global search with relevance data.
+     * 
+     * @param array $params Search parameters
+     * @return \Illuminate\Database\Eloquent\Collection Collection of developers with type indicator
+     */
+    protected function searchDevelopersForGlobal(array $params): \Illuminate\Database\Eloquent\Collection
+    {
+        $searchTerm = $params['q'];
+        
+        $query = \Modules\RealEstate\Entities\Developer::query()
+            ->where('status', true);
+
+        // Full-text search on name and description
+        $query->where(function (Builder $q) use ($searchTerm) {
+            $q->where('name', 'like', "%{$searchTerm}%")
+                ->orWhere('description', 'like', "%{$searchTerm}%");
+        });
+
+        // Developer filter - if searching for a specific developer
+        if (!empty($params['developer_id'])) {
+            $query->where('id', $params['developer_id']);
+        }
+
+        // Limit results to 20 (developers are usually fewer)
+        $developers = $query->limit(20)->get();
+
+        // Add type indicator and relevance score placeholder to each result
+        return $developers->map(function ($developer) use ($searchTerm) {
+            $developer->entity_type = 'developer';
+            $developer->search_term = $searchTerm;
+            // Relevance score will be calculated later in Phase 2.4
+            $developer->relevance_score = 0;
+            return $developer;
+        });
+    }
+
+    /**
+     * Generate cache key for global search based on query parameters.
+     * 
+     * @param array $params Search parameters
+     * @return string Cache key
+     */
+    protected function generateGlobalSearchCacheKey(array $params): string
+    {
+        // Sort parameters for consistent cache keys
+        ksort($params);
+        
+        // Create hash from parameters
+        $hash = md5(json_encode($params));
+        
+        return "global_search:{$hash}";
+    }
 }
