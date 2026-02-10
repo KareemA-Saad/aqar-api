@@ -712,8 +712,15 @@ class SearchService
         // Generate cache key from query parameters
         $cacheKey = $this->generateGlobalSearchCacheKey($params);
 
-        // Check cache if supported
+        // Try to get cached result (with or without tags depending on driver)
         if ($this->cacheSupportsTagging()) {
+            // Redis/Memcached: Use tags for easy invalidation
+            $cachedResult = Cache::tags(['global_search'])->get($cacheKey);
+            if ($cachedResult !== null) {
+                return $cachedResult;
+            }
+        } else {
+            // File/Database cache: Use regular cache without tags
             $cachedResult = Cache::get($cacheKey);
             if ($cachedResult !== null) {
                 return $cachedResult;
@@ -760,6 +767,11 @@ class SearchService
             $counts[$entityType] = $collection->count();
         }
 
+        // Sort merged results by relevance score (descending), then by created_at (descending)
+        $mergedResults = $mergedResults->sortByDesc(function ($item) {
+            return [$item->relevance_score, $item->created_at ? $item->created_at->timestamp : 0];
+        })->values();
+
         // Total count before pagination
         $totalCount = $mergedResults->count();
 
@@ -800,6 +812,10 @@ class SearchService
 
         // Cache the result for 5 minutes (300 seconds)
         if ($this->cacheSupportsTagging()) {
+            // Redis/Memcached: Use tags for easy invalidation
+            Cache::tags(['global_search', 'search_results'])->put($cacheKey, $response, 300);
+        } else {
+            // File/Database cache: Use regular cache (manual key-based invalidation)
             Cache::put($cacheKey, $response, 300);
         }
 
@@ -891,12 +907,16 @@ class SearchService
         // Limit results to 50 for performance
         $properties = $query->limit(50)->get();
 
-        // Add type indicator and relevance score placeholder to each result
+        // Add type indicator and calculate relevance score for each result
         return $properties->map(function ($property) use ($searchTerm) {
             $property->entity_type = 'property';
             $property->search_term = $searchTerm;
-            // Relevance score will be calculated later in Phase 2.4
-            $property->relevance_score = 0;
+            $property->relevance_score = $this->calculateRelevanceScore(
+                $property,
+                $searchTerm,
+                'title',
+                'description'
+            );
             return $property;
         });
     }
@@ -953,12 +973,16 @@ class SearchService
         // Limit results to 50 for performance
         $compounds = $query->limit(50)->get();
 
-        // Add type indicator and relevance score placeholder to each result
+        // Add type indicator and calculate relevance score for each result
         return $compounds->map(function ($compound) use ($searchTerm) {
             $compound->entity_type = 'compound';
             $compound->search_term = $searchTerm;
-            // Relevance score will be calculated later in Phase 2.4
-            $compound->relevance_score = 0;
+            $compound->relevance_score = $this->calculateRelevanceScore(
+                $compound,
+                $searchTerm,
+                'title',
+                'description'
+            );
             return $compound;
         });
     }
@@ -989,12 +1013,16 @@ class SearchService
         // Limit results to 20 (areas are usually fewer)
         $areas = $query->limit(20)->get();
 
-        // Add type indicator and relevance score placeholder to each result
+        // Add type indicator and calculate relevance score for each result
         return $areas->map(function ($area) use ($searchTerm) {
             $area->entity_type = 'area';
             $area->search_term = $searchTerm;
-            // Relevance score will be calculated later in Phase 2.4
-            $area->relevance_score = 0;
+            $area->relevance_score = $this->calculateRelevanceScore(
+                $area,
+                $searchTerm,
+                'name',
+                null // Areas don't have description
+            );
             return $area;
         });
     }
@@ -1026,14 +1054,90 @@ class SearchService
         // Limit results to 20 (developers are usually fewer)
         $developers = $query->limit(20)->get();
 
-        // Add type indicator and relevance score placeholder to each result
+        // Add type indicator and calculate relevance score for each result
         return $developers->map(function ($developer) use ($searchTerm) {
             $developer->entity_type = 'developer';
             $developer->search_term = $searchTerm;
-            // Relevance score will be calculated later in Phase 2.4
-            $developer->relevance_score = 0;
+            $developer->relevance_score = $this->calculateRelevanceScore(
+                $developer,
+                $searchTerm,
+                'name',
+                'description'
+            );
             return $developer;
         });
+    }
+
+    /**
+     * Calculate relevance score for a search result.
+     * 
+     * Scoring algorithm:
+     * - Exact match on name/title: +100 points
+     * - Starts with search term: +80 points
+     * - Contains search term: +60 points
+     * - Description match: +40 points
+     * - Featured/promoted: +15 points
+     * - Recent (created in last 30 days): +10 points
+     * - Has images: +5 points
+     * 
+     * @param object $model The model instance (Property, Compound, Area, or Developer)
+     * @param string $searchTerm The search term
+     * @param string $nameField The field name for the primary title/name ('title' or 'name')
+     * @param string|null $descriptionField The field name for description (null if not applicable)
+     * @return int Relevance score (0-100+)
+     */
+    protected function calculateRelevanceScore(
+        $model,
+        string $searchTerm,
+        string $nameField = 'title',
+        ?string $descriptionField = 'description'
+    ): int {
+        $score = 0;
+        $searchTermLower = strtolower(trim($searchTerm));
+        $nameValue = strtolower($model->$nameField ?? '');
+
+        // Primary field matching (name/title)
+        if ($nameValue === $searchTermLower) {
+            // Exact match
+            $score += 100;
+        } elseif (str_starts_with($nameValue, $searchTermLower)) {
+            // Starts with search term
+            $score += 80;
+        } elseif (str_contains($nameValue, $searchTermLower)) {
+            // Contains search term
+            $score += 60;
+        }
+
+        // Description matching
+        if ($descriptionField && !empty($model->$descriptionField)) {
+            $descriptionValue = strtolower($model->$descriptionField);
+            if (str_contains($descriptionValue, $searchTermLower)) {
+                $score += 40;
+            }
+        }
+
+        // Featured/promoted bonus
+        if (isset($model->is_featured) && $model->is_featured) {
+            $score += 15;
+        }
+
+        // Recent items bonus (created in last 30 days)
+        if (isset($model->created_at)) {
+            $daysSinceCreation = now()->diffInDays($model->created_at);
+            if ($daysSinceCreation <= 30) {
+                $score += 10;
+            }
+        }
+
+        // Has images bonus
+        if (isset($model->primaryImage) && $model->primaryImage) {
+            $score += 5;
+        } elseif (isset($model->logo) && $model->logo) {
+            // For developers (logo instead of primaryImage)
+            $score += 5;
+        }
+
+        return $score;
     }
 
     /**
@@ -1051,5 +1155,29 @@ class SearchService
         $hash = md5(json_encode($params));
         
         return "global_search:{$hash}";
+    }
+
+    /**
+     * Invalidate global search cache.
+     * 
+     * Called when properties, compounds, areas, or developers are created, updated, or deleted.
+     * This ensures search results stay fresh without waiting for TTL expiration.
+     * 
+     * For Redis/Memcached: Flushes all cache entries with tags.
+     * For File/Database cache: Returns false (cache will auto-expire after 5 minutes).
+     * 
+     * @return bool True if cache invalidation was successful
+     */
+    public function invalidateGlobalSearchCache(): bool
+    {
+        if ($this->cacheSupportsTagging()) {
+            // Redis/Memcached: Flush all tagged cache entries instantly
+            Cache::tags(['global_search', 'search_results'])->flush();
+            return true;
+        }
+        
+        // File/Database cache: Cannot invalidate by tag, cache will auto-expire (5 min TTL)
+        // To force invalidation, you'd need to clear all cache: Cache::flush()
+        return false;
     }
 }
