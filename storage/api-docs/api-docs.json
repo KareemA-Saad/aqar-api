@@ -16988,6 +16988,285 @@
                 }
             }
         },
+        "/api/v1/tenant/{tenant}/realestate/search": {
+            "get": {
+                "tags": [
+                    "Search"
+                ],
+                "summary": "Global unified search",
+                "description": "Universal search endpoint that searches across Properties, Compounds, Areas, and Developers in a single request. Returns unified results with relevance scoring and type indicators.",
+                "operationId": "3372cde0b18eb8d6d313b12dd65c2272",
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "description": "Search query (min 2 chars, max 100)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100,
+                            "minLength": 2,
+                            "example": "palm hills"
+                        }
+                    },
+                    {
+                        "name": "entity_type",
+                        "in": "query",
+                        "description": "Filter by entity type",
+                        "schema": {
+                            "type": "string",
+                            "default": "all",
+                            "enum": [
+                                "all",
+                                "properties",
+                                "compounds",
+                                "areas",
+                                "developers"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "purpose",
+                        "in": "query",
+                        "description": "Listing type (applies to properties only)",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "sale",
+                                "rent"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "property_type_id",
+                        "in": "query",
+                        "description": "Property type filter",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "min_price",
+                        "in": "query",
+                        "description": "Minimum price",
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "max_price",
+                        "in": "query",
+                        "description": "Maximum price",
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "bedrooms",
+                        "in": "query",
+                        "description": "Number of bedrooms (applies to properties)",
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 10,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "bathrooms",
+                        "in": "query",
+                        "description": "Number of bathrooms (applies to properties)",
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 10,
+                            "minimum": 0
+                        }
+                    },
+                    {
+                        "name": "area_id",
+                        "in": "query",
+                        "description": "Location/area filter",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "developer_id",
+                        "in": "query",
+                        "description": "Developer filter",
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "amenities",
+                        "in": "query",
+                        "description": "Comma-separated amenity IDs",
+                        "schema": {
+                            "type": "string",
+                            "example": "1,2,5"
+                        }
+                    },
+                    {
+                        "name": "finishing",
+                        "in": "query",
+                        "description": "Finishing level (properties only)",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "unfinished",
+                                "semi_finished",
+                                "fully_finished",
+                                "furnished"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "description": "Sort field",
+                        "schema": {
+                            "type": "string",
+                            "default": "relevance",
+                            "enum": [
+                                "relevance",
+                                "created_at",
+                                "price"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Results per page",
+                        "schema": {
+                            "type": "integer",
+                            "default": 15,
+                            "maximum": 100,
+                            "minimum": 1
+                        }
+                    },
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Page number",
+                        "schema": {
+                            "type": "integer",
+                            "default": 1,
+                            "minimum": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Unified search results with mixed entity types",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/UnifiedSearchResult"
+                                            }
+                                        },
+                                        "meta": {
+                                            "properties": {
+                                                "total": {
+                                                    "type": "integer",
+                                                    "example": 245
+                                                },
+                                                "per_page": {
+                                                    "type": "integer",
+                                                    "example": 15
+                                                },
+                                                "current_page": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "last_page": {
+                                                    "type": "integer",
+                                                    "example": 17
+                                                },
+                                                "counts_by_type": {
+                                                    "properties": {
+                                                        "properties": {
+                                                            "type": "integer",
+                                                            "example": 150
+                                                        },
+                                                        "compounds": {
+                                                            "type": "integer",
+                                                            "example": 45
+                                                        },
+                                                        "areas": {
+                                                            "type": "integer",
+                                                            "example": 25
+                                                        },
+                                                        "developers": {
+                                                            "type": "integer",
+                                                            "example": 25
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "filters_applied": {
+                                            "properties": {
+                                                "q": {
+                                                    "type": "string",
+                                                    "example": "palm hills"
+                                                },
+                                                "purpose": {
+                                                    "type": "string",
+                                                    "nullable": true
+                                                },
+                                                "entity_type": {
+                                                    "type": "string",
+                                                    "example": "all"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "q": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "The q field is required."
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/v1/tenant/{tenant}/realestate/search/autocomplete": {
             "get": {
                 "tags": [
@@ -40576,6 +40855,179 @@
                     },
                     "properties_count": {
                         "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "UnifiedSearchResult": {
+                "properties": {
+                    "type": {
+                        "description": "Entity type",
+                        "type": "string",
+                        "enum": [
+                            "property",
+                            "compound",
+                            "area",
+                            "developer"
+                        ]
+                    },
+                    "id": {
+                        "description": "Entity ID",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "Entity title/name",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Entity description",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "url": {
+                        "description": "SEO-friendly URL",
+                        "type": "string"
+                    },
+                    "image": {
+                        "description": "Primary image URL",
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "relevance_score": {
+                        "description": "Search relevance score (0-100)",
+                        "type": "number",
+                        "format": "float"
+                    },
+                    "data": {
+                        "description": "Entity-specific data",
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/UnifiedSearchResult_Property"
+                            },
+                            {
+                                "$ref": "#/components/schemas/UnifiedSearchResult_Compound"
+                            },
+                            {
+                                "$ref": "#/components/schemas/UnifiedSearchResult_Area"
+                            },
+                            {
+                                "$ref": "#/components/schemas/UnifiedSearchResult_Developer"
+                            }
+                        ]
+                    }
+                },
+                "type": "object"
+            },
+            "UnifiedSearchResult_Property": {
+                "properties": {
+                    "price": {
+                        "type": "number"
+                    },
+                    "price_formatted": {
+                        "type": "string"
+                    },
+                    "currency": {
+                        "type": "string"
+                    },
+                    "purpose": {
+                        "type": "string",
+                        "enum": [
+                            "sale",
+                            "rent"
+                        ]
+                    },
+                    "bedrooms": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "bathrooms": {
+                        "type": "integer",
+                        "nullable": true
+                    },
+                    "area": {
+                        "description": "Property size in sqm",
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "area_formatted": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "properties": {
+                            "area": {
+                                "type": "string"
+                            },
+                            "compound": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "UnifiedSearchResult_Compound": {
+                "properties": {
+                    "developer": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "min_price": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "max_price": {
+                        "type": "number",
+                        "nullable": true
+                    },
+                    "price_range": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "properties_count": {
+                        "type": "integer"
+                    },
+                    "location": {
+                        "properties": {
+                            "area": {
+                                "type": "string"
+                            }
+                        },
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "UnifiedSearchResult_Area": {
+                "properties": {
+                    "type": {
+                        "description": "Area type (super_area/area/sub_area)",
+                        "type": "string"
+                    },
+                    "properties_count": {
+                        "type": "integer"
+                    },
+                    "compounds_count": {
+                        "type": "integer"
+                    }
+                },
+                "type": "object"
+            },
+            "UnifiedSearchResult_Developer": {
+                "properties": {
+                    "logo": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "compounds_count": {
+                        "type": "integer"
+                    },
+                    "properties_count": {
+                        "type": "integer"
+                    },
+                    "website": {
+                        "type": "string",
+                        "nullable": true
                     }
                 },
                 "type": "object"

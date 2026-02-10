@@ -137,6 +137,9 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         // Search (Advanced Search Endpoints)
         // ----------------------------------------
         Route::prefix('search')->name('search.')->group(function () {
+            // Global unified search - MUST be before specific search routes
+            Route::get('/', [FrontendSearchController::class, 'global'])->name('global');
+            
             Route::get('/properties', [FrontendSearchController::class, 'properties'])->name('properties');
             Route::get('/compounds', [FrontendSearchController::class, 'compounds'])->name('compounds');
             Route::get('/autocomplete', [FrontendSearchController::class, 'autocomplete'])->name('autocomplete');
