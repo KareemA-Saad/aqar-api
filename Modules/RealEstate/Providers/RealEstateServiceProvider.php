@@ -131,6 +131,7 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->app->singleton(\Modules\RealEstate\Services\AreaService::class);
         $this->app->singleton(\Modules\RealEstate\Services\InquiryService::class);
         $this->app->singleton(\Modules\RealEstate\Services\SearchService::class);
+        $this->app->singleton(\Modules\RealEstate\Services\MortgageCalculatorService::class);
     }
 
     /**

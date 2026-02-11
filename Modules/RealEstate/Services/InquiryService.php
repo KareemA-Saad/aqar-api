@@ -74,8 +74,22 @@ class InquiryService
                 $data['user_id'] = auth()->id();
             }
 
+            \Log::info('RealEstate: Creating new inquiry', [
+                'user_id' => $data['user_id'] ?? null,
+                'property_id' => $data['property_id'] ?? null,
+                'compound_id' => $data['compound_id'] ?? null,
+                'name' => $data['name'],
+                'email' => $data['email'],
+                'ip_address' => $data['ip_address'] ?? null,
+            ]);
+
             // Create inquiry
             $inquiry = PropertyInquiry::create($data);
+
+            \Log::info('RealEstate: Inquiry created successfully', [
+                'inquiry_id' => $inquiry->id,
+                'user_id' => $inquiry->user_id,
+            ]);
 
             // Load relationships for notifications
             $inquiry->load(['property.compound', 'agent']);
@@ -159,14 +173,55 @@ class InquiryService
         }
 
         $previousStatus = $inquiry->status;
+        
+        \Log::info('RealEstate: Updating inquiry status', [
+            'inquiry_id' => $inquiry->id,
+            'previous_status' => $previousStatus,
+            'new_status' => $status,
+            'user_id' => $inquiry->user_id,
+            'agent_id' => $inquiry->agent_id,
+        ]);
+
         $inquiry->update(['status' => $status]);
 
-        // Notify about status change (for tracking purposes)
-        if ($previousStatus !== $status && $inquiry->agent) {
-            try {
-                $inquiry->agent->notify(new InquiryStatusUpdatedNotification($inquiry, $previousStatus));
-            } catch (\Exception $e) {
-                \Log::error('Failed to notify status change: ' . $e->getMessage());
+        // Notify about status change (to both agent and user if applicable)
+        if ($previousStatus !== $status) {
+            // Notify agent
+            if ($inquiry->agent) {
+                try {
+                    $inquiry->agent->notify(new InquiryStatusUpdatedNotification($inquiry, $previousStatus));
+                    \Log::debug('RealEstate: Agent notified of status change', [
+                        'inquiry_id' => $inquiry->id,
+                        'agent_id' => $inquiry->agent_id,
+                    ]);
+                } catch (\Exception $e) {
+                    \Log::error('RealEstate: Failed to notify agent of status change', [
+                        'inquiry_id' => $inquiry->id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
+
+            // Notify user (customer) if authenticated inquiry
+            if ($inquiry->user_id && $inquiry->user) {
+                try {
+                    $inquiry->user->notify(new InquiryStatusUpdatedNotification($inquiry, $previousStatus));
+                    \Log::info('RealEstate: User notified of inquiry status change', [
+                        'inquiry_id' => $inquiry->id,
+                        'user_id' => $inquiry->user_id,
+                        'new_status' => $status,
+                    ]);
+                } catch (\Exception $e) {
+                    \Log::error('RealEstate: Failed to notify user of status change', [
+                        'inquiry_id' => $inquiry->id,
+                        'user_id' => $inquiry->user_id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            } else {
+                \Log::debug('RealEstate: No user to notify (guest inquiry)', [
+                    'inquiry_id' => $inquiry->id,
+                ]);
             }
         }
 

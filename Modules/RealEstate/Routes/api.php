@@ -28,6 +28,8 @@ use Modules\RealEstate\Http\Controllers\Frontend\PropertyInquiryController as Fr
 use Modules\RealEstate\Http\Controllers\Frontend\SearchController as FrontendSearchController;
 use Modules\RealEstate\Http\Controllers\Frontend\SavedPropertyController;
 use Modules\RealEstate\Http\Controllers\Frontend\GalleryController;
+use Modules\RealEstate\Http\Controllers\Frontend\PropertyComparisonController;
+use Modules\RealEstate\Http\Controllers\Frontend\MortgageCalculatorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,7 +164,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         Route::prefix('inquiries')->name('inquiries.')->group(function () {
             Route::post('/property/{property}', [FrontendPropertyInquiryController::class, 'storeForProperty'])->name('property');
             Route::post('/compound/{compound}', [FrontendPropertyInquiryController::class, 'storeForCompound'])->name('compound');
-            Route::post('/general', [FrontendPropertyInquiryController::class, 'storeGeneral'])->name('general');
+            Route::post('/general', [FrontendPropertyInquiryController::class, 'store'])->name('general');
         });
         
         // ----------------------------------------
@@ -171,6 +173,18 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         Route::prefix('gallery')->name('gallery.')->group(function () {
             Route::get('/properties/{property}', [GalleryController::class, 'propertyGallery'])->name('property');
             Route::get('/compounds/{compound}', [GalleryController::class, 'compoundGallery'])->name('compound');
+        });
+
+        // ----------------------------------------
+        // Mortgage Calculator (Public / Stateless)
+        // ----------------------------------------
+        Route::prefix('mortgage')->name('mortgage.')->group(function () {
+            Route::post('/monthly-payment', [MortgageCalculatorController::class, 'monthlyPayment'])->name('monthly-payment');
+            Route::post('/loan-amount', [MortgageCalculatorController::class, 'loanAmount'])->name('loan-amount');
+            Route::post('/amortization-schedule', [MortgageCalculatorController::class, 'amortizationSchedule'])->name('amortization-schedule');
+            Route::post('/affordability', [MortgageCalculatorController::class, 'affordability'])->name('affordability');
+            Route::post('/down-payment', [MortgageCalculatorController::class, 'downPayment'])->name('down-payment');
+            Route::post('/for-property/{property}', [MortgageCalculatorController::class, 'forProperty'])->name('for-property');
         });
     });
 
@@ -192,6 +206,24 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::post('/{property}/toggle', [SavedPropertyController::class, 'toggle'])->name('toggle');
             Route::get('/{property}/check', [SavedPropertyController::class, 'check'])->name('check');
             Route::post('/check-multiple', [SavedPropertyController::class, 'checkMultiple'])->name('check-multiple');
+        });
+
+        // ----------------------------------------
+        // My Inquiries (Inquiry Tracking)
+        // ----------------------------------------
+        Route::prefix('my-inquiries')->name('my-inquiries.')->group(function () {
+            Route::get('/', [FrontendPropertyInquiryController::class, 'myInquiries'])->name('index');
+            Route::get('/{id}', [FrontendPropertyInquiryController::class, 'showMyInquiry'])->name('show');
+        });
+
+        // ----------------------------------------
+        // Property Comparison (Session-Based)
+        // ----------------------------------------
+        Route::prefix('comparison')->name('comparison.')->group(function () {
+            Route::get('/', [PropertyComparisonController::class, 'index'])->name('index');
+            Route::post('/{property}', [PropertyComparisonController::class, 'add'])->name('add');
+            Route::delete('/{property}', [PropertyComparisonController::class, 'remove'])->name('remove');
+            Route::delete('/', [PropertyComparisonController::class, 'clear'])->name('clear');
         });
     });
 

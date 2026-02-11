@@ -43,6 +43,11 @@ class InquiryStatusUpdatedNotification extends Notification implements ShouldQue
      */
     public function via(object $notifiable): array
     {
+        // Send email to customers (users), database notification to agents/admins
+        if ($notifiable->id === $this->inquiry->user_id) {
+            return ['mail', 'database'];
+        }
+        
         return ['database'];
     }
 
@@ -54,14 +59,19 @@ class InquiryStatusUpdatedNotification extends Notification implements ShouldQue
         $newStatusLabel = $this->statusLabels[$this->inquiry->status] ?? $this->inquiry->status;
         $previousStatusLabel = $this->statusLabels[$this->previousStatus] ?? $this->previousStatus;
 
+        $propertyInfo = $this->inquiry->property 
+            ? "Property: {$this->inquiry->property->title}" 
+            : ($this->inquiry->compound ? "Compound: {$this->inquiry->compound->name}" : "General Inquiry");
+
         return (new MailMessage())
-            ->subject("Inquiry Status Updated: {$this->inquiry->name}")
-            ->greeting("Hello!")
-            ->line("An inquiry status has been updated.")
-            ->line("**Customer:** {$this->inquiry->name}")
+            ->subject("Your Inquiry Status Has Been Updated")
+            ->greeting("Hello {$this->inquiry->name}!")
+            ->line("We wanted to update you on the status of your inquiry.")
+            ->line("**{$propertyInfo}**")
             ->line("**Previous Status:** {$previousStatusLabel}")
-            ->line("**New Status:** {$newStatusLabel}")
-            ->line("**Updated at:** " . now()->format('M d, Y H:i'))
+            ->line("**Current Status:** {$newStatusLabel}")
+            ->line("Our team is working on your inquiry and will reach out to you shortly.")
+            ->line("If you have any questions, feel free to contact us.")
             ->salutation('Best regards, ' . config('app.name'));
     }
 
