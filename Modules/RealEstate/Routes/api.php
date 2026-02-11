@@ -30,6 +30,7 @@ use Modules\RealEstate\Http\Controllers\Frontend\SavedPropertyController;
 use Modules\RealEstate\Http\Controllers\Frontend\GalleryController;
 use Modules\RealEstate\Http\Controllers\Frontend\PropertyComparisonController;
 use Modules\RealEstate\Http\Controllers\Frontend\MortgageCalculatorController;
+use Modules\RealEstate\Http\Controllers\Frontend\PriceInsightController;
 
 /*
 |--------------------------------------------------------------------------
@@ -185,6 +186,14 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::post('/affordability', [MortgageCalculatorController::class, 'affordability'])->name('affordability');
             Route::post('/down-payment', [MortgageCalculatorController::class, 'downPayment'])->name('down-payment');
             Route::post('/for-property/{property}', [MortgageCalculatorController::class, 'forProperty'])->name('for-property');
+        });
+
+        // ----------------------------------------
+        // Price Insight (Market Analysis)
+        // ----------------------------------------
+        Route::prefix('price-insight')->name('price-insight.')->group(function () {
+            Route::get('/{property}', [PriceInsightController::class, 'show'])->name('show');
+            Route::post('/bulk', [PriceInsightController::class, 'bulk'])->name('bulk');
         });
     });
 
