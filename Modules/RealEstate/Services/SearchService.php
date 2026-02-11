@@ -439,9 +439,13 @@ class SearchService
 
     /**
      * Get area IDs including all children.
+     *
+     * @param int|string $areaId Area ID (accepts string from request params)
      */
-    protected function getAreaIdsWithChildren(int $areaId): array
+    protected function getAreaIdsWithChildren(int|string $areaId): array
     {
+        $areaId = (int) $areaId;
+
         $callback = function () use ($areaId) {
             $ids = [$areaId];
             $children = Area::where('parent_id', $areaId)->pluck('id');
@@ -462,9 +466,12 @@ class SearchService
 
     /**
      * Get area IDs including all children (without cache for recursive calls).
+     *
+     * @param int|string $areaId Area ID
      */
-    protected function getAreaIdsWithChildrenDirect(int $areaId): array
+    protected function getAreaIdsWithChildrenDirect(int|string $areaId): array
     {
+        $areaId = (int) $areaId;
         $ids = [$areaId];
         $children = Area::where('parent_id', $areaId)->pluck('id');
 

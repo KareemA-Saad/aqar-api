@@ -374,7 +374,7 @@ class SearchController extends BaseController
     )]
     public function popular(Request $request): JsonResponse
     {
-        $popular = $this->searchService->getPopularSearches($request->input('limit', 10));
+        $popular = $this->searchService->getPopularSearches((int) $request->input('limit', 10));
 
         return response()->json([
             'data' => $popular,
@@ -431,8 +431,8 @@ class SearchController extends BaseController
         $properties = $this->searchService->getNearbyProperties(
             (float) $request->input('latitude'),
             (float) $request->input('longitude'),
-            $request->input('radius', 5),
-            $request->input('limit', 10)
+            (int) $request->input('radius', 5),
+            (int) $request->input('limit', 10)
         );
 
         return response()->json([
