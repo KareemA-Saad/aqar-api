@@ -18,7 +18,8 @@ class SearchController extends BaseController
 {
     public function __construct(
         protected SearchService $searchService
-    ) {}
+    ) {
+    }
 
     /**
      * Search properties with advanced filters.
@@ -74,9 +75,9 @@ class SearchController extends BaseController
         if (isset($params['amenities']) && is_string($params['amenities'])) {
             $params['amenities'] = array_map('intval', explode(',', $params['amenities']));
         }
-        
+
         $properties = $this->searchService->searchProperties($params);
-        
+
         return response()->json([
             'data' => PropertyResource::collection($properties),
             'meta' => [
@@ -123,7 +124,7 @@ class SearchController extends BaseController
     public function compounds(Request $request): JsonResponse
     {
         $compounds = $this->searchService->searchCompounds($request->all());
-        
+
         return response()->json([
             'data' => CompoundResource::collection($compounds),
             'meta' => [
@@ -295,12 +296,12 @@ class SearchController extends BaseController
         $request->validate([
             'q' => 'required|string|min:2',
         ]);
-        
+
         $suggestions = $this->searchService->getAutocompleteSuggestions(
             $request->input('q'),
-            $request->input('limit', 10)
+            (int) $request->input('limit', 10)
         );
-        
+
         return response()->json([
             'data' => $suggestions,
         ]);
@@ -333,7 +334,7 @@ class SearchController extends BaseController
     public function facets(Request $request): JsonResponse
     {
         $facets = $this->searchService->getSearchFacets($request->all());
-        
+
         return response()->json([
             'data' => $facets,
         ]);
@@ -374,7 +375,7 @@ class SearchController extends BaseController
     public function popular(Request $request): JsonResponse
     {
         $popular = $this->searchService->getPopularSearches($request->input('limit', 10));
-        
+
         return response()->json([
             'data' => $popular,
         ]);
@@ -426,14 +427,14 @@ class SearchController extends BaseController
             'radius' => 'nullable|integer|min:1|max:100',
             'limit' => 'nullable|integer|min:1|max:50',
         ]);
-        
+
         $properties = $this->searchService->getNearbyProperties(
             (float) $request->input('latitude'),
             (float) $request->input('longitude'),
             $request->input('radius', 5),
             $request->input('limit', 10)
         );
-        
+
         return response()->json([
             'data' => $properties,
         ]);
@@ -489,9 +490,9 @@ class SearchController extends BaseController
             'bedrooms' => 'nullable|integer|min:0',
             'purpose' => 'nullable|in:sale,rent',
         ]);
-        
+
         $filters = $request->only(['property_type_id', 'min_price', 'max_price', 'bedrooms', 'purpose']);
-        
+
         $properties = $this->searchService->searchPropertiesInBounds(
             (float) $request->input('ne_lat'),
             (float) $request->input('ne_lng'),
@@ -499,7 +500,7 @@ class SearchController extends BaseController
             (float) $request->input('sw_lng'),
             $filters
         );
-        
+
         return response()->json([
             'data' => PropertyResource::collection($properties),
             'count' => $properties->count(),
@@ -556,7 +557,7 @@ class SearchController extends BaseController
             'sw_lat' => 'required|numeric|between:-90,90',
             'sw_lng' => 'required|numeric|between:-180,180',
         ]);
-        
+
         $clusters = $this->searchService->getPropertyClusters(
             (int) $request->input('zoom'),
             (float) $request->input('ne_lat'),
@@ -564,7 +565,7 @@ class SearchController extends BaseController
             (float) $request->input('sw_lat'),
             (float) $request->input('sw_lng')
         );
-        
+
         return response()->json([
             'data' => $clusters,
         ]);
