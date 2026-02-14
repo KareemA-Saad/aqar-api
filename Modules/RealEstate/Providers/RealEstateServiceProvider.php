@@ -33,6 +33,7 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerTranslations();
         $this->registerViews();
+        $this->registerCommands();
 
         // Migrations are handled by TenantService based on plan features.
         // DO NOT use loadMigrationsFrom() as it would run migrations on central DB.
@@ -131,6 +132,20 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->app->singleton(\Modules\RealEstate\Services\AreaService::class);
         $this->app->singleton(\Modules\RealEstate\Services\InquiryService::class);
         $this->app->singleton(\Modules\RealEstate\Services\SearchService::class);
+    }
+
+    /**
+     * Register module commands.
+     *
+     * @return void
+     */
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Modules\RealEstate\Console\FixPropertySlugsCommand::class,
+            ]);
+        }
     }
 
     /**

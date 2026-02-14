@@ -7,6 +7,8 @@ namespace Modules\RealEstate\Http\Controllers\Frontend;
 use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Modules\RealEstate\Entities\Property;
 use Modules\RealEstate\Services\PropertyService;
 use Modules\RealEstate\Transformers\PropertyCollection;
 use Modules\RealEstate\Transformers\PropertyResource;
@@ -101,15 +103,25 @@ class PropertyController extends BaseController
     )]
     public function show(string $property): JsonResponse
     {
+        // Decode URL-encoded characters (spaces, special chars)
+        $property = urldecode($property);
+        
+        // Normalize slug: convert to lowercase and replace spaces with hyphens
+        $normalizedSlug = Str::slug($property);
+        
         // Support both formats: "123-property-slug" or "property-slug"
         if (preg_match('/^(\d+)-(.+)$/', $property, $matches)) {
             // ID-slug format: validate both ID and slug
             $id = (int) $matches[1];
             $slug = $matches[2];
-            $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
+            // Try original slug first, then normalized
+            $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug)
+                ?? $this->propertyService->getPropertyByIdAndSlug($id, Str::slug($slug));
         } else {
-            // Slug-only format: query by slug (user-friendly)
-            $property = $this->propertyService->getPropertyBySlug($property);
+            // Slug-only format: try original, then normalized, then as-is from DB
+            $property = $this->propertyService->getPropertyBySlug($property)
+                ?? $this->propertyService->getPropertyBySlug($normalizedSlug)
+                ?? Property::where('slug', 'LIKE', '%' . $property . '%')->active()->first();
         }
         
         if (!$property) {
@@ -192,15 +204,25 @@ class PropertyController extends BaseController
     )]
     public function similar(string $property, Request $request): JsonResponse
     {
+        // Decode URL-encoded characters (spaces, special chars)
+        $property = urldecode($property);
+        
+        // Normalize slug: convert to lowercase and replace spaces with hyphens
+        $normalizedSlug = Str::slug($property);
+        
         // Support both formats: "123-property-slug" or "property-slug"
         if (preg_match('/^(\d+)-(.+)$/', $property, $matches)) {
             // ID-slug format: validate both ID and slug
             $id = (int) $matches[1];
             $slug = $matches[2];
-            $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
+            // Try original slug first, then normalized
+            $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug)
+                ?? $this->propertyService->getPropertyByIdAndSlug($id, Str::slug($slug));
         } else {
-            // Slug-only format: query by slug (user-friendly)
-            $property = $this->propertyService->getPropertyBySlug($property);
+            // Slug-only format: try original, then normalized, then as-is from DB
+            $property = $this->propertyService->getPropertyBySlug($property)
+                ?? $this->propertyService->getPropertyBySlug($normalizedSlug)
+                ?? Property::where('slug', 'LIKE', '%' . $property . '%')->active()->first();
         }
         
         if (!$property) {
