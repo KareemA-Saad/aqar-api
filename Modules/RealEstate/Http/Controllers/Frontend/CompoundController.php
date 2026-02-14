@@ -7,6 +7,8 @@ namespace Modules\RealEstate\Http\Controllers\Frontend;
 use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Modules\RealEstate\Entities\Compound;
 use Modules\RealEstate\Services\CompoundService;
 use Modules\RealEstate\Services\PropertyService;
 use Modules\RealEstate\Transformers\CompoundCollection;
@@ -64,15 +66,25 @@ class CompoundController extends BaseController
     )]
     public function show(string $compound): JsonResponse
     {
+        // Decode URL-encoded characters (spaces, special chars)
+        $compound = urldecode($compound);
+        
+        // Normalize slug: convert to lowercase and replace spaces with hyphens
+        $normalizedSlug = Str::slug($compound);
+        
         // Support both formats: "123-compound-slug" or "compound-slug"
         if (preg_match('/^(\d+)-(.+)$/', $compound, $matches)) {
             // ID-slug format: validate both ID and slug
             $id = (int) $matches[1];
             $slug = $matches[2];
-            $compound = $this->compoundService->getCompoundByIdAndSlug($id, $slug);
+            // Try original slug first, then normalized
+            $compound = $this->compoundService->getCompoundByIdAndSlug($id, $slug)
+                ?? $this->compoundService->getCompoundByIdAndSlug($id, Str::slug($slug));
         } else {
-            // Slug-only format: query by slug (user-friendly)
-            $compound = $this->compoundService->getCompoundBySlug($compound);
+            // Slug-only format: try original, then normalized, then fuzzy match
+            $compound = $this->compoundService->getCompoundBySlug($compound)
+                ?? $this->compoundService->getCompoundBySlug($normalizedSlug)
+                ?? Compound::where('slug', 'LIKE', '%' . $compound . '%')->active()->first();
         }
         
         if (!$compound) {
@@ -126,15 +138,25 @@ class CompoundController extends BaseController
     )]
     public function properties(string $compound, Request $request): JsonResponse
     {
+        // Decode URL-encoded characters (spaces, special chars)
+        $compound = urldecode($compound);
+        
+        // Normalize slug: convert to lowercase and replace spaces with hyphens
+        $normalizedSlug = Str::slug($compound);
+        
         // Support both formats: "123-compound-slug" or "compound-slug"
         if (preg_match('/^(\d+)-(.+)$/', $compound, $matches)) {
             // ID-slug format: validate both ID and slug
             $id = (int) $matches[1];
             $slug = $matches[2];
-            $compound = $this->compoundService->getCompoundByIdAndSlug($id, $slug);
+            // Try original slug first, then normalized
+            $compound = $this->compoundService->getCompoundByIdAndSlug($id, $slug)
+                ?? $this->compoundService->getCompoundByIdAndSlug($id, Str::slug($slug));
         } else {
-            // Slug-only format: query by slug (user-friendly)
-            $compound = $this->compoundService->getCompoundBySlug($compound);
+            // Slug-only format: try original, then normalized, then fuzzy match
+            $compound = $this->compoundService->getCompoundBySlug($compound)
+                ?? $this->compoundService->getCompoundBySlug($normalizedSlug)
+                ?? Compound::where('slug', 'LIKE', '%' . $compound . '%')->active()->first();
         }
         
         if (!$compound) {

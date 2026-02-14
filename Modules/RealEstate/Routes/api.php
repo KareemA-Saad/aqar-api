@@ -73,11 +73,9 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/', [FrontendPropertyController::class, 'index'])->name('index');
             Route::get('/featured', [FrontendPropertyController::class, 'featured'])->name('featured');
             Route::get('/{property}', [FrontendPropertyController::class, 'show'])
-                ->name('show')
-                ->where('property', '[a-z0-9-]+'); // Accepts: "123-slug" or "slug"
+                ->name('show'); // No constraint - handles in controller
             Route::get('/{property}/similar', [FrontendPropertyController::class, 'similar'])
-                ->name('similar')
-                ->where('property', '[a-z0-9-]+');
+                ->name('similar');
         });
         
         // ----------------------------------------
@@ -87,11 +85,9 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/', [FrontendCompoundController::class, 'index'])->name('index');
             Route::get('/featured', [FrontendCompoundController::class, 'featured'])->name('featured');
             Route::get('/{compound}', [FrontendCompoundController::class, 'show'])
-                ->name('show')
-                ->where('compound', '[a-z0-9-]+'); // Accepts: "123-slug" or "slug"
+                ->name('show'); // No constraint - handles in controller
             Route::get('/{compound}/properties', [FrontendCompoundController::class, 'properties'])
-                ->name('properties')
-                ->where('compound', '[a-z0-9-]+');
+                ->name('properties');
         });
         
         // ----------------------------------------
