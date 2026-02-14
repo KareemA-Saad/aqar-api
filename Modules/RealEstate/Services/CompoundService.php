@@ -44,7 +44,7 @@ class CompoundService
                 AllowedFilter::scope('status'),
                 AllowedFilter::scope('price_range', 'priceRange'),
             ])
-            ->allowedSorts(['created_at', 'name', 'min_price', 'total_units'])
+            ->allowedSorts(['created_at', 'title', 'min_price', 'units_count'])
             ->allowedIncludes(['area', 'developer', 'amenities', 'images', 'properties'])
             ->with(['area', 'developer', 'primaryImage'])
             ->active()
@@ -85,7 +85,7 @@ class CompoundService
         return DB::transaction(function () use ($data) {
             // Generate slug if not provided
             if (empty($data['slug'])) {
-                $data['slug'] = Str::slug($data['name']);
+                $data['slug'] = Str::slug($data['title']);
             }
 
             // Ensure unique slug
@@ -122,9 +122,9 @@ class CompoundService
     public function updateCompound(Compound $compound, array $data): Compound
     {
         return DB::transaction(function () use ($compound, $data) {
-            // Update slug if name changed and slug not provided
-            if (isset($data['name']) && empty($data['slug']) && $data['name'] !== $compound->name) {
-                $data['slug'] = $this->generateUniqueSlug(Str::slug($data['name']), $compound->id);
+            // Update slug if title changed and slug not provided
+            if (isset($data['title']) && empty($data['slug']) && $data['title'] !== $compound->title) {
+                $data['slug'] = $this->generateUniqueSlug(Str::slug($data['title']), $compound->id);
             }
 
             // Extract relations
