@@ -101,10 +101,12 @@ class PropertyController extends BaseController
     )]
     public function show(string $property): JsonResponse
     {
-        // Parse ID from Nawy-style route: {id}-{slug}
-        $id = (int) explode('-', $property)[0];
+        // Parse ID and slug from Nawy-style route: {id}-{slug}
+        $parts = explode('-', $property, 2);
+        $id = (int) $parts[0];
+        $slug = $parts[1] ?? '';
         
-        $property = $this->propertyService->getProperty($id);
+        $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
         
         if (!$property) {
             return response()->json(['message' => 'Property not found.'], 404);
@@ -186,10 +188,12 @@ class PropertyController extends BaseController
     )]
     public function similar(string $property, Request $request): JsonResponse
     {
-        // Parse ID from Nawy-style route: {id}-{slug}
-        $id = (int) explode('-', $property)[0];
+        // Parse ID and slug from Nawy-style route: {id}-{slug}
+        $parts = explode('-', $property, 2);
+        $id = (int) $parts[0];
+        $slug = $parts[1] ?? '';
         
-        $property = $this->propertyService->getProperty($id);
+        $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
         
         if (!$property) {
             return response()->json(['message' => 'Property not found.'], 404);
