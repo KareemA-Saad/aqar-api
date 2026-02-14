@@ -52,10 +52,10 @@ class CompoundController extends BaseController
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/realestate/compounds/{compound}',
         summary: 'Get compound details',
-        description: 'Get detailed information about a specific compound using ID-slug format',
+        description: 'Get detailed information about a specific compound using ID-slug (e.g., "123-compound-name") or slug only (e.g., "compound-name")',
         tags: ['Compounds'],
         parameters: [
-            new OA\Parameter(name: 'compound', in: 'path', required: true, description: 'Compound in ID-slug format (e.g., 123-compound-name)', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
+            new OA\Parameter(name: 'compound', in: 'path', required: true, description: 'Compound identifier: ID-slug ("123-slug") or slug only ("slug")', schema: new OA\Schema(type: 'string', example: 'mivida-compound')),
         ],
         responses: [
             new OA\Response(response: 200, description: 'Compound details'),
@@ -64,10 +64,16 @@ class CompoundController extends BaseController
     )]
     public function show(string $compound): JsonResponse
     {
-        // Parse ID from Nawy-style route: {id}-{slug}
-        $id = (int) explode('-', $compound)[0];
-        
-        $compound = $this->compoundService->getCompound($id);
+        // Support both formats: "123-compound-slug" or "compound-slug"
+        if (preg_match('/^(\d+)-(.+)$/', $compound, $matches)) {
+            // ID-slug format: validate both ID and slug
+            $id = (int) $matches[1];
+            $slug = $matches[2];
+            $compound = $this->compoundService->getCompoundByIdAndSlug($id, $slug);
+        } else {
+            // Slug-only format: query by slug (user-friendly)
+            $compound = $this->compoundService->getCompoundBySlug($compound);
+        }
         
         if (!$compound) {
             return response()->json(['message' => 'Compound not found.'], 404);
@@ -111,7 +117,7 @@ class CompoundController extends BaseController
         description: 'Get all properties within a specific compound',
         tags: ['Compounds'],
         parameters: [
-            new OA\Parameter(name: 'compound', in: 'path', required: true, description: 'Compound in ID-slug format', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
+            new OA\Parameter(name: 'compound', in: 'path', required: true, description: 'Compound identifier: ID-slug ("123-slug") or slug only ("slug")', schema: new OA\Schema(type: 'string', example: 'mivida-compound')),
             new OA\Parameter(name: 'per_page', in: 'query', schema: new OA\Schema(type: 'integer')),
         ],
         responses: [
@@ -120,14 +126,22 @@ class CompoundController extends BaseController
     )]
     public function properties(string $compound, Request $request): JsonResponse
     {
-        // Parse ID from Nawy-style route: {id}-{slug}
-        $id = (int) explode('-', $compound)[0];
-        
-        $compound = $this->compoundService->getCompound($id);
+        // Support both formats: "123-compound-slug" or "compound-slug"
+        if (preg_match('/^(\d+)-(.+)$/', $compound, $matches)) {
+            // ID-slug format: validate both ID and slug
+            $id = (int) $matches[1];
+            $slug = $matches[2];
+            $compound = $this->compoundService->getCompoundByIdAndSlug($id, $slug);
+        } else {
+            // Slug-only format: query by slug (user-friendly)
+            $compound = $this->compoundService->getCompoundBySlug($compound);
+        }
         
         if (!$compound) {
             return response()->json(['message' => 'Compound not found.'], 404);
         }
+        
+        $id = $compound->id;
         
         $request->merge(['filter' => ['compound_id' => $id]]);
         $properties = $this->propertyService->getPaginatedProperties($request->all());

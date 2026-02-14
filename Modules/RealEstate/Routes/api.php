@@ -74,10 +74,10 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/featured', [FrontendPropertyController::class, 'featured'])->name('featured');
             Route::get('/{property}', [FrontendPropertyController::class, 'show'])
                 ->name('show')
-                ->where('property', '[0-9]+-.*'); // Nawy-style: {id}-{slug}
+                ->where('property', '[a-z0-9-]+'); // Accepts: "123-slug" or "slug"
             Route::get('/{property}/similar', [FrontendPropertyController::class, 'similar'])
                 ->name('similar')
-                ->where('property', '[0-9]+-.*');
+                ->where('property', '[a-z0-9-]+');
         });
         
         // ----------------------------------------
@@ -88,10 +88,10 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/featured', [FrontendCompoundController::class, 'featured'])->name('featured');
             Route::get('/{compound}', [FrontendCompoundController::class, 'show'])
                 ->name('show')
-                ->where('compound', '[0-9]+-.*');
+                ->where('compound', '[a-z0-9-]+'); // Accepts: "123-slug" or "slug"
             Route::get('/{compound}/properties', [FrontendCompoundController::class, 'properties'])
                 ->name('properties')
-                ->where('compound', '[0-9]+-.*');
+                ->where('compound', '[a-z0-9-]+');
         });
         
         // ----------------------------------------

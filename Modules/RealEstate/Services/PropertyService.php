@@ -100,6 +100,17 @@ class PropertyService
     }
 
     /**
+     * Get property by slug only (user-friendly URLs).
+     */
+    public function getPropertyBySlug(string $slug): ?Property
+    {
+        return Property::with(['compound.area', 'compound.developer', 'compound', 'propertyType', 'images', 'amenities'])
+            ->where('slug', $slug)
+            ->active()
+            ->first();
+    }
+
+    /**
      * Create a new property.
      */
     public function createProperty(array $data): Property
