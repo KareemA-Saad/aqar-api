@@ -72,10 +72,11 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         Route::prefix('properties')->name('properties.')->group(function () {
             Route::get('/', [FrontendPropertyController::class, 'index'])->name('index');
             Route::get('/featured', [FrontendPropertyController::class, 'featured'])->name('featured');
-            Route::get('/{property}', [FrontendPropertyController::class, 'show'])
-                ->name('show'); // No constraint - handles in controller
+            // Specific routes MUST come before generic wildcard routes
             Route::get('/{property}/similar', [FrontendPropertyController::class, 'similar'])
                 ->name('similar');
+            Route::get('/{property}', [FrontendPropertyController::class, 'show'])
+                ->name('show'); // No constraint - handles in controller
         });
         
         // ----------------------------------------
@@ -84,10 +85,11 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         Route::prefix('compounds')->name('compounds.')->group(function () {
             Route::get('/', [FrontendCompoundController::class, 'index'])->name('index');
             Route::get('/featured', [FrontendCompoundController::class, 'featured'])->name('featured');
-            Route::get('/{compound}', [FrontendCompoundController::class, 'show'])
-                ->name('show'); // No constraint - handles in controller
+            // Specific routes MUST come before generic wildcard routes
             Route::get('/{compound}/properties', [FrontendCompoundController::class, 'properties'])
                 ->name('properties');
+            Route::get('/{compound}', [FrontendCompoundController::class, 'show'])
+                ->name('show'); // No constraint - handles in controller
         });
         
         // ----------------------------------------
