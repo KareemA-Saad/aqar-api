@@ -296,7 +296,7 @@ class Compound extends Model
     /**
      * Get formatted price range.
      */
-    public function getPriceRangeFormattedAttribute(): ?float
+    public function getPriceRangeFormattedAttribute(): ?string
     {
         if (!$this->min_price && !$this->max_price) {
             return null;
