@@ -112,7 +112,7 @@ class CompoundController extends BaseController
     )]
     public function featured(Request $request): JsonResponse
     {
-        $limit = $request->input('limit', 10);
+        $limit = (int) $request->input('limit', 10);
         $compounds = $this->compoundService->getFeaturedCompounds($limit);
         
         return response()->json([
@@ -136,7 +136,7 @@ class CompoundController extends BaseController
             new OA\Response(response: 200, description: 'Compound properties'),
         ]
     )]
-    public function properties(string $compound, Request $request): JsonResponse
+    public function properties(Request $request, string $compound): JsonResponse
     {
         // Decode URL-encoded characters (spaces, special chars)
         $compound = urldecode($compound);

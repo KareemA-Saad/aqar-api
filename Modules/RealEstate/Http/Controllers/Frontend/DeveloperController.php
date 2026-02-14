@@ -74,7 +74,7 @@ class DeveloperController extends BaseController
     )]
     public function featured(Request $request): JsonResponse
     {
-        $limit = $request->input('limit', 10);
+        $limit = (int) $request->input('limit', 10);
         
         $developers = Developer::active()
             ->featured()
@@ -143,7 +143,7 @@ class DeveloperController extends BaseController
         // Parse ID from Nawy-style route: {id}-{slug}
         $id = (int) explode('-', $developer)[0];
         
-        $limit = $request->input('limit', 10);
+        $limit = (int) $request->input('limit', 10);
         $compounds = $this->compoundService->getCompoundsByDeveloper($id, $limit);
         
         return response()->json([
