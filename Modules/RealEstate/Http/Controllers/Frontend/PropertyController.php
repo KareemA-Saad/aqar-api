@@ -165,7 +165,7 @@ class PropertyController extends BaseController
     )]
     public function featured(Request $request): JsonResponse
     {
-        $limit = $request->input('limit', 10);
+        $limit = (int) $request->input('limit', 10);
         $properties = $this->propertyService->getFeaturedProperties($limit);
         
         return response()->json([
@@ -202,7 +202,7 @@ class PropertyController extends BaseController
             new OA\Response(response: 404, description: 'Property not found'),
         ]
     )]
-    public function similar(string $property, Request $request): JsonResponse
+    public function similar(Request $request, string $property): JsonResponse
     {
         // Decode URL-encoded characters (spaces, special chars)
         $property = urldecode($property);
@@ -229,7 +229,7 @@ class PropertyController extends BaseController
             return response()->json(['message' => 'Property not found.'], 404);
         }
         
-        $limit = $request->input('limit', 6);
+        $limit = (int) $request->input('limit', 6);
         $similar = $this->propertyService->getSimilarProperties($property, $limit);
         
         return response()->json([

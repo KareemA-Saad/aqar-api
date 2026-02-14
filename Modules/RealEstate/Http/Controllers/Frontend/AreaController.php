@@ -80,7 +80,7 @@ class AreaController extends BaseController
     )]
     public function featured(Request $request): JsonResponse
     {
-        $limit = $request->input('limit', 10);
+        $limit = (int) $request->input('limit', 10);
         $areas = $this->areaService->getFeaturedAreas($limit);
         
         return response()->json([
@@ -196,7 +196,7 @@ class AreaController extends BaseController
     )]
     public function compounds(int $id, Request $request): JsonResponse
     {
-        $limit = $request->input('limit', 10);
+        $limit = (int) $request->input('limit', 10);
         $compounds = $this->compoundService->getCompoundsByArea($id, $limit);
         
         return response()->json([

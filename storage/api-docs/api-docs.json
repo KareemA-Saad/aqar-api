@@ -15624,17 +15624,17 @@
                     "Compounds"
                 ],
                 "summary": "Get compound details",
-                "description": "Get detailed information about a specific compound using ID-slug format",
+                "description": "Get detailed information about a specific compound using ID-slug (e.g., \"123-compound-name\") or slug only (e.g., \"compound-name\")",
                 "operationId": "70fd9a62af1ebc4e069dd08c81ee5efe",
                 "parameters": [
                     {
                         "name": "compound",
                         "in": "path",
-                        "description": "Compound in ID-slug format (e.g., 123-compound-name)",
+                        "description": "Compound identifier: ID-slug (\"123-slug\") or slug only (\"slug\")",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "pattern": "[0-9]+-.*"
+                            "example": "mivida-compound"
                         }
                     }
                 ],
@@ -15685,11 +15685,11 @@
                     {
                         "name": "compound",
                         "in": "path",
-                        "description": "Compound in ID-slug format",
+                        "description": "Compound identifier: ID-slug (\"123-slug\") or slug only (\"slug\")",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "pattern": "[0-9]+-.*"
+                            "example": "mivida-compound"
                         }
                     },
                     {
@@ -16112,17 +16112,17 @@
                     "Properties"
                 ],
                 "summary": "Get property details",
-                "description": "Get detailed property information by ID-slug pattern (e.g., 123-modern-villa-in-new-cairo)",
+                "description": "Get detailed property information by ID-slug (e.g., \"123-modern-villa\") or slug only (e.g., \"modern-villa\")",
                 "operationId": "ed331ef54b679d8e6c4ce4d460abd184",
                 "parameters": [
                     {
                         "name": "property",
                         "in": "path",
-                        "description": "Property ID-slug (format: {id}-{slug})",
+                        "description": "Property identifier: ID-slug format (\"123-slug\") or slug only (\"slug\")",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "example": "123-modern-villa-in-new-cairo"
+                            "example": "modern-villa-in-new-cairo"
                         }
                     }
                 ],
@@ -16202,11 +16202,11 @@
                     {
                         "name": "property",
                         "in": "path",
-                        "description": "Property in ID-slug format (e.g., 123-property-name)",
+                        "description": "Property identifier: ID-slug (\"123-slug\") or slug only (\"slug\")",
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "pattern": "[0-9]+-.*"
+                            "example": "modern-villa-in-new-cairo"
                         }
                     },
                     {
