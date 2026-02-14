@@ -75,15 +75,15 @@ class PropertyController extends BaseController
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/realestate/properties/{property}',
         summary: 'Get property details',
-        description: 'Get detailed property information by ID-slug pattern (e.g., 123-modern-villa-in-new-cairo)',
+        description: 'Get detailed property information by ID-slug (e.g., "123-modern-villa") or slug only (e.g., "modern-villa")',
         tags: ['Properties'],
         parameters: [
             new OA\Parameter(
                 name: 'property',
                 in: 'path',
                 required: true,
-                description: 'Property ID-slug (format: {id}-{slug})',
-                schema: new OA\Schema(type: 'string', example: '123-modern-villa-in-new-cairo')
+                description: 'Property identifier: ID-slug format ("123-slug") or slug only ("slug")',
+                schema: new OA\Schema(type: 'string', example: 'modern-villa-in-new-cairo')
             ),
         ],
         responses: [
@@ -101,12 +101,16 @@ class PropertyController extends BaseController
     )]
     public function show(string $property): JsonResponse
     {
-        // Parse ID and slug from Nawy-style route: {id}-{slug}
-        $parts = explode('-', $property, 2);
-        $id = (int) $parts[0];
-        $slug = $parts[1] ?? '';
-        
-        $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
+        // Support both formats: "123-property-slug" or "property-slug"
+        if (preg_match('/^(\d+)-(.+)$/', $property, $matches)) {
+            // ID-slug format: validate both ID and slug
+            $id = (int) $matches[1];
+            $slug = $matches[2];
+            $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
+        } else {
+            // Slug-only format: query by slug (user-friendly)
+            $property = $this->propertyService->getPropertyBySlug($property);
+        }
         
         if (!$property) {
             return response()->json(['message' => 'Property not found.'], 404);
@@ -166,7 +170,7 @@ class PropertyController extends BaseController
         description: 'Get properties similar to the specified property based on location, type, and price range',
         tags: ['Properties'],
         parameters: [
-            new OA\Parameter(name: 'property', in: 'path', required: true, description: 'Property in ID-slug format (e.g., 123-property-name)', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
+            new OA\Parameter(name: 'property', in: 'path', required: true, description: 'Property identifier: ID-slug ("123-slug") or slug only ("slug")', schema: new OA\Schema(type: 'string', example: 'modern-villa-in-new-cairo')),
             new OA\Parameter(name: 'limit', in: 'query', description: 'Number of similar properties', schema: new OA\Schema(type: 'integer', default: 6, maximum: 20)),
         ],
         responses: [
@@ -188,12 +192,16 @@ class PropertyController extends BaseController
     )]
     public function similar(string $property, Request $request): JsonResponse
     {
-        // Parse ID and slug from Nawy-style route: {id}-{slug}
-        $parts = explode('-', $property, 2);
-        $id = (int) $parts[0];
-        $slug = $parts[1] ?? '';
-        
-        $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
+        // Support both formats: "123-property-slug" or "property-slug"
+        if (preg_match('/^(\d+)-(.+)$/', $property, $matches)) {
+            // ID-slug format: validate both ID and slug
+            $id = (int) $matches[1];
+            $slug = $matches[2];
+            $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug);
+        } else {
+            // Slug-only format: query by slug (user-friendly)
+            $property = $this->propertyService->getPropertyBySlug($property);
+        }
         
         if (!$property) {
             return response()->json(['message' => 'Property not found.'], 404);

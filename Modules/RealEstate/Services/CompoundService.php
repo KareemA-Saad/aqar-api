@@ -78,6 +78,18 @@ class CompoundService
     }
 
     /**
+     * Get compound by slug only (user-friendly URLs).
+     */
+    public function getCompoundBySlug(string $slug): ?Compound
+    {
+        return Compound::with(['area', 'developer', 'amenities', 'images'])
+            ->withCount('properties')
+            ->where('slug', $slug)
+            ->active()
+            ->first();
+    }
+
+    /**
      * Create a new compound.
      */
     public function createCompound(array $data): Compound
