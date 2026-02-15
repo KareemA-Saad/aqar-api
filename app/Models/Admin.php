@@ -39,6 +39,11 @@ class Admin extends Authenticatable
         'email_verified',
         'email_verify_token',
         'mobile',
+        'company',
+        'address',
+        'city',
+        'state',
+        'country',
         'image',
     ];
 
