@@ -28,6 +28,9 @@ class RealEstateDatabaseSeeder extends Seeder
             PropertySeeder::class,
             PropertyImageSeeder::class,
             PropertyInquirySeeder::class,
+
+            // User features - requires users to exist (typically already in DB)
+            SavedSearchSeeder::class,
         ]);
     }
 }

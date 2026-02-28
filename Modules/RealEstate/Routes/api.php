@@ -31,6 +31,7 @@ use Modules\RealEstate\Http\Controllers\Frontend\GalleryController;
 use Modules\RealEstate\Http\Controllers\Frontend\PropertyComparisonController;
 use Modules\RealEstate\Http\Controllers\Frontend\MortgageCalculatorController;
 use Modules\RealEstate\Http\Controllers\Frontend\PriceInsightController;
+use Modules\RealEstate\Http\Controllers\Frontend\SavedSearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -233,6 +234,19 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::post('/{property}', [PropertyComparisonController::class, 'add'])->name('add');
             Route::delete('/{property}', [PropertyComparisonController::class, 'remove'])->name('remove');
             Route::delete('/', [PropertyComparisonController::class, 'clear'])->name('clear');
+        });
+
+        // ----------------------------------------
+        // Saved Searches & Alerts
+        // ----------------------------------------
+        Route::prefix('saved-searches')->name('saved-searches.')->group(function () {
+            Route::get('/', [SavedSearchController::class, 'index'])->name('index');
+            Route::post('/', [SavedSearchController::class, 'store'])->name('store');
+            Route::get('/{id}', [SavedSearchController::class, 'show'])->name('show');
+            Route::put('/{id}', [SavedSearchController::class, 'update'])->name('update');
+            Route::delete('/{id}', [SavedSearchController::class, 'destroy'])->name('destroy');
+            Route::patch('/{id}/toggle-alerts', [SavedSearchController::class, 'toggleAlerts'])->name('toggle-alerts');
+            Route::get('/{id}/matches', [SavedSearchController::class, 'matches'])->name('matches');
         });
     });
 
