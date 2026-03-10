@@ -20,6 +20,13 @@ class Kernel extends ConsoleKernel
             ->onOneServer()
             ->runInBackground()
             ->appendOutputTo(storage_path('logs/subscription-check.log'));
+
+        // F2.1: Send due follow-up reminders every minute
+        $schedule->command('realestate:send-due-reminders')
+            ->everyMinute()
+            ->withoutOverlapping()
+            ->runInBackground()
+            ->appendOutputTo(storage_path('logs/realestate-reminders.log'));
     }
 
     /**
