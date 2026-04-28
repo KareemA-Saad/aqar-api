@@ -137,7 +137,7 @@ class SearchService
         // Sorting
         $sortField = $params['sort'] ?? 'created_at';
         $sortDirection = $params['direction'] ?? 'desc';
-        
+
         $allowedSorts = ['created_at', 'price', 'area', 'bedrooms', 'views_count'];
         if (in_array($sortField, $allowedSorts)) {
             $query->orderBy($sortField, $sortDirection);
@@ -160,9 +160,9 @@ class SearchService
         if (!empty($params['q'])) {
             $searchTerm = $params['q'];
             $query->where(function (Builder $q) use ($searchTerm) {
-                $q->where('name', 'like', "%{$searchTerm}%")
+                $q->where('title', 'like', "%{$searchTerm}%")
                     ->orWhere('description', 'like', "%{$searchTerm}%")
-                    ->orWhereJsonContains('name', $searchTerm);
+                    ->orWhereJsonContains('title', $searchTerm);
             });
         }
 
@@ -193,8 +193,8 @@ class SearchService
         // Sorting
         $sortField = $params['sort'] ?? 'created_at';
         $sortDirection = $params['direction'] ?? 'desc';
-        
-        $allowedSorts = ['created_at', 'name', 'min_price', 'total_units'];
+
+        $allowedSorts = ['created_at', 'title', 'min_price', 'total_units'];
         if (in_array($sortField, $allowedSorts)) {
             $query->orderBy($sortField, $sortDirection);
         }
@@ -228,17 +228,17 @@ class SearchService
             }
 
             // Compounds
-            $compounds = Compound::where('name', 'like', "%{$query}%")
-                ->orWhereJsonContains('name', $query)
+            $compounds = Compound::where('title', 'like', "%{$query}%")
+                ->orWhereJsonContains('title', $query)
                 ->active()
                 ->limit($limit)
-                ->get(['id', 'name', 'slug']);
+                ->get(['id', 'title', 'slug']);
 
             foreach ($compounds as $compound) {
                 $suggestions[] = [
                     'type' => 'compound',
                     'id' => $compound->id,
-                    'title' => $compound->name,
+                    'title' => $compound->title,
                     'slug' => $compound->slug,
                     'url' => "/compounds/{$compound->id}-{$compound->slug}",
                 ];
@@ -265,10 +265,12 @@ class SearchService
             usort($suggestions, function ($a, $b) use ($query) {
                 $aStarts = stripos($a['title'], $query) === 0;
                 $bStarts = stripos($b['title'], $query) === 0;
-                
-                if ($aStarts && !$bStarts) return -1;
-                if (!$aStarts && $bStarts) return 1;
-                
+
+                if ($aStarts && !$bStarts)
+                    return -1;
+                if (!$aStarts && $bStarts)
+                    return 1;
+
                 return strcasecmp($a['title'], $b['title']);
             });
 
@@ -324,12 +326,12 @@ class SearchService
             ->groupBy('property_type_id')
             ->with('propertyType:id,name')
             ->get()
-            ->map(fn ($item) => [
+            ->map(fn($item) => [
                 'id' => $item->property_type_id,
                 'name' => $item->propertyType?->name,
                 'count' => $item->count,
             ])
-            ->filter(fn ($item) => $item['name'] !== null)
+            ->filter(fn($item) => $item['name'] !== null)
             ->values()
             ->toArray();
     }
@@ -341,12 +343,12 @@ class SearchService
     {
         return Area::whereNull('parent_id')
             ->active()
-            ->withCount(['properties' => fn ($q) => $q->active()])
+            ->withCount(['properties' => fn($q) => $q->active()])
             ->having('properties_count', '>', 0)
             ->orderByDesc('properties_count')
             ->limit(20)
             ->get()
-            ->map(fn ($area) => [
+            ->map(fn($area) => [
                 'id' => $area->id,
                 'name' => $area->name,
                 'count' => $area->properties_count,
@@ -364,7 +366,7 @@ class SearchService
             ->groupBy('bedrooms')
             ->orderBy('bedrooms')
             ->get()
-            ->map(fn ($item) => [
+            ->map(fn($item) => [
                 'value' => $item->bedrooms,
                 'label' => $item->bedrooms . ' ' . ($item->bedrooms === 1 ? 'Bedroom' : 'Bedrooms'),
                 'count' => $item->count,
@@ -388,7 +390,7 @@ class SearchService
         return collect($ranges)->map(function ($range) use ($query) {
             $rangeQuery = $query->clone();
             $rangeQuery->where('price', '>=', $range['min']);
-            
+
             if ($range['max']) {
                 $rangeQuery->where('price', '<', $range['max']);
             }
@@ -399,7 +401,7 @@ class SearchService
                 'label' => $range['label'],
                 'count' => $rangeQuery->count(),
             ];
-        })->filter(fn ($range) => $range['count'] > 0)->values()->toArray();
+        })->filter(fn($range) => $range['count'] > 0)->values()->toArray();
     }
 
     /**
@@ -411,7 +413,7 @@ class SearchService
             ->whereNotNull('finishing')
             ->groupBy('finishing')
             ->get()
-            ->map(fn ($item) => [
+            ->map(fn($item) => [
                 'value' => $item->finishing,
                 'label' => ucfirst($item->finishing),
                 'count' => $item->count,
@@ -427,7 +429,7 @@ class SearchService
         return $query->selectRaw('listing_type, COUNT(*) as count')
             ->groupBy('listing_type')
             ->get()
-            ->map(fn ($item) => [
+            ->map(fn($item) => [
                 'value' => $item->listing_type,
                 'label' => ucfirst($item->listing_type),
                 'count' => $item->count,
@@ -437,9 +439,13 @@ class SearchService
 
     /**
      * Get area IDs including all children.
+     *
+     * @param int|string $areaId Area ID (accepts string from request params)
      */
-    protected function getAreaIdsWithChildren(int $areaId): array
+    protected function getAreaIdsWithChildren(int|string $areaId): array
     {
+        $areaId = (int) $areaId;
+
         $callback = function () use ($areaId) {
             $ids = [$areaId];
             $children = Area::where('parent_id', $areaId)->pluck('id');
@@ -460,9 +466,12 @@ class SearchService
 
     /**
      * Get area IDs including all children (without cache for recursive calls).
+     *
+     * @param int|string $areaId Area ID
      */
-    protected function getAreaIdsWithChildrenDirect(int $areaId): array
+    protected function getAreaIdsWithChildrenDirect(int|string $areaId): array
     {
+        $areaId = (int) $areaId;
         $ids = [$areaId];
         $children = Area::where('parent_id', $areaId)->pluck('id');
 
@@ -779,7 +788,7 @@ class SearchService
         $perPage = $params['per_page'] ?? 15;
         $page = $params['page'] ?? 1;
         $lastPage = $totalCount > 0 ? (int) ceil($totalCount / $perPage) : 1;
-        
+
         // Slice results for current page
         $offset = ($page - 1) * $perPage;
         $paginatedResults = $mergedResults->slice($offset, $perPage)->values();
@@ -831,7 +840,7 @@ class SearchService
     protected function searchPropertiesForGlobal(array $params): \Illuminate\Database\Eloquent\Collection
     {
         $searchTerm = $params['q'];
-        
+
         $query = Property::query()
             ->with(['compound.area', 'compound.developer', 'propertyType', 'primaryImage'])
             ->active();
@@ -930,7 +939,7 @@ class SearchService
     protected function searchCompoundsForGlobal(array $params): \Illuminate\Database\Eloquent\Collection
     {
         $searchTerm = $params['q'];
-        
+
         $query = Compound::query()
             ->with(['area', 'developer', 'primaryImage'])
             ->withCount('properties')
@@ -996,7 +1005,7 @@ class SearchService
     protected function searchAreasForGlobal(array $params): \Illuminate\Database\Eloquent\Collection
     {
         $searchTerm = $params['q'];
-        
+
         $query = Area::query()
             ->withCount(['properties', 'compounds'])
             ->where('status', true);
@@ -1036,7 +1045,7 @@ class SearchService
     protected function searchDevelopersForGlobal(array $params): \Illuminate\Database\Eloquent\Collection
     {
         $searchTerm = $params['q'];
-        
+
         $query = \Modules\RealEstate\Entities\Developer::query()
             ->where('status', true);
 
@@ -1150,10 +1159,10 @@ class SearchService
     {
         // Sort parameters for consistent cache keys
         ksort($params);
-        
+
         // Create hash from parameters
         $hash = md5(json_encode($params));
-        
+
         return "global_search:{$hash}";
     }
 
@@ -1175,7 +1184,7 @@ class SearchService
             Cache::tags(['global_search', 'search_results'])->flush();
             return true;
         }
-        
+
         // File/Database cache: Cannot invalidate by tag, cache will auto-expire (5 min TTL)
         // To force invalidation, you'd need to clear all cache: Cache::flush()
         return false;

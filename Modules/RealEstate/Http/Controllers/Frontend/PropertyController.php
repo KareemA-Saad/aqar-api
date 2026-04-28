@@ -7,6 +7,8 @@ namespace Modules\RealEstate\Http\Controllers\Frontend;
 use Modules\RealEstate\Http\Controllers\BaseController;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Modules\RealEstate\Entities\Property;
 use Modules\RealEstate\Services\PropertyService;
 use Modules\RealEstate\Transformers\PropertyCollection;
 use Modules\RealEstate\Transformers\PropertyResource;
@@ -75,15 +77,15 @@ class PropertyController extends BaseController
     #[OA\Get(
         path: '/api/v1/tenant/{tenant}/realestate/properties/{property}',
         summary: 'Get property details',
-        description: 'Get detailed property information by ID-slug pattern (e.g., 123-modern-villa-in-new-cairo)',
+        description: 'Get detailed property information by ID-slug (e.g., "123-modern-villa") or slug only (e.g., "modern-villa")',
         tags: ['Properties'],
         parameters: [
             new OA\Parameter(
                 name: 'property',
                 in: 'path',
                 required: true,
-                description: 'Property ID-slug (format: {id}-{slug})',
-                schema: new OA\Schema(type: 'string', example: '123-modern-villa-in-new-cairo')
+                description: 'Property identifier: ID-slug format ("123-slug") or slug only ("slug")',
+                schema: new OA\Schema(type: 'string', example: 'modern-villa-in-new-cairo')
             ),
         ],
         responses: [
@@ -101,10 +103,26 @@ class PropertyController extends BaseController
     )]
     public function show(string $property): JsonResponse
     {
-        // Parse ID from Nawy-style route: {id}-{slug}
-        $id = (int) explode('-', $property)[0];
+        // Decode URL-encoded characters (spaces, special chars)
+        $property = urldecode($property);
         
-        $property = $this->propertyService->getProperty($id);
+        // Normalize slug: convert to lowercase and replace spaces with hyphens
+        $normalizedSlug = Str::slug($property);
+        
+        // Support both formats: "123-property-slug" or "property-slug"
+        if (preg_match('/^(\d+)-(.+)$/', $property, $matches)) {
+            // ID-slug format: validate both ID and slug
+            $id = (int) $matches[1];
+            $slug = $matches[2];
+            // Try original slug first, then normalized
+            $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug)
+                ?? $this->propertyService->getPropertyByIdAndSlug($id, Str::slug($slug));
+        } else {
+            // Slug-only format: try original, then normalized, then as-is from DB
+            $property = $this->propertyService->getPropertyBySlug($property)
+                ?? $this->propertyService->getPropertyBySlug($normalizedSlug)
+                ?? Property::where('slug', 'LIKE', '%' . $property . '%')->active()->first();
+        }
         
         if (!$property) {
             return response()->json(['message' => 'Property not found.'], 404);
@@ -147,7 +165,7 @@ class PropertyController extends BaseController
     )]
     public function featured(Request $request): JsonResponse
     {
-        $limit = $request->input('limit', 10);
+        $limit = (int) $request->input('limit', 10);
         $properties = $this->propertyService->getFeaturedProperties($limit);
         
         return response()->json([
@@ -164,7 +182,7 @@ class PropertyController extends BaseController
         description: 'Get properties similar to the specified property based on location, type, and price range',
         tags: ['Properties'],
         parameters: [
-            new OA\Parameter(name: 'property', in: 'path', required: true, description: 'Property in ID-slug format (e.g., 123-property-name)', schema: new OA\Schema(type: 'string', pattern: '[0-9]+-.*')),
+            new OA\Parameter(name: 'property', in: 'path', required: true, description: 'Property identifier: ID-slug ("123-slug") or slug only ("slug")', schema: new OA\Schema(type: 'string', example: 'modern-villa-in-new-cairo')),
             new OA\Parameter(name: 'limit', in: 'query', description: 'Number of similar properties', schema: new OA\Schema(type: 'integer', default: 6, maximum: 20)),
         ],
         responses: [
@@ -184,18 +202,34 @@ class PropertyController extends BaseController
             new OA\Response(response: 404, description: 'Property not found'),
         ]
     )]
-    public function similar(string $property, Request $request): JsonResponse
+    public function similar(Request $request, string $property): JsonResponse
     {
-        // Parse ID from Nawy-style route: {id}-{slug}
-        $id = (int) explode('-', $property)[0];
+        // Decode URL-encoded characters (spaces, special chars)
+        $property = urldecode($property);
         
-        $property = $this->propertyService->getProperty($id);
+        // Normalize slug: convert to lowercase and replace spaces with hyphens
+        $normalizedSlug = Str::slug($property);
+        
+        // Support both formats: "123-property-slug" or "property-slug"
+        if (preg_match('/^(\d+)-(.+)$/', $property, $matches)) {
+            // ID-slug format: validate both ID and slug
+            $id = (int) $matches[1];
+            $slug = $matches[2];
+            // Try original slug first, then normalized
+            $property = $this->propertyService->getPropertyByIdAndSlug($id, $slug)
+                ?? $this->propertyService->getPropertyByIdAndSlug($id, Str::slug($slug));
+        } else {
+            // Slug-only format: try original, then normalized, then as-is from DB
+            $property = $this->propertyService->getPropertyBySlug($property)
+                ?? $this->propertyService->getPropertyBySlug($normalizedSlug)
+                ?? Property::where('slug', 'LIKE', '%' . $property . '%')->active()->first();
+        }
         
         if (!$property) {
             return response()->json(['message' => 'Property not found.'], 404);
         }
         
-        $limit = $request->input('limit', 6);
+        $limit = (int) $request->input('limit', 6);
         $similar = $this->propertyService->getSimilarProperties($property, $limit);
         
         return response()->json([

@@ -509,22 +509,17 @@ final class ProfileController extends BaseApiController
     }
 
     /**
-     * Get the authenticated user (admin or user based on guard).
+     * Get the authenticated tenant admin.
      *
-     * @return \App\Models\Admin|\App\Models\User|null
+     * Authentication is handled by auth.tenant_admin middleware after tenant
+     * context is initialized from the switched token.
+     *
+     * @return Admin|null
      */
-    private function getAuthenticatedUser()
+    private function getAuthenticatedUser(): ?Admin
     {
-        // Try different guards
-        $guards = ['api_admin', 'api_user', 'sanctum'];
-        
-        foreach ($guards as $guard) {
-            $user = auth($guard)->user();
-            if ($user) {
-                return $user;
-            }
-        }
+        $user = auth()->user();
 
-        return null;
+        return $user instanceof Admin ? $user : null;
     }
 }

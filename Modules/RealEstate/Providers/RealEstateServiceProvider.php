@@ -33,6 +33,7 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerTranslations();
         $this->registerViews();
+        $this->registerCommands();
 
         // Register Artisan commands
         if ($this->app->runningInConsole()) {
@@ -145,6 +146,20 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->app->singleton(\Modules\RealEstate\Services\InquiryNoteService::class);
         $this->app->singleton(\Modules\RealEstate\Services\TemplateService::class);
         $this->app->singleton(\Modules\RealEstate\Services\ViewingService::class);
+    }
+
+    /**
+     * Register module commands.
+     *
+     * @return void
+     */
+    protected function registerCommands(): void
+    {
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Modules\RealEstate\Console\FixPropertySlugsCommand::class,
+            ]);
+        }
     }
 
     /**

@@ -30,3 +30,5 @@ aqarsjis.sql
 oldsqlscript.sql
 env.example.txt
 _cv_dossier
+.brv
+.notes

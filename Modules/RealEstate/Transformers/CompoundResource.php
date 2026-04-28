@@ -34,19 +34,24 @@ class CompoundResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'name' => $this->title,  // Maps to title column (translatable)
+            'title' => $this->title, // Also include title for clarity
             'slug' => $this->slug,
             'description' => $this->description,
             
             // Pricing
             'min_price' => $this->min_price,
             'max_price' => $this->max_price,
-            'price_range' => $this->price_range,
-            'currency' => $this->currency,
+            'price_range' => $this->price_range_formatted,
+            'currency' => $this->price_currency,
             
             // Details
-            'total_units' => $this->total_units,
-            'delivery_date' => $this->delivery_date,
+            'total_units' => $this->units_count,
+            'units_count' => $this->units_count,
+            'delivery_year' => $this->delivery_year,
+            'launch_year' => $this->launch_year,
+            'total_area' => $this->total_area,
+            'construction_status' => $this->construction_status,
             
             // Location
             'address' => $this->address,
@@ -54,23 +59,23 @@ class CompoundResource extends JsonResource
             'longitude' => $this->longitude,
             
             // Media
-            'logo' => $this->logo,
+            'thumbnail' => $this->thumbnail_url,
             'video_url' => $this->video_url,
-            'brochure_url' => $this->brochure_url,
+            'virtual_tour_url' => $this->virtual_tour_url,
             
             // Status
             'is_featured' => $this->is_featured,
-            'status' => $this->status,
+            'is_published' => $this->is_published,
             
             // SEO
             'meta_title' => $this->meta_title,
             'meta_description' => $this->meta_description,
-            
-            // URLs
-            'url' => $this->url,
+            'meta_keywords' => $this->meta_keywords,
             
             // Counts
             'properties_count' => $this->when(isset($this->properties_count), $this->properties_count),
+            'available_properties_count' => $this->when(isset($this->available_properties_count), $this->available_properties_count),
+            'views_count' => $this->when(isset($this->views_count), $this->views_count),
             
             // Relations
             'area' => new AreaResource($this->whenLoaded('area')),

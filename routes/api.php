@@ -521,7 +521,11 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             |--------------------------------------------------------------------------
             | Routes for tenant admin dashboard statistics and charts.
             */
-            Route::prefix('admin')->name('admin.')->group(function () {
+            Route::prefix('admin')
+                ->name('admin.')
+                ->withoutMiddleware(['auth:sanctum'])
+                ->middleware(['auth.tenant_admin'])
+                ->group(function () {
                 // Dashboard Routes
                 Route::prefix('dashboard')->name('dashboard.')->group(function () {
                     Route::get('/', [TenantAdminDashboardController::class, 'index'])->name('index');
