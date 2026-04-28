@@ -53,8 +53,26 @@ class PropertyInquiryResource extends JsonResource
             // Status
             'status' => $this->status,
             'status_label' => ucfirst($this->status),
-            
-            // Admin fields (only for admin routes)
+
+            // F2.3: Lead score (always computed, shown to agents + admins)
+            'lead_score'       => $this->when(
+                $request->routeIs('agent.*') || $request->routeIs('admin.*'),
+                fn () => $this->lead_score
+            ),
+            'lead_temperature' => $this->when(
+                $request->routeIs('agent.*') || $request->routeIs('admin.*'),
+                fn () => $this->lead_temperature
+            ),
+
+            // F2.1: SLA status (shown to agents)
+            'sla_status'       => $this->when(
+                $request->routeIs('agent.*'),
+                fn () => $this->sla_status
+            ),
+            'sla_hours_elapsed' => $this->when(
+                $request->routeIs('agent.*'),
+                fn () => $this->sla_hours_elapsed
+            ),
             'admin_notes' => $this->when($request->routeIs('admin.*'), $this->admin_notes),
             'ip_address' => $this->when($request->routeIs('admin.*'), $this->ip_address),
             'user_agent' => $this->when($request->routeIs('admin.*'), $this->user_agent),

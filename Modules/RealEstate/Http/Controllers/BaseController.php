@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\RealEstate\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Traits\ApiResponse;
 
 /**
  * Base Controller for the RealEstate Module.
@@ -19,6 +20,8 @@ use App\Http\Controllers\Controller;
  */
 abstract class BaseController extends Controller
 {
+    use ApiResponse;
+
     /**
      * Execute an action on the controller.
      *

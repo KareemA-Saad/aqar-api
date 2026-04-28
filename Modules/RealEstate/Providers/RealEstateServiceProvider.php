@@ -35,6 +35,13 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->registerViews();
         $this->registerCommands();
 
+        // Register Artisan commands
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Modules\RealEstate\Console\Commands\SendDueReminders::class,
+            ]);
+        }
+
         // Migrations are handled by TenantService based on plan features.
         // DO NOT use loadMigrationsFrom() as it would run migrations on central DB.
         // RealEstate tables belong in tenant databases only.
@@ -132,6 +139,13 @@ class RealEstateServiceProvider extends ServiceProvider
         $this->app->singleton(\Modules\RealEstate\Services\AreaService::class);
         $this->app->singleton(\Modules\RealEstate\Services\InquiryService::class);
         $this->app->singleton(\Modules\RealEstate\Services\SearchService::class);
+        $this->app->singleton(\Modules\RealEstate\Services\MortgageCalculatorService::class);
+        $this->app->singleton(\Modules\RealEstate\Services\PriceInsightService::class);
+        $this->app->singleton(\Modules\RealEstate\Services\SavedSearchService::class);
+        $this->app->singleton(\Modules\RealEstate\Services\ReminderService::class);
+        $this->app->singleton(\Modules\RealEstate\Services\InquiryNoteService::class);
+        $this->app->singleton(\Modules\RealEstate\Services\TemplateService::class);
+        $this->app->singleton(\Modules\RealEstate\Services\ViewingService::class);
     }
 
     /**

@@ -13,9 +13,15 @@ use Modules\RealEstate\Http\Controllers\Admin\PropertyTypeController as AdminPro
 use Modules\RealEstate\Http\Controllers\Admin\AmenityController as AdminAmenityController;
 use Modules\RealEstate\Http\Controllers\Admin\PropertyInquiryController as AdminPropertyInquiryController;
 use Modules\RealEstate\Http\Controllers\Admin\MediaController as AdminMediaController;
+use Modules\RealEstate\Http\Controllers\Admin\TemplateController as AdminTemplateController;
+use Modules\RealEstate\Http\Controllers\Admin\ViewingController as AdminViewingController;
 
 // Agent Controllers
 use Modules\RealEstate\Http\Controllers\Agent\AgentDashboardController;
+use Modules\RealEstate\Http\Controllers\Agent\InquiryTimelineController;
+use Modules\RealEstate\Http\Controllers\Agent\ReminderController;
+use Modules\RealEstate\Http\Controllers\Agent\TemplateController as AgentTemplateController;
+use Modules\RealEstate\Http\Controllers\Agent\ViewingController as AgentViewingController;
 
 // Frontend Controllers
 use Modules\RealEstate\Http\Controllers\Frontend\PropertyController as FrontendPropertyController;
@@ -28,6 +34,11 @@ use Modules\RealEstate\Http\Controllers\Frontend\PropertyInquiryController as Fr
 use Modules\RealEstate\Http\Controllers\Frontend\SearchController as FrontendSearchController;
 use Modules\RealEstate\Http\Controllers\Frontend\SavedPropertyController;
 use Modules\RealEstate\Http\Controllers\Frontend\GalleryController;
+use Modules\RealEstate\Http\Controllers\Frontend\PropertyComparisonController;
+use Modules\RealEstate\Http\Controllers\Frontend\MortgageCalculatorController;
+use Modules\RealEstate\Http\Controllers\Frontend\PriceInsightController;
+use Modules\RealEstate\Http\Controllers\Frontend\SavedSearchController;
+use Modules\RealEstate\Http\Controllers\Frontend\ViewingController as FrontendViewingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -160,7 +171,7 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         Route::prefix('inquiries')->name('inquiries.')->group(function () {
             Route::post('/property/{property}', [FrontendPropertyInquiryController::class, 'storeForProperty'])->name('property');
             Route::post('/compound/{compound}', [FrontendPropertyInquiryController::class, 'storeForCompound'])->name('compound');
-            Route::post('/general', [FrontendPropertyInquiryController::class, 'storeGeneral'])->name('general');
+            Route::post('/general', [FrontendPropertyInquiryController::class, 'store'])->name('general');
         });
         
         // ----------------------------------------
@@ -169,6 +180,26 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         Route::prefix('gallery')->name('gallery.')->group(function () {
             Route::get('/properties/{property}', [GalleryController::class, 'propertyGallery'])->name('property');
             Route::get('/compounds/{compound}', [GalleryController::class, 'compoundGallery'])->name('compound');
+        });
+
+        // ----------------------------------------
+        // Mortgage Calculator (Public / Stateless)
+        // ----------------------------------------
+        Route::prefix('mortgage')->name('mortgage.')->group(function () {
+            Route::post('/monthly-payment', [MortgageCalculatorController::class, 'monthlyPayment'])->name('monthly-payment');
+            Route::post('/loan-amount', [MortgageCalculatorController::class, 'loanAmount'])->name('loan-amount');
+            Route::post('/amortization-schedule', [MortgageCalculatorController::class, 'amortizationSchedule'])->name('amortization-schedule');
+            Route::post('/affordability', [MortgageCalculatorController::class, 'affordability'])->name('affordability');
+            Route::post('/down-payment', [MortgageCalculatorController::class, 'downPayment'])->name('down-payment');
+            Route::post('/for-property/{property}', [MortgageCalculatorController::class, 'forProperty'])->name('for-property');
+        });
+
+        // ----------------------------------------
+        // Price Insight (Market Analysis)
+        // ----------------------------------------
+        Route::prefix('price-insight')->name('price-insight.')->group(function () {
+            Route::get('/{property}', [PriceInsightController::class, 'show'])->name('show');
+            Route::post('/bulk', [PriceInsightController::class, 'bulk'])->name('bulk');
         });
     });
 
@@ -190,6 +221,44 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::post('/{property}/toggle', [SavedPropertyController::class, 'toggle'])->name('toggle');
             Route::get('/{property}/check', [SavedPropertyController::class, 'check'])->name('check');
             Route::post('/check-multiple', [SavedPropertyController::class, 'checkMultiple'])->name('check-multiple');
+        });
+
+        // ----------------------------------------
+        // My Inquiries (Inquiry Tracking)
+        // ----------------------------------------
+        Route::prefix('my-inquiries')->name('my-inquiries.')->group(function () {
+            Route::get('/', [FrontendPropertyInquiryController::class, 'myInquiries'])->name('index');
+            Route::get('/{id}', [FrontendPropertyInquiryController::class, 'showMyInquiry'])->name('show');
+        });
+
+        // ----------------------------------------
+        // Property Comparison (Session-Based)
+        // ----------------------------------------
+        Route::prefix('comparison')->name('comparison.')->group(function () {
+            Route::get('/', [PropertyComparisonController::class, 'index'])->name('index');
+            Route::post('/{property}', [PropertyComparisonController::class, 'add'])->name('add');
+            Route::delete('/{property}', [PropertyComparisonController::class, 'remove'])->name('remove');
+            Route::delete('/', [PropertyComparisonController::class, 'clear'])->name('clear');
+        });
+
+        // ----------------------------------------
+        // Saved Searches & Alerts
+        // ----------------------------------------
+        Route::prefix('saved-searches')->name('saved-searches.')->group(function () {
+            Route::get('/', [SavedSearchController::class, 'index'])->name('index');
+            Route::post('/', [SavedSearchController::class, 'store'])->name('store');
+            Route::get('/{id}', [SavedSearchController::class, 'show'])->name('show');
+            Route::put('/{id}', [SavedSearchController::class, 'update'])->name('update');
+            Route::delete('/{id}', [SavedSearchController::class, 'destroy'])->name('destroy');
+            Route::patch('/{id}/toggle-alerts', [SavedSearchController::class, 'toggleAlerts'])->name('toggle-alerts');
+            Route::get('/{id}/matches', [SavedSearchController::class, 'matches'])->name('matches');
+        });
+
+        // ----------------------------------------
+        // F2.5: Viewing Scheduler (user books a viewing)
+        // ----------------------------------------
+        Route::prefix('viewings')->name('viewings.')->group(function () {
+            Route::post('/', [FrontendViewingController::class, 'book'])->name('book');
         });
     });
 
@@ -292,6 +361,26 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
         });
         
         // ----------------------------------------
+        // F2.4: Canned Response Templates
+        // ----------------------------------------
+        Route::prefix('templates')->name('templates.')->group(function () {
+            Route::get('/', [AdminTemplateController::class, 'index'])->name('index');
+            Route::post('/', [AdminTemplateController::class, 'store'])->name('store');
+            Route::get('/{id}', [AdminTemplateController::class, 'show'])->name('show');
+            Route::put('/{id}', [AdminTemplateController::class, 'update'])->name('update');
+            Route::delete('/{id}', [AdminTemplateController::class, 'destroy'])->name('destroy');
+        });
+
+        // ----------------------------------------
+        // F2.5: Viewing Scheduler (admin)
+        // ----------------------------------------
+        Route::prefix('viewings')->name('viewings.')->group(function () {
+            Route::get('/', [AdminViewingController::class, 'index'])->name('index');
+            Route::get('/{id}', [AdminViewingController::class, 'show'])->name('show');
+            Route::patch('/{id}', [AdminViewingController::class, 'update'])->name('update');
+        });
+
+        // ----------------------------------------
         // Property Inquiry Management (CRM/Leads)
         // ----------------------------------------
         Route::prefix('inquiries')->name('inquiries.')->group(function () {
@@ -337,6 +426,46 @@ Route::prefix('v1/tenant/{tenant}')->name('api.v1.tenant.')->group(function () {
             Route::get('/', [AgentDashboardController::class, 'inquiries'])->name('index');
             Route::put('/{id}', [AgentDashboardController::class, 'updateInquiry'])->name('update');
             Route::post('/{id}/contact', [AgentDashboardController::class, 'markContacted'])->name('contact');
+
+            // F2.1 - Create reminder for a specific inquiry
+            Route::post('/{id}/reminders', [ReminderController::class, 'createForInquiry'])->name('reminders.create');
+
+            // F2.2 - Timeline and notes
+            Route::get('/{id}/timeline', [InquiryTimelineController::class, 'timeline'])->name('timeline');
+            Route::post('/{id}/notes', [InquiryTimelineController::class, 'addNote'])->name('notes.create');
+            Route::delete('/{id}/notes/{noteId}', [InquiryTimelineController::class, 'deleteNote'])->name('notes.delete');
+        });
+
+        // ----------------------------------------
+        // F2.1: Follow-up Reminders
+        // ----------------------------------------
+        Route::prefix('reminders')->name('reminders.')->group(function () {
+            Route::get('/', [ReminderController::class, 'index'])->name('index');
+            Route::patch('/{id}', [ReminderController::class, 'update'])->name('update');
+            Route::delete('/{id}', [ReminderController::class, 'destroy'])->name('destroy');
+        });
+
+        // ----------------------------------------
+        // F2.1: SLA Summary
+        // ----------------------------------------
+        Route::get('/sla/summary', [ReminderController::class, 'slaSummary'])->name('sla.summary');
+
+        // ----------------------------------------
+        // F2.4: Canned Response Templates (agent)
+        // ----------------------------------------
+        Route::prefix('templates')->name('templates.')->group(function () {
+            Route::get('/', [AgentTemplateController::class, 'index'])->name('index');
+            Route::post('/{id}/preview', [AgentTemplateController::class, 'preview'])->name('preview');
+        });
+
+        // ----------------------------------------
+        // F2.5: Viewing Scheduler (agent)
+        // ----------------------------------------
+        Route::prefix('viewings')->name('viewings.')->group(function () {
+            Route::get('/today', [AgentViewingController::class, 'today'])->name('today');
+            Route::get('/', [AgentViewingController::class, 'index'])->name('index');
+            Route::patch('/{id}', [AgentViewingController::class, 'update'])->name('update');
+            Route::post('/{id}/complete', [AgentViewingController::class, 'complete'])->name('complete');
         });
     });
 });

@@ -156,7 +156,7 @@ class AgentDashboardController extends BaseController
         $agentId = auth()->id();
 
         $query = PropertyInquiry::where('agent_id', $agentId)
-            ->with(['property.compound', 'agent']);
+            ->with(['property.compound', 'agent', 'user']);
 
         // Apply filters
         if ($request->filled('status')) {
@@ -167,7 +167,16 @@ class AgentDashboardController extends BaseController
             $query->where('property_id', $request->input('property_id'));
         }
 
-        $inquiries = $query->latest()->paginate($request->input('per_page', 15));
+        // F2.3: priority sort — oldest uncontacted first (highest breach risk)
+        $sort = $request->input('sort', 'latest');
+        if ($sort === 'priority') {
+            $query->whereNull('contacted_at')
+                  ->oldest('created_at');
+        } else {
+            $query->latest();
+        }
+
+        $inquiries = $query->paginate($request->input('per_page', 15));
 
         return response()->json([
             'data' => PropertyInquiryResource::collection($inquiries),
